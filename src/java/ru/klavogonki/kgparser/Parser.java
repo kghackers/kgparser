@@ -1,13 +1,18 @@
 /**
  * User: 1
- * Date: 12.01.2012
- * Time: 23:08:19
+ * Date: 13.01.2012
+ * Time: 23:36:17
  */
 package ru.klavogonki.kgparser;
 
-public class Parser
+import java.util.List;
+
+public interface Parser
 {
-	public void generate() {
-		
-	}
+	/**
+	 * @param fileName имя html-файла с сохраненным заездом
+	 * @return список игроков, находящийся на странице.
+	 * // todo: возвращать результаты
+	 */
+	List<Player> getPlayers(String fileName);
 }
