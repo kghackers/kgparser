@@ -1,0 +1,1499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+
+
+<meta name="Keywords" content="клавиатурный тренажер, клавиатура, эргономическая клавиатура, онлайн игра, скорость набора, тест, скорость печати, быстро печатать, гонки, автогонки, машины">
+<meta name="Description" content="Клавогонки - онлайновый клавиатурный тренажер-игра и автомобильные гонки. Самый увлекательный способ научиться быстро печатать. ">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="SHORTCUT ICON" href="http://klavogonki.ru/favicon.ico" type="image/x-icon">
+<link rel="icon" href="http://klavogonki.ru/favicon.png">
+		
+	
+<script src="1_files/prototype-1.js" type="text/javascript"></script>
+<script src="1_files/scriptaculous.js" type="text/javascript"></script><script type="text/javascript" src="1_files/builder.js"></script><script type="text/javascript" src="1_files/effects.js"></script><script type="text/javascript" src="1_files/dragdrop.js"></script><script type="text/javascript" src="1_files/controls.js"></script><script type="text/javascript" src="1_files/slider.js"></script><script type="text/javascript" src="1_files/sound.js"></script>
+<script src="1_files/swfobject-2.js" type="text/javascript"></script>
+<script src="1_files/b64.js" type="text/javascript"></script>
+<script src="1_files/md5.js" type="text/javascript"></script>
+<script src="1_files/sha1.js" type="text/javascript"></script>
+<script src="1_files/strophe.js" type="text/javascript"></script>
+<script src="1_files/resize-2.js" type="text/javascript"></script>
+<script type="text/javascript">
+var url_suffix = '';
+var url_params = {};
+var MSIE6 = false;
+var __remote_addr = '46.0.141.109';
+var __testmode = false;
+var __vk = false;
+var __user_prefs = {"notifies":{"mail":true,"comments_profile":true,"comments_voc":true,"comments_blog":true},"popup":{"mail":true,"invites":true,"competitions":true},"show_stats":{"speed_graph":"all","errors_graph":null,"errors_map":null},"no_colored_rangs":false,"metronome":false,"bonus_mode":1325736063};
+var __user__ = 242585;
+</script>
+<!--[if lte IE 6]>
+
+<script type="text/javascript">var MSIE6 = true;</script>
+
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="1_files/main-895.css">
+<script src="1_files/play-895.js" type="text/javascript"></script>
+<script src="1_files/main-895.js" type="text/javascript"></script>
+<script src="1_files/chat-895.js" type="text/javascript"></script>
+
+
+<!--[if lte IE 6]>
+
+<style>@import "/css/pngfix.css";</style>
+
+<![endif]-->
+
+<script src="1_files/soundmanager2-20100101.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+var __pro__ = false;
+var chat = null;
+function initPage()
+{
+	if(0 && getPrefCookie('hide_competition_alert')!='true')
+	{
+		$('gameloading').hide();
+		$('competition_btn_return').observe('click', function()
+		{
+			window.location = '/gamelist';
+		});
+		
+		$('competition_btn_accept').observe('click', function()
+		{
+			$('competition_alert').hide();
+			$('gameloading').show();
+			loadGame();
+		});
+		
+		$('competition_remember').observe('change', function(evt)
+		{
+			var el = evt.element();
+			if(el.checked && !confirm('Без этого предупреждения с вас автоматичеки будет сниматься плата за вход в соревнование без уведомления, в том числе при переходе по прямой ссылке. Вернуть предупреждение можно только очистив куки. Вы уверены?'))
+				el.checked = false;
+			setPrefCookie('hide_competition_alert', el.checked);			
+		});
+		
+		$('competition_cost').update(0);
+		
+		show_popup('competition_alert');
+	}
+	else
+		loadGame();
+	
+}
+
+function loadGame()
+{
+	params = {"typemode":"full","sound":false,"highlight":"symbol","keyboard":false,"error":true,"shadow":false,"meter":"average","font":"Verdana","textsize":"17.5","inputsize":"25","metronome":"45","carmove":"smooth","preview":true}; 
+	
+	
+	tlog("Game params:", params); 
+	
+	deleteCookie('game','/play/');
+	deleteCookie('player','/play/');
+	
+	__pro__=true;	
+	
+	if(params.typemode == undefined)
+		params.typemode = "full";
+	if(params.sound == undefined)
+		params.sound = true;
+	if(params.highlight == undefined || params.highlight == false || params.highlight == true)
+		params.highlight = "word";
+	if(params.keyboard == undefined)
+		params.keyboard = false;
+	if(params.error == undefined)
+		params.error = true;
+	if(params.shadow == undefined)
+		params.shadow = false;
+	if(params.meter == undefined)
+		params.meter = 'current';
+	if(params.font == undefined)
+		params.font = 'Tahoma';	
+	if(params.textsize == undefined)
+		params.textsize = 17;	
+	if(params.inputsize == undefined)
+		params.inputsize = 25;
+	if(params.metronome == undefined || params.metronome > 350 || !__pro__ || !__user_prefs || !__user_prefs.metronome)
+		params.metronome = 45;
+	if(params.carmove == undefined)
+		params.carmove = "smooth";
+	if(params.preview == undefined)
+		params.preview = true;
+	
+	
+	game = new Game(27867);
+	game.human=1;	
+	
+	
+	game.speedpanel_scale = 800;
+	
+		if($('chat-general'))
+	{
+		chat = new Chat({"user":{"id":242585,"login":"nosferatum","avatar":"http:\/\/img.klavogonki.ru\/avatars\/242585.gif","background":"#FF1C00"},"pass":"f12e4389cf4f02c6f1a9f9a2026bc133","game_id":"27867"});	
+		chat.connect();
+	}
+}
+
+soundManager.url = '/';
+soundManager.debugMode = false;		
+soundManager.useHighPerformance = true;
+soundManager.useFastPolling = true;
+soundManager.onload = function() {		 
+  soundManager.createSound('typo','/typo.mp3');		  
+};
+
+
+
+
+
+</script>
+
+
+
+
+<title>[Идет игра] Игра с друзьями - Клавогонки - онлайновый клавиатурный тренажер-игра</title>
+</head><body onload="">
+
+
+	<div class="userpanel logged pinned">
+		 	
+		<div class="user-block">
+			<table cellpadding="0" cellspacing="0">
+				<tbody><tr>
+					<td>
+						<table class="scores-table">
+							<tbody><tr>
+								<td>Очки:</td>
+								<td id="userpanel-scores-container"><span id="userpanel-scores">222557</span></td>								
+							</tr>
+							<tr>
+								<td>Бонусы:</td>
+								<td id="userpanel-bonuses">312</td>
+							</tr>
+							
+						</tbody></table>
+					</td>
+					<td rowspan="2" id="userpanel-level" title="Рейтинг: 3362 / 9100">
+						<div id="userpanel-level-container">
+							<span id="userpanel-level-value-shadow">21</span>
+							<span id="userpanel-level-value">21</span>
+							<div id="userpanel-level-progress" style="background: url(&quot;/img/userpanel-level/4.png&quot;) repeat scroll 0% 0% transparent;">
+								
+							</div>						</div>
+					</td>
+										<td>
+													Аккаунт: <a>Премиум</a><br>							
+														(осталось 110 дней)
+																		</td>
+										<td class="divider">&nbsp;</td>
+					<td>
+													<span class="name" style="padding-left: 25px; background: url(&quot;http://img.klavogonki.ru/avatars/242585.gif&quot;) no-repeat scroll left center transparent;">
+							<span class="title">Супермен</span>
+							<a href="http://klavogonki.ru/profile/242585">nosferatum</a>
+							</span>
+							
+							<div class="user-options-block">							
+											
+								<a class="profile" href="http://klavogonki.ru/profile/242585/">Профиль</a>
+								<a class="logout" href="http://klavogonki.ru/logout?redirect=%2Fplay%2F%3Fgmid%3D27867">Выйти</a>								
+							</div>
+											</td>
+				</tr>
+			</tbody></table>
+		</div>	
+		
+		
+		<div id="stats-block"><table cellpadding="0" cellspacing="0">
+	<tbody><tr>		
+		<td class="gametype">
+			<img id="gametype-loading" src="1_files/small_loading.gif" style="display: none;">
+			<select id="gametype-select" style="display: none;" size="10" onblur="changeGametypeBlur();" onchange="changeGametypeSelect();">
+									<option value="normal" class="gametype-normal">Обычный (13478)</option>
+									<option value="noerror" class="gametype-noerror">Безошибочный (2714)</option>
+									<option value="voc-192" class="gametype-voc">Частотный словарь (928)</option>
+									<option value="voc-5539" class="gametype-voc">Обычный in English (570)</option>
+									<option value="voc-30149" class="gametype-voc">Бремя страстей… (537)</option>
+									<option value="voc-13584" class="gametype-voc">Упражнение №6 (487)</option>
+									<option value="voc-23043" class="gametype-voc">Проект Россия (481)</option>
+									<option value="voc-1789" class="gametype-voc">Короткие тексты (438)</option>
+									<option value="voc-13571" class="gametype-voc">Упражнение №1 (392)</option>
+									<option value="voc-2980" class="gametype-voc">В секасе (367)</option>
+									<option value="voc-13572" class="gametype-voc">Упражнение №2 (346)</option>
+									<option value="voc-17499" class="gametype-voc">Упражнение №20 (344)</option>
+									<option value="voc-16073" class="gametype-voc">просто для меня (337)</option>
+									<option value="marathon" class="gametype-marathon">Марафон (317)</option>
+									<option value="voc-10163" class="gametype-voc">Кибертекст: Слова или дом (312)</option>
+									<option value="voc-13664" class="gametype-voc">Упражнение №13 (312)</option>
+									<option value="chars" class="gametype-chars">Буквы (309)</option>
+									<option value="voc-13574" class="gametype-voc">Упражнение №4 (307)</option>
+									<option value="voc-25856" class="gametype-voc">Соточка (216)</option>
+									<option value="voc-6018" class="gametype-voc">Мини-марафон, 800 знаков (188)</option>
+									<option value="voc-13573" class="gametype-voc">Упражнение №3 (166)</option>
+									<option value="voc-13585" class="gametype-voc">Упражнение №7 (153)</option>
+									<option value="voc-203" class="gametype-voc">5000 самых частых слов (152)</option>
+									<option value="voc-13583" class="gametype-voc">Упражнение №5 (148)</option>
+									<option value="voc-8835" class="gametype-voc">Мини-марафон in English (132)</option>
+									<option value="voc-13654" class="gametype-voc">Упражнение №8 (120)</option>
+									<option value="voc-9450" class="gametype-voc">Через одну (103)</option>
+									<option value="voc-6562" class="gametype-voc">Кибертекст (93)</option>
+									<option value="voc-927" class="gametype-voc">Самые сложные слова (93)</option>
+									<option value="voc-16759" class="gametype-voc">Упражнение №15 (92)</option>
+									<option value="voc-14878" class="gametype-voc">Short Texts in English (89)</option>
+									<option value="voc-13663" class="gametype-voc">Упражнение №12 (86)</option>
+									<option value="voc-17497" class="gametype-voc">Упражнение №18 (84)</option>
+									<option value="sprint" class="gametype-sprint">Спринт (84)</option>
+									<option value="voc-16762" class="gametype-voc">Упражнение №16 (81)</option>
+									<option value="voc-22852" class="gametype-voc">Быстрый частотный (76)</option>
+									<option value="voc-13589" class="gametype-voc">Забористый (74)</option>
+									<option value="voc-4144" class="gametype-voc">Русский Все при деле (68)</option>
+									<option value="voc-13661" class="gametype-voc">Упражнение №11 (67)</option>
+									<option value="abra" class="gametype-abra">Абракадабра (66)</option>
+									<option value="voc-6696" class="gametype-voc">Набор скольжением (61)</option>
+									<option value="voc-17495" class="gametype-voc">Упражнение №17 (61)</option>
+									<option value="voc-13659" class="gametype-voc">Упражнение №10 (57)</option>
+									<option value="voc-3714" class="gametype-voc">Мизинцы+ (51)</option>
+									<option value="voc-32014" class="gametype-voc">Упражнение №22 (50)</option>
+									<option value="voc-32013" class="gametype-voc">Упражнение №21 (48)</option>
+									<option value="voc-22584" class="gametype-voc">Другая химия (47)</option>
+									<option value="voc-1644" class="gametype-voc">900+ сложных сочетаний (46)</option>
+									<option value="voc-12000" class="gametype-voc">Чёрный юмор (43)</option>
+									<option value="voc-9338" class="gametype-voc">Трудные слова для Хруста (41)</option>
+									<option value="voc-853" class="gametype-voc">Быстрая правая рука (41)</option>
+									<option value="voc-10305" class="gametype-voc">Кибертекст: Очень просто (36)</option>
+									<option value="voc-226" class="gametype-voc">Тренируем указательные (36)</option>
+									<option value="voc-17498" class="gametype-voc">Упражнение №19 (33)</option>
+									<option value="voc-9063" class="gametype-voc">«Мастер и Маргарита» (33)</option>
+									<option value="voc-21078" class="gametype-voc">путаница (32)</option>
+									<option value="voc-22263" class="gametype-voc">Бомботексты (30)</option>
+									<option value="voc-21700" class="gametype-voc">Слова с ЗХЪ (24)</option>
+									<option value="voc-39352" class="gametype-voc">внезапно она поняла (24)</option>
+									<option value="voc-1" class="gametype-voc">Буквы "ва ол" (24)</option>
+									<option value="voc-4140" class="gametype-voc">Русский Сверхдлинные (23)</option>
+									<option value="voc-6042" class="gametype-voc">Химия (23)</option>
+									<option value="voc-16346" class="gametype-voc">Упражнение №14 (23)</option>
+									<option value="voc-6" class="gametype-voc">Буквы "чс бю" (23)</option>
+									<option value="voc-8310" class="gametype-voc">Кибертекст для тека :) (22)</option>
+									<option value="voc-4018" class="gametype-voc">Нереально легкий текст :) (22)</option>
+									<option value="voc-2704" class="gametype-voc">Быстрота (22)</option>
+									<option value="voc-1670" class="gametype-voc">(Да ну?) - "Ну да!" (22)</option>
+									<option value="voc-812" class="gametype-voc">Моя сильная левая рука (18)</option>
+									<option value="voc-1496" class="gametype-voc">бесячные слова :-))) (16)</option>
+									<option value="digits" class="gametype-digits">Цифры (16)</option>
+									<option value="voc-171" class="gametype-voc">если хочешь быстро (16)</option>
+									<option value="voc-961" class="gametype-voc">100 слов по 4-буквы (16)</option>
+									<option value="voc-13066" class="gametype-voc">Бегущая с волками (15)</option>
+									<option value="voc-7699" class="gametype-voc">Интересные факты (14)</option>
+									<option value="voc-11026" class="gametype-voc">Буферный начальный (14)</option>
+									<option value="voc-557" class="gametype-voc">1000 популярных глаголов (13)</option>
+									<option value="voc-16286" class="gametype-voc">The Titanf/option>
+									<option value="voc-3803" class="gametype-voc">Буквы гласные (13)</option>
+									<option value="voc-12573" class="gametype-voc">Скорость-1 (13)</option>
+									<option value="voc-11214" class="gametype-voc">Кибертекст от Эджика (13)</option>
+									<option value="voc-194" class="gametype-voc">Метаграммы (12)</option>
+									<option value="voc-1141" class="gametype-voc">Качели 5зн. (12)</option>
+									<option value="voc-13656" class="gametype-voc">Упражнение №9 (12)</option>
+									<option value="voc-12203" class="gametype-voc">Popular english words (12)</option>
+									<option value="voc-1687" class="gametype-voc">Слабо пройти БЕЗ ОШИБОК? (12)</option>
+									<option value="voc-554" class="gametype-voc">Ритм. Закройте глаза! (11)</option>
+									<option value="voc-931" class="gametype-voc">Частотный словарь-2 (11)</option>
+									<option value="voc-3717" class="gametype-voc">Заплетающиеся пальцы (11)</option>
+									<option value="voc-920" class="gametype-voc">тяжелые слова (10)</option>
+									<option value="voc-24734" class="gametype-voc">Высшая математика (10)</option>
+									<option value="voc-9254" class="gametype-voc">Старик и море (10)</option>
+									<option value="voc-9218" class="gametype-voc">Тренировочные тексты (10)</option>
+									<option value="voc-4455" class="gametype-voc">Тренировка моторики (10)</option>
+									<option value="voc-4260" class="gametype-voc">Русский Периферия (10)</option>
+									<option value="voc-20455" class="gametype-voc">Скороговорка "Лигурия" (10)</option>
+									<option value="voc-4242" class="gametype-voc">Русский Синхронизация (9)</option>
+									<option value="voc-4125" class="gametype-voc">Русский Частотный (9)</option>
+									<option value="voc-1160" class="gametype-voc">легкие тексты (8)</option>
+									<option value="voc-23886" class="gametype-voc">Хруст-18 без запятых (8)</option>
+									<option value="voc-2" class="gametype-voc">Буквы "фы дж" (8)</option>
+									<option value="voc-3" class="gametype-voc">Буквы "ми ть" (8)</option>
+									<option value="voc-1432" class="gametype-voc">Частотный английский (8)</option>
+									<option value="voc-7212" class="gametype-voc">буква х капризная (7)</option>
+									<option value="voc-3063" class="gametype-voc">5000 частых словоформ (7)</option>
+									<option value="voc-22763" class="gametype-voc">Айвенго (6)</option>
+									<option value="voc-23714" class="gametype-voc">Кибертекст от Буратино (6)</option>
+									<option value="voc-30147" class="gametype-voc">Метафизика труб (6)</option>
+									<option value="voc-1123" class="gametype-voc">Частотный ритмичный (6)</option>
+									<option value="voc-32015" class="gametype-voc">Упражнение №23 (6)</option>
+									<option value="voc-22007" class="gametype-voc">Срединный словарь (5)</option>
+									<option value="voc-9" class="gametype-voc">Программирование (5)</option>
+									<option value="referats" class="gametype-referats">Яндекс.Рефераты (5)</option>
+									<option value="voc-935" class="gametype-voc">Частотный словарь-3 (5)</option>
+									<option value="voc-4686" class="gametype-voc">Закройте глаза! Блиц (5)</option>
+									<option value="voc-348" class="gametype-voc">Скороговорки (4)</option>
+									<option value="voc-11134" class="gametype-voc">Для блоггеров =) (4)</option>
+									<option value="voc-9656" class="gametype-voc">Думай и богатей (4)</option>
+									<option value="voc-453" class="gametype-voc">Точки и запятые (4)</option>
+									<option value="voc-404" class="gametype-voc">Быстрые пальцы (4)</option>
+									<option value="voc-207" class="gametype-voc">крайние пальцы (4)</option>
+									<option value="voc-13088" class="gametype-voc">А.П. Чехов (повести) (4)</option>
+									<option value="voc-559" class="gametype-voc">1000 популярных сущ. (4)</option>
+									<option value="voc-22868" class="gametype-voc">Дети с небес (4)</option>
+									<option value="voc-15444" class="gametype-voc">Трансерфинг реальности (4)</option>
+									<option value="voc-939" class="gametype-voc">Частотный словарь-7 (4)</option>
+									<option value="voc-4229" class="gametype-voc">Русский Левая (4)</option>
+									<option value="voc-560" class="gametype-voc">1000 наречий (3)</option>
+									<option value="voc-22771" class="gametype-voc">Кысь (3)</option>
+									<option value="voc-20217" class="gametype-voc">для_разминки (3)</option>
+									<option value="voc-11371" class="gametype-voc">-сяч- (3)</option>
+									<option value="voc-21447" class="gametype-voc">Киберчастотный (3)</option>
+									<option value="voc-1673" class="gametype-voc">Закройте глаза! Релиз :) (3)</option>
+									<option value="voc-13386" class="gametype-voc">Раз, два, три (3)</option>
+									<option value="voc-23034" class="gametype-voc">Слова из 18 букв (3)</option>
+									<option value="voc-12726" class="gametype-voc">легкие обычки (3)</option>
+									<option value="voc-2050" class="gametype-voc">Тибетские уроки (3)</option>
+									<option value="voc-9718" class="gametype-voc">Таня Гроттер 1 (3)</option>
+									<option value="voc-8645" class="gametype-voc">"СОЛО" - упражнение №100 (3)</option>
+									<option value="voc-731" class="gametype-voc">How fast are you? (3)</option>
+									<option value="voc-9574" class="gametype-voc">Мужчины с Марса... (3)</option>
+									<option value="voc-16021" class="gametype-voc">Programming (3)</option>
+									<option value="voc-25804" class="gametype-voc">Betty bought some butter (3)</option>
+									<option value="voc-23389" class="gametype-voc">Москва - Петушки (2)</option>
+									<option value="voc-14162" class="gametype-voc">Преступление и наказание_ (2)</option>
+									<option value="voc-16001" class="gametype-voc">радость (2)</option>
+									<option value="voc-21357" class="gametype-voc">Loser-тексты (2)</option>
+									<option value="voc-21093" class="gametype-voc">Ананасная вода (2)</option>
+									<option value="voc-23058" class="gametype-voc">Язык жестов (2)</option>
+									<option value="voc-23161" class="gametype-voc">Хакеры Сновидений (2)</option>
+									<option value="voc-23340" class="gametype-voc">Lesson 6 – ESL BM (2)</option>
+									<option value="voc-17266" class="gametype-voc">Частотный расширенный (2)</option>
+									<option value="voc-17321" class="gametype-voc">Мега-словарь (2)</option>
+									<option value="voc-40277" class="gametype-voc">Новогодний словарь (2)</option>
+									<option value="voc-19436" class="gametype-voc">"Кибертекст". (2)</option>
+									<option value="voc-9864" class="gametype-voc">Бернард Вербер "Муравьи" (2)</option>
+									<option value="voc-1920" class="gametype-voc">короткий марафон (2)</option>
+									<option value="voc-9153" class="gametype-voc">Побег из Шоушенка (2)</option>
+									<option value="voc-3064" class="gametype-voc">50% русского текста (2)</option>
+									<option value="voc-1882" class="gametype-voc">Ричард Бах. Цитаты (2)</option>
+									<option value="voc-7619" class="gametype-voc">слово фыва (2)</option>
+									<option value="voc-4467" class="gametype-voc">Быстрота - 2 (2)</option>
+									<option value="voc-4790" class="gametype-voc">простые тексты (2)</option>
+									<option value="voc-937" class="gametype-voc">Частотный словарь-5 (2)</option>
+									<option value="voc-5533" class="gametype-voc">Кибертекст(Х10) (2)</option>
+									<option value="voc-465" class="gametype-voc">Java (2)</option>
+									<option value="voc-196" class="gametype-voc">Абракадабра для мизинцев (2)</option>
+									<option value="voc-12345" class="gametype-voc">Первое правило волшебника (2)</option>
+									<option value="voc-938" class="gametype-voc">Частотный словарь-6 (2)</option>
+									<option value="voc-7" class="gametype-voc">Буквы "я эхъ" (2)</option>
+									<option value="voc-3367" class="gametype-voc">Команды Unix - GNU/Linux (2)</option>
+									<option value="voc-173" class="gametype-voc">ФЫВА ОЛДЖ (2)</option>
+									<option value="voc-23076" class="gametype-voc">Дьюи. Кот из библиотеки. (1)</option>
+									<option value="voc-1460" class="gametype-voc">Цой Виктор (1)</option>
+									<option value="voc-1709" class="gametype-voc">Правый край (част.) (1)</option>
+									<option value="voc-23138" class="gametype-voc">02. Волонтеры вечности (1)</option>
+									<option value="voc-1454" class="gametype-voc">Ежедневочка урикора (1)</option>
+									<option value="voc-3515" class="gametype-voc">Весёлый мат в рифму;) (1)</option>
+									<option value="voc-3201" class="gametype-voc">Слова на "йфяцыч" (1)</option>
+									<option value="voc-1754" class="gametype-voc">Душевный покой (1)</option>
+									<option value="voc-687" class="gametype-voc">Frequency list of nouns (1)</option>
+									<option value="voc-2232" class="gametype-voc">С юморком (1)</option>
+									<option value="voc-3441" class="gametype-voc">Русские буквы (1)</option>
+									<option value="voc-3388" class="gametype-voc">Пиковый speed на цифрах)) (1)</option>
+									<option value="voc-22659" class="gametype-voc">кибер слова (1)</option>
+									<option value="voc-3122" class="gametype-voc">Числа от 1 до 100 (1)</option>
+									<option value="voc-1406" class="gametype-voc">массив "йзхъжэячабюды" (1)</option>
+									<option value="voc-1231" class="gametype-voc">linux (1)</option>
+									<option value="voc-23398" class="gametype-voc">АРУ №3 (1)</option>
+									<option value="voc-929" class="gametype-voc">Левая (1)</option>
+									<option value="voc-26272" class="gametype-voc">Методика печати - 1 (1)</option>
+									<option value="voc-27179" class="gametype-voc">Путь к свободе (1)</option>
+									<option value="voc-677" class="gametype-voc">Длинные слова от 22 до 11 (1)</option>
+									<option value="voc-416" class="gametype-voc">Для безымянных и средних (1)</option>
+									<option value="voc-273" class="gametype-voc">Абракадабра - частотная 6 (1)</option>
+									<option value="voc-224" class="gametype-voc">Привет как дела (1)</option>
+									<option value="voc-33860" class="gametype-voc">Если хочешь быть здоров! (1)</option>
+									<option value="voc-936" class="gametype-voc">Частотный словарь-4 (1)</option>
+									<option value="voc-25357" class="gametype-voc">Качели (right space) (1)</option>
+									<option value="voc-25147" class="gametype-voc">English word "come" (1)</option>
+									<option value="voc-23412" class="gametype-voc">Большая буква для (1)</option>
+									<option value="voc-972" class="gametype-voc">156 слов с дефисом (1)</option>
+									<option value="voc-23767" class="gametype-voc">Программирование (полный) (1)</option>
+									<option value="voc-16912" class="gametype-voc">☛ 4zenz (м) (1)</option>
+									<option value="voc-24392" class="gametype-voc">частотный - правый пробел (1)</option>
+									<option value="voc-24720" class="gametype-voc">лесли как проснуться в го (1)</option>
+									<option value="voc-24837" class="gametype-voc">Хруст (1)</option>
+									<option value="voc-25026" class="gametype-voc">Автозамены (1)</option>
+									<option value="voc-53" class="gametype-voc">Английский. RSS News.com (1)</option>
+									<option value="voc-13294" class="gametype-voc">Запятые (част.) (1)</option>
+									<option value="voc-8935" class="gametype-voc">Страна Чудес Без Тормозов (1)</option>
+									<option value="voc-14573" class="gametype-voc">Искусство сновидения (1)</option>
+									<option value="voc-8620" class="gametype-voc">Орфографический словарь (1)</option>
+									<option value="voc-8305" class="gametype-voc">"ячсм" - мясной ячмень (1)</option>
+									<option value="voc-7548" class="gametype-voc">| Вопросы | (1)</option>
+									<option value="voc-7320" class="gametype-voc">Частотные связки справа (1)</option>
+									<option value="voc-16116" class="gametype-voc">21секретУспехаМиллионеров (1)</option>
+									<option value="voc-16123" class="gametype-voc">Тексты с высоким брутто* (1)</option>
+									<option value="voc-16188" class="gametype-voc">Half-Life 2 (1)</option>
+									<option value="voc-9016" class="gametype-voc">Одиночество в сети (1)</option>
+									<option value="voc-9525" class="gametype-voc">Русский Новости Украины (1)</option>
+									<option value="voc-9587" class="gametype-voc">Хоббит или туда и обратно (1)</option>
+									<option value="voc-13368" class="gametype-voc">Витки (1)</option>
+									<option value="voc-11327" class="gametype-voc">ОтвеТСТВенность (1)</option>
+									<option value="voc-10691" class="gametype-voc">Просто словарь (1)</option>
+									<option value="voc-10228" class="gametype-voc">Рыцари сорока островов (1)</option>
+									<option value="voc-9709" class="gametype-voc">Mетро 2033 (1)</option>
+									<option value="voc-9699" class="gametype-voc">Любовь живет три года (1)</option>
+									<option value="voc-9646" class="gametype-voc">Dorian Gray (1)</option>
+									<option value="voc-9643" class="gametype-voc">Лолита. Набоков (1)</option>
+									<option value="voc-9614" class="gametype-voc">Человек без лица (1)</option>
+									<option value="voc-6582" class="gametype-voc">`Кибертекст (1)</option>
+									<option value="voc-16327" class="gametype-voc">Сексуальные Игры (1)</option>
+									<option value="voc-18034" class="gametype-voc">Путешествие к центруЗемли (1)</option>
+									<option value="voc-19129" class="gametype-voc">Слова из тренажёров (1)</option>
+									<option value="voc-4230" class="gametype-voc">Русский Правая (1)</option>
+									<option value="voc-19679" class="gametype-voc">Winnie-The-Pooh (1)</option>
+									<option value="voc-19802" class="gametype-voc">Прорва (1)</option>
+									<option value="voc-4204" class="gametype-voc">Позитивный словарь (1)</option>
+									<option value="voc-20452" class="gametype-voc">х5 что сейчас было ))) (1)</option>
+									<option value="voc-3998" class="gametype-voc">Список Сводеша (1)</option>
+									<option value="voc-3951" class="gametype-voc">КИБЕРТЕКСТЫ (1)</option>
+									<option value="voc-17588" class="gametype-voc">Для Алмазной сутры (1)</option>
+									<option value="voc-4254" class="gametype-voc">Русский На своих местах (1)</option>
+									<option value="voc-5060" class="gametype-voc">Слова-разгоны (1)</option>
+									<option value="voc-6440" class="gametype-voc">Простенькие Слова (1)</option>
+									<option value="voc-16510" class="gametype-voc">Психология Лжи (1)</option>
+									<option value="voc-16564" class="gametype-voc">Алхимик (1)</option>
+									<option value="voc-6349" class="gametype-voc">Режим буквы х3 (1)</option>
+									<option value="voc-6344" class="gametype-voc">ПРИВЕТ ПРИВЕТ ПРИВЕТ (1)</option>
+									<option value="voc-16768" class="gametype-voc">18+ (1)</option>
+									<option value="voc-5936" class="gametype-voc">Мои 500+ знаков в минуту (1)</option>
+									<option value="voc-17014" class="gametype-voc">Опасайтесь лысых и усатых (1)</option>
+									<option value="voc-5893" class="gametype-voc">Простые и короткие тексты (1)</option>
+									<option value="voc-3833" class="gametype-voc">700 зн\мин (1)</option>
+							</select>
+			<a id="gametype-link" class="gametype-normal" onclick="changeGametypeClick();">Обычный</a> 
+			<span id="gametype-mdash" class="gametype-normal">—</span>
+			
+		</td>
+		
+				
+		<td class="label">Лучшая скорость:</td>
+		<td class="value">605 зн/мин</td>
+		
+		<td rowspan="2" class="divider">&nbsp;</td>
+		
+		<td class="label">Ошибки:</td>
+		<td class="value">2,80%</td>
+		
+	</tr>
+	<tr>
+		<td class="rating">
+			Позиция: 
+			<a href="http://klavogonki.ru/top/day/normal/2/#pos-52">52</a> 
+			| 
+			<a href="http://klavogonki.ru/top/week/normal/5/#pos-129">129</a>		</td>
+		<td class="label">Средняя скорость:</td>
+		<td class="value">428 зн/мин</td>
+		<td class="label">Пробег:</td>
+		<td class="value haul">13478 текстов</td>
+	</tr>
+</tbody></table></div>
+		
+					<a id="pin" class="active" onclick="changePin();" title="Зафиксировать"></a>			
+			
+				
+					
+	</div>
+	
+	<div id="userpanel-dummy"></div>		
+
+
+
+
+
+
+<div id="head" class="minwidth ">
+<div class="minwidth_holyhack">
+<div class="minwidth_container">
+
+
+<div id="logo">
+	<a href="http://klavogonki.ru/"><img src="1_files/logo-4.gif" alt="Клавогонки.Ру" title="Клавогонки.Ру"></a>
+</div>
+
+<div class="right">
+
+	<div class="login-block">
+		&nbsp;
+			</div>
+
+	<div class="menu">
+		<a href="http://klavogonki.ru/forum/">Форум</a>		<a href="http://klavogonki.ru/wiki/">Вики</a>
+		<a href="http://klavogonki.ru/about/">Об игре</a>
+		<a href="http://klavogonki.ru/vocs/">Словари</a>
+		<a href="http://klavogonki.ru/top/">Рекорды</a>
+		<a href="http://klavogonki.ru/gamelist/" class="active">Игра</a>		
+	</div>
+</div>
+
+<div style="clear: both;"></div>
+
+
+</div>
+</div>
+</div>
+
+<div class="bar"></div>
+
+
+
+<div class="popup-box" id="login-form" style="display: none;">
+	<table>
+		<tbody><tr>
+			<td class="tl"></td>
+			<td class="t"></td>
+			<td class="tr"></td>
+		</tr>
+		<tr>
+			<td class="l"></td>
+			<td class="c">
+				<form method="POST" action="/login">
+					<input name="redirect" value="/play/?gmid=27867" type="hidden">
+					<dl id="r_username">
+						<dt><label for="username">Логин</label></dt>
+						<dd><input value="nosferatum" name="login" id="username"></dd>
+					</dl>
+					
+					<dl id="r_password">
+						<dt><label for="password">Пароль</label></dt>
+						<dd class="field"><input name="pass" id="password" type="password"></dd>
+					</dl>
+					
+					<dl id="r_login_form_submit">
+						<dt></dt>
+						<dd><input name="submit_login" value="Войти" id="login_form_submit" type="submit"></dd>
+					</dl>
+				
+					<dl>
+						<dt></dt>
+	
+						<dd>
+							<ul class="navigation">
+								<li><a href="http://klavogonki.ru/register/">Регистрация</a></li>
+								<li><a href="http://klavogonki.ru/remind/">Я ничего не помню</a></li>
+							</ul>
+						</dd>
+					</dl>
+	
+				</form>
+			</td>
+			<td class="r"></td>
+		</tr>
+		<tr>
+			<td class="bl"></td>
+			<td class="b"></td>
+			<td class="br"></td>
+		</tr>
+	</tbody></table>
+	<div class="close"><ins></ins></div>
+</div>
+
+<div id="content" class="minwidth">
+<div class="minwidth_holyhack">
+<div class="minwidth_container">
+     
+
+<div class="play-wrapper">
+<table class="play-overall-table">
+<tbody><tr>
+<td>
+
+<div id="play-overall">
+
+
+
+<table cellpadding="0" cellspacing="0">
+<tbody><tr>
+<td align="center">
+<div style="display: none;" id="gameloading">
+<div class="r tl"><div class="tr"><div class="bl"><div class="br"><div class="rc"><div class="gameloading-content">
+Загрузка...
+</div>
+</div></div></div></div></div></div>
+
+<div id="sortable"><div class="gameblock" id="status-block" style="position: relative;">
+<div class="handle"><img src="1_files/blank.gif" alt=""></div>
+<div id="speedpanel">
+	<canvas width="262" height="91" id="speedpanel-canvas"></canvas>
+	<div id="speed-label">379</div>
+	<div id="errors-label">13</div>
+	<img id="speedpanel-back" src="1_files/panel800.gif" style="position: absolute; left: -1000px;">
+	<img id="speedpanel-top" src="1_files/speedpanel_top.png" style="position: absolute; left: -1000px;">
+	<img id="speedpanel-arrow" src="1_files/speedpanel_arrow.png" style="position: absolute; left: -1000px;">
+
+	<div class="go" id="status">
+		<table>
+		<tbody><tr><td id="gamedesc"><span class="gametype-normal">Обычный</span>, игра c друзьями, таймаут 10 сек</td></tr>
+		<tr><td id="status-inner">
+			<div id="waiting" style="display: none;">
+			Старт через <span class="bitmore" id="waiting_timeout">00:00</span>
+			</div>
+			<div id="racing" style="">
+			<span style="display: none;" class="bitmore" id="racing_time">00:43</span>
+			</div>
+			<div id="paused" style="display: none;">
+			Ожидание других игроков...
+			<a href="javascript:game.hostStart();" id="host_start" style="">Начать игру</a>
+			</div>
+			<div id="finished" style="">
+			Игра окончена
+			</div>
+		</td></tr>
+		</tbody></table>
+	</div>
+</div>
+</div><div class="gameblock" id="main-block" style="position: relative; z-index: 0;">
+<div id="typeblock">
+<div class="r tl"><div class="tr"><div class="bl"><div class="br"><div class="rc"><div class="handle"><img src="1_files/blank.gif"></div>
+
+<div style="display: none;" id="typeplayblock">
+
+<div style="font-family: Verdana; font-size: 17.5px;" id="fontsize_cont">
+	<div class="full" id="typetext" style="color: black;"><span class=""><span id="beforefocus">Время
+ шлo, никакoгo люка не oбразoвывалocь. Дoнику хoтелocь уйти, нo ухoдить 
+тoже былo cтрашнo, пoтoму чтo, пoка ты непoдвижен, тебя мoгут не 
+заметить, а начнешь двигатьcя – cтанешь виден. Этo был древний закoн 
+леcа, и Дoник пoдчинялcя ему, хoтя и не был леcным жителем</span><span id="typefocus" class="">.</span><span id="afterfocus">.</span></span></div>
+	
+	<div style="display: none;" id="hiddentext">
+	Текст скрыт до начала игры
+	</div>
+</div>
+
+<div style="position: relative;">
+	<div id="fixtypo" style="display: none;">Исправьте опечатку!</div>
+	<input style="font-family: Verdana; font-size: 25px; background: none repeat scroll 0% 0% white;" tabindex="1" class="" name="sometext" id="inputtext" onkeyup="change(this);" type="text">
+	</div>
+</div>
+
+<div style="display: none;" id="keyboard_cont">
+	<div style="display: none;" id="keyboard">
+		<div id="back_keyboard">
+			<div id="fore_keyboard" style="">
+				<div id="shift_keyboard" style="display: none;">
+				</div>
+			</div>
+		</div>
+	</div>
+	<a id="param_keyboard">Показать экранную клавиатуру</a>
+</div>
+
+
+<div id="bookinfo" style="">		<table id="book" class="imobilco">		<tbody><tr>		<th>			<div class="imobilco-container">			<a target="_blank" href="http://www.imobilco.ru/books/-/233223/?from-partner=klavogonki">			<div class="imobilco-book">			<span class="imobilco-cover"><span class="co itl"></span><span class="co itr"></span><span class="co ibl"></span><span class="co ibr"></span></span>			<img src="1_files/233223.jpg">			</div>			</a>			</div>		</th>		<td>			<div>Вы набирали цитату из книги:</div>			<div class="author">Кир Булычев</div>			<div class="name"><a target="_blank" href="http://www.imobilco.ru/books/-/233223/?from-partner=klavogonki">Инопланетяне</a></div>			<div class="imobilco-link"><a target="_blank" href="http://www.imobilco.ru/books/-/233223/?from-partner=klavogonki">Скачать книгу</a><a class="marathon_this" href="http://klavogonki.ru/play/27867.marathon-this">Марафон</a></div>		</td>		</tr></tbody></table><div class="bar"></div><div id="again"><a title="Горячая клавиша: Ctrl →" href="javascript:void(0);" onclick="if(chat) chat.leaveRoom('game27867'); window.location='/play/27867.replay';">Играть еще раз</a><span class="hotkey alone">Ctrl →</span><br><span class="bitless">(Другие игроки будут приглашены автоматически)</span></div></div>
+
+<div id="replay" style="display: none;"></div>
+
+</div></div></div></div></div></div>
+
+<div id="errors_text" style="display: none;">
+<p>В<s class="error">рм</s><span class="error">р</span>емя  шло,  никакого  лю<s class="error">бк</s><span class="error">к</span>а
+  не  образовывалось.  Донику  хотелось  уйти,  но  уходить  тоже  было 
+ страшно,  потому  что,  пока  ты  неподвижен,  тебя  могут  не  заметит<s class="error">Ь  </s><span class="error">ь</span>,  а  нач<s class="error">ш</s><span class="error">н</span>ешь  двигаться  –  стане<s class="error">ьш в</s><span class="error">ш</span>ь  виден.  Это  был  древний  закон  леса,  и  Доник  под<s class="error">ячин</s><span class="error">ч</span>ин<s class="error">я</s><span class="error">я</span>л<s class="error">с </s><span class="error">с</span>я  ему,  х<s class="error">т</s><span class="error">о</span>тя  и  не  был  лес<s class="error">т</s><span class="error">н</span>ым  жит<s class="error">ее</s><span class="error">е</span>л<s class="error">мем.</s><span class="error">е</span>м.</p>
+</div>
+
+<div id="report">
+<div id="report_ok" style="display: none;">Спасибо. Мы обязательно проверим этот текст.</div>
+<div id="report_reason" style="display: none;">
+Пожалуйста, опишите проблему в тексте:<br>
+<textarea id="report_reason_input" rows="3" cols="40" onkeyup="$('report_button').disabled = this.value.length==0;"></textarea><br>
+<input id="report_button" value="Отправить" onclick="game.report();" disabled="disabled" type="button">
+</div>
+<div id="report_link">
+<a class="bitmore" href="javascript:void(0);" onclick="show_popup('howtoplay');">Как играть?</a>
+<a id="report_link_a" href="javascript:game.report();">Пожаловаться на текст</a>
+</div>
+</div>
+
+<div id="errorwork" style="">
+<a href="javascript:game.doErrorWork()">Работа над ошибками</a>
+</div>
+
+<div id="errors_tab" style=""><a>Посмотреть ошибки</a></div>
+<div style="clear: left; height: 1px;"></div>
+</div><div class="gameblock" id="players-block" style="position: relative;">
+<div class="handle"><img src="1_files/blank.gif"></div>
+
+	<div class="people">&nbsp;
+		<img style="position: absolute; right: 41px; bottom: -11px; z-index: 11;" src="1_files/t1.png">
+		<img style="position: absolute; right: 59px; bottom: 9px; z-index: -9;" src="1_files/t2.png">
+		<img style="position: absolute; right: 86px; bottom: 8px; z-index: -8;" src="1_files/t4.png">
+		<img style="position: absolute; right: 99px; bottom: -2px; z-index: 2;" src="1_files/t5.png">
+		<img style="position: absolute; right: 56px; bottom: 8px; z-index: -8;" src="1_files/t6.png">
+		<img style="position: absolute; right: 4px; bottom: 3px; z-index: -3;" src="1_files/t9.png">
+		<img id="hidden_alien" style="position: absolute; right: 126px; bottom: -17px; z-index: 17;" src="1_files/t10.png">	
+	</div>
+
+	<div id="players">
+		<div class="player you" id="player0">
+			<div class="rating" id="rating0" style="">
+				<div>
+					<ins id="place0" class="place place2">2 место</ins>
+					<ins id="rating_gained0"></ins>
+				</div>
+				<div class="delresult"><a href="javascript:game.mop2();" title="Отменить результат (только для Премиум)"><img
+					src="1_files/delete-16.gif"></a></div>
+				<div id="newrecord0" class="newrecord" style="display: none;">Рекорд!</div>
+				<div class="stats" id="stats0">
+					<div><span class="bitmore"><span class="bitmore">00:42</span></span>.7</div>
+					<div><span class="bitmore"><span class="bitmore">379</span></span> <span id="znmin0">зн/мин</span></div>
+					<div><span class="bitmore"><span class="bitmore">13</span></span> ошибок (<span class="bitmore"><span
+						class="bitmore">4,81</span></span>%)
+					</div>
+				</div>
+			</div>
+			<div id="rating_loading" style="display: none;">Результат засчитан. Подождите...</div>
+			<table style="left: 480px; top: 0px;" class="car" id="car0">
+				<tbody>
+					<tr>
+						<td class="name">
+							<div class="name_content">
+								<table>
+									<tbody>
+										<tr>
+											<th><img class=" rhcewegenzgkzyjbddar rhcewegenzgkzyjbddar rhcewegenzgkzyjbddar"
+															 src="1_files/242585.gif"></th>
+											<td>
+												<div class="nick_content"><a href="http://klavogonki.ru/profile/242585/" class="rang7 profile"
+																										 onmousemove="showProfilePopup(242585);"
+																										 onmouseover="showProfilePopup(242585);"
+																										 onmouseout="hideProfilePopup(242585);">nosferatum</a></div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</td>
+						<td>
+							<div style="position: relative;">
+								<div class="imgcont" id="imgcont0"
+										 style="background: url(&quot;http://img.klavogonki.ru/aero/242585-23.gif?1322685154&quot;) repeat scroll 0% 0% white;">
+									<div class="img car23 car-base_" style="background-color: transparent; color: rgb(255, 28, 0);">
+										<div class="img car23 car-tuning car-tuning1_">
+											<div class="img car23 car-tuning car-tuning2_">
+												<div class="img car23 car-tuning car-tuning3_"></div>
+											</div>
+										</div>
+									</div>
+									<div title="Позиция в недельной таблице" class="car_rating"
+											 style="color: rgb(255, 28, 0); padding-right: 14px;"><span class="bitless2">№</span>129
+									</div>
+									<i class="award award5" border="0" title="Золотой шлем за 10000 текстов пробега"></i></div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="divider"><img src="1_files/blank.gif"></div>
+		</div>
+		<div class="player other" id="player1">
+			<div class="rating" id="rating1" style="">
+				<div>
+					<ins id="place1" class="place place1">1 место</ins>
+					<ins id="rating_gained1"></ins>
+				</div>
+				<div id="newrecord1" class="newrecord" style="display: none;">Рекорд!</div>
+				<div class="stats" id="stats1">
+					<div><span class="bitmore"><span class="bitmore">00:33</span></span>.4</div>
+					<div><span class="bitmore"><span class="bitmore">484</span></span> <span id="znmin1">зн/мин</span></div>
+					<div><span class="bitmore"><span class="bitmore">2</span></span> ошибки (<span class="bitmore"><span
+						class="bitmore">0,74</span></span>%)
+					</div>
+				</div>
+			</div>
+			<table style="left: 480px; top: 0px;" class="car" id="car1">
+				<tbody>
+					<tr>
+						<td class="name">
+							<div class="name_content">
+								<table>
+									<tbody>
+										<tr>
+											<th><img class=" rhcewegenzgkzyjbddar rhcewegenzgkzyjbddar rhcewegenzgkzyjbddar"
+															 src="1_files/104719.gif"></th>
+											<td>
+												<div class="nick_content"><a href="http://klavogonki.ru/profile/104719/" class="rang6 profile"
+																										 onmousemove="showProfilePopup(104719);"
+																										 onmouseover="showProfilePopup(104719);"
+																										 onmouseout="hideProfilePopup(104719);">Divin1ty</a></div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</td>
+						<td>
+							<div style="position: relative;">
+								<div class="imgcont" id="imgcont1" style="background: none repeat scroll 0% 0% rgb(31, 12, 79);">
+									<div class="img car14 car-base_" style="background-color: transparent; color: rgb(31, 12, 79);">
+										<div class="img car14 car-tuning car-tuning1_">
+											<div class="img car14 car-tuning car-tuning2_">
+												<div class="img car14 car-tuning car-tuning3_"></div>
+											</div>
+										</div>
+									</div>
+									<div title="Позиция в недельной таблице" class="car_rating"
+											 style="color: rgb(31, 12, 79); padding-right: 14px;"><span class="bitless2">№</span>137
+									</div>
+									<i class="award award4" border="0" title="Корона за 5000 текстов пробега"></i></div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="divider"><img src="1_files/blank.gif"></div>
+		</div>
+	</div>
+
+	<div class="people">&nbsp;
+		<img style="position: absolute; right: 91px; bottom: 20px; z-index: -20;" src="1_files/b1.png">
+		<img style="position: absolute; right: 58px; bottom: 9px; z-index: -9;" src="1_files/b2.png">
+		<img style="position: absolute; right: 17px; bottom: 29px; z-index: -29;" src="1_files/b3.png">
+		<img style="position: absolute; right: 11px; bottom: 21px; z-index: -21;" src="1_files/b4.png">
+		</div>
+
+</div><div class="gameblock" id="chat-block" style="position: relative;">
+		<div id="chat-inline-placeholder" style="display: none;">
+		<div class="handle"><img src="1_files/blank.gif"></div>
+			</div>
+	</div></div>
+
+
+
+</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</td>
+
+<td>
+
+<div id="play-right">
+
+
+	
+	
+		
+				<div id="params" style="">
+			<div class="r tl"><div class="tr"><div class="bl"><div class="br"><div class="rc">			<h4>Настройки</h4>
+			
+			Режим — <a id="param_typemode" href="javascript:void(0);">весь текст</a><br>
+Подсветка — <a id="param_highlight" href="javascript:void(0);">символ</a><br>
+Спидометр — <a class="n" id="param_meter" href="javascript:void(0);">средняя скорость</a><br>
+Перемещение машин — <a id="param_carmove" href="javascript:void(0);">плавное</a><br>
+			
+	<input disabled="disabled" id="param_shadow" type="checkbox"><label for="param_shadow">Затемнение во время игры</label><br>
+<input id="param_sound" type="checkbox"><label for="param_sound">Звук</label><br>
+<input checked="checked" id="param_error" type="checkbox"><label for="param_error">Предупреждение об опечатке</label><br>
+<input checked="checked" id="param_preview" type="checkbox"><label for="param_preview">Показывать текст заранее</label><br>
+		
+<table>
+	<tbody><tr>
+		<td>Шрифт:</td>
+		<td colspan="2">
+			<select id="param_font">
+				<option value="Arial">Arial</option>				
+				<option value="Courier_New">Courier New</option>
+				<option value="Garamond">Garamond</option>
+				<option value="Georgia">Georgia</option>
+				<option value="Lucida_Console">Lucida Console</option>
+				<option value="Lucida_Sans_Unicode">Lucida Sans</option>
+				<option value="Palatino_Linotype">Palatino Linotype</option>
+				<option value="Tahoma">Tahoma</option>
+				<option value="Times_New_Roman">Times New Roman</option>
+				<option value="Trebuchet_MS">Trebuchet MS</option>
+				<option selected="selected" value="Verdana">Verdana</option>				
+			</select>	
+		</td>
+	</tr>
+	<tr>
+		<td>Размер&nbsp;текста:</td>
+		<td><div id="param_textsize" class="slider"><div style="left: 9px;" class="handle selected"></div></div></td>
+		<td id="label_textsize">17.5</td>
+	</tr>
+	<tr>
+		<td>Размер&nbsp;поля:</td>
+		<td><div id="param_inputsize" class="slider"><div style="left: 23px;" class="handle selected"></div></div></td>
+		<td id="label_inputsize">25</td>
+	</tr>
+	<tr>
+		<td>Метроном:</td>
+		<td><div id="param_metronome" class="slider off"><div class="handle"></div></div></td>
+		<td id="label_metronome">Выкл</td>
+	</tr>
+</tbody></table>			
+			</div></div></div></div></div>		</div>
+	
+	<div id="invite" style="">
+	<div class="r tl"><div class="tr"><div class="bl"><div class="br"><div class="rc">		<h4>Пригласить</h4>   
+		<p>Передайте эту ссылку друзьям, которых хотите пригласить в игру:<br>
+			<input id="invite-link" readonly="readonly" value="http://klavogonki.ru/play/?gmid=27867" onclick="this.select();" type="text"><br>
+		</p>
+				<strong>Сейчас на сайте:</strong>
+		<div id="friends-list">
+			<table>
+							<tbody><tr>
+					<td align="center" width="20">						
+													<input class="invite-chk" id="invite-chk-97322" type="checkbox">
+											</td>
+					<td><a target="_blank" href="http://klavogonki.ru/profile/97322/" style="padding-left: 20px; background: url(&quot;http://img.klavogonki.ru/avatars/97322.gif&quot;) no-repeat scroll 0% 0% transparent;">nebovluje</a></td>
+					<td align="right">
+						<img id="invite-img-ok-97322" src="1_files/ok_002.gif" style="display: none;">
+						<img id="invite-img-loading-97322" src="1_files/small_loading.gif" style="display: none;">
+					</td>
+				</tr>
+							<tr>
+					<td align="center" width="20">						
+													<input class="invite-chk" id="invite-chk-101646" type="checkbox">
+											</td>
+					<td><a target="_blank" href="http://klavogonki.ru/profile/101646/" style="padding-left: 20px; background: url(&quot;http://img.klavogonki.ru/avatars/101646.gif&quot;) no-repeat scroll 0% 0% transparent;">Аромат</a></td>
+					<td align="right">
+						<img id="invite-img-ok-101646" src="1_files/ok_002.gif" style="display: none;">
+						<img id="invite-img-loading-101646" src="1_files/small_loading.gif" style="display: none;">
+					</td>
+				</tr>
+							<tr>
+					<td align="center" width="20">						
+													<input class="invite-chk" id="invite-chk-101783" type="checkbox">
+											</td>
+					<td><a target="_blank" href="http://klavogonki.ru/profile/101783/" style="padding-left: 20px; background: url(&quot;http://img.klavogonki.ru/avatars/101783.gif&quot;) no-repeat scroll 0% 0% transparent;">Demien89</a></td>
+					<td align="right">
+						<img id="invite-img-ok-101783" src="1_files/ok_002.gif" style="display: none;">
+						<img id="invite-img-loading-101783" src="1_files/small_loading.gif" style="display: none;">
+					</td>
+				</tr>
+							<tr>
+					<td align="center" width="20">						
+													<input class="invite-chk" id="invite-chk-103076" type="checkbox">
+											</td>
+					<td><a target="_blank" href="http://klavogonki.ru/profile/103076/" style="padding-left: 20px; background: url(&quot;http://img.klavogonki.ru/avatars/103076.gif&quot;) no-repeat scroll 0% 0% transparent;">soft_gust</a></td>
+					<td align="right">
+						<img id="invite-img-ok-103076" src="1_files/ok_002.gif" style="display: none;">
+						<img id="invite-img-loading-103076" src="1_files/small_loading.gif" style="display: none;">
+					</td>
+				</tr>
+							<tr>
+					<td align="center" width="20">						
+													<input class="invite-chk" id="invite-chk-104292" type="checkbox">
+											</td>
+					<td><a target="_blank" href="http://klavogonki.ru/profile/104292/" style="padding-left: 20px; background: url(&quot;http://img.klavogonki.ru/avatars/104292.gif&quot;) no-repeat scroll 0% 0% transparent;">Pcholka</a></td>
+					<td align="right">
+						<img id="invite-img-ok-104292" src="1_files/ok_002.gif" style="display: none;">
+						<img id="invite-img-loading-104292" src="1_files/small_loading.gif" style="display: none;">
+					</td>
+				</tr>
+							<tr>
+					<td align="center" width="20">						
+													<input class="invite-chk" id="invite-chk-104719" type="checkbox">
+											</td>
+					<td><a target="_blank" href="http://klavogonki.ru/profile/104719/" style="padding-left: 20px; background: url(&quot;http://img.klavogonki.ru/avatars/104719.gif&quot;) no-repeat scroll 0% 0% transparent;">Divin1ty</a></td>
+					<td align="right">
+						<img id="invite-img-ok-104719" src="1_files/ok_002.gif" style="display: none;">
+						<img id="invite-img-loading-104719" src="1_files/small_loading.gif" style="display: none;">
+					</td>
+				</tr>
+							<tr>
+					<td align="center" width="20">						
+													<input class="invite-chk" id="invite-chk-112155" type="checkbox">
+											</td>
+					<td><a target="_blank" href="http://klavogonki.ru/profile/112155/" style="padding-left: 20px; background: url(&quot;http://img.klavogonki.ru/avatars/112155.gif&quot;) no-repeat scroll 0% 0% transparent;">Дончанин</a></td>
+					<td align="right">
+						<img id="invite-img-ok-112155" src="1_files/ok_002.gif" style="display: none;">
+						<img id="invite-img-loading-112155" src="1_files/small_loading.gif" style="display: none;">
+					</td>
+				</tr>
+							<tr>
+					<td align="center" width="20">						
+													<input class="invite-chk" id="invite-chk-224114" type="checkbox">
+											</td>
+					<td><a target="_blank" href="http://klavogonki.ru/profile/224114/" style="padding-left: 20px; background: url(&quot;http://img.klavogonki.ru/avatars/224114.gif&quot;) no-repeat scroll 0% 0% transparent;">suenot</a></td>
+					<td align="right">
+						<img id="invite-img-ok-224114" src="1_files/ok_002.gif" style="display: none;">
+						<img id="invite-img-loading-224114" src="1_files/small_loading.gif" style="display: none;">
+					</td>
+				</tr>
+							<tr>
+					<td align="center" width="20">						
+													<input class="invite-chk" id="invite-chk-249253" type="checkbox">
+											</td>
+					<td><a target="_blank" href="http://klavogonki.ru/profile/249253/" style="padding-left: 20px; background: url(&quot;http://img.klavogonki.ru/avatars/249253.gif&quot;) no-repeat scroll 0% 0% transparent;">Лии</a></td>
+					<td align="right">
+						<img id="invite-img-ok-249253" src="1_files/ok_002.gif" style="display: none;">
+						<img id="invite-img-loading-249253" src="1_files/small_loading.gif" style="display: none;">
+					</td>
+				</tr>
+						</tbody></table>
+		</div>
+		<table>
+			<tbody><tr>
+			<td><a id="select-all" onclick="$$('#friends-list input').each(function(el){el.checked=true;});">Выбрать всех</a></td>
+			<td align="right"><input value="Пригласить" id="invite-btn" type="button"></td>
+			</tr>
+		</tbody></table>		
+		 
+	</div></div></div></div></div>	</div>	
+	
+	
+	
+
+	
+	
+</div>
+
+</td>
+</tr>
+</tbody></table>
+
+</div>
+
+<div id="chat-fixed-placeholder">
+<div id="chat-wrapper" class="hidden" style="margin-top: 124px;">
+	<div id="chat-container" style="bottom: 0px;">		
+		<div id="chat-content">
+			<div id="chat-title">
+				<table>
+					<tbody><tr>
+													<td class="general mostleft l">&nbsp;</td>
+							<td class="general c">Общий чат</td>
+							<td class="general r">&nbsp;</td>
+							<td class="game active l">&nbsp;</td>
+							<td class="game active c"><span class="">Заезд</span></td>
+							<td class="game active r">&nbsp;</td>
+							<td class="dummy"><div class="resize-bar"></div><div class="hide-bar"><img src="1_files/blank.gif" alt=""></div></td>
+							<td class="pin" title="Закрепить">&nbsp;</td>
+							<td class="mostright" title="Развернуть">&nbsp;</td>
+											</tr>
+				</tbody></table>
+			</div>
+			<div id="chat-general" class="chat" style="display: none;">
+				<table>
+					<tbody><tr>
+						<td class="messages">
+							<div class="messages-content" style="height: 114px;">								
+								<ins class="chat-header">Соблюдайте правила чата. В чате запрещены <i>любые</i>
+ нецензурные выражения, включая завуалированные и аббревиатуры (будьте 
+сдержанны, тут бывают дети), оскорбления, выяснения отношений 
+(разбирайтесь в привате), скандалы и провокации на них, спам, явный 
+флуд. За нарушение выносится предупреждение, рецидивистам блокируется 
+чат на определенный период времени по усмотрению модераторов.</ins>
+								<div>
+								</div> 
+							</div>
+							<table width="100%"><tbody><tr>
+															<th><form onsubmit="chat.sendMsg('general'); return false;"><input class="text" maxlength="300" tabindex="2"></form></th>
+								<td><input class="send" value="Отправить" type="button"></td>
+														<td>
+								<div style="width: 50px; height: 0px; border: 0pt none;">&nbsp;</div>
+								<div class="smile-btn chat-opt-btn" title="Смайлики" onclick="openSmileTab();"><img src="1_files/smile.gif" alt="Смайлики"></div>
+								<div class="filter-btn chat-opt-btn active" title="Фильтр мата" onclick="changeChatFilter()"><img src="1_files/filter.png" alt="Фильтр мата"></div>
+																
+							</td>
+							</tr></tbody></table>
+						</td>
+						<td class="userlist">		
+							<div class="userlist-content" style="height: 146px;">&nbsp;</div>
+							<div class="smile-tab" style="height: 146px; display: none;"><a href='javascript:insertSmile("smile");' title=":smile:"><img src="1_files/smile.gif" alt="smile"></a> <a href='javascript:insertSmile("biggrin");' title=":biggrin:"><img src="1_files/biggrin.gif" alt="biggrin"></a> <a href='javascript:insertSmile("angry");' title=":angry:"><img src="1_files/angry.gif" alt="angry"></a> <a href='javascript:insertSmile("angry2");' title=":angry2:"><img src="1_files/angry2.gif" alt="angry2"></a> <a href='javascript:insertSmile("blink");' title=":blink:"><img src="1_files/blink.gif" alt="blink"></a> <a href='javascript:insertSmile("blush");' title=":blush:"><img src="1_files/blush.gif" alt="blush"></a> <a href='javascript:insertSmile("cool");' title=":cool:"><img src="1_files/cool.gif" alt="cool"></a> <a href='javascript:insertSmile("dry");' title=":dry:"><img src="1_files/dry.gif" alt="dry"></a> <a href='javascript:insertSmile("excl");' title=":excl:"><img src="1_files/excl.gif" alt="excl"></a> <a href='javascript:insertSmile("happy");' title=":happy:"><img src="1_files/happy.gif" alt="happy"></a> <a href='javascript:insertSmile("huh");' title=":huh:"><img src="1_files/huh.gif" alt="huh"></a> <a href='javascript:insertSmile("laugh");' title=":laugh:"><img src="1_files/laugh.gif" alt="laugh"></a> <a href='javascript:insertSmile("mellow");' title=":mellow:"><img src="1_files/mellow.gif" alt="mellow"></a> <a href='javascript:insertSmile("ohmy");' title=":ohmy:"><img src="1_files/ohmy.gif" alt="ohmy"></a> <a href='javascript:insertSmile("ph34r");' title=":ph34r:"><img src="1_files/ph34r.gif" alt="ph34r"></a> <a href='javascript:insertSmile("rolleyes");' title=":rolleyes:"><img src="1_files/rolleyes.gif" alt="rolleyes"></a> <a href='javascript:insertSmile("sad");' title=":sad:"><img src="1_files/sad.gif" alt="sad"></a> <a href='javascript:insertSmile("sleep");' title=":sleep:"><img src="1_files/sleep.gif" alt="sleep"></a> <a href='javascript:insertSmile("tongue");' title=":tongue:"><img src="1_files/tongue.gif" alt="tongue"></a> <a href='javascript:insertSmile("unsure");' title=":unsure:"><img src="1_files/unsure.gif" alt="unsure"></a> <a href='javascript:insertSmile("wacko");' title=":wacko:"><img src="1_files/wacko.gif" alt="wacko"></a> <a href='javascript:insertSmile("wink");' title=":wink:"><img src="1_files/wink.gif" alt="wink"></a> <a href='javascript:insertSmile("wub");' title=":wub:"><img src="1_files/wub.gif" alt="wub"></a> <a href='javascript:insertSmile("power");' title=":power:"><img src="1_files/power.gif" alt="power"></a> <a href='javascript:insertSmile("spiteful");' title=":spiteful:"><img src="1_files/spiteful.gif" alt="spiteful"></a> <a href='javascript:insertSmile("sorry");' title=":sorry:"><img src="1_files/sorry.gif" alt="sorry"></a> <a href='javascript:insertSmile("first");' title=":first:"><img src="1_files/first.gif" alt="first"></a> <a href='javascript:insertSmile("second");' title=":second:"><img src="1_files/second.gif" alt="second"></a> <a href='javascript:insertSmile("third");' title=":third:"><img src="1_files/third.gif" alt="third"></a> <a href='javascript:insertSmile("badcomp");' title=":badcomp:"><img src="1_files/badcomp.gif" alt="badcomp"></a> <a href='javascript:insertSmile("complaugh");' title=":complaugh:"><img src="1_files/complaugh.gif" alt="complaugh"></a> <a href='javascript:insertSmile("girlnotebook");' title=":girlnotebook:"><img src="1_files/girlnotebook.gif" alt="girlnotebook"></a> <a href='javascript:insertSmile("crazy");' title=":crazy:"><img src="1_files/crazy.gif" alt="crazy"></a> <a href='javascript:insertSmile("boredom");' title=":boredom:"><img src="1_files/boredom.gif" alt="boredom"></a> <a href='javascript:insertSmile("cry");' title=":cry:"><img src="1_files/cry.gif" alt="cry"></a> <a href='javascript:insertSmile("bye");' title=":bye:"><img src="1_files/bye.gif" alt="bye"></a> <a href='javascript:insertSmile("dance");' title=":dance:"><img src="1_files/dance.gif" alt="dance"></a> <a href='javascript:insertSmile("gamer");' title=":gamer:"><img src="1_files/gamer.gif" alt="gamer"></a> <a href='javascript:insertSmile("rofl");' title=":rofl:"><img src="1_files/rofl.gif" alt="rofl"></a> <a href='javascript:insertSmile("beer");' title=":beer:"><img src="1_files/beer.gif" alt="beer"></a> <a href='javascript:insertSmile("kidtruck");' title=":kidtruck:"><img src="1_files/kidtruck.gif" alt="kidtruck"></a> <a href='javascript:insertSmile("boykiss");' title=":boykiss:"><img src="1_files/boykiss.gif" alt="boykiss"></a> <a href='javascript:insertSmile("girlkiss");' title=":girlkiss:"><img src="1_files/girlkiss.gif" alt="girlkiss"></a> <a href='javascript:insertSmile("kissed");' title=":kissed:"><img src="1_files/kissed.gif" alt="kissed"></a> <a href='javascript:insertSmile("yes");' title=":yes:"><img src="1_files/yes.gif" alt="yes"></a> <a href='javascript:insertSmile("no");' title=":no:"><img src="1_files/no.gif" alt="no"></a> <a href='javascript:insertSmile("hi");' title=":hi:"><img src="1_files/hi.gif" alt="hi"></a> <a href='javascript:insertSmile("ok");' title=":ok:"><img src="1_files/ok.gif" alt="ok"></a> </div>
+						</td>
+					</tr>
+				</tbody></table>
+			</div>
+		
+						
+				<div style="" id="chat-game27867" class="chat">
+					<table>
+						<tbody><tr>
+							<td class="messages">
+								<div class="messages-content" style="height: 114px; position: relative;"><div id=""><p><span class="time">[23:17:49]</span><span class="username" style="color: rgb(255, 28, 0);">&lt;<span onclick="chat.insertPrefix(242585);">nosferatum</span>&gt;</span>uje</p><p><span class="time">[23:17:50]</span><span class="username" style="color: rgb(255, 28, 0);">&lt;<span onclick="chat.insertPrefix(242585);">nosferatum</span>&gt;</span>go</p></div></div>
+								<table width="100%"><tbody><tr>
+																	<th><form onsubmit="chat.sendMsg('game27867'); return false;"><input maxlength="300" class="text" tabindex="2"></form></th>
+									<td><input class="send" value="Отправить" type="button"></td>
+																<td>
+									<div style="width: 50px; height: 0px; border: 0pt none;">&nbsp;</div>
+									<div class="smile-btn chat-opt-btn" title="Смайлики" onclick="openSmileTab();"><img src="1_files/smile.gif" alt="Смайлики"></div>
+									<div class="filter-btn chat-opt-btn active" title="Фильтр мата" onclick="changeChatFilter()"><img src="1_files/filter.png" alt="Фильтр мата"></div>									
+								</td>
+								</tr></tbody></table>
+							</td>
+							<td class="userlist">		
+								<div class="userlist-content" style="height: 146px;"><ins class="user242585"><a class="name" style="background: url(&quot;http://img.klavogonki.ru/avatars/242585.gif&quot;) no-repeat scroll 0% 0% transparent;" title="Написать в приват" onclick="chat.insertPrivate(242585);">nosferatum</a><a class="info" title="Профиль" href="http://klavogonki.ru/profile/242585/"><img src="1_files/information-small.png"></a></ins></div>
+								<div class="smile-tab" style="height: 146px; display: none;"><a href='javascript:insertSmile("smile");' title=":smile:"><img src="1_files/smile.gif" alt="smile"></a> <a href='javascript:insertSmile("biggrin");' title=":biggrin:"><img src="1_files/biggrin.gif" alt="biggrin"></a> <a href='javascript:insertSmile("angry");' title=":angry:"><img src="1_files/angry.gif" alt="angry"></a> <a href='javascript:insertSmile("angry2");' title=":angry2:"><img src="1_files/angry2.gif" alt="angry2"></a> <a href='javascript:insertSmile("blink");' title=":blink:"><img src="1_files/blink.gif" alt="blink"></a> <a href='javascript:insertSmile("blush");' title=":blush:"><img src="1_files/blush.gif" alt="blush"></a> <a href='javascript:insertSmile("cool");' title=":cool:"><img src="1_files/cool.gif" alt="cool"></a> <a href='javascript:insertSmile("dry");' title=":dry:"><img src="1_files/dry.gif" alt="dry"></a> <a href='javascript:insertSmile("excl");' title=":excl:"><img src="1_files/excl.gif" alt="excl"></a> <a href='javascript:insertSmile("happy");' title=":happy:"><img src="1_files/happy.gif" alt="happy"></a> <a href='javascript:insertSmile("huh");' title=":huh:"><img src="1_files/huh.gif" alt="huh"></a> <a href='javascript:insertSmile("laugh");' title=":laugh:"><img src="1_files/laugh.gif" alt="laugh"></a> <a href='javascript:insertSmile("mellow");' title=":mellow:"><img src="1_files/mellow.gif" alt="mellow"></a> <a href='javascript:insertSmile("ohmy");' title=":ohmy:"><img src="1_files/ohmy.gif" alt="ohmy"></a> <a href='javascript:insertSmile("ph34r");' title=":ph34r:"><img src="1_files/ph34r.gif" alt="ph34r"></a> <a href='javascript:insertSmile("rolleyes");' title=":rolleyes:"><img src="1_files/rolleyes.gif" alt="rolleyes"></a> <a href='javascript:insertSmile("sad");' title=":sad:"><img src="1_files/sad.gif" alt="sad"></a> <a href='javascript:insertSmile("sleep");' title=":sleep:"><img src="1_files/sleep.gif" alt="sleep"></a> <a href='javascript:insertSmile("tongue");' title=":tongue:"><img src="1_files/tongue.gif" alt="tongue"></a> <a href='javascript:insertSmile("unsure");' title=":unsure:"><img src="1_files/unsure.gif" alt="unsure"></a> <a href='javascript:insertSmile("wacko");' title=":wacko:"><img src="1_files/wacko.gif" alt="wacko"></a> <a href='javascript:insertSmile("wink");' title=":wink:"><img src="1_files/wink.gif" alt="wink"></a> <a href='javascript:insertSmile("wub");' title=":wub:"><img src="1_files/wub.gif" alt="wub"></a> <a href='javascript:insertSmile("power");' title=":power:"><img src="1_files/power.gif" alt="power"></a> <a href='javascript:insertSmile("spiteful");' title=":spiteful:"><img src="1_files/spiteful.gif" alt="spiteful"></a> <a href='javascript:insertSmile("sorry");' title=":sorry:"><img src="1_files/sorry.gif" alt="sorry"></a> <a href='javascript:insertSmile("first");' title=":first:"><img src="1_files/first.gif" alt="first"></a> <a href='javascript:insertSmile("second");' title=":second:"><img src="1_files/second.gif" alt="second"></a> <a href='javascript:insertSmile("third");' title=":third:"><img src="1_files/third.gif" alt="third"></a> <a href='javascript:insertSmile("badcomp");' title=":badcomp:"><img src="1_files/badcomp.gif" alt="badcomp"></a> <a href='javascript:insertSmile("complaugh");' title=":complaugh:"><img src="1_files/complaugh.gif" alt="complaugh"></a> <a href='javascript:insertSmile("girlnotebook");' title=":girlnotebook:"><img src="1_files/girlnotebook.gif" alt="girlnotebook"></a> <a href='javascript:insertSmile("crazy");' title=":crazy:"><img src="1_files/crazy.gif" alt="crazy"></a> <a href='javascript:insertSmile("boredom");' title=":boredom:"><img src="1_files/boredom.gif" alt="boredom"></a> <a href='javascript:insertSmile("cry");' title=":cry:"><img src="1_files/cry.gif" alt="cry"></a> <a href='javascript:insertSmile("bye");' title=":bye:"><img src="1_files/bye.gif" alt="bye"></a> <a href='javascript:insertSmile("dance");' title=":dance:"><img src="1_files/dance.gif" alt="dance"></a> <a href='javascript:insertSmile("gamer");' title=":gamer:"><img src="1_files/gamer.gif" alt="gamer"></a> <a href='javascript:insertSmile("rofl");' title=":rofl:"><img src="1_files/rofl.gif" alt="rofl"></a> <a href='javascript:insertSmile("beer");' title=":beer:"><img src="1_files/beer.gif" alt="beer"></a> <a href='javascript:insertSmile("kidtruck");' title=":kidtruck:"><img src="1_files/kidtruck.gif" alt="kidtruck"></a> <a href='javascript:insertSmile("boykiss");' title=":boykiss:"><img src="1_files/boykiss.gif" alt="boykiss"></a> <a href='javascript:insertSmile("girlkiss");' title=":girlkiss:"><img src="1_files/girlkiss.gif" alt="girlkiss"></a> <a href='javascript:insertSmile("kissed");' title=":kissed:"><img src="1_files/kissed.gif" alt="kissed"></a> <a href='javascript:insertSmile("yes");' title=":yes:"><img src="1_files/yes.gif" alt="yes"></a> <a href='javascript:insertSmile("no");' title=":no:"><img src="1_files/no.gif" alt="no"></a> <a href='javascript:insertSmile("hi");' title=":hi:"><img src="1_files/hi.gif" alt="hi"></a> <a href='javascript:insertSmile("ok");' title=":ok:"><img src="1_files/ok.gif" alt="ok"></a> </div>
+							</td>
+						</tr>
+					</tbody></table>
+				</div>
+					
+		</div>
+	</div>
+</div></div>
+
+	<div id="newrecord" class="popup_message" style="display: none;">
+	<div class="back">&nbsp;</div>
+	<div class="content1">
+	<div class="content2 popup-box">
+
+		<table>
+			<tbody><tr>
+				<td class="tl"></td>
+				<td class="t"></td>
+				<td class="tr"></td>
+			</tr>
+			<tr>
+				<td class="l"></td>
+				<td class="c">
+	<h4>Поздравляем!</h4>
+	<p>Вы набирали со скоростью <span class="bitmore" id="newrecord_speed"></span> зн/мин. Это ваш новый личный рекорд в режиме <span id="newrecord_gametype"></span>!</p>
+	
+		<p>
+	Теперь вы можете показать результаты друзьям, разместив юзербар в своем блоге или форуме:
+	</p>
+	<p align="center">
+	<img id="newrecord_ub2"><br><br>
+	<img id="newrecord_ub6"><br>	
+	</p>
+	<p>
+	Посмотреть другие варианты юзербаров и получить код вы можете в своем <a href="http://klavogonki.ru/profile/242585/#userbars" target="_blank">профиле</a>.
+	</p>
+		
+	
+			<p>Хотите ли вы опубликовать этот рекорд в бортжурнале, чтобы ваши друзья могли поздравить вас?</p>
+		
+	<p align="center">
+	<input class="btn" value="Да" onclick="game.newrecordSubmit(true);" type="button">
+	<input class="btn" value="Нет" onclick="game.newrecordSubmit();" type="button">
+	</p> 
+			</td>
+			<td class="r"></td>
+		</tr>
+		<tr>
+			<td class="bl"></td>
+			<td class="b"></td>
+			<td class="br"></td>
+		</tr>
+	</tbody></table>	
+	</div>
+	</div>
+	</div>
+
+<div id="test"></div>
+
+<div style="display: none;" id="shadow" class="popup_message" onclick="clearShadow();">
+<div class="back"></div>
+</div>
+
+<div id="howtoplay" class="popup_message popup_message_normal" style="display: none;">
+<div class="back">&nbsp;</div>
+<div class="content1" style="position: absolute; top: 100px;">
+	<div class="content2 popup-box">
+
+		<table>
+			<tbody><tr>
+				<td class="tl"></td>
+				<td class="t"></td>
+				<td class="tr"></td>
+			</tr>
+			<tr>
+				<td class="l"></td>
+				<td class="c">
+	<h4>Как играть</h4>
+	<p align="center"><img style="border: 1px solid rgb(170, 170, 170);" src="1_files/howtoplay.gif" alt="Как играть"></p>
+	<p>
+	Набирайте выделенное в тексте слово в мигающем поле. После того, как вы
+ наберете слово и нажмете пробел, поле очистится, ваш автомобиль 
+передвинется дальше, и вам нужно будет набрать следующее слово.
+	</p>
+	<p>
+	Если вы набрали слово с ошибкой, оно будет подсвечено красным. Вам надо
+ исправить ошибку, иначе продвижения не будет. Обратите внимание, что 
+большие буквы нужно набирать большими!
+	</p> 
+	<p>
+	После того, как вы наберете весь текст до конца, появятся результаты вашего прохождения задания.
+	</p>
+<p align="center">
+<input class="btn" value="Закрыть" onclick="$('howtoplay').hide();" type="button">
+</p>
+		
+			</td>
+			<td class="r"></td>
+		</tr>
+		<tr>
+			<td class="bl"></td>
+			<td class="b"></td>
+			<td class="br"></td>
+		</tr>
+	</tbody></table>
+				
+</div>
+</div>
+</div>
+
+<div id="competition_alert" class="popup_message" style="display: none;">
+<div class="back">&nbsp;</div>
+<div class="content1">
+	<div class="content2 popup-box">
+
+		<table>
+			<tbody><tr>
+				<td class="tl"></td>
+				<td class="t"></td>
+				<td class="tr"></td>
+			</tr>
+			<tr>
+				<td class="l"></td>
+				<td class="c">
+	<p>Участие в этом соревновании будет стоить вам <span id="competition_cost"></span> очков.</p>
+	<p><input id="competition_remember" type="checkbox"><label for="competition_remember">Больше не показывать это предупреждение</label></p>	  
+	<p align="center">
+	<input class="btn" id="competition_btn_accept" value="Войти" type="button">
+	<input class="btn" id="competition_btn_return" value="Вернуться" type="button">
+	</p>
+			</td>
+			<td class="r"></td>
+		</tr>
+		<tr>
+			<td class="bl"></td>
+			<td class="b"></td>
+			<td class="br"></td>
+		</tr>
+	</tbody></table>	
+</div>
+</div>
+</div>
+
+
+	
+
+<script type="text/javascript">initPage();</script>
+
+
+
+﻿</div></div></div><div id="footer" style="padding: 1px 10px;">
+
+
+<div style="clear: both;">&nbsp;</div>
+<span style="color: rgb(119, 119, 119); font-size: 11px;"></span>
+<div class="bar"></div>
+
+<table width="100%">
+<tbody><tr>
+<td style="width: 185px;" align="left">
+
+<!--LiveInternet counter--><script type="text/javascript"><!--
+document.write("<a href='http://www.liveinternet.ru/click' "+
+"target=_blank><img src='http://counter.yadro.ru/hit?t17.2;r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random()+
+"' alt='' title='LiveInternet: показано число просмотров за 24"+
+" часа, посетителей за 24 часа и за сегодня' "+
+"border=0 width=88 height=31><\/a>")//--></script><a href="http://www.liveinternet.ru/click" target="_blank"><img src="1_files/hit.gif" alt="" title="LiveInternet: показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня" border="0" height="31" width="88"></a><!--/LiveInternet-->
+
+<!-- begin of Top100 logo -->
+<a rel="nofollow" href="http://top100.rambler.ru/home?id=1626861"><img src="1_files/banner-88x31-rambler-gray2.gif" alt="Rambler's Top100" border="0" height="31" width="88"></a>
+<!-- end of Top100 logo -->
+
+<span style="color: rgb(119, 119, 119); font-size: 11px;">
+<br>
+Сервис заказа <a href="http://kirov.taxofly.com/">такси Кирова</a>
+</span>
+
+</td>
+
+
+<td align="right">
+<span id="copyright">© 2008–2011. Авторский проект Артёма Чивчалова.</span>
+<span id="links">
+<a href="http://klavogonki.ru/about/">Правила</a> •
+<a href="http://klavogonki.ru/about/learning/">Обучение</a> •
+<a href="http://klavogonki.ru/about/stats/">Статистика</a> •
+<a href="http://klavogonki.ru/contact/">Обратная связь</a>
+</span>
+</td>
+</tr>
+</tbody></table>
+
+
+</div>
+
+
+
+
+<div class="popup-box" id="popup" style="position: absolute; display: none;">
+	<table>
+		<tbody><tr>
+			<td class="tl"></td>
+			<td class="t"></td>
+			<td class="tr"></td>
+		</tr>
+		<tr>
+			<td class="l"></td>
+			<td class="c" id="popup_content">			
+			</td>
+			<td class="r"></td>
+		</tr>
+		<tr>
+			<td class="bl"></td>
+			<td class="b"></td>
+			<td class="br"></td>
+		</tr>
+	</tbody></table>
+</div>			
+
+<div id="popalert" class="stdpopup popup_message" style="display: none;">
+<div class="back">&nbsp;</div>
+<div class="content1">
+<div class="content2 popup-box">
+
+	<table width="100%">
+		<tbody><tr>
+			<td class="tl"></td>
+			<td class="t"></td>
+			<td class="tr"></td>
+		</tr>
+		<tr>
+			<td class="l"></td>
+			<td class="c">
+				<div class="a1"><div class="a2 stdpopup-content" id="popalert-content"></div></div>
+				<p align="center">
+				<input class="btn" value="Закрыть" onclick="if(_popalert_callback == null || !_popalert_callback()) $('popalert').hide();" type="button">
+				</p> 
+			</td>
+			<td class="r"></td>
+		</tr>
+		<tr>
+			<td class="bl"></td>
+			<td class="b"></td>
+			<td class="br"></td>
+		</tr>
+	</tbody></table>
+</div>
+</div>
+</div>
+
+<div id="popconfirm" class="stdpopup popup_message" style="display: none;">
+<div class="back">&nbsp;</div>
+<div class="content1">
+<div class="content2 popup-box">
+
+	<table width="100%">
+		<tbody><tr>
+			<td class="tl"></td>
+			<td class="t"></td>
+			<td class="tr"></td>
+		</tr>
+		<tr>
+			<td class="l"></td>
+			<td class="c">
+				<div class="a1"><div class="a2 stdpopup-content" id="popconfirm-content"></div></div>
+				<p align="center">
+				<input class="btn" id="popconfirm-btn-ok" value="OK" type="button"> 
+				<input class="btn" value="Отмена" onclick="$('popconfirm').hide();" type="button">
+				</p> 
+			</td>
+			<td class="r"></td>
+		</tr>
+		<tr>
+			<td class="bl"></td>
+			<td class="b"></td>
+			<td class="br"></td>
+		</tr>
+	</tbody></table>				
+</div>
+</div>
+</div>
+
+<div id="top-popup" style="display: none;">
+<div class="right">
+<input value="" onclick="if(typeof _top_popup_btn_callback == 'function') _top_popup_btn_callback();" type="button">
+<a onclick="close_top_popup();"><img src="1_files/yellow_cross.gif" alt="X"></a>
+</div>
+<div class="content">
+
+</div>
+</div>
+
+<div id="drop_message" style="display: none;">
+	
+	<div class="content1">
+	<div class="content2 popup-box">
+	<table>
+		<tbody><tr>
+			<td class="tl"></td>
+			<td class="t"></td>
+			<td class="tr"></td>
+		</tr>
+		<tr>
+			<td class="l"></td>
+			<td class="c">
+				
+			</td>
+			<td class="r"></td>
+		</tr>
+		<tr>
+			<td class="bl"></td>
+			<td class="b"></td>
+			<td class="br"></td>
+		</tr>
+	</tbody></table>
+	<div class="close"><ins></ins></div>
+</div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+ 
+ 
+ 
+checkCompetitionAlert(674,0);
+initBBWidgets();
+window.onscroll = recalcFixedChat; window.onresize = recalcFixedChat;</script>
+
+
+		
+		
+		
+	
+		
+	<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script><script src="1_files/ga.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	var pageTracker = _gat._getTracker("UA-4422489-1");
+	pageTracker._setDomainName(".klavogonki.ru");
+	pageTracker._initData();
+	pageTracker._trackPageview();
+	</script>
+	
+		
+		
+	
+	<!-- begin of Top100 code -->
+	<script type="text/javascript" src="1_files/top100.js"></script><noscript><img src="http://counter.rambler.ru/top100.cnt?1626861" alt="" width="1" height="1" border="0"></noscript>
+	<!-- end of Top100 code -->
+	
+
+
+
+
+
+<script type="text/javascript">
+// Download Master plugin 1.2 fix
+if(Prototype.Browser.Gecko)
+	setTimeout(function()
+	{
+		if(typeof jQuery == 'function' && jQuery == $ && window.location.pathname != '/dm-plugin-bug/')
+			window.location = '/dm-plugin-bug/';
+	}, 4000);
+</script>
+
+<div style="position: fixed; width: 8px; height: 8px; bottom: 0px; left: 0px; overflow: hidden;" class="movieContainer" id="sm2-container"><embed allowfullscreen="false" wmode="transparent" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" bgcolor="#ffffff" allowscriptaccess="always" quality="high" src="1_files/soundmanager2.swf" id="sm2movie" name="sm2movie" height="100%" width="100%"></div></body></html>
