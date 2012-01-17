@@ -10,11 +10,26 @@ import java.util.ArrayList;
 
 public class ParserImpl implements Parser
 {
-	public List<Player> getPlayers(String fileName) {
-		// todo: implement method
+	public Round getRound(String fileName) {
+		Round round = new Round();
 
-		List<Player> players = new ArrayList<Player>();
+		// todo: uncomment and fill
+//		round.setNumber(); // todo: fill according to file name
+//		round.setVocabulary(); // todo: create and fill vocabulary
 
-		return players;
+		List<PlayerRoundResult> results = new ArrayList<PlayerRoundResult>();
+
+		// todo: fill results
+		Player player = new Player();
+//		player.setProfileId(); // todo: fill from page
+//		player.setName(); // todo: fill from page
+//		player.setNormalRecord(); // todo: fill if possible from page
+
+		PlayerRoundResult result = new PlayerRoundResult(round, player);
+		// todo: fill result from page
+		results.add(result);
+
+		round.setResults(results);
+		return round;
 	}
 }
