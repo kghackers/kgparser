@@ -5,14 +5,11 @@
  */
 package ru.klavogonki.kgparser;
 
-import java.util.List;
-
 public interface Parser
 {
 	/**
 	 * @param fileName имя html-файла с сохраненным заездом
-	 * @return список игроков, находящийся на странице.
-	 * // todo: возвращать результаты
+	 * @return заезд, заполненный согласно содержимому страницы.
 	 */
-	List<Player> getPlayers(String fileName);
+	Round getRound(String fileName);
 }
