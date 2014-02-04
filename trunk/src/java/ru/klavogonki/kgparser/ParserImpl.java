@@ -5,8 +5,8 @@
  */
 package ru.klavogonki.kgparser;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParserImpl implements Parser
 {
@@ -15,7 +15,7 @@ public class ParserImpl implements Parser
 
 		// todo: uncomment and fill
 //		round.setNumber(); // todo: fill according to file name
-//		round.setVocabulary(); // todo: create and fill vocabulary
+//		round.setDictionary(); // todo: create and fill vocabulary
 
 		List<PlayerRoundResult> results = new ArrayList<PlayerRoundResult>();
 

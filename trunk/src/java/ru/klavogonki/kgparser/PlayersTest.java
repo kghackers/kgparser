@@ -5,10 +5,10 @@
  */
 package ru.klavogonki.kgparser;
 
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
 
 public class PlayersTest
 {
@@ -82,6 +82,5 @@ public class PlayersTest
 
 		for (Player player : competition.getPlayers())
 			System.out.println("competition player: " + player.getProfileId() + ", " + player.getName());
-
 	}
 }

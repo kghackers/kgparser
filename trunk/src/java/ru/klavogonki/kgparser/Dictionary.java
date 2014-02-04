@@ -8,7 +8,7 @@ package ru.klavogonki.kgparser;
 /**
  * Словарь.
  */
-public class Vocabulary
+public class Dictionary
 {
 	public int getId() {
 		return id;
@@ -22,7 +22,7 @@ public class Vocabulary
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * Код словаря.
 	 */
