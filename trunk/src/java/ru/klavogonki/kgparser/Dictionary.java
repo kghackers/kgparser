@@ -6,7 +6,7 @@
 package ru.klavogonki.kgparser;
 
 /**
- * Словарь.
+ * РЎР»РѕРІР°СЂСЊ.
  */
 public class Dictionary
 {
@@ -24,12 +24,12 @@ public class Dictionary
 	}
 
 	/**
-	 * Код словаря.
+	 * РљРѕРґ СЃР»РѕРІР°СЂСЏ.
 	 */
 	private int id;
 
 	/**
-	 * Название словаря.
+	 * РќР°Р·РІР°РЅРёРµ СЃР»РѕРІР°СЂСЏ.
 	 */
 	private String name;
 }

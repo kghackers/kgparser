@@ -6,7 +6,7 @@
 package ru.klavogonki.kgparser;
 
 /**
- * Игрок клавогонок.
+ * РРіСЂРѕРє РєР»Р°РІРѕРіРѕРЅРѕРє.
  */
 public class Player implements Comparable<Player>
 {
@@ -53,9 +53,9 @@ public class Player implements Comparable<Player>
 	}
 	
 	/**
-	 * @param round заезд
-	 * @return <code>true</code> - если игрок принимал участие в заезде,
-	 * <code>false</code> - в противном случае.
+	 * @param round Р·Р°РµР·Рґ
+	 * @return <code>true</code> - РµСЃР»Рё РёРіСЂРѕРє РїСЂРёРЅРёРјР°Р» СѓС‡Р°СЃС‚РёРµ РІ Р·Р°РµР·РґРµ,
+	 * <code>false</code> - РІ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ.
 	 */
 	public boolean isPresent(Round round) {
 		for (PlayerRoundResult result : round.getResults())
@@ -66,17 +66,17 @@ public class Player implements Comparable<Player>
 	}
 	
 	/**
-	 * Код профиля.
+	 * РљРѕРґ РїСЂРѕС„РёР»СЏ.
 	 */
 	private Integer profileId;
 
 	/**
-	 * Никнейм (логин).
+	 * РќРёРєРЅРµР№Рј (Р»РѕРіРёРЅ).
 	 */
 	private String name;
 
 	/**
-	 * Рекорд в обычном режиме. Должен быть больше 0.
+	 * Р РµРєРѕСЂРґ РІ РѕР±С‹С‡РЅРѕРј СЂРµР¶РёРјРµ. Р”РѕР»Р¶РµРЅ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ 0.
 	 */
 	private int normalRecord;
 }
