@@ -8,8 +8,8 @@ package ru.klavogonki.kgparser;
 public interface Parser
 {
 	/**
-	 * @param fileName имя html-файла с сохраненным заездом
-	 * @return заезд, заполненный согласно содержимому страницы.
+	 * @param fileName РёРјСЏ html-С„Р°Р№Р»Р° СЃ СЃРѕС…СЂР°РЅРµРЅРЅС‹Рј Р·Р°РµР·РґРѕРј
+	 * @return Р·Р°РµР·Рґ, Р·Р°РїРѕР»РЅРµРЅРЅС‹Р№ СЃРѕРіР»Р°СЃРЅРѕ СЃРѕРґРµСЂР¶РёРјРѕРјСѓ СЃС‚СЂР°РЅРёС†С‹.
 	 */
 	Round getRound(String fileName);
 }
