@@ -5,11 +5,11 @@
  */
 package ru.klavogonki.kgparser;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Заезд. Содержит результаты всех игроков в этом заезде.
+ * пїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
  */
 public class Round
 {
@@ -21,14 +21,14 @@ public class Round
 			if (playerRoundResult.getPlayer().equals(result.getPlayer()))
 				throw new IllegalArgumentException("Round already contains result for player: " + result.getPlayer().getProfileId() + " (name: " + result.getPlayer().getName() + ")");
 
-		results.add(result);	
+		results.add(result);
 	}
 
-	public Vocabulary getVocabulary() {
-		return vocabulary;
+	public Dictionary getDictionary() {
+		return dictionary;
 	}
-	public void setVocabulary(Vocabulary vocabulary) {
-		this.vocabulary = vocabulary;
+	public void setDictionary(Dictionary dictionary) {
+		this.dictionary = dictionary;
 	}
 	public Integer getNumber() {
 		return number;
@@ -48,25 +48,25 @@ public class Round
 	public void setResults(List<PlayerRoundResult> results) {
 		this.results = results;
 	}
-	
-	/**
-	 * Словарь.
-	 */
-	private Vocabulary vocabulary;
 
 	/**
-	 * Номер заезда (в рамках игры).
-	 * // todo: порешить, как нумеруются заезды в случае, когда соревнование состоит из нескольких режимов
+	 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+	 */
+	private Dictionary dictionary;
+
+	/**
+	 * пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ).
+	 * // todo: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	 */
 	private Integer number;
 
 	/**
-	 * Текст заезда без ошибок.
+	 * пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
 	 */
 	private String text;
 
 	/**
-	 * Результаты игроков в заезде. 
+	 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. 
 	 */
 	private List<PlayerRoundResult> results;
 }

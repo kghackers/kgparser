@@ -33,7 +33,7 @@ public class PlayerRoundResult
 		return place;
 	}
 	public void setPlace(Integer place) {
-		if (place < 1)
+		if (place < FIRST_PLACE)
 			throw new IllegalArgumentException("Incorrect place: " + place);
 
 		this.place = place;
@@ -112,8 +112,8 @@ public class PlayerRoundResult
 	private Float errorPercentage;
 
 	/**
-	 * <code>true</code> - если игрок поставил рекорд в данном заезде.
-	 * <code>false</code> - в противном случае.
+	 * <code>true</code> &mdash; если игрок поставил рекорд в данном заезде.
+	 * <code>false</code> &mdash; в противном случае.
 	 */
 	private boolean record = false;
 
@@ -121,4 +121,9 @@ public class PlayerRoundResult
 	 * Время в секундах, за которое игрок прошел заезд. Должно быть больше 0.
 	 */
 	private Float time;
+
+	/**
+	 * Номер первого места в заезде. Место игрока в заезде не может быть меньше, чем первое.
+	 */
+	public static final int FIRST_PLACE = 1;
 }

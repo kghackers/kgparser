@@ -46,9 +46,14 @@ public enum Rank
 	superman,
 
 	/**
-	 *  ибергонщик. –екорд >= 700.
+	 *  ибергонщик. –екорд от 700 до 799.
 	 */
-	cyberracer;
+	cyberracer,
+
+	/**
+	 * Ёкстракибер. –екорд >= 800.
+	 */
+	extracyber;
 
 	/**
 	 * @param normalRecord рекорд в режиме "ќбычный"
@@ -76,7 +81,10 @@ public enum Rank
 		if (normalRecord < 700)
 			return Rank.superman;
 
-		return Rank.cyberracer; // > 700 -> кибергонщик
+		if (normalRecord < 800)
+			return Rank.cyberracer;
+
+		return Rank.extracyber; // рекорд в обычном >= 700 -> экстракибер
 	}
 
 	/**
@@ -94,6 +102,7 @@ public enum Rank
 			case maniac: return "#BC0143";
 			case superman: return "#5E0B9E";
 			case cyberracer: return "#00037C";
+			case extracyber: return "#061956";
 
 			default: throw new IllegalArgumentException("Incorrect rank: " + rank);
 		}
