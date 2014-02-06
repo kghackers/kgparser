@@ -10,6 +10,12 @@ package ru.klavogonki.kgparser;
  */
 public class Dictionary
 {
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
 	public int getId() {
 		return id;
 	}
@@ -24,7 +30,43 @@ public class Dictionary
 	}
 
 	/**
-	 * Код словаря.
+	 * @param code строковый код словаря (gametype в ajax-api)
+	 * @return <code>true</code> &mdash; если словарь с указанным кодом является {@linkplain StandardDictionary стандартным};
+	 * <br/>
+	 * <code>false</code> &mdash; если словарь с указанным кодом является пользовательским словарем.
+	 */
+	public static boolean isStandard(String code) {
+		return !code.startsWith(NON_STANDARD_DICTIONARY_ID_PREFIX);
+	}
+
+	/**
+	 * @param code строковый код словаря (gametype в ajax-api)
+	 * @return числовой идентификатор словаря
+	 */
+	public static int getDictionaryId(String code) {
+		if ( isStandard(code) )
+			throw new IllegalArgumentException("Dictionary with code = \"" + code + "\" is standard. Cannot get dictionary id from it."); // todo: use concat
+
+		String codeStr = code.substring( NON_STANDARD_DICTIONARY_ID_PREFIX.length() );
+		return Integer.parseInt(codeStr);
+	}
+
+	/**
+	 * @param dictionaryId идентификатор словаря
+	 * @return строковый код словаря
+	 */
+	public static String getDictionaryCode(int dictionaryId) {
+		return NON_STANDARD_DICTIONARY_ID_PREFIX + Integer.toString(dictionaryId); // todo: use concat
+	}
+
+	/**
+	 * Строковый код словаря.
+	 * Для нестандартных словарей начинается с {@linkplain #NON_STANDARD_DICTIONARY_ID_PREFIX соответствующего префикса}.
+	 */
+	private String code;
+
+	/**
+	 * Код словаря для нестандартных словарей.
 	 */
 	private int id;
 
@@ -32,4 +74,9 @@ public class Dictionary
 	 * Название словаря.
 	 */
 	private String name;
+
+	/**
+	 * Префикс, с которого начинается код нестандартного словаря.
+	 */
+	public static final String NON_STANDARD_DICTIONARY_ID_PREFIX = "voc-";
 }

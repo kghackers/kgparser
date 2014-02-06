@@ -48,7 +48,11 @@ public class Round
 	public void setResults(List<PlayerRoundResult> results) {
 		this.results = results;
 	}
-	
+
+	public int getTextLength() {
+		return text.length();
+	}
+
 	/**
 	 * Словарь.
 	 */
@@ -66,7 +70,7 @@ public class Round
 	private String text;
 
 	/**
-	 * Результаты игроков в заезде. 
+	 * Результаты игроков в заезде.
 	 */
 	private List<PlayerRoundResult> results;
 }
