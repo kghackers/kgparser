@@ -13,47 +13,49 @@ public enum Rank
 	/**
 	 * Новичок. Рекорд < 100.
 	 */
-	novice,
+	  novice
 
 	/**
 	 * Любитель. Рекорд от 100 до 199.
 	 */
-	amateur,
+	, amateur
 
 	/**
 	 * Таксист. Рекорд от 200 до 299.
 	 */
-	cabman,
+	, cabman
 
 	/**
 	 * Профи. Рекорд от 300 до 399.
 	 */
-	pro,
+	, pro
 
 	/**
 	 * Гонщик. Рекорд от 400 до 499.
 	 */
-	racer,
+	, racer
 
 	/**
 	 * Маньяк. Рекорд от 500 до 599.
 	 */
-	maniac,
+	, maniac
 
 	/**
 	 * Супермен. Рекорд от 600 до 699.
 	 */
-	superman,
+	, superman
 
 	/**
 	 * Кибергонщик. Рекорд от 700 до 799.
 	 */
-	cyberracer,
+	, cyberracer
 
 	/**
 	 * Экстракибер. Рекорд >= 800.
 	 */
-	extracyber;
+	, extracyber
+
+	;
 
 	/**
 	 * @param normalRecord рекорд в режиме "Обычный"
@@ -104,7 +106,49 @@ public enum Rank
 			case cyberracer: return "#00037C";
 			case extracyber: return "#061956";
 
-			default: throw new IllegalArgumentException("Incorrect rank: " + rank);
+			default: throw new IllegalArgumentException("Incorrect rank: " + rank); // todo: use concat
+		}
+	}
+
+	/**
+	 * @param rank ранг
+	 * @return русское название рага для отображения
+	 */
+	public static String getDisplayName(Rank rank) {
+		switch (rank)
+		{
+			case novice: return "Новичок";
+			case amateur: return "Любитель";
+			case cabman: return "Таксист";
+			case pro: return "Профи";
+			case racer: return "Гонщик";
+			case maniac: return "Маньяк";
+			case superman: return "Супермен";
+			case cyberracer: return "Кибергонщик";
+			case extracyber: return "Экстракибер";
+
+			default: throw new IllegalArgumentException("Incorrect rank: " + rank); // todo: use concat
+		}
+	}
+
+	/**
+	 * @param rank ранг
+	 * @return числовой код ранга (level)
+	 */
+	public static byte getLevel(Rank rank) {
+		switch (rank)
+		{
+			case novice: return 1;
+			case amateur: return 2;
+			case cabman: return 3;
+			case pro: return 4;
+			case racer: return 5;
+			case maniac: return 6;
+			case superman: return 7;
+			case cyberracer: return 8;
+			case extracyber: return 9;
+
+			default: throw new IllegalArgumentException("Incorrect rank: " + rank); // todo: use concat
 		}
 	}
 }
