@@ -133,7 +133,6 @@ public class Competition
 
 		return count;
 	}
-
 	/**
 	 * @param dictionary словарь
 	 * @return количество заездов по словарю в соревновании. Больше либо равно 0.
@@ -143,6 +142,47 @@ public class Competition
 			throw new IllegalArgumentException("dictionary cannot be null");
 
 		return getRoundsCount( dictionary.getCode() );
+	}
+
+	/**
+	 * @param player игрок
+	 * @return общее количество заездов, которое проехал игрок по всем заездам по всем словарям.
+	 */
+	public int getRoundsCount(Player player) {
+		if (player == null)
+			throw new IllegalArgumentException("player cannot be null");
+
+		int count = 0;
+
+		for (Round round : rounds)
+		{
+			if ( round.hasPlayerResult(player) )
+				count++;
+		}
+
+		return count;
+	}
+	/**
+	 * @param player игрок
+	 * @param dictionary словарь
+	 * @return общее количество заездов, которое проехал игрок по словарю
+	 */
+	public int getRoundsCount(Player player, Dictionary dictionary) {
+		if (player == null)
+			throw new IllegalArgumentException("player cannot be null");
+
+		if (dictionary == null)
+			throw new IllegalArgumentException("dictionary cannot be null");
+
+		int count = 0;
+
+		for (Round round : rounds)
+		{
+			if ( round.hasDictionary(dictionary) && round.hasPlayerResult(player) )
+				count++;
+		}
+
+		return count;
 	}
 
 	/**

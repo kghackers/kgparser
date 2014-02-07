@@ -40,6 +40,12 @@ public class Dictionary
 
 		return this.code.equals(dictionaryCode);
 	}
+	public boolean isSame(Dictionary dictionary) {
+		if (dictionary == null)
+			throw new IllegalArgumentException("dictionary cannot be null");
+
+		return this.hasCode( dictionary.getCode() );
+	}
 
 	@Override
 	public boolean equals(Object obj) { // Dictionaries are equal if their codes are equal
