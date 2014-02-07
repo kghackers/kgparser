@@ -5,6 +5,8 @@
  */
 package ru.klavogonki.kgparser;
 
+import su.opencode.kefir.util.StringUtils;
+
 /**
  * Словарь.
  */
@@ -27,6 +29,24 @@ public class Dictionary
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean hasCode(String dictionaryCode) {
+		if ( StringUtils.empty(dictionaryCode) )
+			throw new IllegalArgumentException("dictionaryCode cannot be null or empty");
+
+		if ( StringUtils.empty(this.code) )
+			throw new IllegalStateException("This Dictionary has no code");
+
+		return this.code.equals(dictionaryCode);
+	}
+
+	@Override
+	public boolean equals(Object obj) { // Dictionaries are equal if their codes are equal
+		if ( !(obj instanceof Dictionary) )
+			return false;
+
+		return this.code.equals(((Dictionary) obj).getCode());
 	}
 
 	/**
@@ -56,7 +76,7 @@ public class Dictionary
 	 * @return строковый код словаря
 	 */
 	public static String getDictionaryCode(int dictionaryId) {
-		return NON_STANDARD_DICTIONARY_ID_PREFIX + Integer.toString(dictionaryId); // todo: use concat
+		return StringUtils.concat( NON_STANDARD_DICTIONARY_ID_PREFIX, Integer.toString(dictionaryId) );
 	}
 
 	/**

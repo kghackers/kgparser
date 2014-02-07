@@ -5,9 +5,9 @@
  */
 package ru.klavogonki.kgparser;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import su.opencode.kefir.util.StringUtils;
+
+import java.util.*;
 
 /**
  * Соревнование. Содержит в себе набор заездов в рамках соревнования.
@@ -16,6 +16,7 @@ import java.util.Set;
 public class Competition
 {
 	public Competition() {
+		this.rounds = new ArrayList<>();
 	}
 	public Competition(List<Round> rounds) {
 		this.rounds = rounds;
@@ -38,12 +39,17 @@ public class Competition
 		this.rounds = rounds;
 	}
 
+	public void addRound(Round round) {
+		// todo: add and check preventAdd flag
+		this.rounds.add(round);
+	}
+
 	// todo: копия такого метода с учетом минимального числа заездов
 	/**
 	 * @return список всех игроков, принимавших участие хотя бы в одном заезде соревнования.
 	 */
-	Set<Player> getPlayers() {
-		Set<Player> players = new HashSet<Player>();
+	public Set<Player> getPlayers() {
+		Set<Player> players = new HashSet<>();
 
 		for (Round round : rounds)
 		{
@@ -53,6 +59,124 @@ public class Competition
 		}
 
 		return players;
+	}
+
+	/**
+	 * @return множество всех словарей, заезды по которым есть в соревновании.
+	 */
+	public Set<Dictionary> getDictionaries() {
+		Set<Dictionary> dictionaries = new HashSet<>();
+
+		for (Round round : rounds)
+		{
+			Dictionary dictionary = round.getDictionary();
+			if (dictionary == null)
+				throw new IllegalStateException( StringUtils.concat("Round ", round.getNumber(), " has no set dictionary") );
+
+			dictionaries.add(dictionary);
+		}
+
+		return dictionaries;
+	}
+
+	/**
+	 * @param dictionaryCode строковый  код словаря
+	 * @return <code>true</code> &mdash; если соревнование содержит хотя бы один заезд по словарю с указанным кодом
+	 * <br/>
+	 * <code>false</code> &mdash; если соревнование не содержит ни одного заезда по словарю с указанным кодом
+	 */
+	public boolean containsDictionary(String dictionaryCode) {
+		if ( StringUtils.empty(dictionaryCode) )
+			throw new IllegalArgumentException("dictionaryCode must not be null or empty");
+
+		// todo: think about iterating by rounds and use their dictionary instead of using this.getDictionaries
+		for (Dictionary dictionary : this.getDictionaries())
+			if ( dictionary.hasCode(dictionaryCode) )
+				return true;
+
+		return false;
+	}
+
+	/**
+	 * @param dictionary словарь
+	 * @return <code>true</code> &mdash; если соревнование содержит хотя бы один заезд по указанному словарю
+	 * <br/>
+	 * <code>false</code> &mdash; если соревнование не содержит ни одного заезда по указанному словарю
+	 */
+	public boolean containsDictionary(Dictionary dictionary) {
+		if (dictionary == null)
+			throw new IllegalArgumentException("dictionary cannot be null");
+
+		return containsDictionary(dictionary.getCode());
+	}
+
+
+	/**
+	 * @param dictionaryCode строковый код словаря
+	 * @return количество заездов по словарю в соревновании. Больше либо равно 0.
+	 */
+	public int getRoundsCount(String dictionaryCode) {
+		if ( StringUtils.empty(dictionaryCode) )
+			throw new IllegalArgumentException("dictionaryCode must not be null or empty");
+
+		int count = 0;
+
+		for (Round round : rounds)
+		{
+			Dictionary dictionary = round.getDictionary();
+			if (dictionary == null)
+				throw new IllegalStateException( StringUtils.concat("Round ", round.getNumber(), " has no set dictionary") );
+
+			if ( dictionary.hasCode(dictionaryCode) )
+				count++;
+		}
+
+		return count;
+	}
+
+	/**
+	 * @param dictionary словарь
+	 * @return количество заездов по словарю в соревновании. Больше либо равно 0.
+	 */
+	public int getRoundsCount(Dictionary dictionary) {
+		if (dictionary == null)
+			throw new IllegalArgumentException("dictionary cannot be null");
+
+		return getRoundsCount( dictionary.getCode() );
+	}
+
+	/**
+	 * @return мэп сгруппированных по словарям заездов соревнования.
+	 * Ключом является {@linkplain Dictionary#code строковый код} словаря.
+	 */
+	public Map<String, List<Round>> getRoundsByDictionariesMap() {
+		Map<String, List<Round>> map = new HashMap<>();
+
+		for (Round round : rounds)
+		{
+			Dictionary dictionary = round.getDictionary();
+			if (dictionary == null)
+				throw new IllegalStateException( StringUtils.concat("Round ", round.getNumber(), " has no set dictionary") );
+
+			String dictionaryCode = dictionary.getCode();
+
+			if ( map.containsKey(dictionaryCode) )
+			{ // map already contains round's dictionary -> add round to the existing list
+				List<Round> rounds = map.get(dictionaryCode);
+				rounds.add(round);
+			}
+			else
+			{ // map does not contain round's dictionary -> create new list, put round to it and put it to the map with the dictionary code key
+				List<Round> rounds = new ArrayList<>();
+				rounds.add(round);
+
+				map.put(dictionaryCode, rounds);
+			}
+		}
+
+		// todo: sort all lists by number
+
+		return map;
 	}
 
 	/**
