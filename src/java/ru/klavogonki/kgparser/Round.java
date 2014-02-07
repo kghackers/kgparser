@@ -14,7 +14,7 @@ import java.util.List;
 public class Round
 {
 	public Round() {
-		this.results = new ArrayList<PlayerRoundResult>();
+		this.results = new ArrayList<>();
 	}
 	public void addResult(PlayerRoundResult result) {
 		for (PlayerRoundResult playerRoundResult : results)
