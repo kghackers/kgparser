@@ -3,6 +3,7 @@ package ru.klavogonki.kgparser.processing;
 import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.Player;
+import ru.klavogonki.kgparser.http.UrlConstructor;
 
 import java.util.Set;
 
@@ -35,14 +36,18 @@ public class CompetitionResultsTest
 		for (Dictionary dictionary : dictionaries)
 		{
 			int roundsCount = competition.getRoundsCount(dictionary);
-			System.out.println( concat(sb, "Dictionary: ", dictionary.getCode(), " (\"", dictionary.getName(), "\"), Rounds count: ", roundsCount) );
+
+			if (dictionary.isStandard())
+				System.out.println( concat(sb, "Dictionary: ", dictionary.getCode(), " (name = \"", dictionary.getName(), "\"), Rounds count: ", roundsCount) );
+			else
+				System.out.println( concat(sb, "Dictionary: ", dictionary.getCode(), " (name = \"", dictionary.getName(), "\", dictionaryPageUrl = ", UrlConstructor.getDictionaryPageUrl( dictionary.getId() ), "), Rounds count: ", roundsCount) );
 		}
 
 		// by players
 		for (Player player : players)
 		{
 			System.out.println("================================================");
-			System.out.println( concat(sb, "Player ", player.getName(), " (profileId = ", player.getProfileId(), ")") );
+			System.out.println( concat(sb, "Player ", player.getName(), " (profileId = ", player.getProfileId(), ", profileLink = ", UrlConstructor.getProfileUrl(player), ")") );
 
 			int totalRoundsCount = competition.getRoundsCount(player);
 			System.out.println( concat(sb, "Total rounds count: ", totalRoundsCount) );
