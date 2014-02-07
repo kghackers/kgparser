@@ -5,6 +5,8 @@
  */
 package ru.klavogonki.kgparser;
 
+import static su.opencode.kefir.util.StringUtils.concat;
+
 /**
  * Ранг игрока. Различается в зависимости от рекорда в обычном режиме.
  */
@@ -58,10 +60,10 @@ public enum Rank
 	;
 
 	/**
-	 * @param normalRecord рекорд в режиме "Обычный"
+	 * @param normalRecord рекорд в {@linkplain StandardDictionary#normal режиме "Обычный"}
 	 * @return ранг, соответствующий указанному рекорду
 	 */
-	public static Rank getRank(int normalRecord) {
+	public static Rank getRankByNormalRecord(int normalRecord) {
 		if (normalRecord < 100)
 			return Rank.novice;
 
@@ -106,7 +108,7 @@ public enum Rank
 			case cyberracer: return "#00037C";
 			case extracyber: return "#061956";
 
-			default: throw new IllegalArgumentException("Incorrect rank: " + rank); // todo: use concat
+			default: throw new IllegalArgumentException( concat("Incorrect rank: ", rank) );
 		}
 	}
 
@@ -127,7 +129,7 @@ public enum Rank
 			case cyberracer: return "Кибергонщик";
 			case extracyber: return "Экстракибер";
 
-			default: throw new IllegalArgumentException("Incorrect rank: " + rank); // todo: use concat
+			default: throw new IllegalArgumentException( concat("Incorrect rank: ", rank) );
 		}
 	}
 
@@ -148,7 +150,27 @@ public enum Rank
 			case cyberracer: return 8;
 			case extracyber: return 9;
 
-			default: throw new IllegalArgumentException("Incorrect rank: " + rank); // todo: use concat
+			default: throw new IllegalArgumentException( concat("Incorrect rank: ", rank) );
+		}
+	}
+	/**
+	 * @param level числовой код ранга
+	 * @return ранг с указанным числовым кодом
+	 */
+	public static Rank getRank(int level) {
+		switch (level)
+		{
+			case 1: return novice;
+			case 2: return amateur;
+			case 3: return cabman;
+			case 4: return pro;
+			case 5: return racer;
+			case 6: return maniac;
+			case 7: return superman;
+			case 8: return cyberracer;
+			case 9: return extracyber;
+
+			default: throw new IllegalArgumentException( concat("Incorrect rank level: " + level) );
 		}
 	}
 }
