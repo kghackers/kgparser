@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
+import static ru.klavogonki.kgparser.test.TestHelper.*;
 
 /**
  * Copyright 2014 LLC "Open Code"
@@ -132,13 +133,41 @@ public class CompetitionTest
 		competition.addRound(normalRound2);
 		competition.addRound(charsRound1);
 
+		// by dictionary
 		assertEquals(2, competition.getRoundsCount(normal));
 		assertEquals(1, competition.getRoundsCount(chars));
 		assertEquals(0, competition.getRoundsCount(frequent));
 
+		// by dictionary code
 		assertEquals(2, competition.getRoundsCount(normal.getCode()));
 		assertEquals(1, competition.getRoundsCount(chars.getCode()));
 		assertEquals(0, competition.getRoundsCount(frequent.getCode()));
+
+		// by player
+		assertEquals(3, competition.getRoundsCount(nosferatum));
+		assertEquals(2, competition.getRoundsCount(ToNick));
+		assertEquals(1, competition.getRoundsCount(Elena));
+		assertEquals(0, competition.getRoundsCount(alanen));
+
+		// by player "nosferatum" and dictionaries
+		assertEquals(2, competition.getRoundsCount(nosferatum, normal));
+		assertEquals(1, competition.getRoundsCount(nosferatum, chars));
+		assertEquals(0, competition.getRoundsCount(nosferatum, frequent));
+
+		// by player "ToNick" and dictionaries
+		assertEquals(2, competition.getRoundsCount(ToNick, normal));
+		assertEquals(0, competition.getRoundsCount(ToNick, chars));
+		assertEquals(0, competition.getRoundsCount(ToNick, frequent));
+
+		// by player "Elena" and dictionaries
+		assertEquals(1, competition.getRoundsCount(Elena, normal));
+		assertEquals(0, competition.getRoundsCount(Elena, chars));
+		assertEquals(0, competition.getRoundsCount(Elena, frequent));
+
+		// by player "alanen" and dictionaries
+		assertEquals(0, competition.getRoundsCount(alanen, normal));
+		assertEquals(0, competition.getRoundsCount(alanen, chars));
+		assertEquals(0, competition.getRoundsCount(alanen, frequent));
 	}
 
 	@Test
@@ -184,40 +213,5 @@ public class CompetitionTest
 		assertEquals(1, charRounds.size());
 
 		// todo: also check PlayerRoundResult inner values
-	}
-
-
-	// todo: also write and check getPlayer's count (total Rounds and by dictionary)
-
-	// todo: move to constructors
-	private Round createRound(Dictionary dictionary) {
-		Round round = new Round();
-		round.setDictionary(dictionary);
-
-		return round;
-	}
-
-	// todo: move to constructors
-	private Dictionary getDictionary(StandardDictionary dictionary) {
-		return getDictionary( dictionary.toString(), StandardDictionary.getDisplayName(dictionary) );
-	}
-	private Dictionary getDictionary(int dictionaryId, String name) {
-		return getDictionary( Dictionary.getDictionaryCode(dictionaryId), name );
-	}
-	private Dictionary getDictionary(String code, String name) {
-		Dictionary dictionary = new Dictionary();
-		dictionary.setCode(code);
-		dictionary.setName(name);
-
-		return dictionary;
-	}
-
-	// todo: move to constructor
-	private Player createPlayer(int profileId, String name) {
-		Player player = new Player();
-		player.setProfileId(profileId);
-		player.setName(name);
-
-		return player;
 	}
 }

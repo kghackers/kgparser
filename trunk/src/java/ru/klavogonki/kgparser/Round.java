@@ -53,6 +53,59 @@ public class Round
 		return text.length();
 	}
 
+	public PlayerRoundResult getPlayerResult(Player player) {
+		if (player == null)
+			throw new IllegalArgumentException("player cannot be null");
+
+		Integer profileId = player.getProfileId();
+		if (profileId == null)
+			throw new IllegalArgumentException("player has no profileId");
+
+		for (PlayerRoundResult result : results)
+		{
+			Player roundPlayer = result.getPlayer();
+			if (roundPlayer == null)
+				throw new IllegalStateException("PlayerRoundResult has no player");
+
+			Integer roundPlayerProfileId = roundPlayer.getProfileId();
+			if (roundPlayerProfileId == null)
+				throw new IllegalStateException("PlayerRoundResult has player with no profileId");
+
+			if ( roundPlayerProfileId.equals(profileId) )
+				return result;
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param player игрок
+	 * @return <code>true</code> &mdash; если игрок участвовал в заезде (имеет результат в нем).
+	 * <br/>
+	 * <code>false</code> &mdash; в противном случае.
+	 */
+	public boolean hasPlayerResult(Player player) {
+		PlayerRoundResult playerResult = getPlayerResult(player);
+		if (playerResult == null)
+			return false;
+
+		// todo: maybe check result emptiness and return false if result is empty
+		return true;
+	}
+
+	/**
+	 * @param dictionary словарь
+	 * @return <code>true</code> &mdash; если заезд проходил по указанному словарю
+	 * <br/>
+	 * <code>false</code> &mdash; в противном случае
+	 */
+	public boolean hasDictionary(Dictionary dictionary) {
+		if (dictionary == null)
+			throw new IllegalArgumentException("dictionary cannot be null");
+
+		return this.dictionary.isSame(dictionary);
+	}
+
 	/**
 	 * Словарь.
 	 */
