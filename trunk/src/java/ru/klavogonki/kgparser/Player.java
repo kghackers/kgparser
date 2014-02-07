@@ -22,6 +22,12 @@ public class Player implements Comparable<Player>
 	public void setName(String name) {
 		this.name = name;
 	}
+	public Rank getRank() {
+		return rank;
+	}
+	public void setRank(Rank rank) {
+		this.rank = rank;
+	}
 	public int getNormalRecord() {
 		return normalRecord;
 	}
@@ -32,11 +38,15 @@ public class Player implements Comparable<Player>
 		this.normalRecord = normalRecord;
 	}
 
-	public Rank getRank() {
-		return Rank.getRank(normalRecord);
+	public Rank getRankByNormalRecord() {
+		return Rank.getRankByNormalRecord(normalRecord);
 	}
 	public String getColor() {
 		return Rank.getColor( getRank() );
+	}
+
+	public boolean isGuest() {
+		return profileId == null;
 	}
 
 	public int compareTo(Player o) {
@@ -44,14 +54,14 @@ public class Player implements Comparable<Player>
 	}
 	public boolean equals(Object player) {
 		if (player instanceof Player)
-			return this.profileId.equals( ((Player) player).getProfileId() ); 
+			return this.profileId.equals( ((Player) player).getProfileId() );
 
 		return false;
 	}
 	public int hashCode() {
 		return (profileId != null ? profileId.hashCode() : 0);
 	}
-	
+
 	/**
 	 * @param round заезд
 	 * @return <code>true</code> - если игрок принимал участие в заезде,
@@ -64,7 +74,7 @@ public class Player implements Comparable<Player>
 
 		return false;
 	}
-	
+
 	/**
 	 * Код профиля.
 	 */
@@ -74,6 +84,11 @@ public class Player implements Comparable<Player>
 	 * Никнейм (логин).
 	 */
 	private String name;
+
+	/**
+	 * Ранг.
+	 */
+	private Rank rank;
 
 	/**
 	 * Рекорд в обычном режиме. Должен быть больше 0.

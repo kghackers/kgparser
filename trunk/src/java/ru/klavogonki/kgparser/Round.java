@@ -6,6 +6,7 @@
 package ru.klavogonki.kgparser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +26,24 @@ public class Round
 		results.add(result);
 	}
 
+	public int getGameId() {
+		return gameId;
+	}
+	public void setGameId(int gameId) {
+		this.gameId = gameId;
+	}
+	public long getBeginTimeMilliseconds() {
+		return beginTimeMilliseconds;
+	}
+	public void setBeginTimeMilliseconds(long beginTimeMilliseconds) {
+		this.beginTimeMilliseconds = beginTimeMilliseconds;
+	}
+	public Date getBeginTime() {
+		return beginTime;
+	}
+	public void setBeginTime(Date beginTime) {
+		this.beginTime = beginTime;
+	}
 	public Dictionary getDictionary() {
 		return dictionary;
 	}
@@ -106,6 +125,21 @@ public class Round
 
 		return this.dictionary.isSame(dictionary);
 	}
+
+	/**
+	 * Идентификатор игры.
+	 */
+	private int gameId;
+
+	/**
+	 * Время начала времени в Unix-time (миллисекунды).
+	 */
+	private long beginTimeMilliseconds;
+
+	/**
+	 * Дата и время начала игры
+	 */
+	private Date beginTime;
 
 	/**
 	 * Словарь.
