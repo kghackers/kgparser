@@ -21,6 +21,7 @@ public class Round
 			if (playerRoundResult.getPlayer().equals(result.getPlayer()))
 				throw new IllegalArgumentException("Round already contains result for player: " + result.getPlayer().getProfileId() + " (name: " + result.getPlayer().getName() + ")");
 
+		result.setRound(this);
 		results.add(result);
 	}
 

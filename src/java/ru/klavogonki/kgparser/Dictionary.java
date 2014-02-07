@@ -18,18 +18,23 @@ public class Dictionary
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public Integer getId() {
+		if ( this.isStandard() )
+			return null;
+
+		return getDictionaryId( this.getCode() );
+//		return id;
+	}
+//	public void setId(int id) {
+//		this.id = id;
+//	}
 
 	public boolean hasCode(String dictionaryCode) {
 		if ( StringUtils.empty(dictionaryCode) )
@@ -53,6 +58,15 @@ public class Dictionary
 			return false;
 
 		return this.code.equals(((Dictionary) obj).getCode());
+	}
+
+	/**
+	 * @return <code>true</code> &mdash; если словарь является {@linkplain StandardDictionary стандартным};
+	 * <br/>
+	 * <code>false</code> &mdash; если словарь является пользовательским словарем.
+	 */
+	public boolean isStandard() {
+		return isStandard(this.code);
 	}
 
 	/**
@@ -91,10 +105,10 @@ public class Dictionary
 	 */
 	private String code;
 
-	/**
-	 * Код словаря для нестандартных словарей.
-	 */
-	private int id;
+//	/**
+//	 * Код словаря для нестандартных словарей.
+//	 */
+//	private int id;
 
 	/**
 	 * Название словаря.

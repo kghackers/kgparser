@@ -36,10 +36,17 @@ public class FakeDataFactory
 		Round charsRound1 = createRound(chars);
 		charsRound1.addResult( new PlayerRoundResult(charsRound1, nosferatum) );
 
+		Round frequentRound1 = createRound(frequent);
+		frequentRound1.addResult( new PlayerRoundResult(frequentRound1, nosferatum) );
+		frequentRound1.addResult( new PlayerRoundResult(frequentRound1, ToNick) );
+		frequentRound1.addResult( new PlayerRoundResult(frequentRound1, Elena) );
+		frequentRound1.addResult( new PlayerRoundResult(frequentRound1, alanen) );
+
 		Competition competition = new Competition();
 		competition.addRound(normalRound1);
 		competition.addRound(normalRound2);
 		competition.addRound(charsRound1);
+		competition.addRound(frequentRound1);
 
 		return competition;
 	}
