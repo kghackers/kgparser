@@ -67,6 +67,18 @@ public class Round
 	public void setText(String text) {
 		this.text = text;
 	}
+	public String getBookAuthor() {
+		return bookAuthor;
+	}
+	public void setBookAuthor(String bookAuthor) {
+		this.bookAuthor = bookAuthor;
+	}
+	public String getBookName() {
+		return bookName;
+	}
+	public void setBookName(String bookName) {
+		this.bookName = bookName;
+	}
 	public List<PlayerRoundResult> getResults() {
 		return results;
 	}
@@ -92,9 +104,10 @@ public class Round
 			if (roundPlayer == null)
 				throw new IllegalStateException("PlayerRoundResult has no player");
 
+			if ( roundPlayer.isGuest() )
+				continue;
+
 			Integer roundPlayerProfileId = roundPlayer.getProfileId();
-			if (roundPlayerProfileId == null)
-				throw new IllegalStateException("PlayerRoundResult has player with no profileId");
 
 			if ( roundPlayerProfileId.equals(profileId) )
 				return result;
@@ -241,6 +254,32 @@ public class Round
 	 * Текст заезда без ошибок.
 	 */
 	private String text;
+
+	/**
+	 * Автор книги, из которой взят отрывок, по которому проходит заезд.
+	 * <br/>
+	 * Заполняется только для следующих стандартных режимов:
+	 * <ul>
+	 *   <li>{@linkplain StandardDictionary#normal Обычный}</li>
+	 *   <li>{@linkplain StandardDictionary#noerror Безошибочный}</li>
+	 *   <li>{@linkplain StandardDictionary#sprint Спринт}</li>
+	 *   <li>{@linkplain StandardDictionary#marathon Марафон}</li>
+	 * </ul>
+	 */
+	private String bookAuthor;
+
+	/**
+	 * Название книги, из которой взят отрывок, по которому проходит заезд.
+	 * <br/>
+	 * Заполняется только для следующих стандартных режимов:
+	 * <ul>
+	 *   <li>{@linkplain StandardDictionary#normal Обычный}</li>
+	 *   <li>{@linkplain StandardDictionary#noerror Безошибочный}</li>
+	 *   <li>{@linkplain StandardDictionary#sprint Спринт}</li>
+	 *   <li>{@linkplain StandardDictionary#marathon Марафон}</li>
+	 * </ul>
+	 */
+	private String bookName;
 
 	/**
 	 * Результаты игроков в заезде.

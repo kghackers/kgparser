@@ -47,6 +47,7 @@ public class Competition
 	// todo: копия такого метода с учетом минимального числа заездов
 	/**
 	 * @return список всех игроков, принимавших участие хотя бы в одном заезде соревнования.
+	 * <strong>Гости не учитываются.</strong>
 	 */
 	public Set<Player> getPlayers() {
 		Set<Player> players = new HashSet<>();
@@ -55,7 +56,13 @@ public class Competition
 		{
 			List<PlayerRoundResult> results = round.getResults();
 			for (PlayerRoundResult result : results)
-				players.add(result.getPlayer());
+			{
+				Player player = result.getPlayer();
+				if ( !player.isGuest() )
+				{
+					players.add(player);
+				}
+			}
 		}
 
 		return players;

@@ -5,15 +5,14 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.klavogonki.kgparser.*;
+import ru.klavogonki.kgparser.Dictionary;
 import su.opencode.kefir.util.DateUtils;
 import su.opencode.kefir.util.FileUtils;
 import su.opencode.kefir.util.StringUtils;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static su.opencode.kefir.util.StringUtils.concat;
 
@@ -29,11 +28,124 @@ public class VoidmainJsonParser
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		BasicConfigurator.configure();
 
+/*
 //		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\game_37411.json";
-		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\kuvet_1_game_97265.json";
+//		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\kuvet_01_game_97265.json";
+		String filePath =  "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\kuvet_12_game_48526.json";
+		parseRoundFromFile(filePath);
+*/
+
+		String competitionName = "Кювет №55";
+		String dirPath = "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\";
+		parseCompetition(competitionName, dirPath);
+	}
+
+	private static Round parseRoundFromFile(String filePath) throws UnsupportedEncodingException {
 		byte[] jsonBytes = FileUtils.readFile(filePath);
 		String json = new String(jsonBytes, StringUtils.CHARSET_UTF8);
-		parseRound(json);
+		return parseRound(json);
+	}
+
+	/**
+	 * Парсит соревнование на основе всех файлов, сохраненных в указанной директории.
+	 * Поддиректории не учитываются.
+	 * @param competitionName название соревнования
+	 * @param dirPath путь к директории, в которой хранятся json-файлы с результатами заездов соревнования
+	 * @return распарсенная модель соревнования
+	 */
+	public static Competition parseCompetition(String competitionName, String dirPath) throws UnsupportedEncodingException {
+		StringBuilder sb = new StringBuilder();
+
+		File dir = new File(dirPath);
+		if ( !dir.isDirectory() )
+			throw new IllegalArgumentException( concat(sb, "\"", dirPath, "\" is not a directory.") );
+
+		List<Round> rounds = new ArrayList<>();
+
+		File[] files = dir.listFiles();
+		if ( (files == null) || (files.length == 0) )
+			throw new IllegalArgumentException( concat(sb, "Directory \"", dirPath, "\" does not contain any files.") );
+
+		for (File file : files)
+		{
+			if ( file.isDirectory() ) // skip inner directories
+				continue;
+
+			String filePath = file.getAbsolutePath();
+			logger.info("");
+			logger.info("========================================================================");
+			logger.info( concat(sb, "Parsing Round from file \"", filePath, "\"") );
+			Round round = parseRoundFromFile(filePath);
+			rounds.add(round);
+			logger.info( concat(sb, "Round successfully parsed from file \"", filePath, "\".") );
+		}
+
+		logger.info("========================================================================");
+		logger.info( concat(sb, "Total rounds parsed: ", rounds.size()) );
+
+		Competition competition = new Competition();
+		competition.setName(competitionName);
+		competition.setRounds(rounds);
+
+		logFilledCompetitionInfo(competition);
+		return competition;
+	}
+	private static void logFilledCompetitionInfo(Competition competition) {
+		StringBuilder sb = new StringBuilder();
+		logger.info("===========================================");
+		logger.info("Competition info:");
+		logger.info( concat(sb, "Name: ", competition.getName()) );
+
+		Set<Dictionary> dictionaries = competition.getDictionaries();
+		logger.info("");
+		logger.info( concat(sb, "Total dictionaries: ", dictionaries.size()) );
+
+		for (Dictionary dictionary : dictionaries)
+		{
+			logger.info( concat(sb
+				, "Dictionary: "
+				, dictionary.getName(), "."
+				, " Code: ", dictionary.getCode(), "."
+			) );
+		}
+
+		logger.info("===========================================");
+		Map<String, List<Round>> roundsByDictionaries = competition.getRoundsByDictionariesMap();
+		for (String dictionaryCode : roundsByDictionaries.keySet())
+		{
+			List<Round> dictionaryRounds = roundsByDictionaries.get(dictionaryCode);
+			Dictionary dictionary = dictionaryRounds.get(0).getDictionary();
+
+			logger.info( concat(sb
+				, "Dictionary: "
+				, dictionary.getName(), "."
+				, " Code: ", dictionary.getCode(), "."
+				, " Rounds by dictionary count: ", dictionaryRounds.size(), "."
+			) );
+		}
+
+		Set<Player> players = competition.getPlayers();
+		logger.info("");
+		logger.info( concat(sb, "Total players (not including guests): ", players.size()) );
+
+		// todo: may be sort players by rounds count desc
+		for (Player player : players)
+		{
+			logger.info("===========================================");
+			logger.info( concat(sb, "Player ", player.getName(), " (profileId = ", player.getProfileId(), ")") );
+
+			int playerTotalRoundsCount = competition.getRoundsCount(player);
+			logger.info( concat(sb, "Player total rounds count: ", playerTotalRoundsCount) );
+
+			for (Dictionary dictionary : dictionaries)
+			{ // players result for each dictionary
+				int playerDictionaryRoundsCount = competition.getRoundsCount(player, dictionary);
+				logger.info( concat(sb
+					, "Dictionary: ", dictionary.getName(), " ( code = ", dictionary.getCode(), " )."
+					, " Player rounds count: ", playerDictionaryRoundsCount
+				) );
+			}
+		}
 	}
 
 	public static Round parseRound(String json) {
@@ -49,8 +161,24 @@ public class VoidmainJsonParser
 		String dictionaryCode = gameInfo.getString("type");
 
 		String text = null;
-		if ( jsonObject.has("text") )
-			text = jsonObject.getString("text");
+		String bookAuthor = null;
+		String bookName = null;
+		Integer textLength = null;
+		if ( (jsonObject.has("textinfo")) && !(jsonObject.isNull("textinfo")) ) // todo: refactor this check to separate static method in kefir
+		{
+			JSONObject textInfo = jsonObject.getJSONObject("textinfo");
+
+			if ( !textInfo.isNull("text") )
+				text = textInfo.getString("text");
+
+//			textLength = textInfo.getInt("length");
+
+			if ( !textInfo.isNull("author") )
+				bookAuthor = textInfo.getString("author");
+
+			if ( !textInfo.isNull("name") )
+				bookName = textInfo.getString("name");
+		}
 
 		JSONArray placesJson = jsonObject.getJSONArray("places");
 		int placesCount = placesJson.length();
@@ -138,8 +266,12 @@ public class VoidmainJsonParser
 				result.setErrorPercentage(errorsPercentage);
 
 				if (isNotGuest)
-				{ /// todo: think about saving guests as players
+				{ // player is not guest
 					result.setPlayer(player);
+				}
+				else
+				{ // player is guest
+					result.setPlayer(player); // save guest as player
 				}
 
 				// todo: think about adding not guests
@@ -167,12 +299,15 @@ public class VoidmainJsonParser
 
 		Dictionary dictionary = new Dictionary();
 		dictionary.setCode(dictionaryCode);
+		// todo: fill dictionary name using ajax api
 
 		Round round = new Round();
 		round.setGameId(gameId);
 		round.setBeginTimeMilliseconds(beginTimeMilliseconds);
 		round.setBeginTime(beginTime);
 		round.setText(text);
+		round.setBookName(bookName);
+		round.setBookAuthor(bookAuthor);
 
 		round.setDictionary(dictionary);
 		round.setResults(results);
@@ -187,6 +322,18 @@ public class VoidmainJsonParser
 		logger.info("===========================================");
 		logger.info("Round info:");
 		logger.info( concat(sb, "Begin time: ", DateUtils.getDayMonthYearHourMinuteSecondFormat().format(round.getBeginTime()) ) );
+
+		Dictionary dictionary = round.getDictionary();
+		logger.info( concat(sb
+			, "Dictionary: "
+			, dictionary.getName(), "."
+			, " Code: ", dictionary.getCode(), "."
+		) );
+
+//		logger.info( concat(sb, "Text length: ", round.getTextLength()) );
+		logger.info( concat(sb, "Text: ", round.getText()) );
+		logger.info( concat(sb, "Book author: ", round.getBookAuthor()) );
+		logger.info( concat(sb, "Book name: ", round.getBookName()) );
 		logger.info( concat(sb, "Min place: ", round.getMinPlace()) );
 		logger.info( concat(sb, "Max place: ", round.getMaxPlace()) );
 
