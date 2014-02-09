@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.klavogonki.kgparser.*;
+import su.opencode.kefir.util.DateUtils;
 import su.opencode.kefir.util.FileUtils;
 import su.opencode.kefir.util.StringUtils;
 
@@ -28,7 +29,8 @@ public class VoidmainJsonParser
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		BasicConfigurator.configure();
 
-		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\game_37411.json";
+//		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\game_37411.json";
+		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\kuvet_1_game_97265.json";
 		byte[] jsonBytes = FileUtils.readFile(filePath);
 		String json = new String(jsonBytes, StringUtils.CHARSET_UTF8);
 		parseRound(json);
@@ -71,10 +73,11 @@ public class VoidmainJsonParser
 
 		List<PlayerRoundResult> results = new ArrayList<>();
 
-		for (int i = 0; i < playersCount; i++)
+		for (int playerIndex = 0; playerIndex < playersCount; playerIndex++)
 		{
-			JSONObject playerJson = players.getJSONObject(i);
+			JSONObject playerJson = players.getJSONObject(playerIndex);
 			Player player = new Player();
+			PlayerRoundResult result = new PlayerRoundResult();
 
 			boolean finished;
 			long finishedTimeMilliseconds = -1; // finished time, in milliseconds
@@ -95,11 +98,11 @@ public class VoidmainJsonParser
 				player.setName(login);
 				player.setRank(rank);
 
-				logger.info( concat("Player number ", i, " is ", login, " (profileId = ", profileId, ")."));
+				logger.info( concat(sb, "Player number ", playerIndex, " is ", login, " (profileId = ", profileId, ")."));
 			}
 			else
 			{
-				logger.info( concat("Player number ", i, " is a guest."));
+				logger.info( concat(sb, "Player number ", playerIndex, " is a guest."));
 			}
 
 
@@ -123,12 +126,11 @@ public class VoidmainJsonParser
 			}
 
 			if (finished)
-			{
+			{ // игрок проехал заезд
 				int speed = playerJson.getInt("speed");
 				int errorsCount = playerJson.getInt("errorsCount");
 				double errorsPercentage = playerJson.getDouble("errorsPercent");
 
-				PlayerRoundResult result = new PlayerRoundResult();
 				result.setFinishedTimeMilliseconds(finishedTimeMilliseconds);
 				result.setFinishedTime(finishedTime);
 				result.setSpeed(speed);
@@ -144,10 +146,23 @@ public class VoidmainJsonParser
 				results.add(result);
 			}
 			else
-			{
+			{ // игрок не проехал заезд
 				// do not add result to list // todo: think about actions in this case
+				logger.info( concat(sb, "Player number ", playerIndex, " has not finished.") );
 			}
 
+			// search player index in "places" array
+			for (int j = 0; j < placesIndices.length; j++)
+			{
+				if (placesIndices[j] == playerIndex)
+				{ // индекс игрока найден в массиве "places"
+					int place = j + PlayerRoundResult.FIRST_PLACE; // места начинаются с 1
+					if ( !finished )
+						throw new IllegalStateException( concat(sb, "Player number ", playerIndex, " has not finished, but he is present in \"players\" array (players[", j, "] = ", placesIndices[j], ")") );
+
+					result.setPlace(place);
+				}
+			}
 		}
 
 		Dictionary dictionary = new Dictionary();
@@ -160,8 +175,46 @@ public class VoidmainJsonParser
 		round.setText(text);
 
 		round.setDictionary(dictionary);
+		round.setResults(results);
+
+		logFilledRoundInfo(round);
 
 		return round;
+	}
+	private static void logFilledRoundInfo(Round round) {
+		StringBuilder sb = new StringBuilder();
+
+		logger.info("===========================================");
+		logger.info("Round info:");
+		logger.info( concat(sb, "Begin time: ", DateUtils.getDayMonthYearHourMinuteSecondFormat().format(round.getBeginTime()) ) );
+		logger.info( concat(sb, "Min place: ", round.getMinPlace()) );
+		logger.info( concat(sb, "Max place: ", round.getMaxPlace()) );
+
+		List<PlayerRoundResult> results = round.getResultsSortedByPlace();
+		for (PlayerRoundResult result : results)
+		{
+			Player player = result.getPlayer();
+			Integer place = result.getPlace();
+
+			if (player.isGuest())
+			{
+				logger.info( concat(sb
+					, "Place ", place, ": guest."
+					, " Speed = ", result.getSpeed(), "."
+					, " Errors count = ", result.getErrorsCount(), "."
+					, " Error percentage = ", result.getErrorPercentage(), "."
+				) );
+			}
+			else
+			{
+				logger.info( concat(sb
+					, "Place ", place, ": ", player.getName() , " (profileId = ", player.getProfileId(), ")."
+					, " Speed = ", result.getSpeed(), "."
+					, " Errors count = ", result.getErrorsCount(), "."
+					, " Error percentage = ", result.getErrorPercentage(), "."
+				) );
+			}
+		}
 	}
 
 	private static final Logger logger = Logger.getLogger(VoidmainJsonParser.class);

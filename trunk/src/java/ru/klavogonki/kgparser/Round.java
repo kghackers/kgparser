@@ -5,9 +5,14 @@
  */
 package ru.klavogonki.kgparser;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Заезд. Содержит результаты всех игроков в этом заезде.
@@ -127,6 +132,86 @@ public class Round
 	}
 
 	/**
+	 * @return минимальное место игрока в заезде или -1, если ни в одном из результатов игроков нет установленного места.
+	 * Должно быть равно {@linkplain PlayerRoundResult#FIRST_PLACE первому месту}.
+	 */
+	public int getMinPlace() {
+		int minPlace = -1;
+
+		for (PlayerRoundResult result : results)
+		{
+			Integer playerPlace = result.getPlace();
+			if (playerPlace == null)
+			{
+				logger.info( concat("PlayerRoundResult for player has no place set") ); // todo: add player info
+				continue; // player place not set -> ignore this result
+			}
+			else if (minPlace == -1)
+			{
+				minPlace = playerPlace;
+			}
+			else if (playerPlace < minPlace)
+			{
+				minPlace = playerPlace;
+			}
+		}
+
+		return minPlace;
+	}
+
+	/**
+	 * @return минимальное место доехавшего игрока в заезде или -1, если ни в одном из результатов игроков нет установленного места
+	 * Должно быть равно количеству доехавших игроков. // todo: ссылка на метод, определяющий finished
+	 */
+	public int getMaxPlace() {
+		int maxPlace = -1;
+
+		for (PlayerRoundResult result : results)
+		{
+			Integer playerPlace = result.getPlace();
+			if (playerPlace == null)
+			{
+				logger.info( concat("PlayerRoundResult for player has no place set") ); // todo: add player info
+				continue; // player place not set -> ignore this result
+			}
+			else if (maxPlace == -1)
+			{
+				maxPlace = playerPlace;
+			}
+			else if (playerPlace > maxPlace)
+			{
+				maxPlace = playerPlace;
+			}
+		}
+
+		return maxPlace;
+	}
+
+	/**
+	 * @return список результатов заезда, упорядоченных по месту игрока в заезде
+	 */
+	public List<PlayerRoundResult> getResultsSortedByPlace() {
+		List<PlayerRoundResult> sortedResults = new ArrayList<>();
+		for (PlayerRoundResult result : results)
+			sortedResults.add(result);
+
+		Collections.sort(sortedResults, new PlayerRoundResultPlacesComparator());
+
+		// check places
+		int minPlace = getMinPlace();
+		int maxPlace = getMaxPlace();
+
+		for (int correctPlace = minPlace; correctPlace <= maxPlace; correctPlace++)
+		{
+			Integer place = sortedResults.get(correctPlace - 1).getPlace();
+			if ( (place == null) || (place != correctPlace) )
+				throw new IllegalStateException( concat("Incorrect PlayerRoundResult place: must be ", correctPlace, ", but is ", place) ); // todo: add player info
+		}
+
+		return sortedResults;
+	}
+
+	/**
 	 * Идентификатор игры.
 	 */
 	private int gameId;
@@ -161,4 +246,6 @@ public class Round
 	 * Результаты игроков в заезде.
 	 */
 	private List<PlayerRoundResult> results;
+
+	private static final Logger logger = Logger.getLogger(Round.class);
 }
