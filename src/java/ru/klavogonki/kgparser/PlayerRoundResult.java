@@ -36,6 +36,12 @@ public class PlayerRoundResult
 	}
 
 	public Integer getPlace() {
+		if (place == null)
+			return null;
+
+		if (place < FIRST_PLACE)
+			throw new IllegalArgumentException( concat("Incorrect place: ", place) );
+
 		return place;
 	}
 	public void setPlace(Integer place) {
@@ -104,6 +110,13 @@ public class PlayerRoundResult
 			throw new IllegalArgumentException( concat("Incorrect time: ", time) );
 
 		this.time = time;
+	}
+
+	public static boolean isCorrectPlace(Integer place) {
+		if (place == null)
+			return true;
+
+		return (place >= FIRST_PLACE);
 	}
 
 	/**
