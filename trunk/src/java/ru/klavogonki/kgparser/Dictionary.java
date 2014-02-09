@@ -60,6 +60,11 @@ public class Dictionary
 		return this.code.equals(((Dictionary) obj).getCode());
 	}
 
+	@Override
+	public int hashCode() { // necessary for HashMap
+		return this.code.hashCode();
+	}
+
 	/**
 	 * @return <code>true</code> &mdash; если словарь является {@linkplain StandardDictionary стандартным};
 	 * <br/>
