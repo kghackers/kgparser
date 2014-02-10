@@ -6,6 +6,7 @@
 package ru.klavogonki.kgparser;
 
 import org.apache.log4j.Logger;
+import su.opencode.kefir.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,6 +91,10 @@ public class Round
 	}
 	public void setResults(List<PlayerRoundResult> results) {
 		this.results = results;
+
+		if ( ObjectUtils.notEmpty(this.results) )
+			for (PlayerRoundResult result : results)
+				result.setRound(this);
 	}
 
 	public int getTextLength() {
