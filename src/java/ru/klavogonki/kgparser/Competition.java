@@ -5,9 +5,12 @@
  */
 package ru.klavogonki.kgparser;
 
+import org.apache.log4j.Logger;
 import su.opencode.kefir.util.StringUtils;
 
 import java.util.*;
+
+import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Соревнование. Содержит в себе набор заездов в рамках соревнования.
@@ -252,6 +255,77 @@ public class Competition
 	}
 
 	/**
+	 * @param number номер заезда
+	 * @return заезд с таким номером или <code>null</code>, если заезда с таким номером в соревновании нет.
+	 */
+	public Round getRound(int number) {
+		for (Round round : rounds)
+		{
+			Integer roundNumber = round.getNumber();
+			if ( roundNumber.equals(number) )
+				return round;
+		}
+
+		logger.info( concat(sb, "Round with number ", number, " is not present in competition \"", name, "\"") );
+		return null;
+	}
+
+	/**
+	 * @param player игрок
+	 * @param roundNumber сквозной номер заезда в соревновании
+	 * @return результат, или <code>null</code>, если игрок не финишировал в заезде с указанным номером
+	 */
+	public PlayerRoundResult getPlayerRoundResult(Player player, Integer roundNumber) {
+		Round round = getRound(roundNumber);
+		if (round == null)
+			throw new IllegalArgumentException( concat(sb, "Round with number ", roundNumber, " is not present in competition \"", name, "\"") );
+
+		return round.getPlayerResult(player);
+	}
+
+	/**
+	 * @param player игрок
+	 * @return список результатов игрока во всех заездах, где они присутствуют.
+	 */
+	public List<PlayerRoundResult> getPlayerRoundResults(Player player) {
+		List<PlayerRoundResult> playerResults = new ArrayList<>();
+
+		for (Round round : rounds)
+		{
+			PlayerRoundResult playerResult = round.getPlayerResult(player);
+			if (playerResult != null)
+			{
+				playerResults.add(playerResult);
+			}
+		}
+
+		return playerResults;
+	}
+
+	/**
+	 * @param player игрок
+	 * @param dictionary словарь
+	 * @return список результатов игрока во всех заездах по указанному словарю, где результат игрока присутствует.
+	 */
+	public List<PlayerRoundResult> getPlayerRoundResults(Player player, Dictionary dictionary) {
+		List<PlayerRoundResult> playerResults = new ArrayList<>();
+
+		for (Round round : rounds)
+		{
+			if ( round.getDictionary().isSame(dictionary) )
+			{
+				PlayerRoundResult playerResult = round.getPlayerResult(player);
+				if (playerResult != null)
+				{
+					playerResults.add(playerResult);
+				}
+			}
+		}
+
+		return playerResults;
+	}
+
+	/**
 	 * Название соревнования.
 	 */
 	private String name;
@@ -260,4 +334,8 @@ public class Competition
 	 * Заезды в рамках соревнования.
 	 */
 	private List<Round> rounds;
+
+	private StringBuffer sb = new StringBuffer();
+
+	private static final Logger logger = Logger.getLogger(Competition.class);
 }
