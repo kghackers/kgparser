@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.klavogonki.kgparser.*;
 import ru.klavogonki.kgparser.Dictionary;
+import ru.klavogonki.kgparser.processing.AverageSpeedCounter;
 import su.opencode.kefir.util.DateUtils;
 import su.opencode.kefir.util.FileUtils;
 import su.opencode.kefir.util.StringUtils;
@@ -36,8 +37,10 @@ public class VoidmainJsonParser
 */
 
 		String competitionName = "Кювет №55";
-		String dirPath = "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\";
-		parseCompetition(competitionName, dirPath);
+		String dirPath = "E:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\";
+		Competition competition = parseCompetition(competitionName, dirPath);
+
+		AverageSpeedCounter.logCompetitionInfo(competition);
 	}
 
 	private static Round parseRoundFromFile(String filePath) throws UnsupportedEncodingException {
