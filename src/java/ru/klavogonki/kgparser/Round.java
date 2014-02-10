@@ -61,6 +61,12 @@ public class Round
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
+	public Integer getNumberInDictionary() {
+		return numberInDictionary;
+	}
+	public void setNumberInDictionary(Integer numberInDictionary) {
+		this.numberInDictionary = numberInDictionary;
+	}
 	public String getText() {
 		return text;
 	}
@@ -245,10 +251,14 @@ public class Round
 	private Dictionary dictionary;
 
 	/**
-	 * Номер заезда (в рамках игры).
-	 * // todo: порешить, как нумеруются заезды в случае, когда соревнование состоит из нескольких режимов
+	 * Номер заезда (в рамках соревнования целиком).
 	 */
 	private Integer number;
+
+	/**
+	 * Номер заезда в рамках конкретного словаря.
+	 */
+	private Integer numberInDictionary;
 
 	/**
 	 * Текст заезда без ошибок.
@@ -285,6 +295,11 @@ public class Round
 	 * Результаты игроков в заезде.
 	 */
 	private List<PlayerRoundResult> results;
+
+	/**
+	 * Номер первого заезда.
+	 */
+	public static final int FIRST_ROUND_NUMBER = 1;
 
 	private static final Logger logger = Logger.getLogger(Round.class);
 }

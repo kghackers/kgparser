@@ -44,6 +44,31 @@ public class Competition
 		this.rounds.add(round);
 	}
 
+	/**
+	 * Упорядочивает заезды соревнования по дате начала
+	 * и устанавливает номера заездов (как по всему соревнованию, так и внутри словарей).
+	 */
+	public void orderRoundsByBeginTime() {
+		Collections.sort(rounds, new RoundBeginTimeComparator());
+
+		for (int i = 0, roundsSize = rounds.size(); i < roundsSize; i++)
+		{
+			Round round = rounds.get(i);
+			round.setNumber(i + Round.FIRST_ROUND_NUMBER); // номер заезда
+		}
+
+		Map<String, List<Round>> map = getRoundsByDictionariesMap();
+		for (String dictionaryCode : map.keySet())
+		{
+			List<Round> rounds = map.get(dictionaryCode);
+			for (int i = 0, roundsSize = rounds.size(); i < roundsSize; i++)
+			{
+				Round round = rounds.get(i);
+				round.setNumberInDictionary(i + Round.FIRST_ROUND_NUMBER);
+			}
+		}
+	}
+
 	// todo: копия такого метода с учетом минимального числа заездов
 	/**
 	 * @return список всех игроков, принимавших участие хотя бы в одном заезде соревнования.
