@@ -148,6 +148,21 @@ public class VoidmainJsonParser
 				) );
 			}
 		}
+
+		List<Round> rounds = competition.getRounds();
+		logger.info("");
+		logger.info( concat(sb, "Total rounds: ", rounds.size()) );
+
+		for (Round round : rounds)
+		{
+			Dictionary roundDictionary = round.getDictionary();
+
+			logger.info( concat(sb
+				, "Round number: ", round.getNumber(), "."
+				, " Dictionary: ", roundDictionary.getName(), " (code = ", roundDictionary.getCode(), ")."
+				, " Number in dictionary: ", round.getNumberInDictionary(), "."
+			) );
+		}
 	}
 
 	public static Round parseRound(String json) {
