@@ -85,7 +85,9 @@ public class VoidmainJsonParser
 
 		Competition competition = new Competition();
 		competition.setName(competitionName);
+
 		competition.setRounds(rounds);
+		competition.orderRoundsByBeginTime();
 
 		logFilledCompetitionInfo(competition);
 		return competition;
