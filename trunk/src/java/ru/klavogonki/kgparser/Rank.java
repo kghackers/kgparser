@@ -137,7 +137,7 @@ public enum Rank
 	 * @param rank ранг
 	 * @return числовой код ранга (level)
 	 */
-	public static byte getLevel(Rank rank) {
+	public static Byte getLevel(Rank rank) {
 		switch (rank)
 		{
 			case novice: return 1;

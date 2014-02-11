@@ -73,6 +73,23 @@ public class Competition
 		}
 	}
 
+	/**
+	 * @return множество рангов всех игроков, представленных в соревновании.
+	 * Ранги упорядочены по возрастанию.
+	 */
+	public SortedSet<Rank> getRanks() {
+		SortedSet<Rank> ranks = new TreeSet<>( new RankComparator() );
+
+		Set<Player> players = getPlayers();
+		for (Player player : players)
+		{
+			if ( !player.isGuest() )
+				ranks.add( player.getRank() );
+		}
+
+		return ranks;
+	}
+
 	// todo: копия такого метода с учетом минимального числа заездов
 	/**
 	 * @return список всех игроков, принимавших участие хотя бы в одном заезде соревнования.
