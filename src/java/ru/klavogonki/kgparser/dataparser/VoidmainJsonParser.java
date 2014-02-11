@@ -37,10 +37,16 @@ public class VoidmainJsonParser
 */
 
 		String competitionName = "Кювет №55";
-		String dirPath = "E:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\";
+		String dirPath = "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\";
 		Competition competition = parseCompetition(competitionName, dirPath);
 
 		AverageSpeedCounter.logCompetitionInfo(competition);
+
+/*
+		HighChartValue highChartValue = SpeedChartFiller.fillData(competition);
+		System.out.println("highchartValue: ");
+		System.out.println(highChartValue.toJson());
+*/
 	}
 
 	private static Round parseRoundFromFile(String filePath) throws UnsupportedEncodingException {
@@ -91,6 +97,8 @@ public class VoidmainJsonParser
 
 		competition.setRounds(rounds);
 		competition.orderRoundsByBeginTime();
+
+		competition.fillDictionariesNames();
 
 		logFilledCompetitionInfo(competition);
 		return competition;

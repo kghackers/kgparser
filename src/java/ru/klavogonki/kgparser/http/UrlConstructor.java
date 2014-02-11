@@ -2,6 +2,8 @@ package ru.klavogonki.kgparser.http;
 
 import ru.klavogonki.kgparser.Player;
 
+import static su.opencode.kefir.util.StringUtils.concat;
+
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
@@ -16,7 +18,7 @@ public class UrlConstructor
 	 * @return урл профиля игрока
 	 */
 	public static String getProfileUrl(int playerId) {
-		return DOMAIN_NAME + "/profile/" + Integer.toString(playerId) + "/";
+		return concat(DOMAIN_NAME,  "/profile/", Integer.toString(playerId) + "/");
 //		return "http://klavogonki.ru/u/#/" + Integer.toString(playerId) + "/"; // new profile
 	}
 	/**
@@ -28,11 +30,14 @@ public class UrlConstructor
 	}
 
 	public static String getGetPlayerSummaryUrl(int playerId) {
-		return DOMAIN_NAME + "/api/profile/get-summary?id=" + playerId;
+		return concat(DOMAIN_NAME, "/api/profile/get-summary?id=", playerId);
 	}
 
+	public static String getGetPlayerStatsOverviewUrl(int playerId) {
+		return concat(DOMAIN_NAME, "/api/profile/get-stats-overview?userId=", playerId);
+	}
 	public static String getGetPlayerStatsDetailsUrl(int playerId, String dictionaryCode) {
-		return DOMAIN_NAME + "/api/profile/get-stats-details?userId="+ playerId + "&gametype=" + dictionaryCode;
+		return concat(DOMAIN_NAME, "/api/profile/get-stats-details?userId=", playerId, "&gametype=", dictionaryCode);
 	}
 
 	/**
@@ -40,9 +45,8 @@ public class UrlConstructor
 	 * @return урл страницы словаря на клавогонках
 	 */
 	public static String getDictionaryPageUrl(int dictionaryId) {
-		return DOMAIN_NAME + "/vocs/" + Integer.toString(dictionaryId); // todo: use concat
+		return concat(DOMAIN_NAME, "/vocs/", dictionaryId);
 	}
-
 
 	public static final String DOMAIN_NAME = "http://klavogonki.ru";
 }
