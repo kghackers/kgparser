@@ -6,6 +6,7 @@
 package ru.klavogonki.kgparser;
 
 import org.apache.log4j.Logger;
+import ru.klavogonki.kgparser.http.HttpClientTest;
 import su.opencode.kefir.util.StringUtils;
 
 import java.util.*;
@@ -112,6 +113,42 @@ public class Competition
 		}
 
 		return dictionaries;
+	}
+
+	/**
+	 * Заполняет имена словарей всех заездов.
+	 */
+	public void fillDictionariesNames() {
+		Set<Dictionary> dictionaries = this.getDictionaries();
+
+		List<String> nonStandardDictionariesCodes = new ArrayList<>();
+		Map<String, String> codesToNames = new HashMap<>();
+		for (Dictionary dictionary : dictionaries)
+		{
+			String dictionaryCode = dictionary.getCode();
+
+			if (dictionary.isStandard())
+			{
+				StandardDictionary standardDictionary = StandardDictionary.valueOf(dictionaryCode);
+				codesToNames.put(dictionaryCode, StandardDictionary.getDisplayName(standardDictionary));
+			}
+			else
+			{
+				nonStandardDictionariesCodes.add(dictionaryCode);
+			}
+		}
+
+		Map<String, String> nonStandardDictionariesCodesToNames = HttpClientTest.getDictionariesNames(nonStandardDictionariesCodes);
+		for (String nonStandardDictionaryCode : nonStandardDictionariesCodesToNames.keySet())
+		{
+			codesToNames.put(nonStandardDictionaryCode, nonStandardDictionariesCodesToNames.get(nonStandardDictionaryCode));
+		}
+
+		// set dictionary name for each round's dictionary
+		for (Round round : rounds)
+		{
+			round.getDictionary().setName( codesToNames.get(round.getDictionary().getCode()) );
+		}
 	}
 
 	/**
