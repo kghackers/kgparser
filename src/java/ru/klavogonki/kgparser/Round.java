@@ -215,6 +215,9 @@ public class Round
 	 * @return список результатов заезда, упорядоченных по месту игрока в заезде
 	 */
 	public List<PlayerRoundResult> getResultsSortedByPlace() {
+		if ( ObjectUtils.empty(results) )
+			return Collections.emptyList();
+
 		List<PlayerRoundResult> sortedResults = new ArrayList<>();
 		for (PlayerRoundResult result : results)
 			sortedResults.add(result);
