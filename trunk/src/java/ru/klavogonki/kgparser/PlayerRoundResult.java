@@ -75,6 +75,16 @@ public class PlayerRoundResult
 		this.speed = speed;
 	}
 
+	public Integer getCharsTotal() {
+		return charsTotal;
+	}
+	public void setCharsTotal(Integer charsTotal) {
+		if (charsTotal <= 0)
+			throw new IllegalArgumentException( concat("Incorrect charsTotal: ", charsTotal) );
+
+		this.charsTotal = charsTotal;
+	}
+
 	public Integer getErrorsCount() {
 		return errorsCount;
 	}
@@ -148,6 +158,12 @@ public class PlayerRoundResult
 	 * Скорость набора, в знаках\минуту. Должна быть больше 0.
 	 */
 	private Integer speed;
+
+	/**
+	 * Количество символов, набранных игроком в заезде.
+	 * Актуально для марафона, для остальных режимов должно быть равно длине текста заезда.
+	 */
+	private Integer charsTotal;
 
 	/**
 	 * Количество ошибок. Может быть 0 или больше.
