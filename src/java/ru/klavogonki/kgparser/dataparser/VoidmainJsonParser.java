@@ -6,6 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.klavogonki.kgparser.*;
 import ru.klavogonki.kgparser.Dictionary;
+import ru.klavogonki.kgparser.processing.AverageSpeedCounter;
+import ru.klavogonki.kgparser.processing.HighChartValue;
+import ru.klavogonki.kgparser.processing.SpeedChartFiller;
 import su.opencode.kefir.util.DateUtils;
 import su.opencode.kefir.util.FileUtils;
 import su.opencode.kefir.util.StringUtils;
@@ -33,8 +36,10 @@ public class VoidmainJsonParser
 //		String filePath =  "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\kuvet_12_game_48526.json";
 //		parseRoundFromFile(filePath, VERSION_1_5);
 
+/*
 		String filePath =  "C:\\java\\kgparser\\doc\\voidmain\\game_67854__v17.json";
 		parseRoundFromFile(filePath, VERSION_1_7);
+*/
 
 /*
 		String competitionName = "Кювет №55";
@@ -45,10 +50,20 @@ public class VoidmainJsonParser
 */
 
 /*
+		String competitionName = "Марафоны 11.02.2014";
+		String dirPath = "C:\\java\\kgparser\\doc\\voidmain\\marathons_2014_02_11\\";
+		Competition competition = parseCompetition(competitionName, dirPath, VERSION_1_5);
+*/
+
+		String competitionName = "Серпантин №8 (11.02.2014)";
+		String dirPath = "C:\\java\\kgparser\\doc\\voidmain\\serpantin_08__2014_02_11\\";
+		Competition competition = parseCompetition(competitionName, dirPath, VERSION_1_5);
+
+		AverageSpeedCounter.logCompetitionInfo(competition);
+
 		HighChartValue highChartValue = SpeedChartFiller.fillData(competition);
 		System.out.println("highchartValue: ");
 		System.out.println(highChartValue.toJson());
-*/
 	}
 
 	private static Round parseRoundFromFile(String filePath, String scriptVersion) throws UnsupportedEncodingException {
@@ -146,6 +161,10 @@ public class VoidmainJsonParser
 				, " Rounds by dictionary count: ", dictionaryRounds.size(), "."
 			) );
 		}
+
+		logger.info("===========================================");
+		SortedSet<Rank> ranks = competition.getRanks();
+		logger.info( concat(sb, "Present player dictionary ranks: ", ranks.toString()) );
 
 		Set<Player> players = competition.getPlayers();
 		logger.info("");
