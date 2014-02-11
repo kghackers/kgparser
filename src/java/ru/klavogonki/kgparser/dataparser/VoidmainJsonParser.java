@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.klavogonki.kgparser.*;
 import ru.klavogonki.kgparser.Dictionary;
-import ru.klavogonki.kgparser.processing.AverageSpeedCounter;
 import su.opencode.kefir.util.DateUtils;
 import su.opencode.kefir.util.FileUtils;
 import su.opencode.kefir.util.StringUtils;
@@ -29,18 +28,21 @@ public class VoidmainJsonParser
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		BasicConfigurator.configure();
 
-/*
-//		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\game_37411.json";
+//		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\game_37411__v15.json";
 //		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\kuvet_01_game_97265.json";
-		String filePath =  "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\kuvet_12_game_48526.json";
-		parseRoundFromFile(filePath);
-*/
+//		String filePath =  "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\kuvet_12_game_48526.json";
+//		parseRoundFromFile(filePath, VERSION_1_5);
 
+		String filePath =  "C:\\java\\kgparser\\doc\\voidmain\\game_67854__v17.json";
+		parseRoundFromFile(filePath, VERSION_1_7);
+
+/*
 		String competitionName = "Кювет №55";
 		String dirPath = "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\";
 		Competition competition = parseCompetition(competitionName, dirPath);
 
 		AverageSpeedCounter.logCompetitionInfo(competition);
+*/
 
 /*
 		HighChartValue highChartValue = SpeedChartFiller.fillData(competition);
@@ -49,10 +51,17 @@ public class VoidmainJsonParser
 */
 	}
 
-	private static Round parseRoundFromFile(String filePath) throws UnsupportedEncodingException {
+	private static Round parseRoundFromFile(String filePath, String scriptVersion) throws UnsupportedEncodingException {
 		byte[] jsonBytes = FileUtils.readFile(filePath);
 		String json = new String(jsonBytes, StringUtils.CHARSET_UTF8);
-		return parseRound(json);
+
+		if ( StringUtils.empty(scriptVersion) || scriptVersion.equals(VERSION_1_5) )
+			return parseRound15(json);
+
+		if ( scriptVersion.equals(VERSION_1_7) )
+			return parseRound17(json);
+
+		throw new IllegalArgumentException( concat("Unsupported voidmain script version: ", scriptVersion) );
 	}
 
 	/**
@@ -60,9 +69,10 @@ public class VoidmainJsonParser
 	 * Поддиректории не учитываются.
 	 * @param competitionName название соревнования
 	 * @param dirPath путь к директории, в которой хранятся json-файлы с результатами заездов соревнования
+	 * @param scriptVersion версия скрипта voidmain
 	 * @return распарсенная модель соревнования
 	 */
-	public static Competition parseCompetition(String competitionName, String dirPath) throws UnsupportedEncodingException {
+	public static Competition parseCompetition(String competitionName, String dirPath, String scriptVersion) throws UnsupportedEncodingException {
 		StringBuilder sb = new StringBuilder();
 
 		File dir = new File(dirPath);
@@ -84,7 +94,7 @@ public class VoidmainJsonParser
 			logger.info("");
 			logger.info("========================================================================");
 			logger.info( concat(sb, "Parsing Round from file \"", filePath, "\"") );
-			Round round = parseRoundFromFile(filePath);
+			Round round = parseRoundFromFile(filePath, scriptVersion);
 			rounds.add(round);
 			logger.info( concat(sb, "Round successfully parsed from file \"", filePath, "\".") );
 		}
@@ -176,39 +186,44 @@ public class VoidmainJsonParser
 		}
 	}
 
-	public static Round parseRound(String json) {
+	/**
+	 * @param json JSON-данные, сохраненные версией 1.5 скрипта <a href="http://klavogonki.ru/u/#/364239/">voidmain</a>
+	 * @return модель заезда на основе json-данных заезда
+	 */
+	public static Round parseRound15(String json) {
 		StringBuilder sb = new StringBuilder();
 		JSONObject jsonObject = new JSONObject(json);
 
-		int gameId = jsonObject.getInt("id");
+		int gameId = jsonObject.getInt(GAME_ID_FIELD_NAME);
 
-		long beginTimeMilliseconds = jsonObject.getLong("beginTime");
+		long beginTimeMilliseconds = jsonObject.getLong(GAME_BEGIN_TIME_FIELD_NAME);
 		Date beginTime = new Date(beginTimeMilliseconds); // to milliseconds
 
-		JSONObject gameInfo = jsonObject.getJSONObject("gameInfo");
-		String dictionaryCode = gameInfo.getString("type");
+		JSONObject gameInfo = jsonObject.getJSONObject(GAME_INFO_FIELD_NAME);
+		String dictionaryCode = gameInfo.getString(GAME_INFO_TYPE_FIELD_NAME);
 
 		String text = null;
 		String bookAuthor = null;
 		String bookName = null;
 		Integer textLength = null;
-		if ( (jsonObject.has("textinfo")) && !(jsonObject.isNull("textinfo")) ) // todo: refactor this check to separate static method in kefir
+		if ( JSONObjectUtils.hasField(jsonObject, TEXT_INFO_FIELD_NAME_1_5) )
 		{
-			JSONObject textInfo = jsonObject.getJSONObject("textinfo");
+			JSONObject textInfo = jsonObject.getJSONObject(TEXT_INFO_FIELD_NAME_1_5);
 
-			if ( !textInfo.isNull("text") )
-				text = textInfo.getString("text");
+			if ( !textInfo.isNull(TEXT_INFO_TEXT_FIELD_NAME) )
+				text = textInfo.getString(TEXT_INFO_TEXT_FIELD_NAME);
 
-//			textLength = textInfo.getInt("length");
+//			if ( !textInfo.isNull(TEXT_INFO_LENGTH_FIELD_NAME) )
+//				textLength = textInfo.getInt(TEXT_INFO_LENGTH_FIELD_NAME);
 
-			if ( !textInfo.isNull("author") )
-				bookAuthor = textInfo.getString("author");
+			if ( !textInfo.isNull(TEXT_INFO_BOOK_AUTHOR_FIELD_NAME) )
+				bookAuthor = textInfo.getString(TEXT_INFO_BOOK_AUTHOR_FIELD_NAME);
 
-			if ( !textInfo.isNull("name") )
-				bookName = textInfo.getString("name");
+			if ( !textInfo.isNull(TEXT_INFO_BOOK_NAME_FIELD_NAME) )
+				bookName = textInfo.getString(TEXT_INFO_BOOK_NAME_FIELD_NAME);
 		}
 
-		JSONArray placesJson = jsonObject.getJSONArray("places");
+		JSONArray placesJson = jsonObject.getJSONArray(PLACES_FIELD_NAME);
 		int placesCount = placesJson.length();
 		logger.info( concat(sb, "places count: ", placesCount) );
 		int[] placesIndices = new int[placesCount]; // по порядку мест - индексы в массиве "players"
@@ -223,7 +238,7 @@ public class VoidmainJsonParser
 		}
 		logger.info( concat(sb, "players places indices: ", Arrays.toString(placesIndices)) );
 
-		JSONArray players = jsonObject.getJSONArray("players");
+		JSONArray players = jsonObject.getJSONArray(PLAYERS_FIELD_NAME);
 		int playersCount = players.length();
 		logger.info( concat(sb, "players count: ", playersCount) );
 
@@ -239,15 +254,15 @@ public class VoidmainJsonParser
 			long finishedTimeMilliseconds = -1; // finished time, in milliseconds
 			Date finishedTime = null;
 
-			boolean isNotGuest = playerJson.has("user") && !playerJson.isNull("user");
+			boolean isNotGuest = JSONObjectUtils.hasField(playerJson, PLAYER_USER_FIELD_NAME);
 			if (isNotGuest)
 			{
-				JSONObject user = playerJson.getJSONObject("user");
+				JSONObject userJson = playerJson.getJSONObject(PLAYER_USER_FIELD_NAME);
 
-				int profileId = user.getInt("id");
-				String login = user.getString("login");
+				int profileId = userJson.getInt(PLAYER_USER_PROFILE_ID_FIELD_NAME);
+				String login = userJson.getString(PLAYER_USER_LOGIN_FIELD_NAME);
 
-				int level = user.getInt("level");
+				int level = userJson.getInt(PLAYER_USER_LEVEL_FIELD_NAME);
 				Rank rank = Rank.getRank(level);
 
 				player.setProfileId(profileId);
@@ -261,10 +276,10 @@ public class VoidmainJsonParser
 				logger.info( concat(sb, "Player number ", playerIndex, " is a guest."));
 			}
 
-
-			if ( playerJson.has("finishedTime") )
+			// "players[i].finishedTime"
+			if ( playerJson.has(PLAYER_FINISHED_TIME_FIELD_NAME) )
 			{
-				Object finishedTimeObject = playerJson.get("finishedTime");
+				Object finishedTimeObject = playerJson.get(PLAYER_FINISHED_TIME_FIELD_NAME);
 				if ( finishedTimeObject.toString().equals(Boolean.FALSE.toString()) )
 				{ // "finishedTime: false -> not finished
 					finished = false;
@@ -272,7 +287,7 @@ public class VoidmainJsonParser
 				else
 				{ // finished is long -> ok
 					finished = true;
-					finishedTimeMilliseconds = playerJson.getLong("finishedTime");
+					finishedTimeMilliseconds = playerJson.getLong(PLAYER_FINISHED_TIME_FIELD_NAME);
 					finishedTime = new Date(finishedTimeMilliseconds);
 				}
 			}
@@ -281,11 +296,12 @@ public class VoidmainJsonParser
 				finished = false;
 			}
 
+			// other fields from "players[i]"
 			if (finished)
 			{ // игрок проехал заезд
-				int speed = playerJson.getInt("speed");
-				int errorsCount = playerJson.getInt("errorsCount");
-				double errorsPercentage = playerJson.getDouble("errorsPercent");
+				int speed = playerJson.getInt(PLAYER_SPEED_FIELD_NAME);
+				int errorsCount = playerJson.getInt(PLAYER_ERRORS_COUNT_FIELD_NAME);
+				double errorsPercentage = playerJson.getDouble(PLAYER_ERRORS_PERCENTAGE_FIELD_NAME);
 
 				result.setFinishedTimeMilliseconds(finishedTimeMilliseconds);
 				result.setFinishedTime(finishedTime);
@@ -344,6 +360,173 @@ public class VoidmainJsonParser
 
 		return round;
 	}
+
+	/**
+	 * @param json JSON-данные, сохраненные версией 1.7 скрипта <a href="http://klavogonki.ru/u/#/364239/">voidmain</a>
+	 * @return модель заезда на основе json-данных заезда
+	 */
+	public static Round parseRound17(String json) {
+		StringBuilder sb = new StringBuilder();
+		JSONObject jsonObject = new JSONObject(json);
+
+		int gameId = jsonObject.getInt(GAME_ID_FIELD_NAME);
+
+		long beginTimeMilliseconds = jsonObject.getLong(GAME_BEGIN_TIME_FIELD_NAME);
+		Date beginTime = new Date(beginTimeMilliseconds);
+
+		// "gameInfo"
+		JSONObject gameInfo = jsonObject.getJSONObject(GAME_INFO_FIELD_NAME);
+		String dictionaryCode = gameInfo.getString(GAME_INFO_TYPE_FIELD_NAME);
+
+		// "textInfo"
+		String text = null;
+		String bookAuthor = null;
+		String bookName = null;
+		Integer textLength = null;
+		if ( JSONObjectUtils.hasField(jsonObject, TEXT_INFO_FIELD_NAME) )
+		{
+			JSONObject textInfo = jsonObject.getJSONObject(TEXT_INFO_FIELD_NAME);
+
+			if ( !textInfo.isNull(TEXT_INFO_TEXT_FIELD_NAME) )
+				text = textInfo.getString(TEXT_INFO_TEXT_FIELD_NAME);
+
+			if ( !textInfo.isNull(TEXT_INFO_LENGTH_FIELD_NAME) )
+				textLength = textInfo.getInt(TEXT_INFO_LENGTH_FIELD_NAME);
+
+			if ( !textInfo.isNull(TEXT_INFO_BOOK_AUTHOR_FIELD_NAME) )
+				bookAuthor = textInfo.getString(TEXT_INFO_BOOK_AUTHOR_FIELD_NAME);
+
+			if ( !textInfo.isNull(TEXT_INFO_BOOK_NAME_FIELD_NAME) )
+				bookName = textInfo.getString(TEXT_INFO_BOOK_NAME_FIELD_NAME);
+		}
+
+		// "places"
+		JSONArray placesJson = jsonObject.getJSONArray(PLACES_FIELD_NAME);
+		int placesCount = placesJson.length();
+		logger.info( concat(sb, "places count: ", placesCount) );
+		int[] placesIndices = new int[placesCount]; // по порядку мест - индексы в массиве "players"
+
+		for (int i = 0; i < placesCount; i++)
+		{
+			int playerIndex = placesJson.getInt(i);
+			if (playerIndex < 0)
+				throw new IllegalStateException( concat("places contains negative playerIndex: ", playerIndex) );
+
+			placesIndices[i] = playerIndex;
+		}
+		logger.info( concat(sb, "players places indices: ", Arrays.toString(placesIndices)) );
+
+		// "players"
+		JSONArray players = jsonObject.getJSONArray(PLAYERS_FIELD_NAME);
+		int playersCount = players.length();
+		logger.info( concat(sb, "players count: ", playersCount) );
+
+		List<PlayerRoundResult> results = new ArrayList<>();
+
+		for (int playerIndex = 0; playerIndex < playersCount; playerIndex++)
+		{
+			JSONObject playerJson = players.getJSONObject(playerIndex);
+			Player player = new Player();
+			PlayerRoundResult result = new PlayerRoundResult();
+
+			boolean finished;
+
+			// "players[i].user"
+			boolean isNotGuest = JSONObjectUtils.hasField(playerJson, PLAYER_USER_FIELD_NAME);
+			if (isNotGuest)
+			{
+				JSONObject userJson = playerJson.getJSONObject(PLAYER_USER_FIELD_NAME);
+
+				int profileId = userJson.getInt(PLAYER_USER_PROFILE_ID_FIELD_NAME);
+				String login = userJson.getString(PLAYER_USER_LOGIN_FIELD_NAME);
+
+				int level = userJson.getInt(PLAYER_USER_LEVEL_FIELD_NAME);
+				Rank rank = Rank.getRank(level);
+
+				player.setProfileId(profileId);
+				player.setName(login);
+				player.setRank(rank);
+
+				logger.info( concat(sb, "Player number ", playerIndex, " is ", login, " (profileId = ", profileId, ")."));
+			}
+			else
+			{
+				logger.info( concat(sb, "Player number ", playerIndex, " is a guest."));
+			}
+
+			// "players[i].result"
+			if ( JSONObjectUtils.hasField(playerJson, PLAYER_RESULT_FIELD_NAME) )
+			{ // "result" is present in "players[i]" and "result" is not null
+				finished = true;
+
+				JSONObject resultJson = playerJson.getJSONObject(PLAYER_RESULT_FIELD_NAME);
+				long finishedTimeMilliseconds = resultJson.getLong(PLAYER_RESULT_FINISHED_TIME_FIELD_NAME);
+				Date finishedTime = new Date(finishedTimeMilliseconds);
+
+				int speed = resultJson.getInt(PLAYER_RESULT_SPEED_FIELD_NAME);
+				int charsTotal = resultJson.getInt(PLAYER_RESULT_CHARS_TOTAL_FIELD_NAME);
+				int errorsCount = resultJson.getInt(PLAYER_RESULT_ERRORS_COUNT_FIELD_NAME);
+				double errorsPercentage = resultJson.getDouble(PLAYER_RESULT_ERRORS_PERCENTAGE_FIELD_NAME);
+
+				result.setFinishedTimeMilliseconds(finishedTimeMilliseconds);
+				result.setFinishedTime(finishedTime);
+				result.setSpeed(speed);
+				result.setCharsTotal(charsTotal);
+				result.setErrorsCount(errorsCount);
+				result.setErrorPercentage(errorsPercentage);
+
+				if (isNotGuest)
+				{ // player is not guest
+					result.setPlayer(player);
+				}
+				else
+				{ // player is guest
+					result.setPlayer(player); // save guest as player
+				}
+
+				// add independently of whether player is guest or not guest
+				results.add(result);
+			}
+			else
+			{ // no "result" or "result" is null -> not finished
+				finished = false;
+				logger.info( concat(sb, "Player number ", playerIndex, " has not finished. Do not add him to Round results.") );
+			}
+
+			// search player index in "places" array
+			for (int j = 0; j < placesIndices.length; j++)
+			{
+				if (placesIndices[j] == playerIndex)
+				{ // индекс игрока найден в массиве "places"
+					int place = j + PlayerRoundResult.FIRST_PLACE; // места начинаются с 1
+					if ( !finished )
+						throw new IllegalStateException( concat(sb, "Player number ", playerIndex, " has not finished, but he is present in \"players\" array (players[", j, "] = ", placesIndices[j], ")") );
+
+					result.setPlace(place);
+				}
+			}
+		}
+
+		Dictionary dictionary = new Dictionary();
+		dictionary.setCode(dictionaryCode);
+		// todo: fill dictionary name using ajax api
+
+		Round round = new Round();
+		round.setGameId(gameId);
+		round.setBeginTimeMilliseconds(beginTimeMilliseconds);
+		round.setBeginTime(beginTime);
+		round.setText(text);
+		round.setBookName(bookName);
+		round.setBookAuthor(bookAuthor);
+
+		round.setDictionary(dictionary);
+		round.setResults(results);
+
+		logFilledRoundInfo(round);
+
+		return round;
+	}
+
 	private static void logFilledRoundInfo(Round round) {
 		StringBuilder sb = new StringBuilder();
 
@@ -391,6 +574,55 @@ public class VoidmainJsonParser
 			}
 		}
 	}
+
+	// "id"
+	public static final String GAME_ID_FIELD_NAME = "id";
+
+	// "beginTime"
+	public static final String GAME_BEGIN_TIME_FIELD_NAME = "beginTime";
+
+	// "gameInfo"
+	public static final String GAME_INFO_FIELD_NAME = "gameInfo";
+	public static final String GAME_INFO_TYPE_FIELD_NAME = "type";
+
+	// "places"
+	public static final String PLACES_FIELD_NAME = "places";
+
+	// "players"
+	public static final String PLAYERS_FIELD_NAME = "players";
+
+	// "players[i].user"
+	public static final String PLAYER_USER_FIELD_NAME = "user";
+	public static final String PLAYER_USER_PROFILE_ID_FIELD_NAME = "id";
+	public static final String PLAYER_USER_LOGIN_FIELD_NAME = "login";
+	public static final String PLAYER_USER_LEVEL_FIELD_NAME = "level";
+
+	// "players[i].result" (from 1.7)
+	public static final String PLAYER_RESULT_FIELD_NAME = "result"; // from 1.7
+	public static final String PLAYER_RESULT_FINISHED_TIME_FIELD_NAME = "finishedTime"; // from 1.7
+	public static final String PLAYER_RESULT_SPEED_FIELD_NAME = "speed"; // from 1.7
+	public static final String PLAYER_RESULT_CHARS_TOTAL_FIELD_NAME = "charsTotal"; // from 1.7
+	public static final String PLAYER_RESULT_ERRORS_COUNT_FIELD_NAME = "errorsCount"; // from 1.7
+	public static final String PLAYER_RESULT_ERRORS_PERCENTAGE_FIELD_NAME = "errorsPercent"; // from 1.7
+
+	// "players[i]" old fields (they were moved to "players[i].result" in 1.7)
+	public static final String PLAYER_FINISHED_TIME_FIELD_NAME = "finishedTime"; // before 1.7
+	public static final String PLAYER_SPEED_FIELD_NAME = "speed"; // before 1.7
+	public static final String PLAYER_ERRORS_COUNT_FIELD_NAME = "errorsCount"; // before 1.7
+	public static final String PLAYER_ERRORS_PERCENTAGE_FIELD_NAME = "errorsPercent"; // before 1.7
+
+
+	// "textInfo" (was "textinfo" prior to 1.7)
+	public static final String TEXT_INFO_FIELD_NAME_1_5 = "textinfo"; // before 1.7
+	public static final String TEXT_INFO_FIELD_NAME = "textInfo"; // from 1.7
+	public static final String TEXT_INFO_TEXT_FIELD_NAME = "text";
+	public static final String TEXT_INFO_LENGTH_FIELD_NAME = "length";
+	public static final String TEXT_INFO_BOOK_AUTHOR_FIELD_NAME = "author";
+	public static final String TEXT_INFO_BOOK_NAME_FIELD_NAME = "name";
+
+	public static final String VERSION_1_5 = "1.5";
+	public static final String VERSION_1_7 = "1.7";
+	public static final String VERSION_1_8 = "1.8";
 
 	private static final Logger logger = Logger.getLogger(VoidmainJsonParser.class);
 }
