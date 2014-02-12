@@ -30,6 +30,12 @@ public class CompetitionEntity
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getLink() {
+		return link;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
 	public String getComment() {
 		return comment;
 	}
@@ -41,6 +47,18 @@ public class CompetitionEntity
 	}
 	public void setZipFile(byte[] zipFile) {
 		this.zipFile = zipFile;
+	}
+	public String getZipFileName() {
+		return zipFileName;
+	}
+	public void setZipFileName(String zipFileName) {
+		this.zipFileName = zipFileName;
+	}
+	public Long getZipFileSize() {
+		return zipFileSize;
+	}
+	public void setZipFileSize(Long zipFileSize) {
+		this.zipFileSize = zipFileSize;
 	}
 	public String getCompetitionJson() {
 		return competitionJson;
@@ -60,6 +78,11 @@ public class CompetitionEntity
 	private String name;
 
 	/**
+	 * Ссылка на страницу соревнования на форуме Клавогонок.
+	 */
+	private String link;
+
+	/**
 	 * Комментарий к соревнованию.
 	 */
 	private String comment;
@@ -68,6 +91,16 @@ public class CompetitionEntity
 	 * Исходный zip-файл, в котором загружались данные заездов.
 	 */
 	private byte[] zipFile;
+
+	/**
+	 * Имя исходного zip-файла.
+	 */
+	private String zipFileName;
+
+	/**
+	 * Размер исходного zip-файла в байтах.
+	 */
+	private Long zipFileSize;
 
 	/**
 	 * Модель соревнования, сериализованная в json.
