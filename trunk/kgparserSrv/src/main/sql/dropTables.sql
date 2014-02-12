@@ -1,2 +1,2 @@
-drop table competition_gen;
-drop generator Competition;
+drop generator competition_gen;
+drop table Competition;
