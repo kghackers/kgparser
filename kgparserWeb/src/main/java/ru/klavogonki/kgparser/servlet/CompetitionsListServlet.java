@@ -6,6 +6,8 @@ import su.opencode.kefir.web.Action;
 import su.opencode.kefir.web.InitiableAction;
 import su.opencode.kefir.web.JsonServlet;
 
+import java.util.List;
+
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
@@ -13,7 +15,7 @@ import su.opencode.kefir.web.JsonServlet;
  * $Revision$
  * $Date::                      $
  */
-public class CompetitionUploadServlet extends JsonServlet
+public class CompetitionsListServlet extends JsonServlet
 {
 	@Override
 	protected Action getAction() {
@@ -22,21 +24,9 @@ public class CompetitionUploadServlet extends JsonServlet
 			@Override
 			public void doAction() throws Exception {
 				CompetitionEntityService service = getService(CompetitionEntityService.class);
+				List<CompetitionEntity> competitionEntities = service.getCompetitionEntities();
 
-				CompetitionEntity entity = new CompetitionEntity();
-				entity.setName("Название соревнования");
-				entity.setLink("http://klavogonki.ru");
-				entity.setComment("Коммент к соревнованию");
-
-				entity.setZipFileData( "some zip file data".getBytes() );
-				entity.setZipFileName("zipFile.zip");
-				entity.setZipFileSize(666L);
-				entity.setZipFileContentType("application/zip");
-
-				entity.setCompetitionJson("{\"someField\": \"some value\"}");
-
-				service.createCompetitionEntity(entity);
-				writeSuccess();
+				writeSuccess(competitionEntities);
 			}
 		};
 	}
