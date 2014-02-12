@@ -11,6 +11,7 @@ import ru.klavogonki.kgparser.processing.HighChartValue;
 import ru.klavogonki.kgparser.processing.SpeedChartFiller;
 import su.opencode.kefir.util.DateUtils;
 import su.opencode.kefir.util.FileUtils;
+import su.opencode.kefir.util.JsonUtils;
 import su.opencode.kefir.util.StringUtils;
 
 import java.io.File;
@@ -226,7 +227,7 @@ public class VoidmainJsonParser
 		String bookAuthor = null;
 		String bookName = null;
 		Integer textLength = null;
-		if ( JSONObjectUtils.hasField(jsonObject, TEXT_INFO_FIELD_NAME_1_5) )
+		if ( JsonUtils.hasField(jsonObject, TEXT_INFO_FIELD_NAME_1_5) )
 		{
 			JSONObject textInfo = jsonObject.getJSONObject(TEXT_INFO_FIELD_NAME_1_5);
 
@@ -274,7 +275,7 @@ public class VoidmainJsonParser
 			long finishedTimeMilliseconds = -1; // finished time, in milliseconds
 			Date finishedTime = null;
 
-			boolean isNotGuest = JSONObjectUtils.hasField(playerJson, PLAYER_USER_FIELD_NAME);
+			boolean isNotGuest = JsonUtils.hasField(playerJson, PLAYER_USER_FIELD_NAME);
 			if (isNotGuest)
 			{
 				JSONObject userJson = playerJson.getJSONObject(PLAYER_USER_FIELD_NAME);
@@ -403,7 +404,7 @@ public class VoidmainJsonParser
 		String bookAuthor = null;
 		String bookName = null;
 		Integer textLength = null;
-		if ( JSONObjectUtils.hasField(jsonObject, TEXT_INFO_FIELD_NAME) )
+		if ( JsonUtils.hasField(jsonObject, TEXT_INFO_FIELD_NAME) )
 		{
 			JSONObject textInfo = jsonObject.getJSONObject(TEXT_INFO_FIELD_NAME);
 
@@ -452,7 +453,7 @@ public class VoidmainJsonParser
 			boolean finished;
 
 			// "players[i].user"
-			boolean isNotGuest = JSONObjectUtils.hasField(playerJson, PLAYER_USER_FIELD_NAME);
+			boolean isNotGuest = JsonUtils.hasField(playerJson, PLAYER_USER_FIELD_NAME);
 			if (isNotGuest)
 			{
 				JSONObject userJson = playerJson.getJSONObject(PLAYER_USER_FIELD_NAME);
@@ -475,7 +476,7 @@ public class VoidmainJsonParser
 			}
 
 			// "players[i].result"
-			if ( JSONObjectUtils.hasField(playerJson, PLAYER_RESULT_FIELD_NAME) )
+			if ( JsonUtils.hasField(playerJson, PLAYER_RESULT_FIELD_NAME) )
 			{ // "result" is present in "players[i]" and "result" is not null
 				finished = true;
 
