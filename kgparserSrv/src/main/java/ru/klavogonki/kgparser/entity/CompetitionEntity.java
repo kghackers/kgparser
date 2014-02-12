@@ -50,6 +50,7 @@ public class CompetitionEntity
 
 	@Lob
 	@Column(name = "zip_file_data")
+	@Basic(fetch = FetchType.LAZY)
 	public byte[] getZipFileData() {
 		return zipFileData;
 	}
