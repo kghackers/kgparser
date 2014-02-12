@@ -5,4 +5,46 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 				 version="2.5">
 
+	<context-param>
+		<description>Режим работы фабрики сервисов.</description>
+		<param-name>su.opencode.kefir.web.util.ServiceFactory.MODE</param-name>
+		<param-value>local</param-value>
+	</context-param>
+	<context-param>
+		<param-name>fileEncoding</param-name>
+		<param-value>UTF-8</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>charsetFilter</filter-name>
+		<filter-class>su.opencode.kefir.web.util.CharsetFilter</filter-class>
+		<init-param>
+			<param-name>requestEncoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>charsetFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>competitionUpload</servlet-name>
+		<servlet-class>ru.klavogonki.kgparser.servlet.CompetitionUploadServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>competitionsList</servlet-name>
+		<servlet-class>ru.klavogonki.kgparser.servlet.CompetitionsListServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>competitionUpload</servlet-name>
+		<url-pattern>/competitionUpload</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>competitionsList</servlet-name>
+		<url-pattern>/competitionsList</url-pattern>
+	</servlet-mapping>
+
 </web-app>

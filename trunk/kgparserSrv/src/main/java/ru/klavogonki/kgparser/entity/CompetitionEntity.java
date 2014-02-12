@@ -1,5 +1,7 @@
 package ru.klavogonki.kgparser.entity;
 
+import su.opencode.kefir.srv.json.JsonObject;
+
 import javax.persistence.*;
 
 /**
@@ -15,7 +17,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "Competition")
-public class CompetitionEntity
+public class CompetitionEntity extends JsonObject
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "competitionGenerator")
@@ -75,10 +77,10 @@ public class CompetitionEntity
 	}
 
 	@Column(name = "zip_file_content_type")
-	public Long getZipFileContentType() {
+	public String getZipFileContentType() {
 		return zipFileContentType;
 	}
-	public void setZipFileContentType(Long zipFileContentType) {
+	public void setZipFileContentType(String zipFileContentType) {
 		this.zipFileContentType = zipFileContentType;
 	}
 
@@ -129,7 +131,7 @@ public class CompetitionEntity
 	/**
 	 * Content-type исходного zip-файла.
 	 */
-	private Long zipFileContentType;
+	private String zipFileContentType;
 
 	/**
 	 * Модель соревнования, сериализованная в json.
