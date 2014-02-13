@@ -47,7 +47,6 @@ public class CompetitionUploadServlet extends JsonServlet
 
 				// todo: parse zip file and fill competitionJson
 
-				CompetitionEntityService service = getService(CompetitionEntityService.class);
 
 /*
 				CompetitionEntity entity = new CompetitionEntity();
@@ -63,7 +62,9 @@ public class CompetitionUploadServlet extends JsonServlet
 				entity.setCompetitionJson("{\"someField\": \"some value\"}");
 */
 
+				CompetitionEntityService service = getService(CompetitionEntityService.class);
 				service.createCompetitionEntity(entity);
+
 				writeSuccess();
 			}
 
