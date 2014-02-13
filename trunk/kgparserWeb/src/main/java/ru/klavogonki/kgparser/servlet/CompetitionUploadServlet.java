@@ -15,6 +15,8 @@ import su.opencode.kefir.web.JsonServlet;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import static su.opencode.kefir.util.StringUtils.concat;
+
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
@@ -48,24 +50,10 @@ public class CompetitionUploadServlet extends JsonServlet
 				// todo: parse zip file and fill competitionJson
 
 
-/*
-				CompetitionEntity entity = new CompetitionEntity();
-				entity.setName("Название соревнования");
-				entity.setLink("http://klavogonki.ru");
-				entity.setComment("Коммент к соревнованию");
-
-				entity.setZipFileData( "some zip file data".getBytes() );
-				entity.setZipFileName("zipFile.zip");
-				entity.setZipFileSize(666L);
-				entity.setZipFileContentType("application/zip");
-
-				entity.setCompetitionJson("{\"someField\": \"some value\"}");
-*/
-
 				CompetitionEntityService service = getService(CompetitionEntityService.class);
-				service.createCompetitionEntity(entity);
+				Long competitionId = service.createCompetitionEntity(entity);
 
-				writeSuccess();
+				response.sendRedirect( concat(sb, "./competitionUploadSuccess.jsp?competitionId=", competitionId) );
 			}
 
 			private CompetitionEntity processMultipartContent() throws FileUploadException, UnsupportedEncodingException {
