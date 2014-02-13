@@ -1,3 +1,4 @@
+<%@page language="java" pageEncoding="utf-8" contentType="text/html; charset=utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,7 @@
 	</style>
 </head>
 <body>
-<form action="/competitionUpload" method="post" enctype="multipart/form-data">
+<form action="<%=request.getContextPath()%>/competitionUpload" method="post" enctype="multipart/form-data">
 	<table>
 		<tbody>
 
