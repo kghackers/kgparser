@@ -17,4 +17,6 @@ public interface CompetitionEntityService
 	Long createCompetitionEntity(CompetitionEntity competitionEntity);
 
 	List<CompetitionEntity> getCompetitionEntities(); // todo: filter config
+
+	CompetitionEntity getCompetitionEntity(Long id);
 }

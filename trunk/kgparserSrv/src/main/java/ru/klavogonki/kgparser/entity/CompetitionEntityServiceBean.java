@@ -68,6 +68,14 @@ public class CompetitionEntityServiceBean implements CompetitionEntityService
 		return result;
 	}
 
+	@Override
+	public CompetitionEntity getCompetitionEntity(Long id) {
+		if (id == null)
+			return null;
+
+		return em.find(CompetitionEntity.class, id);
+	}
+
 	@PersistenceContext
 	private EntityManager em;
 
