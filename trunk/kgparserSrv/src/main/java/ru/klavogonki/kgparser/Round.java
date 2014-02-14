@@ -6,6 +6,8 @@
 package ru.klavogonki.kgparser;
 
 import org.apache.log4j.Logger;
+import su.opencode.kefir.srv.json.Json;
+import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import static su.opencode.kefir.util.StringUtils.concat;
 /**
  * Заезд. Содержит результаты всех игроков в этом заезде.
  */
-public class Round
+public class Round extends JsonObject
 {
 	public Round() {
 		this.results = new ArrayList<>();
@@ -97,10 +99,12 @@ public class Round
 				result.setRound(this);
 	}
 
+	@Json(exclude = true) // todo: think about this
 	public int getTextLength() {
 		return text.length();
 	}
 
+	@Json(exclude = true)
 	public PlayerRoundResult getPlayerResult(Player player) {
 		if (player == null)
 			throw new IllegalArgumentException("player cannot be null");
@@ -159,6 +163,7 @@ public class Round
 	 * @return минимальное место игрока в заезде или -1, если ни в одном из результатов игроков нет установленного места.
 	 * Должно быть равно {@linkplain ru.klavogonki.kgparser.PlayerRoundResult#FIRST_PLACE первому месту}.
 	 */
+	@Json(exclude = true)
 	public int getMinPlace() {
 		int minPlace = -1;
 
@@ -187,6 +192,7 @@ public class Round
 	 * @return минимальное место доехавшего игрока в заезде или -1, если ни в одном из результатов игроков нет установленного места
 	 * Должно быть равно количеству доехавших игроков. // todo: ссылка на метод, определяющий finished
 	 */
+	@Json(exclude = true)
 	public int getMaxPlace() {
 		int maxPlace = -1;
 
@@ -214,6 +220,7 @@ public class Round
 	/**
 	 * @return список результатов заезда, упорядоченных по месту игрока в заезде
 	 */
+	@Json(exclude = true)
 	public List<PlayerRoundResult> getResultsSortedByPlace() {
 		if ( ObjectUtils.empty(results) )
 			return Collections.emptyList();
