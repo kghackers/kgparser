@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import ru.klavogonki.kgparser.http.HttpClientTest;
 import su.opencode.kefir.srv.json.Json;
 import su.opencode.kefir.srv.json.JsonObject;
+import su.opencode.kefir.util.ObjectUtils;
 import su.opencode.kefir.util.StringUtils;
 
 import java.util.*;
@@ -105,6 +106,9 @@ public class Competition extends JsonObject
 		for (Round round : rounds)
 		{
 			List<PlayerRoundResult> results = round.getResults();
+			if ( ObjectUtils.empty(results) )
+				continue; // no results in round
+
 			for (PlayerRoundResult result : results)
 			{
 				Player player = result.getPlayer();
