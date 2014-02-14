@@ -113,6 +113,9 @@ public class Round extends JsonObject
 		if (profileId == null)
 			throw new IllegalArgumentException("player has no profileId");
 
+		if ( ObjectUtils.empty(results) )
+			return null;
+
 		for (PlayerRoundResult result : results)
 		{
 			Player roundPlayer = result.getPlayer();

@@ -31,10 +31,16 @@ public class Player extends JsonObject implements Comparable<Player>
 	public void setRank(Rank rank) {
 		this.rank = rank;
 	}
-	public int getNormalRecord() {
+	public Integer getNormalRecord() {
 		return normalRecord;
 	}
-	public void setNormalRecord(int normalRecord) {
+	public void setNormalRecord(Integer normalRecord) {
+		if (normalRecord == null)
+		{
+			this.normalRecord = null;
+			return;
+		}
+
 		if (normalRecord <= 0)
 			throw new IllegalArgumentException("Record must be > 0");
 
@@ -100,5 +106,5 @@ public class Player extends JsonObject implements Comparable<Player>
 	/**
 	 * Рекорд в обычном режиме. Должен быть больше 0.
 	 */
-	private int normalRecord;
+	private Integer normalRecord;
 }
