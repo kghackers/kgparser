@@ -5,6 +5,9 @@
  */
 package ru.klavogonki.kgparser;
 
+import su.opencode.kefir.srv.json.Json;
+import su.opencode.kefir.srv.json.JsonObject;
+
 import java.util.Date;
 
 import static su.opencode.kefir.util.StringUtils.concat;
@@ -12,7 +15,7 @@ import static su.opencode.kefir.util.StringUtils.concat;
 /**
  * Результат игрока в конкретном заезде.
  */
-public class PlayerRoundResult
+public class PlayerRoundResult extends JsonObject
 {
 	public PlayerRoundResult() {
 	}
@@ -21,6 +24,7 @@ public class PlayerRoundResult
 		this.player = player;
 	}
 
+	@Json(exclude = true)
 	public Round getRound() {
 		return round;
 	}
@@ -122,6 +126,7 @@ public class PlayerRoundResult
 		this.time = time;
 	}
 
+	@Json(exclude = true)
 	public static boolean isCorrectPlace(Integer place) {
 		if (place == null)
 			return true;

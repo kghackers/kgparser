@@ -7,6 +7,8 @@ package ru.klavogonki.kgparser;
 
 import org.apache.log4j.Logger;
 import ru.klavogonki.kgparser.http.HttpClientTest;
+import su.opencode.kefir.srv.json.Json;
+import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.StringUtils;
 
 import java.util.*;
@@ -17,7 +19,7 @@ import static su.opencode.kefir.util.StringUtils.concat;
  * Соревнование. Содержит в себе набор заездов в рамках соревнования.
  * По заездам соревнования формируются результаты.
  */
-public class Competition
+public class Competition extends JsonObject
 {
 	public Competition() {
 		this.rounds = new ArrayList<>();
@@ -77,6 +79,7 @@ public class Competition
 	 * @return множество рангов всех игроков, представленных в соревновании.
 	 * Ранги упорядочены по возрастанию.
 	 */
+	@Json(exclude = true)
 	public SortedSet<Rank> getRanks() {
 		SortedSet<Rank> ranks = new TreeSet<>( new RankComparator() );
 
@@ -95,6 +98,7 @@ public class Competition
 	 * @return список всех игроков, принимавших участие хотя бы в одном заезде соревнования.
 	 * <strong>Гости не учитываются.</strong>
 	 */
+	@Json(exclude = true)
 	public Set<Player> getPlayers() {
 		Set<Player> players = new HashSet<>();
 
@@ -117,6 +121,7 @@ public class Competition
 	/**
 	 * @return множество всех словарей, заезды по которым есть в соревновании.
 	 */
+	@Json(exclude = true)
 	public Set<Dictionary> getDictionaries() {
 		Set<Dictionary> dictionaries = new HashSet<>();
 
@@ -204,6 +209,7 @@ public class Competition
 	 * @param dictionaryCode строковый код словаря
 	 * @return количество заездов по словарю в соревновании. Больше либо равно 0.
 	 */
+	@Json(exclude = true)
 	public int getRoundsCount(String dictionaryCode) {
 		if ( StringUtils.empty(dictionaryCode) )
 			throw new IllegalArgumentException("dictionaryCode must not be null or empty");
@@ -226,6 +232,7 @@ public class Competition
 	 * @param dictionary словарь
 	 * @return количество заездов по словарю в соревновании. Больше либо равно 0.
 	 */
+	@Json(exclude = true)
 	public int getRoundsCount(Dictionary dictionary) {
 		if (dictionary == null)
 			throw new IllegalArgumentException("dictionary cannot be null");
@@ -237,6 +244,7 @@ public class Competition
 	 * @param player игрок
 	 * @return общее количество заездов, которое проехал игрок по всем заездам по всем словарям.
 	 */
+	@Json(exclude = true)
 	public int getRoundsCount(Player player) {
 		if (player == null)
 			throw new IllegalArgumentException("player cannot be null");
@@ -256,6 +264,7 @@ public class Competition
 	 * @param dictionary словарь
 	 * @return общее количество заездов, которое проехал игрок по словарю
 	 */
+	@Json(exclude = true)
 	public int getRoundsCount(Player player, Dictionary dictionary) {
 		if (player == null)
 			throw new IllegalArgumentException("player cannot be null");
@@ -278,6 +287,7 @@ public class Competition
 	 * @return мэп сгруппированных по словарям заездов соревнования.
 	 * Ключом является {@linkplain ru.klavogonki.kgparser.Dictionary#code строковый код} словаря.
 	 */
+	@Json(exclude = true)
 	public Map<String, List<Round>> getRoundsByDictionariesMap() {
 		Map<String, List<Round>> map = new HashMap<>();
 
@@ -312,6 +322,7 @@ public class Competition
 	 * @param number номер заезда
 	 * @return заезд с таким номером или <code>null</code>, если заезда с таким номером в соревновании нет.
 	 */
+	@Json(exclude = true)
 	public Round getRound(int number) {
 		for (Round round : rounds)
 		{
@@ -329,6 +340,7 @@ public class Competition
 	 * @param roundNumber сквозной номер заезда в соревновании
 	 * @return результат, или <code>null</code>, если игрок не финишировал в заезде с указанным номером
 	 */
+	@Json(exclude = true)
 	public PlayerRoundResult getPlayerRoundResult(Player player, Integer roundNumber) {
 		Round round = getRound(roundNumber);
 		if (round == null)
@@ -341,6 +353,7 @@ public class Competition
 	 * @param player игрок
 	 * @return список результатов игрока во всех заездах, где они присутствуют.
 	 */
+	@Json(exclude = true)
 	public List<PlayerRoundResult> getPlayerRoundResults(Player player) {
 		List<PlayerRoundResult> playerResults = new ArrayList<>();
 
@@ -361,6 +374,7 @@ public class Competition
 	 * @param dictionary словарь
 	 * @return список результатов игрока во всех заездах по указанному словарю, где результат игрока присутствует.
 	 */
+	@Json(exclude = true)
 	public List<PlayerRoundResult> getPlayerRoundResults(Player player, Dictionary dictionary) {
 		List<PlayerRoundResult> playerResults = new ArrayList<>();
 

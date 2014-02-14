@@ -5,10 +5,13 @@
  */
 package ru.klavogonki.kgparser;
 
+import su.opencode.kefir.srv.json.Json;
+import su.opencode.kefir.srv.json.JsonObject;
+
 /**
  * Игрок клавогонок.
  */
-public class Player implements Comparable<Player>
+public class Player extends JsonObject implements Comparable<Player>
 {
 	public Integer getProfileId() {
 		return profileId;
@@ -38,13 +41,16 @@ public class Player implements Comparable<Player>
 		this.normalRecord = normalRecord;
 	}
 
+	@Json(exclude = true)
 	public Rank getRankByNormalRecord() {
 		return Rank.getRankByNormalRecord(normalRecord);
 	}
+	@Json(exclude = true)
 	public String getColor() {
 		return Rank.getColor( getRank() );
 	}
 
+	@Json(exclude = true)
 	public boolean isGuest() {
 		return profileId == null;
 	}
@@ -67,6 +73,7 @@ public class Player implements Comparable<Player>
 	 * @return <code>true</code> - если игрок принимал участие в заезде,
 	 * <code>false</code> - в противном случае.
 	 */
+	@Json(exclude = true)
 	public boolean isPresent(Round round) {
 		for (PlayerRoundResult result : round.getResults())
 			if (result.getPlayer().getProfileId().equals(this.profileId))

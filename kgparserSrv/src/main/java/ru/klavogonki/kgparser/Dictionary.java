@@ -5,12 +5,14 @@
  */
 package ru.klavogonki.kgparser;
 
+import su.opencode.kefir.srv.json.Json;
+import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.StringUtils;
 
 /**
  * Словарь.
  */
-public class Dictionary
+public class Dictionary extends JsonObject
 {
 	public String getCode() {
 		return code;
@@ -25,6 +27,7 @@ public class Dictionary
 		this.name = name;
 	}
 
+	@Json(exclude = true)
 	public Integer getId() {
 		if ( this.isStandard() )
 			return null;
@@ -70,6 +73,7 @@ public class Dictionary
 	 * <br/>
 	 * <code>false</code> &mdash; если словарь является пользовательским словарем.
 	 */
+	@Json(exclude = true)
 	public boolean isStandard() {
 		return isStandard(this.code);
 	}
@@ -80,6 +84,7 @@ public class Dictionary
 	 * <br/>
 	 * <code>false</code> &mdash; если словарь с указанным кодом является пользовательским словарем.
 	 */
+	@Json(exclude = true)
 	public static boolean isStandard(String code) {
 		return !code.startsWith(NON_STANDARD_DICTIONARY_ID_PREFIX);
 	}
@@ -88,6 +93,7 @@ public class Dictionary
 	 * @param code строковый код словаря (gametype в ajax-api)
 	 * @return числовой идентификатор словаря
 	 */
+	@Json(exclude = true)
 	public static int getDictionaryId(String code) {
 		if ( isStandard(code) )
 			throw new IllegalArgumentException("Dictionary with code = \"" + code + "\" is standard. Cannot get dictionary id from it."); // todo: use concat
@@ -100,6 +106,7 @@ public class Dictionary
 	 * @param dictionaryId идентификатор словаря
 	 * @return строковый код словаря
 	 */
+	@Json(exclude = true)
 	public static String getDictionaryCode(int dictionaryId) {
 		return StringUtils.concat( NON_STANDARD_DICTIONARY_ID_PREFIX, Integer.toString(dictionaryId) );
 	}
