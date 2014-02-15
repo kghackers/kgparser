@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="wrapper">
-  <h2>Страница соревнования</h2>
+	<h2>Страница соревнования</h2>
 
 	<h3>Название</h3>
 	<div id="name-container"></div>
@@ -25,6 +25,15 @@
 
 	<h3>Игроки (не включая гостей)&nbsp;<a class="toggle" id="players-toggle-link">Показать</a></h3>
 	<div id="players-container"></div>
+
+	<h3>Обработка результатов&nbsp;<a class="toggle" id="results-toggle-link">Показать</a></h3>
+	<div id="results-container">
+		<div><a href="./competitionSpeedChart.jsp?competitionId=<%=request.getParameter("competitionId")%>">График скоростей игроков по заездам</a></div>
+		<div><span class="disabled">График ошибок игроков по заездам</span></div>
+		<div><span class="disabled">Расчет результатов по БГ (средней скорости и средней ошибочности)</span></div>
+		<div><span class="disabled">Расчет результатов по Биатлону</span></div>
+		<div><span class="disabled">Расчет результатов по Октатлону</span></div>
+	</div>
 
 	<div class="bottomLinks">
 		<a href="./competitionsList.jsp">Вернуться к списку соревнований</a>
@@ -55,6 +64,9 @@
 
 		var ROUNDS_CONTAINER_TOGGLE_LINK_ID = 'rounds-toggle-link';
 		var ROUNDS_CONTAINER_ID = 'rounds-container';
+
+		var RESULTS_CONTAINER_TOGGLE_LINK_ID = 'results-toggle-link';
+		var RESULTS_CONTAINER_ID = 'results-container';
 
 		var dh = DomHelper;
 
@@ -286,6 +298,7 @@
 			bindShowHideLink(DICTIONARIES_CONTAINER_TOGGLE_LINK_ID, DICTIONARIES_CONTAINER_ID);
 			bindShowHideLink(ROUNDS_CONTAINER_TOGGLE_LINK_ID, ROUNDS_CONTAINER_ID);
 			bindShowHideLink(PLAYERS_CONTAINER_TOGGLE_LINK_ID, PLAYERS_CONTAINER_ID);
+			bindShowHideLink(RESULTS_CONTAINER_TOGGLE_LINK_ID, RESULTS_CONTAINER_ID);
 		}
 
 		$(function() {

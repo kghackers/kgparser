@@ -26,6 +26,7 @@ public class SpeedChartFiller
 
 		Set<Player> players = competition.getPlayers();
 
+/*
 		for (Player player : players)
 		{ // set ranks to normal mode ranks
 			if (player.isGuest())
@@ -33,6 +34,7 @@ public class SpeedChartFiller
 
 			player.setRank(HttpClientTest.getUserRank(player.getProfileId()));
 		}
+*/
 
 		// fill present ranks
 		logger.info("===========================================");
@@ -58,8 +60,10 @@ public class SpeedChartFiller
 			if ( player.isGuest() )
 				continue; // do not add guests to the chart
 
+/*
 			if ( player.getName().equals("Juicee") ) // todo: remove this
 				continue; // remove cheater
+*/
 
 			List<Integer> speeds = new ArrayList<>();
 
