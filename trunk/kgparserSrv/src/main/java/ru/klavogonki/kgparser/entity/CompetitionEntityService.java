@@ -1,5 +1,7 @@
 package ru.klavogonki.kgparser.entity;
 
+import ru.klavogonki.kgparser.Competition;
+
 import javax.ejb.Local;
 import java.util.List;
 
@@ -19,4 +21,6 @@ public interface CompetitionEntityService
 	List<CompetitionEntity> getCompetitionEntities(); // todo: filter config
 
 	CompetitionEntity getCompetitionEntity(Long id);
+
+	Competition getCompetition(Long competitionEntityId);
 }

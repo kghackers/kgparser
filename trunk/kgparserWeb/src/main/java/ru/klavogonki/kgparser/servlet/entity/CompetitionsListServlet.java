@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.servlet;
+package ru.klavogonki.kgparser.servlet.entity;
 
 import ru.klavogonki.kgparser.entity.CompetitionEntity;
 import ru.klavogonki.kgparser.entity.CompetitionEntityService;

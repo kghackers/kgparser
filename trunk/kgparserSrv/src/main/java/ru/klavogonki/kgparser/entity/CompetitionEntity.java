@@ -93,6 +93,14 @@ public class CompetitionEntity extends JsonObject
 		this.competitionJson = competitionJson;
 	}
 
+	@Transient
+	public String getExportScriptVersion() {
+		return exportScriptVersion;
+	}
+	public void setExportScriptVersion(String exportScriptVersion) {
+		this.exportScriptVersion = exportScriptVersion;
+	}
+
 	/**
 	 * Идентификатор.
 	 */
@@ -137,4 +145,10 @@ public class CompetitionEntity extends JsonObject
 	 * Модель соревнования, сериализованная в json.
 	 */
 	private String competitionJson;
+
+	/**
+	 * Версия скрипта voidmain, используемая для парсинга файлов из zip-файла.
+	 * Пока транзиентное поле.
+	 */
+	private String exportScriptVersion;
 }

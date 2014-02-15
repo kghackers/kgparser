@@ -1,7 +1,10 @@
 package ru.klavogonki.kgparser.entity;
 
 import org.apache.log4j.Logger;
+import ru.klavogonki.kgparser.Competition;
+import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.SqlUtils;
+import su.opencode.kefir.util.StringUtils;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,6 +12,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+
+import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Copyright 2014 LLC "Open Code"
@@ -74,6 +79,32 @@ public class CompetitionEntityServiceBean implements CompetitionEntityService
 			return null;
 
 		return em.find(CompetitionEntity.class, id);
+	}
+
+	@Override
+	public Competition getCompetition(Long competitionEntityId) {
+		if (competitionEntityId == null)
+			return null;
+
+		CompetitionEntity entity = getCompetitionEntity(competitionEntityId);
+		if (entity == null)
+			return null;
+
+		String competitionJson = entity.getCompetitionJson();
+		if ( StringUtils.empty(competitionJson) )
+			return null;
+
+		try
+		{
+			Competition competition = JsonObject.fromJson(competitionJson, Competition.class);
+			// todo: fill transient data if needed
+			return competition;
+		}
+		catch (Exception e)
+		{
+			logger.error( concat(sb, "Error while parsing competitionJson for CompetitionEntity with id = ", competitionEntityId,":"), e);
+			throw new RuntimeException( concat(sb, "Error while parsing competitionJson for CompetitionEntity with id = ", competitionEntityId,":"), e );
+		}
 	}
 
 	@PersistenceContext

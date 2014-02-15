@@ -29,19 +29,27 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<!-- competition entity -->
 	<servlet>
 		<servlet-name>competitionUpload</servlet-name>
-		<servlet-class>ru.klavogonki.kgparser.servlet.CompetitionUploadServlet</servlet-class>
+		<servlet-class>ru.klavogonki.kgparser.servlet.entity.CompetitionUploadServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>competitionZipFileDownload</servlet-name>
-		<servlet-class>ru.klavogonki.kgparser.servlet.CompetitionZipFileDownloadServlet</servlet-class>
+		<servlet-class>ru.klavogonki.kgparser.servlet.entity.CompetitionZipFileDownloadServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>competitionsList</servlet-name>
-		<servlet-class>ru.klavogonki.kgparser.servlet.CompetitionsListServlet</servlet-class>
+		<servlet-class>ru.klavogonki.kgparser.servlet.entity.CompetitionsListServlet</servlet-class>
 	</servlet>
 
+	<!-- basic info -->
+	<servlet>
+		<servlet-name>competitionBasicInfoGet</servlet-name>
+		<servlet-class>ru.klavogonki.kgparser.servlet.model.basicInfo.CompetitionBasicInfoGetServlet</servlet-class>
+	</servlet>
+
+	<!-- competition entity -->
 	<servlet-mapping>
 		<servlet-name>competitionUpload</servlet-name>
 		<url-pattern>/competitionUpload</url-pattern>
@@ -53,6 +61,12 @@
 	<servlet-mapping>
 		<servlet-name>competitionsList</servlet-name>
 		<url-pattern>/competitionsList</url-pattern>
+	</servlet-mapping>
+
+	<!-- basic info -->
+	<servlet-mapping>
+		<servlet-name>competitionBasicInfoGet</servlet-name>
+		<url-pattern>/competitionBasicInfoGet</url-pattern>
 	</servlet-mapping>
 
 </web-app>
