@@ -63,7 +63,7 @@ public class CompetitionUploadServlet extends JsonServlet
 				{
 					competition = ZipFileParser.parseZipFile(entity, entity.getExportScriptVersion());
 				}
-				catch (UnsupportedEncodingException e)
+				catch (Exception e)
 				{
 					logger.error( concat("Error while parsing zip file \"", entity.getZipFileName(), "\" into Competition model:"), e );
 					throw new RuntimeException( concat("Error while parsing zip file \"", entity.getZipFileName(), "\" into Competition model:"), e);
