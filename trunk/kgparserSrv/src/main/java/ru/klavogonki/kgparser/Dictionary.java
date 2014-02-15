@@ -144,7 +144,7 @@ public class Dictionary extends JsonObject
 	 */
 	public static String getDictionaryPageUrl(String dictionaryCode) {
 		if ( isStandard(dictionaryCode) )
-			return null;
+			return StandardDictionary.getDictionaryPageUrl( StandardDictionary.valueOf(dictionaryCode) );
 
 		return UrlConstructor.getDictionaryPageUrl( getDictionaryId(dictionaryCode) );
 	}
