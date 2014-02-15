@@ -28,7 +28,7 @@ public class ZipFileParser
 		FileUtils.createDirs(dirPath);
 		logger.info( concat(sb, "Directory \"", dirPath, "\" created successfully.") );
 
-		String filePath = concat(sb, dirPath, entity.getZipFileName());
+		String filePath = concat(sb, dirPath, FileUtils.FILE_SEPARATOR, entity.getZipFileName());
 		logger.info( concat(sb, "Zip file path: ", filePath) );
 
 		FileUtils.writeToFile(filePath, entity.getZipFileData());

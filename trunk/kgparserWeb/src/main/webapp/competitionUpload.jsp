@@ -34,6 +34,17 @@
 				</tr>
 
 				<tr>
+					<td class="label"><label for="exportScriptVersion-field">Версия скрипта voidmain</label></td>
+					<td class="field">
+						<select id="exportScriptVersion-field" required="required" name="exportScriptVersion">
+							<option value="1.5">1.5</option>
+							<option value="1.7">1.7</option>
+							<option value="1.8" selected="selected">1.8</option>
+						</select>
+					</td>
+				</tr>
+
+				<tr>
 					<td colspan="2">
 						<div class="hint">Поля, помеченные как <span class="required">*</span>, обязательны для заполнения.</div>
 					</td>
