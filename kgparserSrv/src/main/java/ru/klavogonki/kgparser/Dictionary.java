@@ -5,6 +5,7 @@
  */
 package ru.klavogonki.kgparser;
 
+import ru.klavogonki.kgparser.http.UrlConstructor;
 import su.opencode.kefir.srv.json.Json;
 import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.StringUtils;
@@ -78,6 +79,16 @@ public class Dictionary extends JsonObject
 		return isStandard(this.code);
 	}
 
+	@Json(exclude = true)
+	public String getColor() {
+		return getDictionaryColor(this.code);
+	}
+
+	@Json(exclude = true)
+	public String getDictionaryPageUrl() {
+		return getDictionaryPageUrl(this.code);
+	}
+
 	/**
 	 * @param code строковый код словаря (gametype в ajax-api)
 	 * @return <code>true</code> &mdash; если словарь с указанным кодом является {@linkplain StandardDictionary стандартным};
@@ -112,6 +123,33 @@ public class Dictionary extends JsonObject
 	}
 
 	/**
+	 * @param dictionaryCode строковый код словаря
+	 * @return цвет, соответствующий словарю.
+	 */
+	@Json(exclude = true)
+	public static String getDictionaryColor(String dictionaryCode) {
+		if ( isStandard(dictionaryCode) )
+		{
+			return StandardDictionary.getColor( StandardDictionary.valueOf(dictionaryCode) );
+		}
+
+		return NON_STANDARD_DICTIONARY_COLOR;
+	}
+
+	/**
+	 * @param dictionaryCode строковый код словаря
+	 * @return <code>null</code> &mdash; для стандартных словарей
+	 * <br/>
+	 * ссылка на страницу словаря &mdash; для нестандартных словарей
+	 */
+	public static String getDictionaryPageUrl(String dictionaryCode) {
+		if ( isStandard(dictionaryCode) )
+			return null;
+
+		return UrlConstructor.getDictionaryPageUrl( getDictionaryId(dictionaryCode) );
+	}
+
+	/**
 	 * Строковый код словаря.
 	 * Для нестандартных словарей начинается с {@linkplain #NON_STANDARD_DICTIONARY_ID_PREFIX соответствующего префикса}.
 	 */
@@ -131,4 +169,9 @@ public class Dictionary extends JsonObject
 	 * Префикс, с которого начинается код нестандартного словаря.
 	 */
 	public static final String NON_STANDARD_DICTIONARY_ID_PREFIX = "voc-";
+
+	/**
+	 * Цвет для отображения нестандартного словаря.
+	 */
+	public static String NON_STANDARD_DICTIONARY_COLOR = "#524CA7";
 }

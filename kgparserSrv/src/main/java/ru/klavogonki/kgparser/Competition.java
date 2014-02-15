@@ -124,10 +124,11 @@ public class Competition extends JsonObject
 
 	/**
 	 * @return множество всех словарей, заезды по которым есть в соревновании.
+	 * Словари упорядочены по порядку появления первого заезда словаря в соревновании.
 	 */
 	@Json(exclude = true)
 	public Set<Dictionary> getDictionaries() {
-		Set<Dictionary> dictionaries = new HashSet<>();
+		Set<Dictionary> dictionaries = new LinkedHashSet<>(); // saves insertion order
 
 		for (Round round : rounds)
 		{
