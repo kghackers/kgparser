@@ -11,6 +11,12 @@ import su.opencode.kefir.srv.json.JsonObject;
  */
 public class CompetitionDictionary extends JsonObject
 {
+	public String getDictionaryCode() {
+		return dictionaryCode;
+	}
+	public void setDictionaryCode(String dictionaryCode) {
+		this.dictionaryCode = dictionaryCode;
+	}
 	public String getDictionaryName() {
 		return dictionaryName;
 	}
@@ -41,6 +47,8 @@ public class CompetitionDictionary extends JsonObject
 	public void setRoundsCount(Integer roundsCount) {
 		this.roundsCount = roundsCount;
 	}
+
+	private String dictionaryCode;
 
 	private String dictionaryName;
 
