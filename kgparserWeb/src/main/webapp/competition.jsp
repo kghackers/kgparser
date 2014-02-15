@@ -17,14 +17,14 @@
 	<h3>Количество заездов</h3>
 	<div id="roundsCount-container"></div>
 
-	<h3>Словари</h3>
+	<h3>Словари&nbsp;<a class="toggle" id="dictionaries-toggle-link">Показать</a></h3>
 	<div id="dictionaries-container"></div>
 
-	<h3>Игроки (не включая гостей)</h3>
-	<div id="players-container"></div>
-
-	<h3>Заезды</h3>
+	<h3>Заезды&nbsp;<a class="toggle" id="rounds-toggle-link">Показать</a></h3>
 	<div id="rounds-container"></div>
+
+	<h3>Игроки (не включая гостей)&nbsp;<a class="toggle" id="players-toggle-link">Показать</a></h3>
+	<div id="players-container"></div>
 
 	<div class="bottomLinks">
 		<a href="./competitionsList.jsp">Вернуться к списку соревнований</a>
@@ -42,22 +42,36 @@
 		var PROFILE_IMG_WIDTH = '11';
 		var PROFILE_IMG_HEIGHT = '16';
 
+
+		var NAME_CONTAINER_ID = 'name-container';
+
+		var ROUNDS_COUNT_CONTAINER_ID = 'roundsCount-container';
+
+		var DICTIONARIES_CONTAINER_TOGGLE_LINK_ID = 'dictionaries-toggle-link';
+		var DICTIONARIES_CONTAINER_ID = 'dictionaries-container';
+
+		var PLAYERS_CONTAINER_TOGGLE_LINK_ID = 'players-toggle-link';
+		var PLAYERS_CONTAINER_ID = 'players-container';
+
+		var ROUNDS_CONTAINER_TOGGLE_LINK_ID = 'rounds-toggle-link';
+		var ROUNDS_CONTAINER_ID = 'rounds-container';
+
 		var dh = DomHelper;
 
 		function appendCompetitionName(basicInfo) {
-			var container = dh.getEl('name-container');
+			var container = dh.getEl(NAME_CONTAINER_ID);
 			dh.removeChildrenHierarchy(container);
 
 			container.appendChild( dh.createTN(basicInfo.name) );
 		}
 		function appendRoundsCount(basicInfo) {
-			var container = dh.getEl('roundsCount-container');
+			var container = dh.getEl(ROUNDS_COUNT_CONTAINER_ID);
 			dh.removeChildrenHierarchy(container);
 
 			container.appendChild( dh.createTN(basicInfo.roundsCount) );
 		}
 		function appendDictionaries(basicInfo) {
-			var container = dh.getEl('dictionaries-container');
+			var container = dh.getEl(DICTIONARIES_CONTAINER_ID);
 			dh.removeChildrenHierarchy(container);
 
 			var table = dh.createEl(dh.TABLE_TAG, null, TABLE_STYLE);
@@ -102,6 +116,53 @@
 				tBody.appendChild(tr);
 			});
 
+
+			table.appendChild(tBody);
+			container.appendChild(table);
+		}
+
+		function appendRounds(basicInfo) {
+			var container = dh.getEl('rounds-container');
+			dh.removeChildrenHierarchy(container);
+
+			var table = dh.createEl(dh.TABLE_TAG, null, TABLE_STYLE);
+			var tBody = dh.createEl(dh.TBODY_TAG);
+
+			// header
+			var headerTr = dh.createEl(dh.TR_TAG);
+			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Номер') );
+			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Номер в словаре') );
+			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Словарь') );
+			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Время начала') );
+			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Количество доехавших игроков (включая гостей)') ); // todo: move 'Включая гостей' to hint
+
+			table.appendChild(headerTr);
+
+			// rows
+			$.each(basicInfo.rounds, function(index, round) {
+				var trClass = (index % 2 == 1) ? 'odd': 'even';
+				var tr = dh.createEl(dh.TR_TAG, null, trClass);
+
+				var numberTd = dh.createEl(dh.TD_TAG, null, null, round.number);
+				var numberInDictionaryTd = dh.createEl(dh.TD_TAG, null, null, round.numberInDictionary);
+
+				var dictionaryTd = dh.createEl(dh.TD_TAG);
+				var dictionarySpan = dh.createEl(dh.SPAN_TAG, null, null, round.dictionaryName);
+				dictionarySpan.setAttribute(dh.STYLE_ATTRIBUTE, ('color: ' + round.dictionaryColor + ';'));
+				dictionaryTd.appendChild(dictionarySpan);
+
+				var beginTimeTd = dh.createEl(dh.TD_TAG, null, null, round.beginTimeStr);
+
+				var finishedPlayersCountTd = dh.createEl(dh.TD_TAG, null, TD_ALIGN_RIGHT_STYLE, round.finishedPlayersCount);
+
+				tr.appendChild(numberTd);
+				tr.appendChild(numberInDictionaryTd);
+				tr.appendChild(dictionaryTd);
+				tr.appendChild(beginTimeTd);
+				tr.appendChild(finishedPlayersCountTd);
+
+				tBody.appendChild(tr);
+			});
 
 			table.appendChild(tBody);
 			container.appendChild(table);
@@ -172,59 +233,12 @@
 			container.appendChild(table);
 		}
 
-		function appendRounds(basicInfo) {
-			var container = dh.getEl('rounds-container');
-			dh.removeChildrenHierarchy(container);
-
-			var table = dh.createEl(dh.TABLE_TAG, null, TABLE_STYLE);
-			var tBody = dh.createEl(dh.TBODY_TAG);
-
-			// header
-			var headerTr = dh.createEl(dh.TR_TAG);
-			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Номер') );
-			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Номер в словаре') );
-			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Словарь') );
-			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Время начала') );
-			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Количество доехавших игроков (включая гостей)') ); // todo: move 'Включая гостей' to hint
-
-			table.appendChild(headerTr);
-
-			// rows
-			$.each(basicInfo.rounds, function(index, round) {
-				var trClass = (index % 2 == 1) ? 'odd': 'even';
-				var tr = dh.createEl(dh.TR_TAG, null, trClass);
-
-				var numberTd = dh.createEl(dh.TD_TAG, null, null, round.number);
-				var numberInDictionaryTd = dh.createEl(dh.TD_TAG, null, null, round.numberInDictionary);
-
-				var dictionaryTd = dh.createEl(dh.TD_TAG);
-				var dictionarySpan = dh.createEl(dh.SPAN_TAG, null, null, round.dictionaryName);
-				dictionarySpan.setAttribute(dh.STYLE_ATTRIBUTE, ('color: ' + round.dictionaryColor + ';'));
-				dictionaryTd.appendChild(dictionarySpan);
-
-				var beginTimeTd = dh.createEl(dh.TD_TAG, null, null, round.beginTimeStr);
-
-				var finishedPlayersCountTd = dh.createEl(dh.TD_TAG, null, TD_ALIGN_RIGHT_STYLE, round.finishedPlayersCount);
-
-				tr.appendChild(numberTd);
-				tr.appendChild(numberInDictionaryTd);
-				tr.appendChild(dictionaryTd);
-				tr.appendChild(beginTimeTd);
-				tr.appendChild(finishedPlayersCountTd);
-
-				tBody.appendChild(tr);
-			});
-
-				table.appendChild(tBody);
-			container.appendChild(table);
-		}
-
 		function appendBasicInfo(basicInfo) {
 			appendCompetitionName(basicInfo);
 			appendRoundsCount(basicInfo);
 			appendDictionaries(basicInfo);
-			appendPlayers(basicInfo);
 			appendRounds(basicInfo);
+			appendPlayers(basicInfo);
 		}
 		function loadBasicInfo() {
 			jQuery.ajax({
@@ -246,7 +260,32 @@
 					}
 				}
 			});
+		}
 
+		function bindShowHideLink(linkId, divId) {
+			var divSelector = '#' + divId;
+			$(divSelector).hide(); // default div is hidden
+
+			$('#' + linkId).click(function() {
+				$(divSelector).toggle();
+
+				var link = dh.getEl(linkId);
+				dh.removeChildrenHierarchy(link);
+
+				if ( $(divSelector).is(":hidden") )
+				{
+					link.appendChild( dh.createTN('Показать') );
+				}
+				else
+				{
+					link.appendChild( dh.createTN('Скрыть') );
+				}
+			});
+		}
+		function bindShowHideLinks() {
+			bindShowHideLink(DICTIONARIES_CONTAINER_TOGGLE_LINK_ID, DICTIONARIES_CONTAINER_ID);
+			bindShowHideLink(ROUNDS_CONTAINER_TOGGLE_LINK_ID, ROUNDS_CONTAINER_ID);
+			bindShowHideLink(PLAYERS_CONTAINER_TOGGLE_LINK_ID, PLAYERS_CONTAINER_ID);
 		}
 
 		$(function() {
@@ -256,6 +295,7 @@
 				return;
 			}
 
+			bindShowHideLinks();
 			loadBasicInfo();
 		});
 	</script>
