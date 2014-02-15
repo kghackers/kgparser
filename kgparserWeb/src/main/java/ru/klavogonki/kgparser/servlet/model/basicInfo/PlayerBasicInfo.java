@@ -19,6 +19,12 @@ public class PlayerBasicInfo extends JsonObject
 	public void setProfileId(Integer profileId) {
 		this.profileId = profileId;
 	}
+	public String getProfileLink() {
+		return profileLink;
+	}
+	public void setProfileLink(String profileLink) {
+		this.profileLink = profileLink;
+	}
 	public String getName() {
 		return name;
 	}
@@ -51,6 +57,8 @@ public class PlayerBasicInfo extends JsonObject
 	}
 
 	private Integer profileId;
+
+	private String profileLink;
 
 	private String name;
 

@@ -30,6 +30,7 @@ public class CompetitionBasicInfo extends JsonObject
 		for (Dictionary dictionary : competitionDictionaries)
 		{
 			CompetitionDictionary vo = new CompetitionDictionary();
+			vo.setDictionaryCode(dictionary.getCode());
 			vo.setDictionaryName(dictionary.getName());
 			vo.setDictionaryIsStandard(dictionary.isStandard());
 			vo.setDictionaryLink(dictionary.getDictionaryPageUrl());
@@ -41,11 +42,16 @@ public class CompetitionBasicInfo extends JsonObject
 
 		this.players = new ArrayList<>();
 		Set<Player> competitionPlayers = competition.getPlayers();
-		// todo: sortPlayers somehow
 		for (Player player : competitionPlayers)
 		{
+			if (player.isGuest())
+			{ // todo: think about this
+				continue;
+			}
+
 			PlayerBasicInfo vo = new PlayerBasicInfo();
 			vo.setProfileId(player.getProfileId());
+			vo.setProfileLink(player.getProfileLink());
 			vo.setName(player.getName());
 			vo.setRank(player.getRank().toString());
 			vo.setRankColor(player.getColor());
@@ -61,6 +67,7 @@ public class CompetitionBasicInfo extends JsonObject
 
 			this.players.add(vo);
 		}
+		Collections.sort(this.players, new PlayersBasicInfoComparator()); // sort players
 
 		DateFormat dateFormat = DateUtils.getDayMonthYearHourMinuteSecondFormat();
 		this.rounds = new ArrayList<>();
