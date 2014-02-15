@@ -95,4 +95,25 @@ public enum StandardDictionary
 				throw new IllegalArgumentException("Unknown standard dictionary: " + dictionary); // todo: use concat
 		}
 	}
+
+	/**
+	 * @param dictionary стандартный словарь
+	 * @return страница стандартного слоаря в <a href="http://klavogonki.ru/wiki/">википедии клавогонок</a>.
+	 */
+	public static String getDictionaryPageUrl(StandardDictionary dictionary) {
+		switch (dictionary)
+		{
+			case normal: return "http://klavogonki.ru/wiki/%D0%9E%D0%B1%D1%8B%D1%87%D0%BD%D1%8B%D0%B9";
+			case noerror: return "http://klavogonki.ru/wiki/%D0%91%D0%B5%D0%B7%D0%BE%D1%88%D0%B8%D0%B1%D0%BE%D1%87%D0%BD%D1%8B%D0%B9";
+			case chars: return "http://klavogonki.ru/wiki/%D0%91%D1%83%D0%BA%D0%B2%D1%8B";
+			case marathon: return "http://klavogonki.ru/wiki/%D0%9C%D0%B0%D1%80%D0%B0%D1%84%D0%BE%D0%BD";
+			case abra: return "http://klavogonki.ru/wiki/%D0%90%D0%B1%D1%80%D0%B0%D0%BA%D0%B0%D0%B4%D0%B0%D0%B1%D1%80%D0%B0";
+			case referats: return "http://klavogonki.ru/wiki/%D0%AF%D0%BD%D0%B4%D0%B5%D0%BA%D1%81.%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B";
+			case digits: return "http://klavogonki.ru/wiki/%D0%A6%D0%B8%D1%84%D1%80%D1%8B";
+			case sprint: return "http://klavogonki.ru/wiki/%D0%A1%D0%BF%D1%80%D0%B8%D0%BD%D1%82";
+
+			default:
+				throw new IllegalArgumentException("Unknown standard dictionary: " + dictionary); // todo: use concat
+		}
+	}
 }

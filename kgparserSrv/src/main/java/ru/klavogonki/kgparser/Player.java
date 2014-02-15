@@ -5,6 +5,7 @@
  */
 package ru.klavogonki.kgparser;
 
+import ru.klavogonki.kgparser.http.UrlConstructor;
 import su.opencode.kefir.srv.json.Json;
 import su.opencode.kefir.srv.json.JsonObject;
 
@@ -45,6 +46,11 @@ public class Player extends JsonObject implements Comparable<Player>
 			throw new IllegalArgumentException("Record must be > 0");
 
 		this.normalRecord = normalRecord;
+	}
+
+	@Json(exclude = true)
+	public String getProfileLink() {
+		return UrlConstructor.getProfileUrl(profileId);
 	}
 
 	@Json(exclude = true)

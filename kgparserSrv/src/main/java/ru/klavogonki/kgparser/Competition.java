@@ -123,6 +123,42 @@ public class Competition extends JsonObject
 	}
 
 	/**
+	 * Заполняет ранги игроков согласно обычному рангу.
+	 * (В скрипте voidmain сохраняются ранги по текущему словарю).
+	 */
+	@Json(exclude = true)
+	public void fillPlayersRanks() {
+		Set<Player> players = getPlayers();
+
+		Map<Integer, Rank> profileIdsToRanks = new HashMap<>();
+		for (Player player : players)
+		{
+			if (player.isGuest())
+				continue;
+
+			Rank normalRank = HttpClientTest.getUserRank(player.getProfileId());
+			profileIdsToRanks.put(player.getProfileId(), normalRank);
+		}
+
+		for (Round round : rounds)
+		{
+			List<PlayerRoundResult> results = round.getResults();
+			for (PlayerRoundResult result : results)
+			{
+				Player player = result.getPlayer();
+				if ( player.isGuest() )
+					continue;
+
+				Rank normalRank = profileIdsToRanks.get( player.getProfileId() );
+				if (normalRank == null)
+					throw new IllegalStateException( concat("Cannot get normal rank for player with profileId = \"", player.getProfileId(), "\"") );
+
+				player.setRank(normalRank);
+			}
+		}
+	}
+
+	/**
 	 * @return множество всех словарей, заезды по которым есть в соревновании.
 	 * Словари упорядочены по порядку появления первого заезда словаря в соревновании.
 	 */
