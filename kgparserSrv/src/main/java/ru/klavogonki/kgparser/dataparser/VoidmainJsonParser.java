@@ -50,9 +50,18 @@ public class VoidmainJsonParser
 		AverageSpeedCounter.logCompetitionInfo(competition);
 */
 
+/*
 		String competitionName = "Марафоны 11.02.2014";
 		String dirPath = "C:\\java\\kgparser\\doc\\voidmain\\marathons_2014_02_11\\";
 		Competition competition = parseCompetition(competitionName, dirPath, VERSION_1_7);
+*/
+		String competitionName = "Street racer № 38 (13.02.2014";
+		String dirPath = "C:\\java\\kgparser\\doc\\voidmain\\StreetRacer_83__2014_02_13";
+		Competition competition = parseCompetition(competitionName, dirPath, null);
+
+		JSONObject competitionJson = competition.toJson();
+		System.out.println("Competition json: ");
+		System.out.println(competitionJson.toString());
 
 /*
 		String competitionName = "Серпантин №8 (11.02.2014)";
@@ -61,11 +70,26 @@ public class VoidmainJsonParser
 */
 
 
+/*
 		AverageSpeedCounter.logCompetitionInfo(competition);
 
 		HighChartValue highChartValue = SpeedChartFiller.fillData(competition);
 		System.out.println("highchartValue: ");
 		System.out.println(highChartValue.toJson());
+*/
+	}
+
+	private static String getScriptVersionFromFile(String filePath) throws UnsupportedEncodingException {
+		byte[] jsonBytes = FileUtils.readFile(filePath);
+		String json = new String(jsonBytes, StringUtils.CHARSET_UTF8);
+
+		JSONObject jsonObject = new JSONObject(json);
+		String version = jsonObject.getString(EXPORT_SCRIPT_VERSION_FIELD_NAME);
+
+		if ( StringUtils.empty(version) )
+			return VERSION_1_5;
+
+		return version;
 	}
 
 	private static Round parseRoundFromFile(String filePath, String scriptVersion) throws UnsupportedEncodingException {
@@ -78,6 +102,9 @@ public class VoidmainJsonParser
 		if ( scriptVersion.equals(VERSION_1_7) )
 			return parseRound17(json);
 
+		if ( scriptVersion.equals(VERSION_1_8) )
+			return parseRound18(json);
+
 		throw new IllegalArgumentException( concat("Unsupported voidmain script version: ", scriptVersion) );
 	}
 
@@ -86,7 +113,9 @@ public class VoidmainJsonParser
 	 * Поддиректории не учитываются.
 	 * @param competitionName название соревнования
 	 * @param dirPath путь к директории, в которой хранятся json-файлы с результатами заездов соревнования
-	 * @param scriptVersion версия скрипта voidmain
+	 * @param scriptVersion версия скрипта voidmain.
+	 *                       Если равна <code>null</code>, то версия скрипта каждого заезда определяется на основе поля
+	 *                      &laquo;{@linkplain #EXPORT_SCRIPT_VERSION_FIELD_NAME exportScriptVersion}&raquo; в JSON каждого заезда.
 	 * @return распарсенная модель соревнования
 	 */
 	public static Competition parseCompetition(String competitionName, String dirPath, String scriptVersion) throws UnsupportedEncodingException {
@@ -111,7 +140,21 @@ public class VoidmainJsonParser
 			logger.info("");
 			logger.info("========================================================================");
 			logger.info( concat(sb, "Parsing Round from file \"", filePath, "\"") );
-			Round round = parseRoundFromFile(filePath, scriptVersion);
+
+			String version;
+			if ( StringUtils.notEmpty(scriptVersion) )
+			{
+				logger.info( concat(sb, "Using passed scriptVersion = \"", scriptVersion, "\".") );
+				version = scriptVersion;
+			}
+			else
+			{
+				logger.info( concat(sb, "ScriptVersion is not passed. Getting scriptVersion from file \"", filePath, "\".") );
+				version = getScriptVersionFromFile(filePath);
+				logger.info( concat(sb, "ScriptVersion from file \"", filePath, "\" is \"", version, "\".") );
+			}
+
+			Round round = parseRoundFromFile(filePath, version);
 			rounds.add(round);
 			logger.info( concat(sb, "Round successfully parsed from file \"", filePath, "\".") );
 		}
@@ -548,6 +591,15 @@ public class VoidmainJsonParser
 		return round;
 	}
 
+	/**
+	 * @param json JSON-данные, сохраненные версией 1.8 скрипта <a href="http://klavogonki.ru/u/#/364239/">voidmain</a>
+	 * @return модель заезда на основе json-данных заезда
+	 */
+	public static Round parseRound18(String json) {
+		// todo: implement vocs data parsing
+		return parseRound17(json);
+	}
+
 	private static void logFilledRoundInfo(Round round) {
 		StringBuilder sb = new StringBuilder();
 
@@ -595,6 +647,9 @@ public class VoidmainJsonParser
 			}
 		}
 	}
+
+	// "exportScriptVersion" - version of Voidmain script
+	public static final String EXPORT_SCRIPT_VERSION_FIELD_NAME = "exportScriptVersion";
 
 	// "id"
 	public static final String GAME_ID_FIELD_NAME = "id";
