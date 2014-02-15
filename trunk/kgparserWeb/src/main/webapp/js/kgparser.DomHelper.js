@@ -17,6 +17,8 @@ var DomHelper = function() {
 		SPAN_TAG: 'span',
 		A_TAG: 'a',
 
+		BR_TAG: 'br',
+
 		INPUT_TAG: 'input',
 		LABEL_TAG: 'label',
 

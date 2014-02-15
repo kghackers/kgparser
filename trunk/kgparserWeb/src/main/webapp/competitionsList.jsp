@@ -48,7 +48,7 @@
 			var tBody = dh.createEl(dh.TBODY_TAG);
 //			{"id":1,"zipFileName":"zipFile.zip","link":"http://klavogonki.ru","name":"Название соревнования","zipFileSize":666,"comment":"Коммент к соревнованию","zipFileContentType":"application/zip"}
 
-			// todo: header of the table
+			// header of the table
 			var headerTr = dh.createEl(dh.TR_TAG);
 			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Название') );
 			headerTr.appendChild( dh.createEl(dh.TH_TAG, null, null, 'Страница соревнования') );
