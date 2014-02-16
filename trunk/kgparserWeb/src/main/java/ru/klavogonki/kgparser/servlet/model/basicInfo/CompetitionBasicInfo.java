@@ -1,11 +1,10 @@
 package ru.klavogonki.kgparser.servlet.model.basicInfo;
 
-import ru.klavogonki.kgparser.Competition;
+import ru.klavogonki.kgparser.*;
 import ru.klavogonki.kgparser.Dictionary;
-import ru.klavogonki.kgparser.Player;
-import ru.klavogonki.kgparser.Round;
 import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.DateUtils;
+import su.opencode.kefir.util.ObjectUtils;
 
 import java.text.DateFormat;
 import java.util.*;
@@ -87,7 +86,8 @@ public class CompetitionBasicInfo extends JsonObject
 			vo.setBeginTime(competitionRound.getBeginTime());
 			vo.setBeginTimeStr(dateFormat.format(competitionRound.getBeginTime()));
 
-			vo.setFinishedPlayersCount( competitionRound.getResults().size() );
+			List<PlayerRoundResult> results = competitionRound.getResults();
+			vo.setFinishedPlayersCount( ObjectUtils.notEmpty(results) ? results.size() : 0 );
 
 			this.rounds.add(vo);
 		}
