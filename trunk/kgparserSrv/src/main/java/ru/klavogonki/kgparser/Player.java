@@ -21,6 +21,9 @@ public class Player extends JsonObject implements Comparable<Player>
 		this.profileId = profileId;
 	}
 	public String getName() {
+		if ( isGuest() )
+			return GUEST_NAME;
+
 		return name;
 	}
 	public void setName(String name) {
@@ -59,6 +62,9 @@ public class Player extends JsonObject implements Comparable<Player>
 	}
 	@Json(exclude = true)
 	public String getColor() {
+		if ( isGuest() )
+			return Rank.GUEST_COLOR;
+
 		return Rank.getColor( getRank() );
 	}
 
@@ -113,4 +119,9 @@ public class Player extends JsonObject implements Comparable<Player>
 	 * Рекорд в обычном режиме. Должен быть больше 0.
 	 */
 	private Integer normalRecord;
+
+	/**
+	 * Имя игрока-гостя.
+	 */
+	public static final String GUEST_NAME = "Гость";
 }

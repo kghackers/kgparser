@@ -173,4 +173,9 @@ public enum Rank
 			default: throw new IllegalArgumentException( concat("Incorrect rank level: " + level) );
 		}
 	}
+
+	/**
+	 * Цвет игрока-гостя.
+	 */
+	public static final String GUEST_COLOR = "#222222";
 }
