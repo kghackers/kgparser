@@ -105,7 +105,7 @@
 					}]
 				}
 				, tooltip: {
-					  valueSuffix: ' ошибок'
+					  valueSuffix: ' ош.' // todo: set tooltip value depending of errors count
 				}
 				, legend: {
 					  layout: 'vertical'
