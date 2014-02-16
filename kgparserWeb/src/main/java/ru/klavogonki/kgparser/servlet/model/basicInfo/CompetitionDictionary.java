@@ -1,5 +1,6 @@
 package ru.klavogonki.kgparser.servlet.model.basicInfo;
 
+import ru.klavogonki.kgparser.Dictionary;
 import su.opencode.kefir.srv.json.JsonObject;
 
 /**
@@ -11,6 +12,17 @@ import su.opencode.kefir.srv.json.JsonObject;
  */
 public class CompetitionDictionary extends JsonObject
 {
+	public CompetitionDictionary() {
+	}
+	public CompetitionDictionary(Dictionary dictionary) {
+		this.dictionaryCode = dictionary.getCode();
+		this.dictionaryIsStandard = dictionary.isStandard();
+		this.dictionaryName = dictionary.getName();
+		this.dictionaryLink = dictionary.getDictionaryPageUrl();
+		this.dictionaryColor = dictionary.getColor();
+//		vo.setRoundsCount( competition.getRoundsCount(dictionary) );
+	}
+
 	public String getDictionaryCode() {
 		return dictionaryCode;
 	}

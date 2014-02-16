@@ -1,5 +1,7 @@
 package ru.klavogonki.kgparser.servlet.model.basicInfo;
 
+import ru.klavogonki.kgparser.Player;
+import ru.klavogonki.kgparser.Rank;
 import su.opencode.kefir.srv.json.JsonObject;
 
 import java.util.Map;
@@ -13,6 +15,31 @@ import java.util.Map;
  */
 public class PlayerBasicInfo extends JsonObject
 {
+	public PlayerBasicInfo() {
+	}
+	public PlayerBasicInfo(Player player) {
+		if (player.isGuest())
+		{
+			this.guest = true;
+			this.rankColor = Rank.GUEST_COLOR;
+			this.name = Player.GUEST_NAME;
+			return;
+		}
+
+		this.guest = false;
+		this.profileId = player.getProfileId();
+		this.profileLink = player.getProfileLink();
+		this.name = player.getName();
+		this.rank = player.getRank().toString();
+		this.rankColor = player.getColor();
+	}
+
+	public Boolean getGuest() {
+		return guest;
+	}
+	public void setGuest(Boolean guest) {
+		this.guest = guest;
+	}
 	public Integer getProfileId() {
 		return profileId;
 	}
@@ -55,6 +82,8 @@ public class PlayerBasicInfo extends JsonObject
 	public void setDictionariesRoundsCount(Map<String, Integer> dictionariesRoundsCount) {
 		this.dictionariesRoundsCount = dictionariesRoundsCount;
 	}
+
+	private Boolean guest;
 
 	private Integer profileId;
 
