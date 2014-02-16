@@ -16,6 +16,12 @@ import java.util.Set;
  */
 public class HighChartValue extends JsonObject
 {
+	public String getCompetitionName() {
+		return competitionName;
+	}
+	public void setCompetitionName(String competitionName) {
+		this.competitionName = competitionName;
+	}
 	public List<String> getCategories() {
 		return categories;
 	}
@@ -34,6 +40,8 @@ public class HighChartValue extends JsonObject
 	public void setRanks(List<RankDto> ranks) {
 		this.ranks = ranks;
 	}
+
+	private String competitionName;
 
 	private List<String> categories;
 

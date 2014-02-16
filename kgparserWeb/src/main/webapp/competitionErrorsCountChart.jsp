@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Скорость игроков по заездам</title>
+	<title>Количество ошибок игроков по заездам</title>
 	<%@ include file="./headerInclude.jspf" %>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/kgparser.DomHelper.js"></script>
@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="wrapper">
-	<h2>График скоростей игроков по заездам</h2>
+	<h2>График количеств ошибок игроков по заездам</h2>
 
 	<div id="chart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 	<div id="ranks-container" style="border: 1px solid gray; padding: 10px; margin-bottom: 10px;">
@@ -34,7 +34,7 @@
 		var competitionId = '<%=request.getParameter("competitionId")%>';
 
 		var contextPath = '<%=request.getContextPath()%>';
-		var speedChartValuesGetUrl = contextPath + '/speedChartValuesGet';
+		var errorsCountChartValuesGetUrl = contextPath + '/errorsCountChartValuesGet';
 
 		var dh = DomHelper;
 		var rankCheckboxesId;
@@ -88,7 +88,7 @@
 					, x: -20 // center
 				}
 				, subtitle: {
-					  text: 'Скорость игроков по заездам'
+					  text: 'Количество ошибок игроков по заездам'
 					, x: -20
 				}
 				, xAxis: {
@@ -96,7 +96,7 @@
 				}
 				, yAxis: {
 					title: {
-						  text: 'Скорость (зн./мин.)'
+						  text: 'Количество ошибок (шт.)'
 					},
 					plotLines: [{
 						  value: 0
@@ -105,7 +105,7 @@
 					}]
 				}
 				, tooltip: {
-					  valueSuffix: ' зн./мин.'
+					  valueSuffix: ' ошибок'
 				}
 				, legend: {
 					  layout: 'vertical'
@@ -173,7 +173,7 @@
 
 		function loadChartValues() {
 			jQuery.ajax({
-				  url: speedChartValuesGetUrl
+				  url: errorsCountChartValuesGetUrl
 				, type: 'POST'
 				, dataType: 'json'
 				, data: { competitionId: competitionId }
@@ -187,9 +187,9 @@
 					else
 					{
 						if (response && response.msg)
-							alert('Произошла ошибка при получении данных для графика скоростей игроков:' + response.msg);
+							alert('Произошла ошибка при получении данных для графика количеств ошибок игроков:' + response.msg);
 						else
-							alert('Произошла ошибка при получении данных для графика скоростей игроков.');
+							alert('Произошла ошибка при получении данных для графика количеств ошибок  игроков.');
 					}
 				}
 			});

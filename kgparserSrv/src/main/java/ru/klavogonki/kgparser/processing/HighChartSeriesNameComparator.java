@@ -13,6 +13,6 @@ public class HighChartSeriesNameComparator implements Comparator<HighChartSeries
 {
 	@Override
 	public int compare(HighChartSeries o1, HighChartSeries o2) {
-		return o1.getName().compareTo( o2.getName() );
+		return o1.getName().toLowerCase().compareTo( o2.getName().toLowerCase() );
 	}
 }

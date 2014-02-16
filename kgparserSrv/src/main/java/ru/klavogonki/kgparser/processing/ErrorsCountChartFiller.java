@@ -14,26 +14,12 @@ import static su.opencode.kefir.util.StringUtils.concat;
  * $Revision$
  * $Date::                      $
  */
-public class SpeedChartFiller
+public class ErrorsCountChartFiller
 {
-//	public static void main(String[] args) {
-//		fillData()
-//		System.out.println( value.toJson() );
-//	}
 	public static HighChartValue fillData(Competition competition) {
 		List<String> categories = new ArrayList<>();
 
 		Set<Player> players = competition.getPlayers();
-
-/*
-		for (Player player : players)
-		{ // set ranks to normal mode ranks
-			if (player.isGuest())
-				continue;
-
-			player.setRank(HttpClientTest.getUserRank(player.getProfileId()));
-		}
-*/
 
 		// fill present ranks
 		logger.info("===========================================");
@@ -44,7 +30,6 @@ public class SpeedChartFiller
 		for (Rank rank : ranks)
 			ranksDto.add( new RankDto(rank) );
 
-
 		List<Round> rounds = competition.getRounds();
 
 		List<HighChartSeries> seriesList = new ArrayList<>();
@@ -53,6 +38,7 @@ public class SpeedChartFiller
 		{
 			categories.add( round.getNumber().toString() );
 		}
+
 
 		for (Player player : players)
 		{
@@ -64,28 +50,28 @@ public class SpeedChartFiller
 				continue; // remove cheater
 */
 
-			List<Integer> speeds = new ArrayList<>();
+			List<Integer> errorsCounts = new ArrayList<>();
 
 			for (Round round : rounds)
 			{
 				PlayerRoundResult playerResult = round.getPlayerResult(player);
 
 				if (playerResult == null)
-					speeds.add(null);
+					errorsCounts.add(null);
 				else
-					speeds.add(playerResult.getSpeed());
+					errorsCounts.add(playerResult.getErrorsCount());
 			}
 
 			HighChartSeries series = new HighChartSeries();
 			series.setName( player.getName() );
-			series.setRank(player.getRank().toString());
+			series.setRank( player.getRank().toString() );
 			series.setRankDisplayName(Rank.getDisplayName(player.getRank()));
 			series.setColor( Rank.getColor( player.getRank()) );
-			series.setData(speeds);
+			series.setData(errorsCounts);
 			seriesList.add(series);
 		}
 
-		Collections.sort(seriesList, new HighChartSeriesNameComparator() ); // order players by name
+		Collections.sort(seriesList, new HighChartSeriesNameComparator()); // order players by name
 
 		HighChartValue value = new HighChartValue();
 		value.setCompetitionName( competition.getName() );
