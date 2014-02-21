@@ -135,7 +135,7 @@ public class PlayersResultsTable extends JsonObject
 				}
 			}
 
-			double averageSpeed = speedSum / playerRoundsCount;
+			double averageSpeed = ((double) speedSum) / playerRoundsCount;
 			double averageErrorPercentage = errorsPercentageSum / playerRoundsCount;
 
 			row.addCell( Integer.toString(playerRoundsCount) );
