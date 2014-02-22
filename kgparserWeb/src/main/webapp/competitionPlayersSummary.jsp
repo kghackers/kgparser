@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Расчет результатов для Ордена Суперменов</title>
+	<title>Сводная таблица результатов игроков</title>
 	<%@ include file="./headerInclude.jspf" %>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/kgparser.DomHelper.js"></script>
