@@ -20,6 +20,9 @@
 
 	<div class="bottomLinks">
 		<div>
+			<a href="./playerResultsTableXlsGet?competitionId=<%=request.getParameter("competitionId")%>">Выгрузить в Excel</a>
+		</div>
+		<div>
 			<a href="./competition.jsp?competitionId=<%=request.getParameter("competitionId")%>">Вернуться к странице соревнования</a>
 		</div>
 	</div>
@@ -107,7 +110,7 @@
 						alert('Произошла ошибка при получении данных игроков.');
 				}
 			}
-		})
+		});
 	}
 
 	$(function() {
