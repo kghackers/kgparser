@@ -15,6 +15,7 @@ import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +29,8 @@ import static su.opencode.kefir.util.StringUtils.concat;
 public class PlayersResultsTable extends JsonObject
 {
 	public void fillTable(Competition competition) {
+		this.competitionName = competition.getName();
+
 		fillHeaderRows(competition);
 		fillPlayersRows(competition);
 	}
@@ -36,14 +39,8 @@ public class PlayersResultsTable extends JsonObject
 		StringBuilder sb = new StringBuilder();
 		HeaderRow firstRow = new HeaderRow();
 
-
 		// player data
 		firstRow.addEmptyCell(4);
-
-		firstRow.addEmptyCell();
-		firstRow.addEmptyCell();
-		firstRow.addEmptyCell();
-		firstRow.addEmptyCell();
 		// todo: нужные пробеги
 
 		// rounds data
@@ -87,21 +84,25 @@ public class PlayersResultsTable extends JsonObject
 		StringBuilder sb = new StringBuilder();
 
 		Set<Player> players = competition.getPlayers();
-		// todo: order players as needed
 
-		List<Round> rounds = competition.getRounds();
-
-		this.playerRows = new ArrayList<>();
-
+		List<PlayerResult> playerResults = new ArrayList<>();
 		for (Player player : players)
 		{
-			if (player.isGuest()) // do not add guests to the table
+			if (player.isGuest())
 				continue;
 
-			int playerRoundsCount = 0;
-			long speedSum = 0;
-			int totalErrorsCount = 0;
-			double errorsPercentageSum = 0;
+			playerResults.add( new PlayerResult(player, competition) );
+		}
+		Collections.sort(playerResults, new PlayerResultsComparator());
+
+
+		this.playersRows = new ArrayList<>();
+
+		for (PlayerResult playerResult : playerResults)
+		{
+			Player player = playerResult.getPlayer();
+			if (player.isGuest()) // do not add guests to the table
+				continue;
 
 			PlayerRow row = new PlayerRow();
 			row.addCell( player.getProfileId().toString() );
@@ -109,12 +110,10 @@ public class PlayersResultsTable extends JsonObject
 			row.addCell( Rank.getDisplayName(player.getRank()) );
 			row.addCell( (player.getNormalRecord() == null) ? null : player.getNormalRecord().toString() );
 
-			// todo: count average params
-
-			for (Round round : rounds)
+			for (Round round : competition.getRounds())
 			{
-				PlayerRoundResult playerResult = round.getPlayerResult(player);
-				if (playerResult == null)
+				PlayerRoundResult playerRoundResult = round.getPlayerResult(player);
+				if (playerRoundResult == null)
 				{ // игрок не участвовал в заезде
 					logger.info( concat(sb, "Player \"", player.getName(), "\" (profileId = ", player.getProfileId(), ") has not finished in round number ", round.getNumber() ) );
 
@@ -124,45 +123,45 @@ public class PlayersResultsTable extends JsonObject
 				}
 				else
 				{ // игрок участвовал в заезде
-					playerRoundsCount++;
-					speedSum += playerResult.getSpeed();
-					totalErrorsCount += playerResult.getErrorsCount();
-					errorsPercentageSum += playerResult.getErrorPercentage();
-
-					row.addCell( playerResult.getSpeed().toString() );
-					row.addCell( playerResult.getErrorsCount().toString() );
-					row.addCell( StringUtils.formatDouble( playerResult.getErrorPercentage()) );
+					row.addCell( playerRoundResult.getSpeed().toString() );
+					row.addCell( playerRoundResult.getErrorsCount().toString() );
+					row.addCell( StringUtils.formatDouble(playerRoundResult.getErrorPercentage()) );
 				}
 			}
 
-			double averageSpeed = ((double) speedSum) / playerRoundsCount;
-			double averageErrorPercentage = errorsPercentageSum / playerRoundsCount;
+			row.addCell( Integer.toString( playerResult.getRoundsCount()) );
+			row.addCell( StringUtils.formatDouble( playerResult.getAverageSpeed()) );
+			row.addCell( StringUtils.formatDouble( playerResult.getAverageErrorPercentage()) );
+			row.addCell( Integer.toString( playerResult.getTotalErrorsCount() ) );
 
-			row.addCell( Integer.toString(playerRoundsCount) );
-			row.addCell( StringUtils.formatDouble(averageSpeed) );
-			row.addCell( StringUtils.formatDouble(averageErrorPercentage) );
-			row.addCell( Integer.toString(totalErrorsCount) );
-
-			this.playerRows.add(row);
+			this.playersRows.add(row);
 		}
 	}
 
+	public String getCompetitionName() {
+		return competitionName;
+	}
+	public void setCompetitionName(String competitionName) {
+		this.competitionName = competitionName;
+	}
 	public List<HeaderRow> getHeaderRows() {
 		return headerRows;
 	}
 	public void setHeaderRows(List<HeaderRow> headerRows) {
 		this.headerRows = headerRows;
 	}
-	public List<PlayerRow> getPlayerRows() {
-		return playerRows;
+	public List<PlayerRow> getPlayersRows() {
+		return playersRows;
 	}
-	public void setPlayerRows(List<PlayerRow> playerRows) {
-		this.playerRows = playerRows;
+	public void setPlayersRows(List<PlayerRow> playersRows) {
+		this.playersRows = playersRows;
 	}
+
+	private String competitionName;
 
 	private List<HeaderRow> headerRows;
 
-	private List<PlayerRow> playerRows;
+	private List<PlayerRow> playersRows;
 
 	private static final Logger logger = Logger.getLogger(PlayersResultsTable.class);
 }
