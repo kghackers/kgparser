@@ -39,6 +39,10 @@ public class PlayerCell extends JsonObject
 		this.colSpan = colSpan;
 	}
 
+	public boolean hasColSpan() {
+		return (colSpan != null) && (colSpan > 1);
+	}
+
 	/**
 	 * Текст в ячейке.
 	 */
