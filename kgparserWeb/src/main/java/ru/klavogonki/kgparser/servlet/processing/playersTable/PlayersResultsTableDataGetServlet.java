@@ -18,7 +18,7 @@ import static su.opencode.kefir.util.StringUtils.concat;
  * $Revision$
  * $Date::                      $
  */
-public class PlayerResultsTableDataGetServlet extends JsonServlet
+public class PlayersResultsTableDataGetServlet extends JsonServlet
 {
 	@Override
 	protected Action getAction() {

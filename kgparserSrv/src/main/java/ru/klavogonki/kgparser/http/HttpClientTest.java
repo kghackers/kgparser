@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.StandardDictionary;
+import su.opencode.kefir.util.JsonUtils;
 import su.opencode.kefir.util.ObjectUtils;
 
 import java.io.IOException;
@@ -70,6 +71,45 @@ public class HttpClientTest
 			JSONObject jsonObject = new JSONObject(body);
 			int level = jsonObject.getInt("level");
 			return Rank.getRank(level);
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static Integer getUserNormalRecord(int profileId) {
+		try
+		{
+			String url = UrlConstructor.getGetPlayerIndexData(profileId);
+			String body = getResponseBody(url);
+
+			JSONObject jsonObject = new JSONObject(body);
+			if ( !JsonUtils.hasField(jsonObject, OK_FIELD_NAME) )
+			{
+				throw new IllegalStateException( concat("Cannot get normal record for profileId = ", profileId, ". Request to url \"", url, "\" failed (\"", OK_FIELD_NAME, "\" is not present in response or is null).") );
+			}
+
+			int okValue = jsonObject.getInt(OK_FIELD_NAME);
+			if (okValue != OK_FIELD_CORRECT_VALUE)
+			{
+				throw new IllegalStateException( concat("Cannot get normal record for profileId = ", profileId, ". Request to url \"", url, "\" failed (\"", OK_FIELD_NAME, "\" field = ", okValue, ").") );
+			}
+
+			if ( !JsonUtils.hasField(jsonObject, "stats") )
+			{
+				logger.info( concat("Cannot get normal record for profileId = ", profileId, ". \"stats\" field is not present in response.") );
+				return null;
+			}
+
+			JSONObject statsJson = jsonObject.getJSONObject("stats");
+			if ( !JsonUtils.hasField(statsJson, "best_speed") )
+			{
+				logger.info( concat("Cannot get normal record for profileId = ", profileId, ". \"stats.best_speed\" field is not present in response.") );
+				return null;
+			}
+
+			return statsJson.getInt("best_speed");
 		}
 		catch (Exception e)
 		{
@@ -163,6 +203,9 @@ public class HttpClientTest
 	}
 
 	public static final int NOSFERATUM_PROFILE_ID = 242585;
+
+	public static final String OK_FIELD_NAME = "ok";
+	public static final int OK_FIELD_CORRECT_VALUE = 1;
 
 	private static final Logger logger = Logger.getLogger(HttpClientTest.class);
 }

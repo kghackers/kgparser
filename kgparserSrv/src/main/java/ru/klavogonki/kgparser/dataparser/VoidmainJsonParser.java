@@ -169,7 +169,7 @@ public class VoidmainJsonParser
 		competition.orderRoundsByBeginTime();
 
 		competition.fillDictionariesNames();
-		competition.fillPlayersRanks();
+		competition.fillPlayersNormalModeData(); // fill ranks and normal records
 
 		logFilledCompetitionInfo(competition);
 		return competition;

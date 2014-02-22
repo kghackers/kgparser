@@ -32,6 +32,9 @@ public class UrlConstructor
 	public static String getGetPlayerSummaryUrl(int playerId) {
 		return concat(DOMAIN_NAME, "/api/profile/get-summary?id=", playerId);
 	}
+	public static String getGetPlayerIndexData(int playerId) {
+		return concat(DOMAIN_NAME, "/api/profile/get-index-data?userId=", playerId);
+	}
 
 	public static String getGetPlayerStatsOverviewUrl(int playerId) {
 		return concat(DOMAIN_NAME, "/api/profile/get-stats-overview?userId=", playerId);

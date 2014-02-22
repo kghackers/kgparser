@@ -159,6 +159,60 @@ public class Competition extends JsonObject
 	}
 
 	/**
+	 * Заполняет для всех игроков соревования
+	 * их ранги и их рекорды в обычном на текущий момент.
+	 */
+	@Json(exclude = true)
+	public void fillPlayersNormalModeData() {
+		Set<Player> players = getPlayers();
+
+		Map<Integer, Integer> profileIdsToNormalRecords = new HashMap<>();
+		Map<Integer, Rank> profileIdsToRanks = new HashMap<>();
+		for (Player player : players)
+		{
+			if (player.isGuest())
+				continue;
+
+			Integer profileId = player.getProfileId();
+
+			Integer normalRecord = HttpClientTest.getUserNormalRecord(profileId);
+			if (normalRecord == null)
+			{
+				logger.info( concat(sb, "Cannot get normal record for player \"", player.getName(), "\" (profileId = ", profileId, "). Getting his rank from userSummary query") );
+				Rank normalRank = HttpClientTest.getUserRank(profileId);
+				profileIdsToRanks.put(profileId, normalRank);
+			}
+			else
+			{
+				profileIdsToNormalRecords.put(profileId, normalRecord);
+				profileIdsToRanks.put(profileId, Rank.getRankByNormalRecord(normalRecord));
+			}
+		}
+
+		for (Round round : rounds)
+		{
+			List<PlayerRoundResult> results = round.getResults();
+			for (PlayerRoundResult result : results)
+			{
+				Player player = result.getPlayer();
+				if ( player.isGuest() )
+					continue;
+
+				Integer profileId = player.getProfileId();
+				Rank normalRank = profileIdsToRanks.get(profileId);
+				if (normalRank == null)
+					throw new IllegalStateException( concat("Cannot get normal rank for player with profileId = \"", profileId, "\"") );
+
+				Integer normalRecord = profileIdsToNormalRecords.get(profileId);
+				// do not check on null because normal reoord may be null
+
+				player.setRank(normalRank);
+				player.setNormalRecord(normalRecord);
+			}
+		}
+	}
+
+	/**
 	 * @return множество всех словарей, заезды по которым есть в соревновании.
 	 * Словари упорядочены по порядку появления первого заезда словаря в соревновании.
 	 */
