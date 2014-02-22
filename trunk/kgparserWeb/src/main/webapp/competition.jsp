@@ -31,7 +31,7 @@
 		<div><a href="./competitionSpeedChart.jsp?competitionId=<%=request.getParameter("competitionId")%>">График скоростей игроков по заездам</a></div>
 		<div><a href="./competitionErrorsCountChart.jsp?competitionId=<%=request.getParameter("competitionId")%>">График количеств ошибок игроков по заездам</a></div>
 		<div><span class="disabled">График процентов ошибок игроков по заездам</span></div>
-		<div><a href="./competitionPlayersSummary.jsp?competitionId=<%=request.getParameter("competitionId")%>">Суммарная таблица результатов игроков</a></div>
+		<div><a href="./competitionPlayersSummary.jsp?competitionId=<%=request.getParameter("competitionId")%>">Сводная таблица результатов игроков</a></div>
 		<div><span class="disabled">Расчет результатов по БГ (средней скорости и средней ошибочности)</span></div>
 		<div><span class="disabled">Расчет результатов по Биатлону</span></div>
 		<div><span class="disabled">Расчет результатов по Октатлону</span></div>
