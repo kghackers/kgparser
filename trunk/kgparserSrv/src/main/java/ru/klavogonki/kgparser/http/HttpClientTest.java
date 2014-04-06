@@ -6,12 +6,14 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.StandardDictionary;
 import su.opencode.kefir.util.JsonUtils;
 import su.opencode.kefir.util.ObjectUtils;
+import su.opencode.kefir.util.StringUtils;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -37,9 +39,20 @@ public class HttpClientTest
 //		int playerId = 226863; // Октатлон (pro)
 //		int playerId = 233067; // E_l_e_n_a (racer)
 //		int playerId = 139052; // alanen (maniac)
-		int playerId = NOSFERATUM_PROFILE_ID; // nosferatum (superman)
+//		int playerId = NOSFERATUM_PROFILE_ID; // nosferatum (superman)
 //		int playerId = 79473; // _Jack_ (cyberracer>
 //		int playerId = 1210; // ToNick (extracyber>
+
+
+//		int playerId = 231371; // Phemmer
+//		int playerId = 123036; // kryto
+
+		BasicConfigurator.configure();
+
+		int playerId = 204574; // eksdak
+		getUserNormalRecord(playerId);
+		if (true)
+			return;
 
 		String url;
 		String body;
@@ -82,7 +95,8 @@ public class HttpClientTest
 		try
 		{
 			String url = UrlConstructor.getGetPlayerIndexData(profileId);
-			String body = getResponseBody(url);
+//			String body = getResponseBody(url);
+			String body = getResponseBodyEnsureJson(url);
 
 			JSONObject jsonObject = new JSONObject(body);
 			if ( !JsonUtils.hasField(jsonObject, OK_FIELD_NAME) )
@@ -168,8 +182,68 @@ public class HttpClientTest
 	}
 
 	private static String getResponseBody(String url) throws IOException {
+		boolean failed = false;
+		String response = null;
+		String cookie = new ConfigurationLoader().readConfigurationFile(ConfigurationLoader.COOKIE_CONF_FILE_NAME);
+
+		do
+		{
+			try
+			{
+				response = tryToGetResponseBody(url, cookie);
+				failed = false;
+			}
+			catch (UrlAccessFailedException e)
+			{
+				logger.info( concat("Failed to access url \"", url, "\", trying once more.") );
+				failed = true;
+			}
+		}
+		while (failed);
+
+		return response;
+	}
+	private static String getResponseBodyEnsureJson(String url) throws IOException {
+		boolean failed;
+		String response = null;
+		String cookie = new ConfigurationLoader().readConfigurationFile(ConfigurationLoader.COOKIE_CONF_FILE_NAME);
+
+		do
+		{
+			try
+			{
+				response = tryToGetResponseBody(url, cookie);
+
+				try
+				{
+					new JSONObject(response);
+					failed = false;
+				}
+				catch (Exception e)
+				{
+					logger.info( concat("Access url granted \"", url, "\", but response is not a valid JSON string. Trying once more.") );
+					failed = true;
+				}
+			}
+			catch (UrlAccessFailedException e)
+			{
+				logger.info( concat("Failed to access url \"", url, "\", trying once more.") );
+				failed = true;
+			}
+		}
+		while (failed);
+
+		return response;
+	}
+
+	private static String tryToGetResponseBody(String url, String cookie) throws IOException, UrlAccessFailedException {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpGet httpGet = new HttpGet(url);
+
+//		httpGet.getParams().setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
+		if (StringUtils.notEmpty(cookie))
+			httpGet.setHeader("Cookie", cookie);
+
 		ResponseHandler<String> handler = new BasicResponseHandler();
 
 		HttpResponse response = client.execute(httpGet);
