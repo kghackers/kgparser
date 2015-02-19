@@ -91,6 +91,7 @@
 	var pools = [
 		  {
 			  date: '32.13.2014'
+//			, fileName: 'Пока не отсканен'
 			, comment: 'Неизвестная пуля, лежавшая у Миши. Видимо, от 2014 года'
 //			, exclude: true
 			, results: [
@@ -101,6 +102,7 @@
 		}
 		, {
 			  date: '02.01.2015'
+			, fileName: 'pref_2015_01_04.pdf'
 			, comment: 'Алик взял 8 на девятерной на чужом ходе (убитка)'
 			, results: [
 				  { player: PLAYERS.POPOV, whists: 588 }
@@ -110,6 +112,7 @@
 		}
 		, {
 			  date: '04.01.2015'
+			, fileName: 'pref_2015_01_04.pdf'
 			, comment: 'Решающий шестерной распас (Женя 0, Дима 5, Миша 5)'
 			, results: [
 				  { player: PLAYERS.BEZUS, whists: 348 }
@@ -119,7 +122,7 @@
 		}
 		, {
 			  date: '08.01.2015'
-			, comment: ''
+			, fileName: 'pref_2015_01_08.pdf'
 			, results: [
 				  { player: PLAYERS.SERGEEV, whists: 132 }
 				, { player: PLAYERS.POPOV, whists: 80 }
@@ -128,6 +131,7 @@
 		}
 		, {
 			  date: '18.01.2015'
+			, fileName: 'pref_2015_01_18.pdf'
 			, comment: 'Несчастливый расклад шестерного распаса (Женя 0, Миша 4, Дима 6). Даже записан у меня в блокноте. В целом - нехарактерно малые модули результатов для Ленинградки.'
 			, results: [
 				  { player: PLAYERS.SHAMAEV, whists: 98 }
@@ -138,6 +142,7 @@
 		}
 		, {
 			  date: '25.01.2015'
+			, fileName: 'pref_2015_01_25.pdf'
 			, comment: 'И снова плохо сыгранный шестерной распас для Димы (7 взяток). А Таня пришла и сыграла очень сильно.'
 			, results: [
 				  { player: PLAYERS.BEZUS, whists: 336 }
@@ -148,6 +153,7 @@
 		}
 		, {
 			  date: '15.02.2015'
+			, fileName: 'pref_2015_02_15.pdf'
 			, comment: 'Миша был несколько нездоров и взял 9 на шестерных распасах, а потом еще две на мизере. А потом выпил жаропонижающее и стал играть гораздо лучше. В целом пуля прошла под знаком нескончаемых распасов: Дима, например, не сыграл ни одной игры, кроме двух вынужденных семерных без одной. Зато выход из распасов пришелся ровно на назначенное время окончания - 22:30'
 			, results: [
 				  { player: PLAYERS.BEZUS, whists: 612 }
@@ -158,6 +164,7 @@
 	];
 
 	var POOL_CASES = { singleNominative: 'пуля', singleGenitive: 'пули', multipleGenitive: 'пуль' };
+	var SCAN_CASES = { singleNominative: 'скан', singleGenitive: 'скана', multipleGenitive: 'сканов' };
 
 	function showError(message) {
 		alert('Error: ' + message);
@@ -216,6 +223,21 @@
 	function getPoolsNounCase(poolsCount) {
 		return getNounCase(poolsCount, POOL_CASES);
 	}
+
+	function getScansCount(pools) {
+		var scansCount = 0;
+
+		for (var i = 0; i < pools.length; i++) {
+			if (pools[i].fileName) // todo: use special hasScan file instead
+				scansCount++;
+		}
+
+		return scansCount;
+	}
+	function getScansNounCase(poolsCount) {
+		return getNounCase(poolsCount, SCAN_CASES);
+	}
+
 
 	function validatePool(pool) {
 		var date = pool.date;
@@ -408,7 +430,7 @@
 		// headers rows
 		html += '<tr>';
 
-		html += '<th colspan="2">Пуля</th>';
+		html += '<th colspan="3">Пуля</th>';
 		for (i = 0; i < players.length; i++)
 		{
 			player = players[i];
@@ -419,6 +441,7 @@
 
 		html += '<tr>';
 		html += '<th>Дата</th>';
+		html += '<th>Файл скана</th>';
 		html += '<th>Комментарий</th>';
 		for (i = 0; i < players.length; i++)
 		{
@@ -441,6 +464,8 @@
 			html += '<tr class="' + rowClass + '">';
 
 			html += '<td class="center">' + pool.date + '</td>';
+
+			html += '<td class="center">' + (pool.fileName || '&nbsp;') + '</td>';
 
 			if (pool.comment)
 			{
@@ -479,6 +504,7 @@
 		// todo: summary rows
 		html += '<tr class="summary">';
 		html += '<td>Итого</td>';
+		html += '<td class="center">' + getScansCount(pools) + '&nbsp;' + getScansNounCase( getScansCount(pools) ) + '</td>'; // todo: падеж согласно числу
 		html += '<td class="center">' + pools.length + '&nbsp;' + getPoolsNounCase(pools.length) + '</td>'; // todo: падеж согласно числу
 
 		for (j = 0; j < players.length; j++)
