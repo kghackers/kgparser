@@ -15,12 +15,12 @@
 			border: 1px solid #DDDDDD;
 			padding: 5px;
 		}
-			/*
-					table.competitionsList td {
-						padding: 5px;
-						border: 1px solid #DDDDDD;
-					}
-			*/
+/*
+		table.competitionsList td {
+			padding: 5px;
+			border: 1px solid #DDDDDD;
+		}
+*/
 		table.results td {
 			padding: 0 5px;
 			border: 1px solid #DDDDDD;
@@ -75,226 +75,226 @@
 
 
 <script type="text/javascript">
-var PLAYERS = { BEZUS: 'Bezus', POPOV: 'Popov', SHAMAEV: 'Shamaev', SERGEEV: 'Sergeev', VELIKANOVA: 'Velikanova' };
+	var PLAYERS = { BEZUS: 'Bezus', POPOV: 'Popov', SHAMAEV: 'Shamaev', SERGEEV: 'Sergeev', VELIKANOVA: 'Velikanova' };
 
-// todo: think whether ids are needed
-var players = [
-	{ id: 1, name: 'Безус Евгений Анатольевич', shortName: 'Е. Б.', mnemonic: PLAYERS.BEZUS }
-	, { id: 2, name: 'Попов Дмитрий Андреевич', shortName: 'Д. П.', mnemonic: PLAYERS.POPOV }
-	, { id: 3, name: 'Шамаев Михаил Игоревич', shortName: 'М. Ш.', mnemonic: PLAYERS.SHAMAEV }
-	, { id: 4, name: 'Сергеев Александр Владиславович', shortName: 'А. С.', mnemonic: PLAYERS.SERGEEV }
-	, { id: 5, name: 'Великанова Татьяна ?', shortName: 'Т. В.', mnemonic: PLAYERS.VELIKANOVA } // todo: fill middle name
-];
+	// todo: think whether ids are needed
+	var players = [
+		  { id: 1, name: 'Безус Евгений Анатольевич', shortName: 'Е. Б.', mnemonic: PLAYERS.BEZUS }
+		, { id: 2, name: 'Попов Дмитрий Андреевич', shortName: 'Д. П.', mnemonic: PLAYERS.POPOV }
+		, { id: 3, name: 'Шамаев Михаил Игоревич', shortName: 'М. Ш.', mnemonic: PLAYERS.SHAMAEV }
+		, { id: 4, name: 'Сергеев Александр Владиславович', shortName: 'А. С.', mnemonic: PLAYERS.SERGEEV }
+		, { id: 5, name: 'Великанова Татьяна ?', shortName: 'Т. В.', mnemonic: PLAYERS.VELIKANOVA } // todo: fill middle name
+	];
 
-// js object (kind of JSON) in data
-// pool - пуля. @see https://en.wikipedia.org/wiki/Preferans#Scoring_system
-var pools = [
-	{
-		date: '32.13.2014'
-		, comment: 'Неизвестная пуля, лежавшая у Миши. Видимо, от 2014 года'
+	// js object (kind of JSON) in data
+	// pool - пуля. @see https://en.wikipedia.org/wiki/Preferans#Scoring_system
+	var pools = [
+		  {
+			  date: '32.13.2014'
+			, comment: 'Неизвестная пуля, лежавшая у Миши. Видимо, от 2014 года'
 //			, exclude: true
-		, results: [
-		{ player: PLAYERS.SHAMAEV, whists: 396 }
-		, { player: PLAYERS.BEZUS, whists: -55 }
-		, { player: PLAYERS.SERGEEV, whists: -341 }
-	]
-	}
-	, {
-		date: '02.01.2015'
-		, comment: 'Алик взял 8 на девятерной на чужом ходе (убитка)'
-		, results: [
-			{ player: PLAYERS.POPOV, whists: 588 }
-			, { player: PLAYERS.BEZUS, whists: 9 }
-			, { player: PLAYERS.SERGEEV, whists: -597 }
-		]
-	}
-	, {
-		date: '04.01.2015'
-		, comment: 'Решающий шестерной распас (Женя 0, Дима 5, Миша 5)'
-		, results: [
-			{ player: PLAYERS.BEZUS, whists: 348 }
-			, { player: PLAYERS.POPOV, whists: -82 }
-			, { player: PLAYERS.SHAMAEV, whists: -266 }
-		]
-	}
-	, {
-		date: '08.01.2015'
-		, comment: ''
-		, results: [
-			{ player: PLAYERS.SERGEEV, whists: 132 }
-			, { player: PLAYERS.POPOV, whists: 80 }
-			, { player: PLAYERS.BEZUS, whists: -212 }
-		]
-	}
-	, {
-		date: '18.01.2015'
-		, comment: 'Несчастливый расклад шестерного распаса (Женя 0, Миша 4, Дима 6). Даже записан у меня в блокноте. В целом - нехарактерно малые модули результатов для Ленинградки.'
-		, results: [
-			{ player: PLAYERS.SHAMAEV, whists: 98 }
-			, { player: PLAYERS.SERGEEV, whists: 78 }
-			, { player: PLAYERS.BEZUS, whists: -22 }
-			, { player: PLAYERS.POPOV, whists: -154 }
-		]
-	}
-	, {
-		date: '25.01.2015'
-		, comment: 'И снова плохо сыгранный шестерной распас для Димы (7 взяток). А Таня пришла и сыграла очень сильно.'
-		, results: [
-			{ player: PLAYERS.BEZUS, whists: 336 }
-			, { player: PLAYERS.VELIKANOVA, whists: 276 }
-			, { player: PLAYERS.POPOV, whists: -202 }
-			, { player: PLAYERS.SHAMAEV, whists: -410 }
-		]
-	}
-	, {
-		date: '15.02.2015'
-		, comment: 'Миша был несколько нездоров и взял 9 на шестерных распасах, а потом еще две на мизере. А потом выпил жаропонижающее и стал играть гораздо лучше. В целом пуля прошла под знаком нескончаемых распасов: Дима, например, не сыграл ни одной игры, кроме двух вынужденных семерных без одной. Зато выход из распасов пришелся ровно на назначенное время окончания - 22:30'
-		, results: [
-			{ player: PLAYERS.BEZUS, whists: 612 }
-			, { player: PLAYERS.POPOV, whists: -8 }
-			, { player: PLAYERS.SHAMAEV, whists: -604 }
-		]
-	}
-];
+			, results: [
+				  { player: PLAYERS.SHAMAEV, whists: 396 }
+				, { player: PLAYERS.BEZUS, whists: -55 }
+				, { player: PLAYERS.SERGEEV, whists: -341 }
+			]
+		}
+		, {
+			  date: '02.01.2015'
+			, comment: 'Алик взял 8 на девятерной на чужом ходе (убитка)'
+			, results: [
+				  { player: PLAYERS.POPOV, whists: 588 }
+				, { player: PLAYERS.BEZUS, whists: 9 }
+				, { player: PLAYERS.SERGEEV, whists: -597 }
+			]
+		}
+		, {
+			  date: '04.01.2015'
+			, comment: 'Решающий шестерной распас (Женя 0, Дима 5, Миша 5)'
+			, results: [
+				  { player: PLAYERS.BEZUS, whists: 348 }
+				, { player: PLAYERS.POPOV, whists: -82 }
+				, { player: PLAYERS.SHAMAEV, whists: -266 }
+			]
+		}
+		, {
+			  date: '08.01.2015'
+			, comment: ''
+			, results: [
+				  { player: PLAYERS.SERGEEV, whists: 132 }
+				, { player: PLAYERS.POPOV, whists: 80 }
+				, { player: PLAYERS.BEZUS, whists: -212 }
+			]
+		}
+		, {
+			  date: '18.01.2015'
+			, comment: 'Несчастливый расклад шестерного распаса (Женя 0, Миша 4, Дима 6). Даже записан у меня в блокноте. В целом - нехарактерно малые модули результатов для Ленинградки.'
+			, results: [
+				  { player: PLAYERS.SHAMAEV, whists: 98 }
+				, { player: PLAYERS.SERGEEV, whists: 78 }
+				, { player: PLAYERS.BEZUS, whists: -22 }
+				, { player: PLAYERS.POPOV, whists: -154 }
+			]
+		}
+		, {
+			  date: '25.01.2015'
+			, comment: 'И снова плохо сыгранный шестерной распас для Димы (7 взяток). А Таня пришла и сыграла очень сильно.'
+			, results: [
+				  { player: PLAYERS.BEZUS, whists: 336 }
+				, { player: PLAYERS.VELIKANOVA, whists: 276 }
+				, { player: PLAYERS.POPOV, whists: -202 }
+				, { player: PLAYERS.SHAMAEV, whists: -410 }
+			]
+		}
+		, {
+			  date: '15.02.2015'
+			, comment: 'Миша был несколько нездоров и взял 9 на шестерных распасах, а потом еще две на мизере. А потом выпил жаропонижающее и стал играть гораздо лучше. В целом пуля прошла под знаком нескончаемых распасов: Дима, например, не сыграл ни одной игры, кроме двух вынужденных семерных без одной. Зато выход из распасов пришелся ровно на назначенное время окончания - 22:30'
+			, results: [
+				  { player: PLAYERS.BEZUS, whists: 612 }
+				, { player: PLAYERS.POPOV, whists: -8 }
+				, { player: PLAYERS.SHAMAEV, whists: -604 }
+			]
+		}
+	];
 
-var POOL_CASES = { singleNominative: 'пуля', singleGenitive: 'пули', multipleGenitive: 'пуль' };
+	var POOL_CASES = { singleNominative: 'пуля', singleGenitive: 'пули', multipleGenitive: 'пуль' };
 
-function showError(message) {
-	alert('Error: ' + message);
-	throw message;
-}
-
-function findPlayer(mnemonic) {
-	for (var i = 0; i < players.length; i++) {
-		if (players[i].mnemonic == mnemonic)
-			return players[i];
+	function showError(message) {
+		alert('Error: ' + message);
+		throw message;
 	}
 
-	showError('player with mnemonic = "' + mnemonic + '" not found');
-	return null;
-}
-function getPlayerResult(pool, playerMnemonic) {
-	// todo: check pool and pool.results existence
+	function findPlayer(mnemonic) {
+		for (var i = 0; i < players.length; i++) {
+			if (players[i].mnemonic == mnemonic)
+				return players[i];
+		}
 
-	var results = pool.results;
-	for (var i = 0; i < results.length; i++) {
-		if (results[i].player == playerMnemonic)
-			return results[i];
+		showError('player with mnemonic = "' + mnemonic + '" not found');
+		return null;
+	}
+	function getPlayerResult(pool, playerMnemonic) {
+		// todo: check pool and pool.results existence
+
+		var results = pool.results;
+		for (var i = 0; i < results.length; i++) {
+			if (results[i].player == playerMnemonic)
+				return results[i];
+		}
+
+		return null;
 	}
 
-	return null;
-}
-
-function getPointsCellClass(points) {
-	if (points < 0)
-		return ' class="negativePoints"';
-	else if (points > 0)
-		return ' class="positivePoints"';
-	else
-		return ' class="zeroPoints"';
-}
-
-function getNounCase(count, cases) {
-	var n = count % 100;
-	if (n > 19)
-		n %= 10;
-
-	switch (n)
-	{
-		case 1:
-			return cases.singleNominative;
-
-		case 2:
-		case 3:
-		case 4:
-			return cases.singleGenitive;
-
-		default:
-			return cases.multipleGenitive;
-	}
-}
-function getPoolsNounCase(poolsCount) {
-	return getNounCase(poolsCount, POOL_CASES);
-}
-
-function validatePool(pool) {
-	var date = pool.date;
-	if (!date)
-		showError('pool contains no date');
-
-	var results = pool.results;
-	if (!results)
-		showError('pool from date "' + date + '" contains no results');
-
-	// todo: check that results isArray
-
-	if ( results.length != 3 && results.length != 4 ) // gusarik is not played :)
-		showError('pool from date "' + date + '" contains incorrect number of players (' + results.length +'). Pool must contain 3 or 4 players.');
-
-	var uniquePlayersMnemonics = [];
-	var whistsSum = 0;
-	var player;
-
-	// validate players
-	for (var i = 0; i < results.length; i++)
-	{
-		var result = results[i];
-
-		player = result.player;
-		if (!player)
-			showError('pool from date "' + date + '": result[' + i + '] contains no player');
-
-		if ( !findPlayer(player) )
-			showError('pool from date "' + date + '": player "' + player + '" is unknown');
-
-		// todo: check that all players are different
-		if ( uniquePlayersMnemonics.indexOf(player) >= 0 )
-			showError('pool from date "' + date + '": player "' + player + '" is present in results more than once');
+	function getPointsCellClass(points) {
+		if (points < 0)
+			return ' class="negativePoints"';
+		else if (points > 0)
+			return ' class="positivePoints"';
 		else
-			uniquePlayersMnemonics.push(player);
-
-		if ( !result.whists && result.whists !== 0 )
-			showError('pool from date "' + date + '": result[' + i + '] (for player "' + player + '") contains no whists');
-
-		// todo: check that whists is integer
-		whistsSum += result.whists;
+			return ' class="zeroPoints"';
 	}
 
-	if (whistsSum != 0)
-		showError('pool from date "' + date + '": whists sum (' + whistsSum + ') is incorrect. Whists sum of all players\' results must be equal to 0' );
-}
+	function getNounCase(count, cases) {
+		var n = count % 100;
+		if (n > 19)
+			n %= 10;
 
-function fillPoolPoints(pool) {
-	var i;
-	var results = pool.results;
-	var playersCount = results.length;
+		switch (n)
+		{
+			case 1:
+				return cases.singleNominative;
 
-	// todo: sort results by whists at the beginning
-	// todo: solve equal whists situation
+			case 2:
+			case 3:
+			case 4:
+				return cases.singleGenitive;
 
-	// fill places: // todo: after sorting by whists
-	for (i = 0; i < playersCount; i++)
-		results[i].place = (i + 1);
-
-	// place points
-	switch (playersCount)
-	{
-		case 3:
-			results[0].placePoints = 3;
-			results[1].placePoints = 0;
-			results[2].placePoints = -3;
-			break;
-
-		case 4:
-			results[0].placePoints = 3;
-			results[1].placePoints = 1;
-			results[2].placePoints = -1;
-			results[3].placePoints = -3;
-			break;
-
-		default:
-			showError('Incorrect players count for pool: ' + playersCount);
+			default:
+				return cases.multipleGenitive;
+		}
 	}
+	function getPoolsNounCase(poolsCount) {
+		return getNounCase(poolsCount, POOL_CASES);
+	}
+
+	function validatePool(pool) {
+		var date = pool.date;
+		if (!date)
+			showError('pool contains no date');
+
+		var results = pool.results;
+		if (!results)
+			showError('pool from date "' + date + '" contains no results');
+
+		// todo: check that results isArray
+
+		if ( results.length != 3 && results.length != 4 ) // gusarik is not played :)
+			showError('pool from date "' + date + '" contains incorrect number of players (' + results.length +'). Pool must contain 3 or 4 players.');
+
+		var uniquePlayersMnemonics = [];
+		var whistsSum = 0;
+		var player;
+
+		// validate players
+		for (var i = 0; i < results.length; i++)
+		{
+			var result = results[i];
+
+			player = result.player;
+			if (!player)
+				showError('pool from date "' + date + '": result[' + i + '] contains no player');
+
+			if ( !findPlayer(player) )
+				showError('pool from date "' + date + '": player "' + player + '" is unknown');
+
+			// todo: check that all players are different
+			if ( uniquePlayersMnemonics.indexOf(player) >= 0 )
+				showError('pool from date "' + date + '": player "' + player + '" is present in results more than once');
+			else
+				uniquePlayersMnemonics.push(player);
+
+			if ( !result.whists && result.whists !== 0 )
+				showError('pool from date "' + date + '": result[' + i + '] (for player "' + player + '") contains no whists');
+
+			// todo: check that whists is integer
+			whistsSum += result.whists;
+		}
+
+		if (whistsSum != 0)
+			showError('pool from date "' + date + '": whists sum (' + whistsSum + ') is incorrect. Whists sum of all players\' results must be equal to 0' );
+	}
+
+	function fillPoolPoints(pool) {
+		var i;
+		var results = pool.results;
+		var playersCount = results.length;
+
+		// todo: sort results by whists at the beginning
+		// todo: solve equal whists situation
+
+		// fill places: // todo: after sorting by whists
+		for (i = 0; i < playersCount; i++)
+			results[i].place = (i + 1);
+
+		// place points
+		switch (playersCount)
+		{
+			case 3:
+				results[0].placePoints = 3;
+				results[1].placePoints = 0;
+				results[2].placePoints = -3;
+				break;
+
+			case 4:
+				results[0].placePoints = 3;
+				results[1].placePoints = 1;
+				results[2].placePoints = -1;
+				results[3].placePoints = -3;
+				break;
+
+			default:
+				showError('Incorrect players count for pool: ' + playersCount);
+		}
 
 //			 0	от 0 до 10	 0
 //			-1	от 11 до 50	+1
@@ -302,239 +302,239 @@ function fillPoolPoints(pool) {
 //			-3	от 151 до 300	+3
 //			-4	от 301 до 500	+4
 //			-5	от 501 и больше	+5
-	var whistsPoints;
-	var whists;
-	var playerResult;
+		var whistsPoints;
+		var whists;
+		var playerResult;
 
-	for (i = 0; i < results.length; i++) {
-		playerResult = results[i];
-		whists = playerResult.whists;
+		for (i = 0; i < results.length; i++) {
+			playerResult = results[i];
+			whists = playerResult.whists;
 
-		if (whists <= -501)
-			whistsPoints = -5;
-		else if (whists >= -500 && whists <= -301)
-			whistsPoints = -4;
-		else if (whists >= -300 && whists <= -151)
-			whistsPoints = -3;
-		else if (whists >= -150 && whists <= -51)
-			whistsPoints = -2;
-		else if (whists >= -50 && whists <= -11)
-			whistsPoints = -1;
-		else if (whists >= -10 && whists <= 10)
-			whistsPoints = 0;
-		else if (whists >= 11 && whists <= 50)
-			whistsPoints = 1;
-		else if (whists >= 51 && whists <= 150)
-			whistsPoints = 2;
-		else if (whists >= 151 && whists <= 300)
-			whistsPoints = 3;
-		else if (whists >= 301 && whists <= 500)
-			whistsPoints = 4;
-		else if (whists >= 501)
-			whistsPoints = 5;
-		else
-			showError('Pool for date "' + pool.date + '": incorrect whists for player "' + player + '": ' + whists);
+			if (whists <= -501)
+				whistsPoints = -5;
+			else if (whists >= -500 && whists <= -301)
+				whistsPoints = -4;
+			else if (whists >= -300 && whists <= -151)
+				whistsPoints = -3;
+			else if (whists >= -150 && whists <= -51)
+				whistsPoints = -2;
+			else if (whists >= -50 && whists <= -11)
+				whistsPoints = -1;
+			else if (whists >= -10 && whists <= 10)
+				whistsPoints = 0;
+			else if (whists >= 11 && whists <= 50)
+				whistsPoints = 1;
+			else if (whists >= 51 && whists <= 150)
+				whistsPoints = 2;
+			else if (whists >= 151 && whists <= 300)
+				whistsPoints = 3;
+			else if (whists >= 301 && whists <= 500)
+				whistsPoints = 4;
+			else if (whists >= 501)
+				whistsPoints = 5;
+			else
+				showError('Pool for date "' + pool.date + '": incorrect whists for player "' + player + '": ' + whists);
 
-		playerResult.whistsPoints = whistsPoints;
+			playerResult.whistsPoints = whistsPoints;
 
-		playerResult.totalPoints = playerResult.placePoints + playerResult.whistsPoints;
+			playerResult.totalPoints = playerResult.placePoints + playerResult.whistsPoints;
+		}
+
+		// todo: check places points sum is 0
+		// ! whists points sum may be != 0 (because point grades are not equal)
 	}
 
-	// todo: check places points sum is 0
-	// ! whists points sum may be != 0 (because point grades are not equal)
-}
+	function fillPlayerTotalResults(pools) {
+		var i, j;
+		var player, pool, playerResult, poolPlayersCount;
 
-function fillPlayerTotalResults(pools) {
-	var i, j;
-	var player, pool, playerResult, poolPlayersCount;
-
-	for (i = 0; i < players.length; i++)
-	{
-		player = players[i];
-
-		player.poolsPlayed = 0;
-		player.positivePools = 0;
-		player.negativePools = 0;
-
-		player.poolsWon = 0; // first place
-		player.poolsLost = 0; // last place
-
-		player.whists = 0;
-		player.placePoints = 0;
-		player.whistsPoints = 0;
-		player.totalPoints = 0;
-
-		for (j = 0; j < pools.length; j++)
+		for (i = 0; i < players.length; i++)
 		{
-			pool = pools[j];
-			poolPlayersCount = pool.results.length;
+			player = players[i];
 
-			playerResult = getPlayerResult(pool, player.mnemonic);
-			if (playerResult)
-			{ // player played in the pool -> update player total results
-				player.poolsPlayed++;
+			player.poolsPlayed = 0;
+			player.positivePools = 0;
+			player.negativePools = 0;
 
-				if (playerResult.whists > 0)
-					player.positivePools++;
-				else if (playerResult.whists < 0)
-					player.negativePools++;
+			player.poolsWon = 0; // first place
+			player.poolsLost = 0; // last place
 
-				if (player.place == 1) // todo: constant
-					player.poolsWon++;
-				else if ( player.place == poolPlayersCount )
-					player.poolsLost++;
+			player.whists = 0;
+			player.placePoints = 0;
+			player.whistsPoints = 0;
+			player.totalPoints = 0;
 
-				player.whists += playerResult.whists;
-				player.placePoints += playerResult.placePoints;
-				player.whistsPoints += playerResult.whistsPoints;
-				player.totalPoints += playerResult.totalPoints;
+			for (j = 0; j < pools.length; j++)
+			{
+				pool = pools[j];
+				poolPlayersCount = pool.results.length;
+
+				playerResult = getPlayerResult(pool, player.mnemonic);
+				if (playerResult)
+				{ // player played in the pool -> update player total results
+					player.poolsPlayed++;
+
+					if (playerResult.whists > 0)
+						player.positivePools++;
+					else if (playerResult.whists < 0)
+						player.negativePools++;
+
+					if (player.place == 1) // todo: constant
+						player.poolsWon++;
+					else if ( player.place == poolPlayersCount )
+						player.poolsLost++;
+
+					player.whists += playerResult.whists;
+					player.placePoints += playerResult.placePoints;
+					player.whistsPoints += playerResult.whistsPoints;
+					player.totalPoints += playerResult.totalPoints;
+				}
 			}
 		}
 	}
-}
 
-function fillTotalTable(pools) {
-	var container = document.getElementById('total-table-container');
-	var i, j;
-	var player;
-	var playerResult;
-	var pool;
-	var rowClass;
-	var cellClass;
+	function fillTotalTable(pools) {
+		var container = document.getElementById('total-table-container');
+		var i, j;
+		var player;
+		var playerResult;
+		var pool;
+		var rowClass;
+		var cellClass;
 
-	var html = '';
-	html += '<table class="results"><tbody>';
+		var html = '';
+		html += '<table class="results"><tbody>';
 
-	// headers rows
-	html += '<tr>';
+		// headers rows
+		html += '<tr>';
 
-	html += '<th colspan="2">Пуля</th>';
-	for (i = 0; i < players.length; i++)
-	{
-		player = players[i];
-		html += '<th colspan="5" class="leftSeparate">' + player.name + '</th>';
-	}
-
-	html += '</tr>';
-
-	html += '<tr>';
-	html += '<th>Дата</th>';
-	html += '<th>Комментарий</th>';
-	for (i = 0; i < players.length; i++)
-	{
-		html += '<th class="leftSeparate">Место</th>';
-		html += '<th>Висты</th>';
-		html += '<th>Очки за&nbsp;место</th>';
-		html += '<th>Очки за&nbsp;висты</th>';
-		html += '<th>Очки за&nbsp;пулю</th>';
-	}
-
-	html += '</tr>';
-
-	// pools data
-	for (i = 0; i < pools.length; i++)
-	{
-		rowClass = (i % 2) ? 'odd' : 'even';
-
-		pool = pools[i];
-		// todo: odd and even rows
-		html += '<tr class="' + rowClass + '">';
-
-		html += '<td class="center">' + pool.date + '</td>';
-
-		if (pool.comment)
+		html += '<th colspan="2">Пуля</th>';
+		for (i = 0; i < players.length; i++)
 		{
-			html += '<td class="center" title="' + pool.comment + '">Навести</td>';
-		}
-		else
-		{
-			html += '<td>&nbsp;</td>';
+			player = players[i];
+			html += '<th colspan="5" class="leftSeparate">' + player.name + '</th>';
 		}
 
+		html += '</tr>';
+
+		html += '<tr>';
+		html += '<th>Дата</th>';
+		html += '<th>Комментарий</th>';
+		for (i = 0; i < players.length; i++)
+		{
+			html += '<th class="leftSeparate">Место</th>';
+			html += '<th>Висты</th>';
+			html += '<th>Очки за&nbsp;место</th>';
+			html += '<th>Очки за&nbsp;висты</th>';
+			html += '<th>Очки за&nbsp;пулю</th>';
+		}
+
+		html += '</tr>';
+
+		// pools data
+		for (i = 0; i < pools.length; i++)
+		{
+			rowClass = (i % 2) ? 'odd' : 'even';
+
+			pool = pools[i];
+			// todo: odd and even rows
+			html += '<tr class="' + rowClass + '">';
+
+			html += '<td class="center">' + pool.date + '</td>';
+
+			if (pool.comment)
+			{
+				html += '<td class="center" title="' + pool.comment + '">Навести</td>';
+			}
+			else
+			{
+				html += '<td>&nbsp;</td>';
+			}
+
+
+			for (j = 0; j < players.length; j++)
+			{
+				player = players[j];
+
+				playerResult = getPlayerResult(pool, player.mnemonic);
+				if (!playerResult)
+				{ // player did not take part in the pool
+					html += '<td colspan="5" class="leftSeparate"></td>';
+				}
+				else
+				{ // player took part in the pool
+					html += '<td class="leftSeparate">' + playerResult.place + '</td>';
+					html += '<td' + getPointsCellClass(playerResult.whists) + '>' + playerResult.whists + '</td>';
+					html += '<td' + getPointsCellClass(playerResult.placePoints) + '>' + playerResult.placePoints + '</td>';
+					html += '<td' + getPointsCellClass(playerResult.whistsPoints) + '>' + playerResult.whistsPoints + '</td>';
+					html += '<td' + getPointsCellClass(playerResult.totalPoints) + '>' + playerResult.totalPoints + '</td>';
+				}
+			}
+
+			html += '<td colspan="' + (players.length * 5) + '">' + '</td>';
+
+			html += '</tr>';
+		}
+
+		// todo: summary rows
+		html += '<tr class="summary">';
+		html += '<td>Итого</td>';
+		html += '<td class="center">' + pools.length + '&nbsp;' + getPoolsNounCase(pools.length) + '</td>'; // todo: падеж согласно числу
 
 		for (j = 0; j < players.length; j++)
 		{
 			player = players[j];
 
-			playerResult = getPlayerResult(pool, player.mnemonic);
-			if (!playerResult)
-			{ // player did not take part in the pool
-				html += '<td colspan="5" class="leftSeparate"></td>';
-			}
-			else
-			{ // player took part in the pool
-				html += '<td class="leftSeparate">' + playerResult.place + '</td>';
-				html += '<td' + getPointsCellClass(playerResult.whists) + '>' + playerResult.whists + '</td>';
-				html += '<td' + getPointsCellClass(playerResult.placePoints) + '>' + playerResult.placePoints + '</td>';
-				html += '<td' + getPointsCellClass(playerResult.whistsPoints) + '>' + playerResult.whistsPoints + '</td>';
-				html += '<td' + getPointsCellClass(playerResult.totalPoints) + '>' + playerResult.totalPoints + '</td>';
-			}
+			html += '<td class="leftSeparate">' + player.poolsPlayed + '&nbsp;' + getPoolsNounCase(player.poolsPlayed) + '</td>'; // todo: падеж согласно числу
+			html += '<td' + getPointsCellClass(player.whists) + '>' + player.whists + '</td>';
+			html += '<td' + getPointsCellClass(player.placePoints) + '>' + player.placePoints + '</td>';
+			html += '<td' + getPointsCellClass(player.whistsPoints) + '>' + player.whistsPoints + '</td>';
+			html += '<td' + getPointsCellClass(player.totalPoints) + '>' + player.totalPoints + '</td>';
 		}
 
-		html += '<td colspan="' + (players.length * 5) + '">' + '</td>';
-
 		html += '</tr>';
+
+		html += '</tbody></table>';
+
+		container.innerHTML = html;
 	}
 
-	// todo: summary rows
-	html += '<tr class="summary">';
-	html += '<td>Итого</td>';
-	html += '<td class="center">' + pools.length + '&nbsp;' + getPoolsNounCase(pools.length) + '</td>'; // todo: падеж согласно числу
+	function fillPointsRatingTable(pools) {
+		var container = document.getElementById('pointsRating-table-container');
 
-	for (j = 0; j < players.length; j++)
-	{
-		player = players[j];
+		var html = '';
 
-		html += '<td class="leftSeparate">' + player.poolsPlayed + '&nbsp;' + getPoolsNounCase(player.poolsPlayed) + '</td>'; // todo: падеж согласно числу
-		html += '<td' + getPointsCellClass(player.whists) + '>' + player.whists + '</td>';
-		html += '<td' + getPointsCellClass(player.placePoints) + '>' + player.placePoints + '</td>';
-		html += '<td' + getPointsCellClass(player.whistsPoints) + '>' + player.whistsPoints + '</td>';
-		html += '<td' + getPointsCellClass(player.totalPoints) + '>' + player.totalPoints + '</td>';
+		html += 'points';
+
+		container.innerHTML = html;
+	}
+	function fillWhistsRatingTable(pools) {
+		var container = document.getElementById('whistsRating-table-container');
+
+		var html = '';
+
+		html += 'whists';
+
+		container.innerHTML = html;
 	}
 
-	html += '</tr>';
+	function processPools(pools) {
+		// todo: possible "exclude: true" in pool
+		for (var i = 0; i < pools.length; i++) { // todo: use forEach from ExtJs or jQuery
+			var pool = pools[i];
 
-	html += '</tbody></table>';
+			validatePool(pool);
 
-	container.innerHTML = html;
-}
+			fillPoolPoints(pool);
+		}
 
-function fillPointsRatingTable(pools) {
-	var container = document.getElementById('pointsRating-table-container');
-
-	var html = '';
-
-	html += 'points';
-
-	container.innerHTML = html;
-}
-function fillWhistsRatingTable(pools) {
-	var container = document.getElementById('whistsRating-table-container');
-
-	var html = '';
-
-	html += 'whists';
-
-	container.innerHTML = html;
-}
-
-function processPools(pools) {
-	// todo: possible "exclude: true" in pool
-	for (var i = 0; i < pools.length; i++) { // todo: use forEach from ExtJs or jQuery
-		var pool = pools[i];
-
-		validatePool(pool);
-
-		fillPoolPoints(pool);
+		fillPlayerTotalResults(pools);
+		fillTotalTable(pools);
+		fillPointsRatingTable(pools);
+		fillWhistsRatingTable(pools);
 	}
 
-	fillPlayerTotalResults(pools);
-	fillTotalTable(pools);
-	fillPointsRatingTable(pools);
-	fillWhistsRatingTable(pools);
-}
-
-processPools(pools)
+	processPools(pools)
 </script>
 </body>
 </html>
