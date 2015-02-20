@@ -29,6 +29,9 @@
 		table.results td.center {
 			text-align: center;
 		}
+		table.results td.left {
+			text-align: left;
+		}
 
 		table.results tr.odd {
 			background-color: #F7F6EB;
@@ -59,6 +62,8 @@
 
 		h3 {
 			color: #878069;
+			margin-bottom: 5px;
+			margin-top: 20px;
 		}
 	</style>
 </head>
@@ -192,6 +197,14 @@
 		return null;
 	}
 
+	function getPlaceCellClass(place, pool) {
+		if (place == 1) // todo: constant
+			return ' positivePoints';
+		else if (place >= pool.results.length)
+			return ' negativePoints';
+		else
+			return ' zeroPoints';
+	}
 	function getPointsCellClass(points) {
 		if (points < 0)
 			return ' class="negativePoints"';
@@ -401,9 +414,9 @@
 					else if (playerResult.whists < 0)
 						player.negativePools++;
 
-					if (player.place == 1) // todo: constant
+					if (playerResult.place == 1) // todo: constant
 						player.poolsWon++;
-					else if ( player.place == poolPlayersCount )
+					else if ( playerResult.place == poolPlayersCount )
 						player.poolsLost++;
 
 					player.whists += playerResult.whists;
@@ -488,15 +501,13 @@
 				}
 				else
 				{ // player took part in the pool
-					html += '<td class="leftSeparate">' + playerResult.place + '</td>';
+					html += '<td class="leftSeparate' + getPlaceCellClass(playerResult.place, pool) + '">' + playerResult.place + '</td>';
 					html += '<td' + getPointsCellClass(playerResult.whists) + '>' + playerResult.whists + '</td>';
 					html += '<td' + getPointsCellClass(playerResult.placePoints) + '>' + playerResult.placePoints + '</td>';
 					html += '<td' + getPointsCellClass(playerResult.whistsPoints) + '>' + playerResult.whistsPoints + '</td>';
 					html += '<td' + getPointsCellClass(playerResult.totalPoints) + '>' + playerResult.totalPoints + '</td>';
 				}
 			}
-
-			html += '<td colspan="' + (players.length * 5) + '">' + '</td>';
 
 			html += '</tr>';
 		}
@@ -526,11 +537,50 @@
 	}
 
 	function fillPointsRatingTable(pools) {
+		// sort players by totalPoints desc
+		players.sort(function(p1, p2) {
+			return p2.totalPoints - p1.totalPoints;
+		});
+
 		var container = document.getElementById('pointsRating-table-container');
 
 		var html = '';
 
-		html += 'points';
+		html += '<table class="results"><tbody>';
+
+		// header row
+		html += '<tr>';
+		html += '<th>Игрок</th>';
+		html += '<th>Сыграно пуль</th>';
+		html += '<th>Всего очков</th>';
+		html += '<th>Всего вистов</th>';
+		html += '<th title="Первое место в&nbsp;пуле">Пуль выиграно</th>';
+		html += '<th title="Последнее место в&nbsp;пуле">Пуль проиграно</th>';
+		html += '<th title="Количество пуль с&nbsp;положительным вистовым результатом">Пуль в&nbsp;плюсе</th>';
+		html += '<th title="Количество пуль с&nbsp;отрицательным вистовым результатом">Пуль в&nbsp;минусе</th>';
+		html += '</tr>';
+
+		// player rows
+		var player;
+		var rowClass;
+		for (var i = 0; i < players.length; i++)
+		{
+			rowClass = (i % 2) ? 'odd' : 'even';
+
+			player = players[i];
+			html += '<tr class="' + rowClass + '">';
+			html += '<td class="left">' + player.name + '</td>';
+			html += '<td>' + player.poolsPlayed + '</td>';
+			html += '<td' + getPointsCellClass(player.totalPoints) + '>' + player.totalPoints + '</td>';
+			html += '<td' + getPointsCellClass(player.whists) + '>' + player.whists + '</td>';
+			html += '<td>' + player.poolsWon + '</td>';
+			html += '<td>' + player.poolsLost + '</td>';
+			html += '<td>' + player.positivePools + '</td>';
+			html += '<td>' + player.negativePools + '</td>';
+			html += '</tr>';
+		}
+
+		html += '</tbody></table>';
 
 		container.innerHTML = html;
 	}
