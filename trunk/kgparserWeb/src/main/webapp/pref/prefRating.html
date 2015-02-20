@@ -560,7 +560,7 @@
 		html += '<th title="Количество пуль с&nbsp;отрицательным вистовым результатом">Пуль в&nbsp;минусе</th>';
 		html += '</tr>';
 
-		// player rows
+		// players rows
 		var player;
 		var rowClass;
 		for (var i = 0; i < players.length; i++)
@@ -585,11 +585,50 @@
 		container.innerHTML = html;
 	}
 	function fillWhistsRatingTable(pools) {
+		// sort players by whists desc
+		players.sort(function(p1, p2) {
+			return p2.whists - p1.whists;
+		});
+
 		var container = document.getElementById('whistsRating-table-container');
 
 		var html = '';
 
-		html += 'whists';
+		html += '<table class="results"><tbody>';
+
+		// header row
+		html += '<tr>';
+		html += '<th>Игрок</th>';
+		html += '<th>Сыграно пуль</th>';
+//		html += '<th>Всего очков</th>';
+		html += '<th>Всего вистов</th>';
+//		html += '<th title="Первое место в&nbsp;пуле">Пуль выиграно</th>';
+//		html += '<th title="Последнее место в&nbsp;пуле">Пуль проиграно</th>';
+//		html += '<th title="Количество пуль с&nbsp;положительным вистовым результатом">Пуль в&nbsp;плюсе</th>';
+//		html += '<th title="Количество пуль с&nbsp;отрицательным вистовым результатом">Пуль в&nbsp;минусе</th>';
+		html += '</tr>';
+
+		// players rows
+		var player;
+		var rowClass;
+		for (var i = 0; i < players.length; i++)
+		{
+			rowClass = (i % 2) ? 'odd' : 'even';
+
+			player = players[i];
+			html += '<tr class="' + rowClass + '">';
+			html += '<td class="left">' + player.name + '</td>';
+			html += '<td>' + player.poolsPlayed + '</td>';
+//			html += '<td' + getPointsCellClass(player.totalPoints) + '>' + player.totalPoints + '</td>';
+			html += '<td' + getPointsCellClass(player.whists) + '>' + player.whists + '</td>';
+//			html += '<td>' + player.poolsWon + '</td>';
+//			html += '<td>' + player.poolsLost + '</td>';
+//			html += '<td>' + player.positivePools + '</td>';
+//			html += '<td>' + player.negativePools + '</td>';
+//			html += '</tr>';
+		}
+
+		html += '</tbody></table>';
 
 		container.innerHTML = html;
 	}
