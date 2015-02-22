@@ -92,12 +92,12 @@
 
 	// todo: think whether ids are needed
 	var players = [
-		  { id: 1, name: 'Безус Евгений Анатольевич', shortName: 'Е. Б.', mnemonic: PLAYERS.BEZUS }
-		, { id: 2, name: 'Попов Дмитрий Андреевич', shortName: 'Д. П.', mnemonic: PLAYERS.POPOV }
-		, { id: 3, name: 'Шамаев Михаил Игоревич', shortName: 'М. Ш.', mnemonic: PLAYERS.SHAMAEV }
-		, { id: 4, name: 'Сергеев Александр Владиславович', shortName: 'А. С.', mnemonic: PLAYERS.SERGEEV }
-		, { id: 5, name: 'Федосеев Виктор Андреевич', shortName: 'В. Ф.', mnemonic: PLAYERS.FEDOSEEV }
-		, { id: 6, name: 'Великанова Татьяна ?', shortName: 'Т. В.', mnemonic: PLAYERS.VELIKANOVA } // todo: fill middle name
+		  { id: 1, name: 'Безус&nbsp;Евгений&nbsp;Анатольевич', shortName: 'Е. Б.', mnemonic: PLAYERS.BEZUS }
+		, { id: 2, name: 'Попов&nbsp;Дмитрий&nbsp;Андреевич', shortName: 'Д. П.', mnemonic: PLAYERS.POPOV }
+		, { id: 3, name: 'Шамаев&nbsp;Михаил&nbsp;Игоревич', shortName: 'М. Ш.', mnemonic: PLAYERS.SHAMAEV }
+		, { id: 4, name: 'Сергеев&nbsp;Александр&nbsp;Владиславович', shortName: 'А. С.', mnemonic: PLAYERS.SERGEEV }
+		, { id: 5, name: 'Федосеев&nbsp;Виктор&nbsp;Андреевич', shortName: 'В. Ф.', mnemonic: PLAYERS.FEDOSEEV }
+		, { id: 6, name: 'Великанова&nbsp;Татьяна&nbsp;?', shortName: 'Т. В.', mnemonic: PLAYERS.VELIKANOVA } // todo: fill middle name
 	];
 
 	// js object (kind of JSON) in data
@@ -415,6 +415,7 @@
 			player.positivePools = 0;
 			player.negativePools = 0;
 
+			player.placesSum = 0; // for counting average place in pool
 			player.poolsWon = 0; // first place
 			player.poolsLost = 0; // last place
 
@@ -422,6 +423,9 @@
 			player.placePoints = 0;
 			player.whistsPoints = 0;
 			player.totalPoints = 0;
+
+			player.maxPoolWhists = undefined;
+			player.minPoolWhists = undefined;
 
 			for (j = 0; j < pools.length; j++)
 			{
@@ -438,6 +442,7 @@
 					else if (playerResult.whists < 0)
 						player.negativePools++;
 
+					player.placesSum += playerResult.place;
 					if (playerResult.place == 1) // todo: constant
 						player.poolsWon++;
 					else if ( playerResult.place == poolPlayersCount )
@@ -447,6 +452,12 @@
 					player.placePoints += playerResult.placePoints;
 					player.whistsPoints += playerResult.whistsPoints;
 					player.totalPoints += playerResult.totalPoints;
+
+					if ( (player.maxPoolWhists === undefined) || (playerResult.whists > player.maxPoolWhists) )
+						player.maxPoolWhists = playerResult.whists;
+
+					if ( (player.minPoolWhists === undefined) || (playerResult.whists < player.minPoolWhists) )
+						player.minPoolWhists = playerResult.whists;
 				}
 			}
 		}
@@ -467,7 +478,7 @@
 		// headers rows
 		html += '<tr>';
 
-		html += '<th colspan="3">Пуля</th>';
+		html += '<th colspan="4">Пуля</th>';
 		for (i = 0; i < players.length; i++)
 		{
 			player = players[i];
@@ -480,6 +491,7 @@
 		html += '<th>Дата</th>';
 		html += '<th>Файл скана</th>';
 		html += '<th>Комментарий</th>';
+		html += '<th title="3 или 4. Гусарик не играется :)">Игроков в&nbsp;пуле</th>';
 		for (i = 0; i < players.length; i++)
 		{
 			html += '<th class="leftSeparate">Место</th>';
@@ -502,7 +514,7 @@
 
 			html += '<td class="center">' + pool.date + '</td>';
 
-			html += '<td class="center">' + (pool.fileName || '&nbsp;') + '</td>';
+			html += '<td class="center">' + (pool.fileName || '&nbsp;') + '</td>'; // todo: link to scan download
 
 			if (pool.comment)
 			{
@@ -513,6 +525,7 @@
 				html += '<td>&nbsp;</td>';
 			}
 
+			html += '<td>' + pool.results.length + '</td>';
 
 			for (j = 0; j < players.length; j++)
 			{
@@ -536,17 +549,18 @@
 			html += '</tr>';
 		}
 
-		// todo: summary rows
+		// summary row
 		html += '<tr class="summary">';
 		html += '<td>Итого</td>';
-		html += '<td class="center">' + getScansCount(pools) + '&nbsp;' + getScansNounCase( getScansCount(pools) ) + '</td>'; // todo: падеж согласно числу
-		html += '<td class="center">' + pools.length + '&nbsp;' + getPoolsNounCase(pools.length) + '</td>'; // todo: падеж согласно числу
+		html += '<td class="center">' + getScansCount(pools) + '&nbsp;' + getScansNounCase( getScansCount(pools) ) + '</td>';
+		html += '<td class="center">' + pools.length + '&nbsp;' + getPoolsNounCase(pools.length) + '</td>';
+		html += '<td class="center">' + '&nbsp;' + '</td>'; // todo: придумать, что здесь написать. Можно в среднем игроков в пуле, или число пуль на 3 и на 4 отдельно :)
 
 		for (j = 0; j < players.length; j++)
 		{
 			player = players[j];
 
-			html += '<td class="leftSeparate">' + player.poolsPlayed + '&nbsp;' + getPoolsNounCase(player.poolsPlayed) + '</td>'; // todo: падеж согласно числу
+			html += '<td class="leftSeparate">' + player.poolsPlayed + '&nbsp;' + getPoolsNounCase(player.poolsPlayed) + '</td>';
 			html += '<td' + getPointsCellClass(player.whists) + '>' + player.whists + '</td>';
 			html += '<td' + getPointsCellClass(player.placePoints) + '>' + player.placePoints + '</td>';
 			html += '<td' + getPointsCellClass(player.whistsPoints) + '>' + player.whistsPoints + '</td>';
@@ -580,10 +594,13 @@
 		html += '<th>В&nbsp;среднем очков за&nbsp;пулю</th>';
 		html += '<th>Всего вистов</th>';
 		html += '<th>В&nbsp;среднем вистов за&nbsp;пулю</th>';
+		html += '<th title="Максимальное число вистов, набранное за&nbsp;одну пулю">Максимальный выигрыш за&nbsp;пулю</th>';
+		html += '<th title="Минимальное число вистов, набранное за&nbsp;одну пулю">Максимальный проигрыш за&nbsp;пулю</th>';
 		html += '<th title="Первое место в&nbsp;пуле">Пуль выиграно</th>';
 		html += '<th title="Последнее место в&nbsp;пуле">Пуль проиграно</th>';
 		html += '<th title="Количество пуль с&nbsp;положительным вистовым результатом">Пуль в&nbsp;плюсе</th>';
 		html += '<th title="Количество пуль с&nbsp;отрицательным вистовым результатом">Пуль в&nbsp;минусе</th>';
+		html += '<th title="Показатель имеет сомнительную ценность в&nbsp;силу наличия пуль как&nbsp;на&nbsp;троих, так&nbsp;и&nbsp;на&nbsp;четверых. Добавлен для&nbsp;интереса.">Среднее место в&nbsp;пуле</th>';
 		html += '</tr>';
 
 		// players rows
@@ -601,10 +618,13 @@
 			html += '<td' + getPointsCellClass(player.totalPoints) + '>' + formatRealNumber(player.totalPoints / player.poolsPlayed ) + '</td>';
 			html += '<td' + getPointsCellClass(player.whists) + '>' + player.whists + '</td>';
 			html += '<td' + getPointsCellClass(player.whists) + '>' + formatRealNumber( player.whists / player.poolsPlayed) + '</td>';
+			html += '<td' + getPointsCellClass(player.maxPoolWhists) + '>' + player.maxPoolWhists + '</td>';
+			html += '<td' + getPointsCellClass(player.minPoolWhists) + '>' + player.minPoolWhists + '</td>';
 			html += '<td>' + player.poolsWon + '</td>';
 			html += '<td>' + player.poolsLost + '</td>';
 			html += '<td>' + player.positivePools + '</td>';
 			html += '<td>' + player.negativePools + '</td>';
+			html += '<td>' + formatRealNumber( player.placesSum / player.poolsPlayed) + '</td>';
 			html += '</tr>';
 		}
 
