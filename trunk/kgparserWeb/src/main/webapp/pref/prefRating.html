@@ -275,6 +275,12 @@
 //		return (number * 1000 / 1000).toFixed(4);
 	}
 
+	function getFileDownloadLink(pool) {
+		if (!pool.fileName)
+			return '&nbsp;';
+
+		return '<a href="/pref/' + pool.fileName + '">' + pool.fileName + '</a>'; // "/pref" is context path on "sergeyev.ru"
+	}
 
 	function validatePool(pool) {
 		var date = pool.date;
@@ -514,7 +520,7 @@
 
 			html += '<td class="center">' + pool.date + '</td>';
 
-			html += '<td class="center">' + (pool.fileName || '&nbsp;') + '</td>'; // todo: link to scan download
+			html += '<td class="center">' + getFileDownloadLink(pool) + '</td>';
 
 			if (pool.comment)
 			{
