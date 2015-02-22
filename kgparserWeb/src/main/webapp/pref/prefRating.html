@@ -270,6 +270,11 @@
 		return getNounCase(poolsCount, SCAN_CASES);
 	}
 
+	function formatRealNumber(number) {
+		return (number * 10 / 10).toFixed(2);
+//		return (number * 1000 / 1000).toFixed(4);
+	}
+
 
 	function validatePool(pool) {
 		var date = pool.date;
@@ -572,7 +577,9 @@
 		html += '<th>Игрок</th>';
 		html += '<th>Сыграно пуль</th>';
 		html += '<th>Всего очков</th>';
+		html += '<th>В&nbsp;среднем очков за&nbsp;пулю</th>';
 		html += '<th>Всего вистов</th>';
+		html += '<th>В&nbsp;среднем вистов за&nbsp;пулю</th>';
 		html += '<th title="Первое место в&nbsp;пуле">Пуль выиграно</th>';
 		html += '<th title="Последнее место в&nbsp;пуле">Пуль проиграно</th>';
 		html += '<th title="Количество пуль с&nbsp;положительным вистовым результатом">Пуль в&nbsp;плюсе</th>';
@@ -591,7 +598,9 @@
 			html += '<td class="left">' + player.name + '</td>';
 			html += '<td>' + player.poolsPlayed + '</td>';
 			html += '<td' + getPointsCellClass(player.totalPoints) + '>' + player.totalPoints + '</td>';
+			html += '<td' + getPointsCellClass(player.totalPoints) + '>' + formatRealNumber(player.totalPoints / player.poolsPlayed ) + '</td>';
 			html += '<td' + getPointsCellClass(player.whists) + '>' + player.whists + '</td>';
+			html += '<td' + getPointsCellClass(player.whists) + '>' + formatRealNumber( player.whists / player.poolsPlayed) + '</td>';
 			html += '<td>' + player.poolsWon + '</td>';
 			html += '<td>' + player.poolsLost + '</td>';
 			html += '<td>' + player.positivePools + '</td>';
@@ -625,6 +634,7 @@
 //		html += '<th title="Последнее место в&nbsp;пуле">Пуль проиграно</th>';
 //		html += '<th title="Количество пуль с&nbsp;положительным вистовым результатом">Пуль в&nbsp;плюсе</th>';
 //		html += '<th title="Количество пуль с&nbsp;отрицательным вистовым результатом">Пуль в&nbsp;минусе</th>';
+		html += '<th>В&nbsp;среднем вистов за&nbsp;пулю</th>';
 		html += '</tr>';
 
 		// players rows
@@ -644,7 +654,8 @@
 //			html += '<td>' + player.poolsLost + '</td>';
 //			html += '<td>' + player.positivePools + '</td>';
 //			html += '<td>' + player.negativePools + '</td>';
-//			html += '</tr>';
+			html += '<td' + getPointsCellClass(player.whists) + '>' + formatRealNumber(player.whists / player.poolsPlayed) + '</td>';
+			html += '</tr>';
 		}
 
 		html += '</tbody></table>';
