@@ -583,6 +583,9 @@
 	function fillPointsRatingTable(pools) {
 		// sort players by totalPoints desc
 		players.sort(function(p1, p2) {
+			if (p2.totalPoints == p1.totalPoints)
+				return p2.whists - p1.whists; // in case of points equality, order is defined by total players' whists
+
 			return p2.totalPoints - p1.totalPoints;
 		});
 
