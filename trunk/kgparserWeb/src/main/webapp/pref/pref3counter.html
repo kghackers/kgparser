@@ -47,13 +47,13 @@
 		}
 
 		table.results td.leftSeparate, table.results th.leftSeparate {
-			border-left: 2px solid #DDDDDD;
+			border-left: 3px solid #DDDDDD;
 		}
 		table.results td.rightSeparate, table.results th.rightSeparate {
-			border-right: 2px solid #DDDDDD;
+			border-right: 3px solid #DDDDDD;
 		}
 		table.results td.topSeparate, table.results th.topSeparate {
-			border-top: 2px solid #DDDDDD;
+			border-top: 3px solid #DDDDDD;
 		}
 
 		table.results tr.summary td {
@@ -82,6 +82,7 @@
 	var PASS_NAME = 'Пас';
 
 	var RESULTS_CONTAINER_DIV_ID = 'results-container';
+	var POOL_RECORD_SEPARATOR = ', ';
 
 	var tablesCount = 0;
 	var rowsCount = 0;
@@ -119,6 +120,9 @@
 		html += '<td>' + convertNumber(config.totalWhists2) + '</td>';
 		html += '<td class="left">' + config.player3 + '</td>';
 		html += '<td>' + convertNumber(config.totalWhists3) + '</td>';
+		html += '<td class="left leftSeparate">' + config.poolRecords1 + '</td>';
+		html += '<td class="left">' + config.poolRecords2 + '</td>';
+		html += '<td class="left">' + config.poolRecords3 + '</td>';
 		html += '</tr>';
 
 		return html;
@@ -144,6 +148,9 @@
 		html += '<td>' + convertNumber(firstGame.totalWhists2) + '</td>';
 		html += '<td class="left">' + firstGame.player3 + '</td>';
 		html += '<td>' + convertNumber(firstGame.totalWhists3) + '</td>';
+		html += '<td class="left leftSeparate">' + firstGame.poolRecords1 + '</td>';
+		html += '<td class="left">' + firstGame.poolRecords2 + '</td>';
+		html += '<td class="left">' + firstGame.poolRecords3 + '</td>';
 		html += '</tr>';
 
 
@@ -172,6 +179,7 @@
 		html += 		'<th>Играющий</th>';
 		html += 		'<th colspan="2">Вистующий 1</th>';
 		html += 		'<th colspan="2">Вистующий 2</th>';
+		html += 		'<th colspan="3" class="leftSeparate">Записи в пулю</th>';
 		html += 	'</tr>';
 		html += 	'<tr>';
 		html += 		'<th>Висты</th>';
@@ -179,6 +187,9 @@
 		html += 		'<th>Висты</th>';
 		html += 		'<th>Заявка</th>';
 		html += 		'<th>Висты</th>';
+		html += 		'<th class="leftSeparate">Играющий</th>';
+		html += 		'<th>Вистующий 1</th>';
+		html += 		'<th>Вистующий 2</th>';
 		html += 	'</tr>';
 
 		for (i = 0; i < config.blocks.length; i++)
@@ -232,7 +243,7 @@
 		totalDump2 -= minTotalDump;
 		totalDump3 -= minTotalDump;
 
-		// средняя гор
+		// средняя гора
 		var avgDump = (totalDump1 + totalDump2 + totalDump3) / 3;
 
 		// счет по пуле и горе
@@ -274,8 +285,61 @@
 		config.totalWhists1 = totalWhists1;
 		config.totalWhists2 = totalWhists2;
 		config.totalWhists3 = totalWhists3;
-	}
 
+		fillPoolRecords(config);
+	}
+	function fillPoolRecords(config) {
+		var poolRecords1 = '';
+		var poolRecords2 = '';
+		var poolRecords3 = '';
+
+		if (config.pool1) poolRecords1 += POOL_RECORD_SEPARATOR + 'пуля: ' + config.pool1;
+		if (config.dump1) poolRecords1 += POOL_RECORD_SEPARATOR + 'гора: ' + config.dump1;
+//		if (config.whists12) poolRecords1 += POOL_RECORD_SEPARATOR + 'висты на вистующего 1: ' + config.whists12;
+//		if (config.whists13) poolRecords1 += POOL_RECORD_SEPARATOR + 'висты на вистующего 2: ' + config.whists13;
+		if (config.whists12) poolRecords1 += POOL_RECORD_SEPARATOR + 'висты на В1: ' + config.whists12;
+		if (config.whists13) poolRecords1 += POOL_RECORD_SEPARATOR + 'висты на В2: ' + config.whists13;
+
+		if (config.pool2) poolRecords2 += POOL_RECORD_SEPARATOR + 'пуля: ' + config.pool2;
+		if (config.dump2) poolRecords2 += POOL_RECORD_SEPARATOR + 'гора: ' + config.dump2;
+//		if (config.whists21) poolRecords2 += POOL_RECORD_SEPARATOR + 'висты на играющего: ' + config.whists21;
+//		if (config.whists23) poolRecords2 += POOL_RECORD_SEPARATOR + 'висты на вистующего 2: ' + config.whists23;
+//		if (config.whists21) poolRecords2 += POOL_RECORD_SEPARATOR + 'висты на И: ' + config.whists21;
+		if (config.whists21) poolRecords2 += POOL_RECORD_SEPARATOR + 'висты: ' + config.whists21; // очевидно, что висты пишутся только на играющего
+		if (config.whists23) poolRecords2 += POOL_RECORD_SEPARATOR + 'висты на В2: ' + config.whists23;
+
+		if (config.pool3) poolRecords3 += POOL_RECORD_SEPARATOR + 'пуля: ' + config.pool3;
+		if (config.dump3) poolRecords3 += POOL_RECORD_SEPARATOR + 'гора: ' + config.dump3;
+//		if (config.whists31) poolRecords3 += POOL_RECORD_SEPARATOR + 'висты на играющего: ' + config.whists31;
+//		if (config.whists32) poolRecords3 += POOL_RECORD_SEPARATOR + 'висты на вистующего 1: ' + config.whists32;
+//		if (config.whists31) poolRecords3 += POOL_RECORD_SEPARATOR + 'висты на И: ' + config.whists31;
+		if (config.whists31) poolRecords3 += POOL_RECORD_SEPARATOR + 'висты: ' + config.whists31; // очевидно, что висты пишутся только на играющего
+		if (config.whists32) poolRecords3 += POOL_RECORD_SEPARATOR + 'висты на В1: ' + config.whists32;
+
+		config.poolRecords1 = formatPoolRecord(poolRecords1);
+		config.poolRecords2 = formatPoolRecord(poolRecords2);
+		config.poolRecords3 = formatPoolRecord(poolRecords3);
+	}
+	function formatPoolRecord(record) {
+		if (!record)
+			return '';
+
+		if ( record.indexOf(POOL_RECORD_SEPARATOR) === 0 )
+//			return upperCaseFirstLetter( record.substring(POOL_RECORD_SEPARATOR.length) );
+			return ( record.substring(POOL_RECORD_SEPARATOR.length) );
+
+//		return upperCaseFirstLetter(record)
+		return record;
+	}
+	function upperCaseFirstLetter(str) {
+		if (!str)
+			return '';
+
+		if (str.length == 1)
+			return str.toUpperCase();
+
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	}
 
 	addGameTable({
 		  title: 'Шестерная'
