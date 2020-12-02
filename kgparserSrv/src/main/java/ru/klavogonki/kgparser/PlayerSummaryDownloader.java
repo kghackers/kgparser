@@ -27,7 +27,7 @@ public class PlayerSummaryDownloader { // todo: use logger instead of System.out
         System.out.printf("Loading player summary for player %d...%n", playerId);
 
         String urlString = String.format("https://klavogonki.ru/api/profile/get-summary?id=%d", playerId);
-        System.out.println("Url to load summary:" + urlString);
+        System.out.println("Url to load summary: " + urlString);
 
         // todo: use some nice library instead
         URL url = new URL(urlString);
