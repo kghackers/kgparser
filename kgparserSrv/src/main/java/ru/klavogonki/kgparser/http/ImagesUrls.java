@@ -6,8 +6,8 @@ package ru.klavogonki.kgparser.http;
  * $Author$
  * $Revision$
  * $Date::                      $
- * <br/>
- * <br/>
+ * <br>
+ * <br>
  * Класс, содержащий урлы картинок на клавогонках.
  */
 public class ImagesUrls

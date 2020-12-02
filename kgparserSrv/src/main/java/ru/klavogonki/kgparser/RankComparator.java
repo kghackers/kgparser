@@ -8,8 +8,8 @@ import java.util.Comparator;
  * $Author$
  * $Revision$
  * $Date::                      $
- * <br/>
- * <br/>
+ * <br>
+ * <br>
  * Компаратор рангов по возрастанию.
  */
 public class RankComparator implements Comparator<Rank>

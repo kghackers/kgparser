@@ -10,8 +10,8 @@ import java.util.Date;
  * $Author$
  * $Revision$
  * $Date::                      $
- * <br/>
- * <br/>
+ * <br>
+ * <br>
  * Компаратор, сравнивающий заезды по их {@linkplain ru.klavogonki.kgparser.Round#beginTime дате начала}.
  * Если у какого-либо заезда нет даты начала, бросается исключение.
  */

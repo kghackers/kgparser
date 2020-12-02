@@ -8,8 +8,8 @@ import su.opencode.kefir.srv.json.JsonObject;
  * $Author$
  * $Revision$
  * $Date::                      $
- * <br/>
- * <br/>
+ * <br>
+ * <br>
  * Оболочка для передачи данных о ранге.
  */
 public class RankDto extends JsonObject

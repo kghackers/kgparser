@@ -11,8 +11,8 @@ import javax.persistence.*;
  * $Author$
  * $Revision$
  * $Date::                      $
- * <br/>
- * <br/>
+ * <br>
+ * <br>
  * Сущность соревнования, сохраняемая в базе.
  */
 @Entity

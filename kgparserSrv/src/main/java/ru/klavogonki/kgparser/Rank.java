@@ -13,7 +13,7 @@ import static su.opencode.kefir.util.StringUtils.concat;
 public enum Rank
 {
 	/**
-	 * Новичок. Рекорд < 100.
+	 * Новичок. Рекорд &lt; 100.
 	 */
 	  novice
 

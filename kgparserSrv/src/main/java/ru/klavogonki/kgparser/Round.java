@@ -137,7 +137,7 @@ public class Round extends JsonObject
 	/**
 	 * @param player игрок
 	 * @return <code>true</code> &mdash; если игрок участвовал в заезде (имеет результат в нем).
-	 * <br/>
+	 * <br>
 	 * <code>false</code> &mdash; в противном случае.
 	 */
 	public boolean hasPlayerResult(Player player) {
@@ -152,7 +152,7 @@ public class Round extends JsonObject
 	/**
 	 * @param dictionary словарь
 	 * @return <code>true</code> &mdash; если заезд проходил по указанному словарю
-	 * <br/>
+	 * <br>
 	 * <code>false</code> &mdash; в противном случае
 	 */
 	public boolean hasDictionary(Dictionary dictionary) {
@@ -285,7 +285,7 @@ public class Round extends JsonObject
 
 	/**
 	 * Автор книги, из которой взят отрывок, по которому проходит заезд.
-	 * <br/>
+	 * <br>
 	 * Заполняется только для следующих стандартных режимов:
 	 * <ul>
 	 *   <li>{@linkplain StandardDictionary#normal Обычный}</li>
@@ -298,7 +298,7 @@ public class Round extends JsonObject
 
 	/**
 	 * Название книги, из которой взят отрывок, по которому проходит заезд.
-	 * <br/>
+	 * <br>
 	 * Заполняется только для следующих стандартных режимов:
 	 * <ul>
 	 *   <li>{@linkplain StandardDictionary#normal Обычный}</li>

@@ -4,19 +4,26 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import ru.klavogonki.kgparser.*;
+import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.Dictionary;
-import ru.klavogonki.kgparser.processing.AverageSpeedCounter;
-import ru.klavogonki.kgparser.processing.HighChartValue;
-import ru.klavogonki.kgparser.processing.SpeedChartFiller;
+import ru.klavogonki.kgparser.Player;
+import ru.klavogonki.kgparser.PlayerRoundResult;
+import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.Round;
 import su.opencode.kefir.util.DateUtils;
 import su.opencode.kefir.util.FileUtils;
 import su.opencode.kefir.util.JsonUtils;
 import su.opencode.kefir.util.StringUtils;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
 
 import static su.opencode.kefir.util.StringUtils.concat;
 
@@ -29,7 +36,7 @@ import static su.opencode.kefir.util.StringUtils.concat;
  */
 public class VoidmainJsonParser
 {
-	public static void main(String[] args) throws UnsupportedEncodingException {
+	public static void main(String[] args) {
 		BasicConfigurator.configure();
 
 //		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\game_37411__v15.json";
@@ -79,9 +86,9 @@ public class VoidmainJsonParser
 */
 	}
 
-	private static String getScriptVersionFromFile(String filePath) throws UnsupportedEncodingException {
+	private static String getScriptVersionFromFile(String filePath) {
 		byte[] jsonBytes = FileUtils.readFile(filePath);
-		String json = new String(jsonBytes, StringUtils.CHARSET_UTF8);
+		String json = new String(jsonBytes, StandardCharsets.UTF_8);
 
 		JSONObject jsonObject = new JSONObject(json);
 		String version = jsonObject.getString(EXPORT_SCRIPT_VERSION_FIELD_NAME);
@@ -92,9 +99,9 @@ public class VoidmainJsonParser
 		return version;
 	}
 
-	private static Round parseRoundFromFile(String filePath, String scriptVersion) throws UnsupportedEncodingException {
+	private static Round parseRoundFromFile(String filePath, String scriptVersion) {
 		byte[] jsonBytes = FileUtils.readFile(filePath);
-		String json = new String(jsonBytes, StringUtils.CHARSET_UTF8);
+		String json = new String(jsonBytes, StandardCharsets.UTF_8);
 
 		if ( StringUtils.empty(scriptVersion) || scriptVersion.equals(VERSION_1_5) )
 			return parseRound15(json);
@@ -118,7 +125,7 @@ public class VoidmainJsonParser
 	 *                      &laquo;{@linkplain #EXPORT_SCRIPT_VERSION_FIELD_NAME exportScriptVersion}&raquo; в JSON каждого заезда.
 	 * @return распарсенная модель соревнования
 	 */
-	public static Competition parseCompetition(String competitionName, String dirPath, String scriptVersion) throws UnsupportedEncodingException {
+	public static Competition parseCompetition(String competitionName, String dirPath, String scriptVersion) {
 		StringBuilder sb = new StringBuilder();
 
 		File dir = new File(dirPath);

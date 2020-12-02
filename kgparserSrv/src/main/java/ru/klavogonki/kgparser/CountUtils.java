@@ -6,8 +6,8 @@ package ru.klavogonki.kgparser;
  * $Author$
  * $Revision$
  * $Date::                      $
- * <br/>
- * <br/>
+ * <br>
+ * <br>
  * Утилитный класс для выполнения типичных расчетов.
  */
 public class CountUtils

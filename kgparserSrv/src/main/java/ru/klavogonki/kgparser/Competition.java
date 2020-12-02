@@ -271,7 +271,7 @@ public class Competition extends JsonObject
 	/**
 	 * @param dictionaryCode строковый  код словаря
 	 * @return <code>true</code> &mdash; если соревнование содержит хотя бы один заезд по словарю с указанным кодом
-	 * <br/>
+	 * <br>
 	 * <code>false</code> &mdash; если соревнование не содержит ни одного заезда по словарю с указанным кодом
 	 */
 	public boolean containsDictionary(String dictionaryCode) {
@@ -289,7 +289,7 @@ public class Competition extends JsonObject
 	/**
 	 * @param dictionary словарь
 	 * @return <code>true</code> &mdash; если соревнование содержит хотя бы один заезд по указанному словарю
-	 * <br/>
+	 * <br>
 	 * <code>false</code> &mdash; если соревнование не содержит ни одного заезда по указанному словарю
 	 */
 	public boolean containsDictionary(Dictionary dictionary) {

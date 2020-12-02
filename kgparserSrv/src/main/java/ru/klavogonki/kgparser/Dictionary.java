@@ -71,7 +71,7 @@ public class Dictionary extends JsonObject
 
 	/**
 	 * @return <code>true</code> &mdash; если словарь является {@linkplain StandardDictionary стандартным};
-	 * <br/>
+	 * <br>
 	 * <code>false</code> &mdash; если словарь является пользовательским словарем.
 	 */
 	@Json(exclude = true)
@@ -92,7 +92,7 @@ public class Dictionary extends JsonObject
 	/**
 	 * @param code строковый код словаря (gametype в ajax-api)
 	 * @return <code>true</code> &mdash; если словарь с указанным кодом является {@linkplain StandardDictionary стандартным};
-	 * <br/>
+	 * <br>
 	 * <code>false</code> &mdash; если словарь с указанным кодом является пользовательским словарем.
 	 */
 	@Json(exclude = true)
@@ -139,7 +139,7 @@ public class Dictionary extends JsonObject
 	/**
 	 * @param dictionaryCode строковый код словаря
 	 * @return <code>null</code> &mdash; для стандартных словарей
-	 * <br/>
+	 * <br>
 	 * ссылка на страницу словаря &mdash; для нестандартных словарей
 	 */
 	public static String getDictionaryPageUrl(String dictionaryCode) {

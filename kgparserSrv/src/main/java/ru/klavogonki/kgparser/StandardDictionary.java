@@ -6,8 +6,8 @@ package ru.klavogonki.kgparser;
  * $Author$
  * $Revision$
  * $Date::                      $
- * <br/>
- * <br/>
+ * <br>
+ * <br>
  * Энум с названиями стандартных словарей (режимов), как они используются в ajax-api.
  */
 public enum StandardDictionary
