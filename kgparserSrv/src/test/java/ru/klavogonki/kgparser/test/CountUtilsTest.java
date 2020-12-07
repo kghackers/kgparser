@@ -3,7 +3,7 @@ package ru.klavogonki.kgparser.test;
 import org.junit.jupiter.api.Test;
 import ru.klavogonki.kgparser.CountUtils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
@@ -21,11 +21,12 @@ class CountUtilsTest
 
 		values = new int[] { 100, 200, 300 };
 		avg = CountUtils.getAverageInt(values);
-		assertEquals(200, avg);
+
+		assertThat(avg).isEqualTo(200);
 
 		values = new int[] { 100, 200, 350 };
 		avg = CountUtils.getAverageInt(values);
-		assertEquals(216, avg);
+		assertThat(avg).isEqualTo(216);
 	}
 
 	@Test
@@ -35,6 +36,7 @@ class CountUtilsTest
 
 		values = new int[] { 100, 200, 350 };
 		avg = CountUtils.getAverageDouble(values);
-		assertEquals(21667, Math.round(avg * 100));
+
+		assertThat(Math.round(avg * 100)).isEqualTo(21667);
 	}
 }

@@ -7,7 +7,7 @@ import ru.klavogonki.kgparser.PlayerRoundResult;
 import ru.klavogonki.kgparser.Round;
 import ru.klavogonki.kgparser.StandardDictionary;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.klavogonki.kgparser.test.TestHelper.createPlayer;
 import static ru.klavogonki.kgparser.test.TestHelper.createRound;
 import static ru.klavogonki.kgparser.test.TestHelper.getDictionary;
@@ -39,28 +39,28 @@ class RoundTest
 		normalRound1.addResult( new PlayerRoundResult(normalRound1, ToNick) );
 		normalRound1.addResult( new PlayerRoundResult(normalRound1, Elena) );
 
-		assertEquals(true, normalRound1.hasPlayerResult(nosferatum));
-		assertEquals(true, normalRound1.hasPlayerResult(ToNick));
-		assertEquals(true, normalRound1.hasPlayerResult(Elena));
-		assertEquals(false, normalRound1.hasPlayerResult(alanen));
+		assertThat(normalRound1.hasPlayerResult(nosferatum)).isTrue();
+		assertThat(normalRound1.hasPlayerResult(ToNick)).isTrue();
+		assertThat(normalRound1.hasPlayerResult(Elena)).isTrue();
+		assertThat(normalRound1.hasPlayerResult(alanen)).isFalse();
 
 		Round normalRound2 = createRound(normal);
 		normalRound2.addResult( new PlayerRoundResult(normalRound2, nosferatum) );
 		normalRound2.addResult( new PlayerRoundResult(normalRound2, ToNick) );
 //		normalRound2.addResult( new PlayerRoundResult(normalRound2, Elena) );
 
-		assertEquals(true, normalRound2.hasPlayerResult(nosferatum));
-		assertEquals(true, normalRound2.hasPlayerResult(ToNick));
-		assertEquals(false, normalRound2.hasPlayerResult(Elena));
-		assertEquals(false, normalRound2.hasPlayerResult(alanen));
+		assertThat(normalRound2.hasPlayerResult(nosferatum)).isTrue();
+		assertThat(normalRound2.hasPlayerResult(ToNick)).isTrue();
+		assertThat(normalRound2.hasPlayerResult(Elena)).isFalse();
+		assertThat(normalRound2.hasPlayerResult(alanen)).isFalse();
 
 
 		Round charsRound1 = createRound(chars);
 		charsRound1.addResult( new PlayerRoundResult(charsRound1, nosferatum) );
 
-		assertEquals(true, charsRound1.hasPlayerResult(nosferatum));
-		assertEquals(false, charsRound1.hasPlayerResult(ToNick));
-		assertEquals(false, charsRound1.hasPlayerResult(Elena));
-		assertEquals(false, charsRound1.hasPlayerResult(alanen));
+		assertThat(charsRound1.hasPlayerResult(nosferatum)).isTrue();
+		assertThat(charsRound1.hasPlayerResult(ToNick)).isFalse();
+		assertThat(charsRound1.hasPlayerResult(Elena)).isFalse();
+		assertThat(charsRound1.hasPlayerResult(alanen)).isFalse();
 	}
 }

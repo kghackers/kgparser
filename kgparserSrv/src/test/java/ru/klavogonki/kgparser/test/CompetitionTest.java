@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.klavogonki.kgparser.test.TestHelper.createPlayer;
 import static ru.klavogonki.kgparser.test.TestHelper.createRound;
 import static ru.klavogonki.kgparser.test.TestHelper.getDictionary;
@@ -58,11 +58,11 @@ class CompetitionTest
 		competition.addRound(charsRound1);
 
 		Set<Player> players = competition.getPlayers();
-		assertEquals(3, players.size());
-		assertEquals(true, players.contains(nosferatum));
-		assertEquals(true, players.contains(ToNick));
-		assertEquals(true, players.contains(Elena));
-		assertEquals(false, players.contains(alanen));
+
+		assertThat(players)
+			.hasSize(3)
+			.contains(nosferatum, ToNick, Elena)
+			.doesNotContain(alanen);
 	}
 
 	@Test
@@ -96,18 +96,19 @@ class CompetitionTest
 		competition.addRound(charsRound1);
 
 		Set<Dictionary> dictionaries = competition.getDictionaries();
-		assertEquals(2, dictionaries.size());
-		assertEquals(true, dictionaries.contains(normal));
-		assertEquals(true, dictionaries.contains(chars));
-		assertEquals(false, dictionaries.contains(frequent));
 
-		assertEquals(true, competition.containsDictionary(normal));
-		assertEquals(true, competition.containsDictionary(chars));
-		assertEquals(false, competition.containsDictionary(frequent));
+		assertThat(dictionaries)
+			.hasSize(2)
+			.contains(normal, chars)
+			.doesNotContain(frequent);
 
-		assertEquals(true, competition.containsDictionary(normal.getCode()));
-		assertEquals(true, competition.containsDictionary(chars.getCode()));
-		assertEquals(false, competition.containsDictionary(frequent.getCode()));
+		assertThat(competition.containsDictionary(normal)).isTrue();
+		assertThat(competition.containsDictionary(chars)).isTrue();
+		assertThat(competition.containsDictionary(frequent)).isFalse();
+
+		assertThat(competition.containsDictionary(normal.getCode())).isTrue();
+		assertThat(competition.containsDictionary(chars.getCode())).isTrue();
+		assertThat(competition.containsDictionary(frequent.getCode())).isFalse();
 	}
 
 	@Test
@@ -141,40 +142,40 @@ class CompetitionTest
 		competition.addRound(charsRound1);
 
 		// by dictionary
-		assertEquals(2, competition.getRoundsCount(normal));
-		assertEquals(1, competition.getRoundsCount(chars));
-		assertEquals(0, competition.getRoundsCount(frequent));
+		assertThat(competition.getRoundsCount(normal)).isEqualTo(2);
+		assertThat(competition.getRoundsCount(chars)).isEqualTo(1);
+		assertThat(competition.getRoundsCount(frequent)).isZero();
 
 		// by dictionary code
-		assertEquals(2, competition.getRoundsCount(normal.getCode()));
-		assertEquals(1, competition.getRoundsCount(chars.getCode()));
-		assertEquals(0, competition.getRoundsCount(frequent.getCode()));
+		assertThat(competition.getRoundsCount(normal.getCode())).isEqualTo(2);
+		assertThat(competition.getRoundsCount(chars.getCode())).isEqualTo(1);
+		assertThat(competition.getRoundsCount(frequent.getCode())).isZero();
 
 		// by player
-		assertEquals(3, competition.getRoundsCount(nosferatum));
-		assertEquals(2, competition.getRoundsCount(ToNick));
-		assertEquals(1, competition.getRoundsCount(Elena));
-		assertEquals(0, competition.getRoundsCount(alanen));
+		assertThat(competition.getRoundsCount(nosferatum)).isEqualTo(3);
+		assertThat(competition.getRoundsCount(ToNick)).isEqualTo(2);
+		assertThat(competition.getRoundsCount(Elena)).isEqualTo(1);
+		assertThat(competition.getRoundsCount(alanen)).isZero();
 
 		// by player "nosferatum" and dictionaries
-		assertEquals(2, competition.getRoundsCount(nosferatum, normal));
-		assertEquals(1, competition.getRoundsCount(nosferatum, chars));
-		assertEquals(0, competition.getRoundsCount(nosferatum, frequent));
+		assertThat(competition.getRoundsCount(nosferatum, normal)).isEqualTo(2);
+		assertThat(competition.getRoundsCount(nosferatum, chars)).isEqualTo(1);
+		assertThat(competition.getRoundsCount(nosferatum, frequent)).isZero();
 
 		// by player "ToNick" and dictionaries
-		assertEquals(2, competition.getRoundsCount(ToNick, normal));
-		assertEquals(0, competition.getRoundsCount(ToNick, chars));
-		assertEquals(0, competition.getRoundsCount(ToNick, frequent));
+		assertThat(competition.getRoundsCount(ToNick, normal)).isEqualTo(2);
+		assertThat(competition.getRoundsCount(ToNick, chars)).isZero();
+		assertThat(competition.getRoundsCount(ToNick, frequent)).isZero();
 
 		// by player "Elena" and dictionaries
-		assertEquals(1, competition.getRoundsCount(Elena, normal));
-		assertEquals(0, competition.getRoundsCount(Elena, chars));
-		assertEquals(0, competition.getRoundsCount(Elena, frequent));
+		assertThat(competition.getRoundsCount(Elena, normal)).isEqualTo(1);
+		assertThat(competition.getRoundsCount(Elena, chars)).isZero();
+		assertThat(competition.getRoundsCount(Elena, frequent)).isZero();
 
 		// by player "alanen" and dictionaries
-		assertEquals(0, competition.getRoundsCount(alanen, normal));
-		assertEquals(0, competition.getRoundsCount(alanen, chars));
-		assertEquals(0, competition.getRoundsCount(alanen, frequent));
+		assertThat(competition.getRoundsCount(alanen, normal)).isZero();
+		assertThat(competition.getRoundsCount(alanen, chars)).isZero();
+		assertThat(competition.getRoundsCount(alanen, frequent)).isZero();
 	}
 
 	@Test
@@ -208,16 +209,16 @@ class CompetitionTest
 		competition.addRound(charsRound1);
 
 		Map<String,List<Round>> map = competition.getRoundsByDictionariesMap();
-		assertEquals(2, map.keySet().size());
-		assertEquals( true, map.containsKey(normal.getCode()) );
-		assertEquals( true, map.containsKey(chars.getCode()) );
-		assertEquals( false, map.containsKey(frequent.getCode()) );
+		assertThat(map)
+			.hasSize(2)
+			.containsKeys(normal.getCode(), chars.getCode())
+			.doesNotContainKey(frequent.getCode());
 
 		List<Round> normalRounds = map.get(normal.getCode());
-		assertEquals(2, normalRounds.size());
+		assertThat(normalRounds).hasSize(2);
 
 		List<Round> charRounds = map.get(chars.getCode());
-		assertEquals(1, charRounds.size());
+		assertThat(charRounds).hasSize(1);
 
 		// todo: also check PlayerRoundResult inner values
 	}
