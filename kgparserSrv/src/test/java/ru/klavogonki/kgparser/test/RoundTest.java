@@ -1,10 +1,16 @@
 package ru.klavogonki.kgparser.test;
 
-import org.junit.Test;
-import ru.klavogonki.kgparser.*;
+import org.junit.jupiter.api.Test;
+import ru.klavogonki.kgparser.Dictionary;
+import ru.klavogonki.kgparser.Player;
+import ru.klavogonki.kgparser.PlayerRoundResult;
+import ru.klavogonki.kgparser.Round;
+import ru.klavogonki.kgparser.StandardDictionary;
 
-import static junit.framework.Assert.assertEquals;
-import static ru.klavogonki.kgparser.test.TestHelper.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.klavogonki.kgparser.test.TestHelper.createPlayer;
+import static ru.klavogonki.kgparser.test.TestHelper.createRound;
+import static ru.klavogonki.kgparser.test.TestHelper.getDictionary;
 
 /**
  * Copyright 2014 LLC "Open Code"
@@ -14,10 +20,10 @@ import static ru.klavogonki.kgparser.test.TestHelper.*;
  * $Revision$
  * $Date::                      $
  */
-public class RoundTest
+class RoundTest
 {
 	@Test
-	public void testHasPlayerResult() {
+	void testHasPlayerResult() {
 		Dictionary normal = getDictionary(StandardDictionary.normal);
 		Dictionary chars = getDictionary(StandardDictionary.chars);
 		Dictionary frequent = getDictionary(192, "Частотный");

@@ -1,9 +1,9 @@
 package ru.klavogonki.kgparser.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ru.klavogonki.kgparser.CountUtils;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
@@ -12,10 +12,10 @@ import static junit.framework.Assert.assertEquals;
  * $Revision$
  * $Date::                      $
  */
-public class CountUtilsTest
+class CountUtilsTest
 {
 	@Test
-	public void testGetAverageInt() {
+	void testGetAverageInt() {
 		int[] values;
 		long avg;
 
@@ -29,7 +29,7 @@ public class CountUtilsTest
 	}
 
 	@Test
-	public void testGetAverageDouble() {
+	void testGetAverageDouble() {
 		int[] values;
 		double avg;
 

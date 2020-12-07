@@ -1,14 +1,21 @@
 package ru.klavogonki.kgparser.test;
 
-import org.junit.Test;
-import ru.klavogonki.kgparser.*;
+import org.junit.jupiter.api.Test;
+import ru.klavogonki.kgparser.Competition;
+import ru.klavogonki.kgparser.Dictionary;
+import ru.klavogonki.kgparser.Player;
+import ru.klavogonki.kgparser.PlayerRoundResult;
+import ru.klavogonki.kgparser.Round;
+import ru.klavogonki.kgparser.StandardDictionary;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static junit.framework.Assert.assertEquals;
-import static ru.klavogonki.kgparser.test.TestHelper.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.klavogonki.kgparser.test.TestHelper.createPlayer;
+import static ru.klavogonki.kgparser.test.TestHelper.createRound;
+import static ru.klavogonki.kgparser.test.TestHelper.getDictionary;
 
 /**
  * Copyright 2014 LLC "Open Code"
@@ -18,10 +25,10 @@ import static ru.klavogonki.kgparser.test.TestHelper.*;
  * $Revision$
  * $Date::                      $
  */
-public class CompetitionTest
+class CompetitionTest
 {
 	@Test
-	public void testGetPlayers() {
+	void testGetPlayers() {
 		Dictionary normal = getDictionary(StandardDictionary.normal);
 		Dictionary chars = getDictionary(StandardDictionary.chars);
 		Dictionary frequent = getDictionary(192, "Частотный");
@@ -59,7 +66,7 @@ public class CompetitionTest
 	}
 
 	@Test
-	public void testGetDictionariesAndContainsDictionary() {
+	void testGetDictionariesAndContainsDictionary() {
 		Dictionary normal = getDictionary(StandardDictionary.normal);
 		Dictionary chars = getDictionary(StandardDictionary.chars);
 		Dictionary frequent = getDictionary(192, "Частотный");
@@ -104,7 +111,7 @@ public class CompetitionTest
 	}
 
 	@Test
-	public void testGetRoundsCount() {
+	void testGetRoundsCount() {
 		Dictionary normal = getDictionary(StandardDictionary.normal);
 		Dictionary chars = getDictionary(StandardDictionary.chars);
 		Dictionary frequent = getDictionary(192, "Частотный");
@@ -171,7 +178,7 @@ public class CompetitionTest
 	}
 
 	@Test
-	public void testGetRoundsByDictionariesMap() {
+	void testGetRoundsByDictionariesMap() {
 		Dictionary normal = getDictionary(StandardDictionary.normal);
 		Dictionary chars = getDictionary(StandardDictionary.chars);
 		Dictionary frequent = getDictionary(192, "Частотный");
@@ -202,9 +209,9 @@ public class CompetitionTest
 
 		Map<String,List<Round>> map = competition.getRoundsByDictionariesMap();
 		assertEquals(2, map.keySet().size());
-		assertEquals( true, map.keySet().contains(normal.getCode()) );
-		assertEquals( true, map.keySet().contains(chars.getCode()) );
-		assertEquals( false, map.keySet().contains(frequent.getCode()) );
+		assertEquals( true, map.containsKey(normal.getCode()) );
+		assertEquals( true, map.containsKey(chars.getCode()) );
+		assertEquals( false, map.containsKey(frequent.getCode()) );
 
 		List<Round> normalRounds = map.get(normal.getCode());
 		assertEquals(2, normalRounds.size());
