@@ -1,6 +1,7 @@
 package ru.klavogonki.kgparser.servlet.processing.playersTable;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -9,12 +10,14 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import ru.klavogonki.kgparser.processing.playersTable.*;
+import ru.klavogonki.kgparser.processing.playersTable.HeaderCell;
+import ru.klavogonki.kgparser.processing.playersTable.HeaderRow;
+import ru.klavogonki.kgparser.processing.playersTable.PlayerCell;
+import ru.klavogonki.kgparser.processing.playersTable.PlayerRow;
+import ru.klavogonki.kgparser.processing.playersTable.PlayersResultsTable;
 import su.opencode.kefir.util.StringUtils;
 
 import java.util.List;
-
-import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
@@ -143,13 +146,14 @@ public class PlayerResultsTableToXlsConverter
 
 	private static void setColumnsWidths(PlayersResultsTable table, XSSFSheet sheet) {
 		int columnsCount = getColumnsCount(table);
-		logger.info( concat("columns count: ", columnsCount) );
+		logger.info("columns count: {}", columnsCount);
 		for (int i = 0; i < columnsCount; i++)
 		{
 			sheet.setColumnWidth(i, 256 * 20);
 //					sheet.autoSizeColumn(i, true); // does not work, sets columns witdh to 0 and hidden
 		}
 	}
+
 	private static int getColumnsCount(PlayersResultsTable table) {
 		int columnsCount = 0;
 		HeaderRow firstHeaderRow = table.getHeaderRows().get(0);
@@ -163,5 +167,5 @@ public class PlayerResultsTableToXlsConverter
 		return columnsCount;
 	}
 
-	private static final Logger logger = Logger.getLogger(PlayerResultsTableToXlsConverter.class);
+	private static final Logger logger = LogManager.getLogger(PlayerResultsTableToXlsConverter.class);
 }

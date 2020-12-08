@@ -208,7 +208,7 @@ class CompetitionTest
 		competition.addRound(normalRound2);
 		competition.addRound(charsRound1);
 
-		Map<String,List<Round>> map = competition.getRoundsByDictionariesMap();
+		Map<String, List<Round>> map = competition.getRoundsByDictionariesMap();
 		assertThat(map)
 			.hasSize(2)
 			.containsKeys(normal.getCode(), chars.getCode())

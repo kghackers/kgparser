@@ -1,9 +1,8 @@
 package ru.klavogonki.kgparser.http;
 
 import su.opencode.kefir.util.FileUtils;
-import su.opencode.kefir.util.StringUtils;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import static su.opencode.kefir.util.StringUtils.concat;
 
@@ -19,14 +18,7 @@ public class ConfigurationLoader
 	public String readConfigurationFile(String filePath) {
 		String path = concat( System.getProperty("jboss.server.home.dir"), "/conf/", filePath);
 		byte[] bytes = FileUtils.readFile(path);
-		try
-		{
-			return new String(bytes, StringUtils.CHARSET_UTF8);
-		}
-		catch (UnsupportedEncodingException e)
-		{
-			throw new RuntimeException(e);
-		}
+		return new String(bytes, StandardCharsets.UTF_8);
 	}
 
 	public static final String COOKIE_CONF_FILE_NAME = "kgparser-cookie.txt";

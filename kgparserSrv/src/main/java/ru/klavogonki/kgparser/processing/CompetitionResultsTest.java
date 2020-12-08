@@ -1,13 +1,16 @@
 package ru.klavogonki.kgparser.processing;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.Player;
 import ru.klavogonki.kgparser.http.UrlConstructor;
 
 import java.util.Set;
-
-import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Copyright 2014 LLC "Open Code"
@@ -19,7 +22,12 @@ import static su.opencode.kefir.util.StringUtils.concat;
  */
 public class CompetitionResultsTest
 {
+	private static final Logger logger = LogManager.getLogger(CompetitionResultsTest.class);
+
 	public static void main(String[] args) {
+		Configurator.initialize(new DefaultConfiguration());
+		Configurator.setRootLevel(Level.DEBUG);
+
 		Competition competition = FakeDataFactory.createCompetition();
 		getPlayerDictionariesResultsCount(competition);
 	}
@@ -30,33 +38,54 @@ public class CompetitionResultsTest
 		Set<Player> players = competition.getPlayers();
 		Set<Dictionary> dictionaries = competition.getDictionaries();
 
-		StringBuilder sb = new StringBuilder();
-
 		// by dictionaries
 		for (Dictionary dictionary : dictionaries)
 		{
 			int roundsCount = competition.getRoundsCount(dictionary);
 
-			if (dictionary.isStandard())
-				System.out.println( concat(sb, "Dictionary: ", dictionary.getCode(), " (name = \"", dictionary.getName(), "\"), Rounds count: ", roundsCount) );
-			else
-				System.out.println( concat(sb, "Dictionary: ", dictionary.getCode(), " (name = \"", dictionary.getName(), "\", dictionaryPageUrl = ", UrlConstructor.getDictionaryPageUrl( dictionary.getId() ), "), Rounds count: ", roundsCount) );
+			if (dictionary.isStandard()) {
+				logger.info(
+					"Dictionary: {} (name = \"{}\"), Rounds count: {}.",
+					dictionary.getCode(),
+					dictionary.getName(),
+					roundsCount
+				);
+			}
+			else {
+				logger.info(
+					"Dictionary: {} (name = \"{}\", dictionaryPageUrl = {}), Rounds count: {}.",
+					dictionary.getCode(),
+					dictionary.getName(),
+					UrlConstructor.getDictionaryPageUrl( dictionary.getId() ),
+					roundsCount
+				);
+			}
 		}
 
 		// by players
 		for (Player player : players)
 		{
-			System.out.println("================================================");
-			System.out.println( concat(sb, "Player ", player.getName(), " (profileId = ", player.getProfileId(), ", profileLink = ", UrlConstructor.getProfileUrl(player), ")") );
+			logger.info("================================================");
+			logger.info(
+				"Player {} (profileId = {}, profileLink = {})",
+				player.getName(),
+				player.getProfileId(),
+				UrlConstructor.getProfileUrl(player)
+			);
 
 			int totalRoundsCount = competition.getRoundsCount(player);
-			System.out.println( concat(sb, "Total rounds count: ", totalRoundsCount) );
-			System.out.println();
+			logger.info("Total rounds count: {}", totalRoundsCount);
+			logger.info("");
 
 			for (Dictionary dictionary : dictionaries)
 			{ // player by dictionary
 				int dictionaryRoundsCount = competition.getRoundsCount(player, dictionary);
-				System.out.println( concat(sb, "Dictionary: ", dictionary.getCode(), " (\"", dictionary.getName(), "\"), Rounds count: ", dictionaryRoundsCount) );
+				logger.info(
+					"Dictionary: {} (\"{}\"), Rounds count: {}",
+					dictionary.getCode(),
+					dictionary.getName(),
+					dictionaryRoundsCount
+				);
 			}
 		}
 	}

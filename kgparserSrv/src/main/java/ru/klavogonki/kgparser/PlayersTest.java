@@ -5,6 +5,12 @@
  */
 package ru.klavogonki.kgparser;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,10 +18,16 @@ import java.util.Set;
 
 public class PlayersTest
 {
+	private static final Logger logger = LogManager.getLogger(PlayersTest.class);
+
 	public static void main(String[] args) {
+		Configurator.initialize(new DefaultConfiguration());
+		Configurator.setRootLevel(Level.DEBUG);
+
 		testPlayersSet();
 		testCompetitionPlayers();
 	}
+
 	private static void testPlayersSet() {
 		Player player1 = new Player();
 		player1.setProfileId(1);
@@ -29,13 +41,14 @@ public class PlayersTest
 		player1copy.setProfileId(1);
 		player1copy.setName("name 1 copy");
 
-		Set<Player> players = new HashSet<Player>();
+		Set<Player> players = new HashSet<>();
 		players.add(player1);
 		players.add(player2);
 		players.add(player1copy);
 
-		for (Player player : players)
-			System.out.println("player: " + player.getProfileId() + ", " + player.getName());
+		for (Player player : players) {
+			logger.info("player: {}, {}.",player.getProfileId(), player.getName());
+		}
 	}
 
 	private static void testCompetitionPlayers() {
@@ -73,14 +86,15 @@ public class PlayersTest
 		PlayerRoundResult result32 = new PlayerRoundResult(round3, player2);
 		round3.addResult(result32);
 
-		List<Round> rounds = new ArrayList<Round>();
+		List<Round> rounds = new ArrayList<>();
 		rounds.add(round1);
 		rounds.add(round2);
 		rounds.add(round3);
 
 		Competition competition = new Competition(rounds);
 
-		for (Player player : competition.getPlayers())
-			System.out.println("competition player: " + player.getProfileId() + ", " + player.getName());
+		for (Player player : competition.getPlayers()) {
+			logger.info("competition player: {}, {}", player.getProfileId(), player.getName());
+		}
 	}
 }

@@ -5,7 +5,8 @@
  */
 package ru.klavogonki.kgparser;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import su.opencode.kefir.srv.json.Json;
 import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.ObjectUtils;
@@ -14,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Заезд. Содержит результаты всех игроков в этом заезде.
@@ -175,7 +174,7 @@ public class Round extends JsonObject
 			Integer playerPlace = result.getPlace();
 			if (playerPlace == null)
 			{
-				logger.info( concat("PlayerRoundResult for player has no place set") ); // todo: add player info
+				logger.info("PlayerRoundResult for player has no place set."); // todo: add player info
 				continue; // player place not set -> ignore this result
 			}
 			else if (minPlace == -1)
@@ -204,7 +203,7 @@ public class Round extends JsonObject
 			Integer playerPlace = result.getPlace();
 			if (playerPlace == null)
 			{
-				logger.info( concat("PlayerRoundResult for player has no place set") ); // todo: add player info
+				logger.info("PlayerRoundResult for player has no place set."); // todo: add player info
 				continue; // player place not set -> ignore this result
 			}
 			else if (maxPlace == -1)
@@ -228,11 +227,8 @@ public class Round extends JsonObject
 		if ( ObjectUtils.empty(results) )
 			return Collections.emptyList();
 
-		List<PlayerRoundResult> sortedResults = new ArrayList<>();
-		for (PlayerRoundResult result : results)
-			sortedResults.add(result);
-
-		Collections.sort(sortedResults, new PlayerRoundResultPlacesComparator());
+		List<PlayerRoundResult> sortedResults = new ArrayList<>(results);
+		sortedResults.sort(new PlayerRoundResultPlacesComparator());
 
 		// check places
 		int minPlace = getMinPlace();
@@ -241,8 +237,10 @@ public class Round extends JsonObject
 		for (int correctPlace = minPlace; correctPlace <= maxPlace; correctPlace++)
 		{
 			Integer place = sortedResults.get(correctPlace - 1).getPlace();
-			if ( (place == null) || (place != correctPlace) )
-				throw new IllegalStateException( concat("Incorrect PlayerRoundResult place: must be ", correctPlace, ", but is ", place) ); // todo: add player info
+			if ( (place == null) || (place != correctPlace) ) {
+				String errorMessage = String.format("Incorrect PlayerRoundResult place: must be %d, but is %d.", correctPlace, place);
+				throw new IllegalStateException(errorMessage); // todo: add player info
+			}
 		}
 
 		return sortedResults;
@@ -319,5 +317,5 @@ public class Round extends JsonObject
 	 */
 	public static final int FIRST_ROUND_NUMBER = 1;
 
-	private static final Logger logger = Logger.getLogger(Round.class);
+	private static final Logger logger = LogManager.getLogger(Round.class);
 }

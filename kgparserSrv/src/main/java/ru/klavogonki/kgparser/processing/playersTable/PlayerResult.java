@@ -8,13 +8,12 @@ package ru.klavogonki.kgparser.processing.playersTable;
  * $Date::                      $
  */
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.Player;
 import ru.klavogonki.kgparser.PlayerRoundResult;
 import ru.klavogonki.kgparser.Round;
-
-import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Оболочка для агрегатных данных игрока в соревновании.
@@ -22,15 +21,21 @@ import static su.opencode.kefir.util.StringUtils.concat;
 public class PlayerResult
 {
 	public PlayerResult(Player player, Competition competition) {
-		StringBuilder sb = new StringBuilder();
-
 		if (player.isGuest())
 			throw new IllegalArgumentException( "Cannot count player results for guest." );
 
 		this.player = player;
 		this.roundsCount = competition.getRoundsCount(player);
-		if (this.roundsCount <= 0)
-			throw new IllegalArgumentException( concat(sb, "Player \"", player.getName(), "\" (profileId = ", player.getProfileId(), ") has no results in Competition \"", competition.getName(), "\".") );
+		if (this.roundsCount <= 0) {
+			String errorMessage = String.format(
+				"Player \"%s\" (profileId = %d) has no results in Competition \"%s\".",
+				player.getName(),
+				player.getProfileId(),
+				competition.getName()
+			);
+
+			throw new IllegalArgumentException(errorMessage);
+		}
 
 		long speedSum = 0;
 		int totalErrorsCount = 0;
@@ -41,7 +46,13 @@ public class PlayerResult
 			PlayerRoundResult playerResult = round.getPlayerResult(player);
 			if (playerResult == null)
 			{
-				logger.info( concat(sb, "Player \"", player.getName(), "\" (profileId = ", player.getProfileId(), ") has not finished in round number ", round.getNumber() ) );
+				logger.info(
+					"Player \"{}\" (profileId = {}}) has not finished in round number {}.",
+					player.getName(),
+					player.getProfileId(),
+					round.getNumber()
+				);
+
 				continue;
 			}
 
@@ -114,5 +125,5 @@ public class PlayerResult
 	 */
 	private int totalErrorsCount;
 
-	private static final Logger logger = Logger.getLogger(PlayerResult.class);
+	private static final Logger logger = LogManager.getLogger(PlayerResult.class);
 }

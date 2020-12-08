@@ -1,6 +1,8 @@
 package ru.klavogonki.kgparser;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,8 +12,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class PlayerSummaryDownloader { // todo: use logger instead of System.out
-//    private static final Logger logger = Logger.getLogger(PlayerSummaryDownloader.class);
+public class PlayerSummaryDownloader {
+    private static final Logger logger = LogManager.getLogger(PlayerSummaryDownloader.class);
 
     private static final int NOSFERATUM_PLAYER_ID = 242585;
     private static final int MIN_PLAYER_ID = 30000; // todo: confirm
@@ -33,6 +35,14 @@ public class PlayerSummaryDownloader { // todo: use logger instead of System.out
             return rootDir + File.separator + startDate + File.separator + "index-data" + File.separator + playerId + ".json";
         }
 
+        public void log() {
+            logger.debug("Config:");
+            logger.debug("  rootDir: {}", rootDir);
+            logger.debug("  minPlayerId: {}", minPlayerId);
+            logger.debug("  maxPlayerId: {}", maxPlayerId);
+            logger.debug("  startDate: {}", startDate);
+        }
+
         public static Config parseFromArguments(final String[] args) {
             int index = 0;
 
@@ -48,6 +58,7 @@ public class PlayerSummaryDownloader { // todo: use logger instead of System.out
         // todo: pass a path to a json file with config instead
 
         if (args.length != Config.REQUIRED_ARGUMENTS_COUNT) {
+            // todo: use logger instead of System.out??
             System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> %n", PlayerSummaryDownloader.class.getSimpleName());
             return;
         }
@@ -56,6 +67,7 @@ public class PlayerSummaryDownloader { // todo: use logger instead of System.out
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
         config.startDate = LocalDateTime.now().format(dateTimeFormatter);
+        config.log();
 
         for (int playerId = config.minPlayerId; playerId <= config.maxPlayerId; playerId++) {
             savePlayerSummaryToJsonFile(config, playerId);
@@ -64,7 +76,7 @@ public class PlayerSummaryDownloader { // todo: use logger instead of System.out
     }
 
     private static void savePlayerSummaryToJsonFile(final Config config, final int playerId) throws IOException {
-        System.out.printf("Loading player summary for player %d...%n", playerId);
+        logger.debug("Loading player summary for player {}...", playerId);
 
         String urlString = getSummaryUrl(playerId);
 
@@ -72,11 +84,11 @@ public class PlayerSummaryDownloader { // todo: use logger instead of System.out
 
         String jsonFilePath = config.getPlayerSummaryFilePath(playerId);
         FileUtils.writeStringToFile(new File(jsonFilePath), out, StandardCharsets.UTF_8);
-        System.out.printf("Summary for player %d successfully written to file %s.%n", playerId, jsonFilePath);
+        logger.debug("Summary for player {} successfully written to file {}.", playerId, jsonFilePath);
     }
 
     private static void savePlayerIndexDataToJsonFile(final Config config, final int playerId) throws IOException {
-        System.out.printf("Loading player index data for player %d...%n", playerId);
+        logger.debug("Loading player index data for player {}...", playerId);
 
         String urlString = getIndexDataUrl(playerId);
 
@@ -84,11 +96,11 @@ public class PlayerSummaryDownloader { // todo: use logger instead of System.out
 
         String jsonFilePath = config.getPlayerIndexDataFilePath(playerId);
         FileUtils.writeStringToFile(new File(jsonFilePath), out, StandardCharsets.UTF_8);
-        System.out.printf("Index data for player %d successfully written to file %s.%n", playerId, jsonFilePath);
+        logger.debug("Index data for player {} successfully written to file {}.", playerId, jsonFilePath);
     }
 
     private static String loadUrlToString(final String urlString) throws IOException {
-        System.out.println("Url to load: " + urlString);
+        logger.debug("Url to load: {}", urlString);
 
         // todo: use some nice library instead
         URL url = new URL(urlString);
@@ -96,8 +108,8 @@ public class PlayerSummaryDownloader { // todo: use logger instead of System.out
             .useDelimiter("\\A")
             .next();
 
-        System.out.printf("Response for url %s:%n", urlString);
-        System.out.println(out);
+        logger.debug("Response for url {}:", urlString);
+        logger.debug(out);
         return out;
     }
 

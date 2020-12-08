@@ -1,13 +1,16 @@
 package ru.klavogonki.kgparser.processing;
 
-import org.apache.log4j.Logger;
-import ru.klavogonki.kgparser.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import ru.klavogonki.kgparser.Competition;
+import ru.klavogonki.kgparser.CountUtils;
+import ru.klavogonki.kgparser.Dictionary;
+import ru.klavogonki.kgparser.Player;
+import ru.klavogonki.kgparser.PlayerRoundResult;
 import su.opencode.kefir.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Set;
-
-import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Copyright 2014 LLC "Open Code"
@@ -20,8 +23,6 @@ import static su.opencode.kefir.util.StringUtils.concat;
 public class AverageSpeedCounter
 {
 	public static void logCompetitionInfo(Competition competition) {
-		StringBuilder sb = new StringBuilder();
-
 		Set<Player> players = competition.getPlayers();
 		Set<Dictionary> dictionaries = competition.getDictionaries();
 
@@ -30,13 +31,13 @@ public class AverageSpeedCounter
 			logger.info("");
 			logger.info("=====================================================");
 			Double avgSpeed = getAvgSpeed(competition, player);
-			logger.info( concat(sb, "Player ", player.getName(), " (profileId = ", player.getProfileId(), ").") );
-			logger.info( concat(sb, " Total average speed: ", avgSpeed) );
+			logger.info("Player {} (profileId = {}).", player.getName(), player.getProfileId());
+			logger.info(" Total average speed: {}", avgSpeed);
 
 			for (Dictionary dictionary : dictionaries)
 			{
 				Double avgDictionarySpeed = getAvgSpeed(competition, player, dictionary);
-				logger.info( concat(sb, "Dictionary ", dictionary.getName(), " (code = ", dictionary.getCode(), "). Dictionary average speed: ", avgDictionarySpeed) );
+				logger.info("Dictionary {} (code = {}). Dictionary average speed: {}.", dictionary.getName(), dictionary.getCode(), avgDictionarySpeed);
 			}
 		}
 	}
@@ -68,5 +69,5 @@ public class AverageSpeedCounter
 		return CountUtils.getAverageDouble(speeds);
 	}
 
-	private static final Logger logger = Logger.getLogger(AverageSpeedCounter.class);
+	private static final Logger logger = LogManager.getLogger(AverageSpeedCounter.class);
 }

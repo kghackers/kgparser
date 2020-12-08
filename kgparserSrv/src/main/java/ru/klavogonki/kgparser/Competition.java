@@ -5,14 +5,24 @@
  */
 package ru.klavogonki.kgparser;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.klavogonki.kgparser.http.HttpClientTest;
 import su.opencode.kefir.srv.json.Json;
 import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.ObjectUtils;
 import su.opencode.kefir.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import static su.opencode.kefir.util.StringUtils.concat;
 
@@ -178,7 +188,7 @@ public class Competition extends JsonObject
 			Integer normalRecord = HttpClientTest.getUserNormalRecord(profileId);
 			if (normalRecord == null)
 			{
-				logger.info( concat(sb, "Cannot get normal record for player \"", player.getName(), "\" (profileId = ", profileId, "). Getting his rank from userSummary query") );
+				logger.warn("Cannot get normal record for player \"{}\" (profileId = {}). Getting his rank from userSummary query", player.getName(), profileId);
 				Rank normalRank = HttpClientTest.getUserRank(profileId);
 				profileIdsToRanks.put(profileId, normalRank);
 			}
@@ -426,7 +436,7 @@ public class Competition extends JsonObject
 				return round;
 		}
 
-		logger.info( concat(sb, "Round with number ", number, " is not present in competition \"", name, "\"") );
+		logger.info("Round with number {} is not present in competition \"{}\"", number, name);
 		return null;
 	}
 
@@ -438,8 +448,9 @@ public class Competition extends JsonObject
 	@Json(exclude = true)
 	public PlayerRoundResult getPlayerRoundResult(Player player, Integer roundNumber) {
 		Round round = getRound(roundNumber);
-		if (round == null)
-			throw new IllegalArgumentException( concat(sb, "Round with number ", roundNumber, " is not present in competition \"", name, "\"") );
+		if (round == null) {
+			throw new IllegalArgumentException(String.format("Round with number %d is not present in competition \"%s\".", roundNumber, name));
+		}
 
 		return round.getPlayerResult(player);
 	}
@@ -498,7 +509,5 @@ public class Competition extends JsonObject
 	 */
 	private List<Round> rounds;
 
-	private StringBuffer sb = new StringBuffer();
-
-	private static final Logger logger = Logger.getLogger(Competition.class);
+	private static final Logger logger = LogManager.getLogger(Competition.class);
 }

@@ -9,13 +9,17 @@ package ru.klavogonki.kgparser.processing.playersTable;
  * $Date::                      $
  */
 
-import org.apache.log4j.Logger;
-import ru.klavogonki.kgparser.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import ru.klavogonki.kgparser.Competition;
+import ru.klavogonki.kgparser.Player;
+import ru.klavogonki.kgparser.PlayerRoundResult;
+import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.Round;
 import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -81,8 +85,6 @@ public class PlayersResultsTable extends JsonObject
 	}
 
 	private void fillPlayersRows(Competition competition) {
-		StringBuilder sb = new StringBuilder();
-
 		Set<Player> players = competition.getPlayers();
 
 		List<PlayerResult> playerResults = new ArrayList<>();
@@ -93,7 +95,7 @@ public class PlayersResultsTable extends JsonObject
 
 			playerResults.add( new PlayerResult(player, competition) );
 		}
-		Collections.sort(playerResults, new PlayerResultsComparator());
+		playerResults.sort(new PlayerResultsComparator());
 
 
 		this.playersRows = new ArrayList<>();
@@ -115,7 +117,12 @@ public class PlayersResultsTable extends JsonObject
 				PlayerRoundResult playerRoundResult = round.getPlayerResult(player);
 				if (playerRoundResult == null)
 				{ // игрок не участвовал в заезде
-					logger.info( concat(sb, "Player \"", player.getName(), "\" (profileId = ", player.getProfileId(), ") has not finished in round number ", round.getNumber() ) );
+					logger.info(
+						"Player \"{}\" (profileId = {}) has not finished in round number {}.",
+						player.getName(),
+						player.getProfileId(),
+						round.getNumber()
+					);
 
 					row.addEmptyCell();
 					row.addEmptyCell();
@@ -163,5 +170,5 @@ public class PlayersResultsTable extends JsonObject
 
 	private List<PlayerRow> playersRows;
 
-	private static final Logger logger = Logger.getLogger(PlayersResultsTable.class);
+	private static final Logger logger = LogManager.getLogger(PlayersResultsTable.class);
 }

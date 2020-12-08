@@ -1,11 +1,18 @@
 package ru.klavogonki.kgparser.processing;
 
-import org.apache.log4j.Logger;
-import ru.klavogonki.kgparser.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import ru.klavogonki.kgparser.Competition;
+import ru.klavogonki.kgparser.Player;
+import ru.klavogonki.kgparser.PlayerRoundResult;
+import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.RankDto;
+import ru.klavogonki.kgparser.Round;
 
-import java.util.*;
-
-import static su.opencode.kefir.util.StringUtils.concat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
@@ -24,7 +31,7 @@ public class ErrorsCountChartFiller
 		// fill present ranks
 		logger.info("===========================================");
 		SortedSet<Rank> ranks = competition.getRanks();
-		logger.info( concat("Present player ranks (normal ranks): ", ranks.toString()) );
+		logger.info("Present player ranks (normal ranks): {}", ranks);
 
 		List<RankDto> ranksDto = new ArrayList<>();
 		for (Rank rank : ranks)
@@ -71,7 +78,7 @@ public class ErrorsCountChartFiller
 			seriesList.add(series);
 		}
 
-		Collections.sort(seriesList, new HighChartSeriesNameComparator()); // order players by name
+		seriesList.sort(new HighChartSeriesNameComparator()); // order players by name
 
 		HighChartValue value = new HighChartValue();
 		value.setCompetitionName( competition.getName() );
@@ -81,5 +88,5 @@ public class ErrorsCountChartFiller
 		return value;
 	}
 
-	private static final Logger logger = Logger.getLogger(SpeedChartFiller.class);
+	private static final Logger logger = LogManager.getLogger(ErrorsCountChartFiller.class);
 }

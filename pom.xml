@@ -79,12 +79,29 @@
 
 	<dependencies>
 
+		<!-- log4j1 used by kefir classes from which we extend or use (JsonServlet, JsonObject, FileUtils usw) -->
+		<!-- todo: remove kefir usage or migrate kefir to log4j2 -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-1.2-api</artifactId>
+			<version>2.14.0</version>
+<!--
 			<scope>provided</scope>
 			<optional>true</optional>
+-->
+		</dependency>
+
+		<!-- User log4j2 instead of slf4j -->
+		<!-- see https://stackoverflow.com/a/41500347/8534088 -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.14.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.14.0</version>
 		</dependency>
 
 	</dependencies>

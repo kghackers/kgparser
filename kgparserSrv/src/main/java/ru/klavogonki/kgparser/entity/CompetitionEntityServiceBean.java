@@ -1,6 +1,7 @@
 package ru.klavogonki.kgparser.entity;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.klavogonki.kgparser.Competition;
 import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.SqlUtils;
@@ -12,8 +13,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
-
-import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Copyright 2014 LLC "Open Code"
@@ -102,15 +101,14 @@ public class CompetitionEntityServiceBean implements CompetitionEntityService
 		}
 		catch (Exception e)
 		{
-			logger.error( concat(sb, "Error while parsing competitionJson for CompetitionEntity with id = ", competitionEntityId,":"), e);
-			throw new RuntimeException( concat(sb, "Error while parsing competitionJson for CompetitionEntity with id = ", competitionEntityId,":"), e );
+			String errorMessage = String.format("Error while parsing competitionJson for CompetitionEntity with id = %d", competitionEntityId);
+			logger.error(errorMessage, e);
+			throw new RuntimeException(errorMessage, e);
 		}
 	}
 
 	@PersistenceContext
 	private EntityManager em;
 
-	private StringBuffer sb = new StringBuffer();
-
-	private static final Logger logger = Logger.getLogger(CompetitionEntityServiceBean.class);
+	private static final Logger logger = LogManager.getLogger(CompetitionEntityServiceBean.class);
 }

@@ -6,8 +6,11 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.json.JSONObject;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.StandardDictionary;
@@ -20,8 +23,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
@@ -47,7 +48,8 @@ public class HttpClientTest
 //		int playerId = 231371; // Phemmer
 //		int playerId = 123036; // kryto
 
-		BasicConfigurator.configure();
+		Configurator.initialize(new DefaultConfiguration());
+		Configurator.setRootLevel(Level.DEBUG);
 
 		int playerId = 204574; // eksdak
 		getUserNormalRecord(playerId);
@@ -57,22 +59,22 @@ public class HttpClientTest
 		String url;
 		String body;
 
-		System.out.println();
+		logger.info("");
 		url = UrlConstructor.getGetPlayerSummaryUrl(playerId);
-		System.out.println("url: " + url);
+		logger.info("url: {}", url);
 		body = getResponseBody(url);
-		System.out.println("player summary body:\n" + body);
+		logger.info("player summary body:\n{}", body);
 		parsePlayerSummaryBody(body);
 
 
-		System.out.println();
+		logger.info("");
 //		String dictionaryCode = StandardDictionary.normal.toString(); // обычный
 		String dictionaryCode = StandardDictionary.chars.toString(); // буквы
 //		String dictionaryCode = Dictionary.getDictionaryCode(192); // частотный
 		url = UrlConstructor.getGetPlayerStatsDetailsUrl(playerId, dictionaryCode);
-		System.out.println("url: " + url);
+		logger.info("url: {}",  url);
 		body = getResponseBody(url);
-		System.out.println("player stats body:\n" + body);
+		logger.info("player stats body:\n{}", body);
 	}
 
 	public static Rank getUserRank(int profileId) {
@@ -101,25 +103,40 @@ public class HttpClientTest
 			JSONObject jsonObject = new JSONObject(body);
 			if ( !JsonUtils.hasField(jsonObject, OK_FIELD_NAME) )
 			{
-				throw new IllegalStateException( concat("Cannot get normal record for profileId = ", profileId, ". Request to url \"", url, "\" failed (\"", OK_FIELD_NAME, "\" is not present in response or is null).") );
+				String errorMessage = String.format(
+					"Cannot get normal record for profileId = %d. Request to url \"%s\" failed (\"%s\" is not present in response or is null).",
+					profileId,
+					url,
+					OK_FIELD_NAME
+				);
+
+				throw new IllegalStateException(errorMessage);
 			}
 
 			int okValue = jsonObject.getInt(OK_FIELD_NAME);
 			if (okValue != OK_FIELD_CORRECT_VALUE)
 			{
-				throw new IllegalStateException( concat("Cannot get normal record for profileId = ", profileId, ". Request to url \"", url, "\" failed (\"", OK_FIELD_NAME, "\" field = ", okValue, ").") );
+				String errorMessage = String.format(
+					"Cannot get normal record for profileId = %d. Request to url \"%s\" failed (\"%s\" field = %s).",
+					profileId,
+					url,
+					OK_FIELD_NAME,
+					okValue
+				);
+
+				throw new IllegalStateException(errorMessage);
 			}
 
 			if ( !JsonUtils.hasField(jsonObject, "stats") )
 			{
-				logger.info( concat("Cannot get normal record for profileId = ", profileId, ". \"stats\" field is not present in response.") );
+				logger.warn("Cannot get normal record for profileId = {}. \"stats\" field is not present in response.", profileId);
 				return null;
 			}
 
 			JSONObject statsJson = jsonObject.getJSONObject("stats");
 			if ( !JsonUtils.hasField(statsJson, "best_speed") )
 			{
-				logger.info( concat("Cannot get normal record for profileId = ", profileId, ". \"stats.best_speed\" field is not present in response.") );
+				logger.warn("Cannot get normal record for profileId = {}. \"stats.best_speed\" field is not present in response.", profileId);
 				return null;
 			}
 
@@ -135,8 +152,6 @@ public class HttpClientTest
 		if ( ObjectUtils.empty(dictionariesCodes) )
 			return Collections.emptyMap();
 
-		StringBuilder sb = new StringBuilder();
-
 		try
 		{
 			String url = UrlConstructor.getGetPlayerStatsOverviewUrl(NOSFERATUM_PROFILE_ID);
@@ -144,12 +159,13 @@ public class HttpClientTest
 
 			JSONObject jsonObject = new JSONObject(body);
 			if ( // todo: refactor these checks to separate kefir method
-				   ( !jsonObject.has("ok") )
-				|| ( jsonObject.isNull("ok") )
-				|| ( jsonObject.getInt("ok") != 1)
+				   ( !jsonObject.has(OK_FIELD_NAME) )
+				|| ( jsonObject.isNull(OK_FIELD_NAME) )
+				|| ( jsonObject.getInt(OK_FIELD_NAME) != 1)
 			)
 			{ // check "ok" field
-				throw new RuntimeException( concat(sb, "Request to url \"", url, "\" failed (is not ok).") );
+				String errorMessage = String.format("Request to url \"%s\" failed (is not ok).", url);
+				throw new RuntimeException(errorMessage);
 			}
 
 			JSONObject gameTypes = jsonObject.getJSONObject("gametypes");
@@ -162,12 +178,13 @@ public class HttpClientTest
 					|| gameTypes.isNull(dictionaryCode)
 				)
 				{
-					throw new IllegalStateException( concat(sb, "Cannot get dictionary info for dictionary code = \"", dictionaryCode, "\",") );
+					String errorMessage = String.format("Cannot get dictionary info for dictionary code = \"%s\".", dictionaryCode);
+					throw new IllegalStateException(errorMessage);
 				}
 
 				JSONObject dictionaryInfo = gameTypes.getJSONObject(dictionaryCode);
 				String dictionaryName = dictionaryInfo.getString("name");
-				logger.info( concat(sb, "Dictionary code: \"", dictionaryCode, "\". Dictionary name = \"", dictionaryName, "\".") );
+				logger.info("Dictionary code: \"{}\". Dictionary name = \"{}\".", dictionaryCode, dictionaryName);
 				// todo: log other fields from dictionaryInfo too
 
 				result.put(dictionaryCode, dictionaryName);
@@ -182,7 +199,7 @@ public class HttpClientTest
 	}
 
 	private static String getResponseBody(String url) throws IOException {
-		boolean failed = false;
+		boolean failed;
 		String response = null;
 		String cookie = new ConfigurationLoader().readConfigurationFile(ConfigurationLoader.COOKIE_CONF_FILE_NAME);
 
@@ -195,7 +212,7 @@ public class HttpClientTest
 			}
 			catch (UrlAccessFailedException e)
 			{
-				logger.info( concat("Failed to access url \"", url, "\", trying once more.") );
+				logger.warn("Failed to access url \"{}\", trying once more.", url);
 				failed = true;
 			}
 		}
@@ -221,13 +238,17 @@ public class HttpClientTest
 				}
 				catch (Exception e)
 				{
-					logger.info( concat("Access url granted \"", url, "\", but response is not a valid JSON string. Trying once more.") );
+					String errorMessage = String.format("Access to url \"%s\" granted, but response is not a valid JSON string. Trying once more.", url);
+					logger.error(errorMessage, e);
+
 					failed = true;
 				}
 			}
 			catch (UrlAccessFailedException e)
 			{
-				logger.info( concat("Failed to access url \"", url, "\", trying once more.") );
+				String errorMessage = String.format("Failed to access url \"%s\", trying once more.", url);
+				logger.error(errorMessage, e);
+
 				failed = true;
 			}
 		}
@@ -252,7 +273,7 @@ public class HttpClientTest
 
 	private static void parsePlayerSummaryBody(String body) {
 		JSONObject jsonObject = new JSONObject(body);
-		System.out.println("json key set: " + jsonObject.keySet());
+		logger.debug("json key set: {}", jsonObject.keySet());
 
 		JSONObject user = jsonObject.getJSONObject("user");
 		int profileId = user.getInt("id");
@@ -262,16 +283,16 @@ public class HttpClientTest
 		Rank rank = Rank.getRank(level);
 		String rankTitle = jsonObject.getString("title");
 
-		System.out.println("id: " + profileId);
-		System.out.println("login: " + login);
-		System.out.println("level: " + level);
-		System.out.println("rank: " + rank);
-		System.out.println("rankTitle (from json): " + rankTitle);
+		logger.debug("id: {}", profileId);
+		logger.debug("login: {}", login);
+		logger.debug("level: {}", level);
+		logger.debug("rank: {}", rank);
+		logger.debug("rankTitle (from json): {}", rankTitle);
 
 		JSONObject car = jsonObject.getJSONObject("car");
 		int carId = car.getInt("car");
 
-		System.out.println("carId: " + carId);
+		logger.debug("carId: {}", carId);
 
 		// todo: form player object from parsed data
 	}
@@ -281,5 +302,5 @@ public class HttpClientTest
 	public static final String OK_FIELD_NAME = "ok";
 	public static final int OK_FIELD_CORRECT_VALUE = 1;
 
-	private static final Logger logger = Logger.getLogger(HttpClientTest.class);
+	private static final Logger logger = LogManager.getLogger(HttpClientTest.class);
 }

@@ -1,7 +1,10 @@
 package ru.klavogonki.kgparser.dataparser;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.klavogonki.kgparser.Competition;
@@ -25,8 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
-import static su.opencode.kefir.util.StringUtils.concat;
-
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
@@ -34,10 +35,11 @@ import static su.opencode.kefir.util.StringUtils.concat;
  * $Revision$
  * $Date::                      $
  */
-public class VoidmainJsonParser
-{
+public class VoidmainJsonParser {
+
 	public static void main(String[] args) {
-		BasicConfigurator.configure();
+		Configurator.initialize(new DefaultConfiguration());
+		Configurator.setRootLevel(Level.DEBUG);
 
 //		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\game_37411__v15.json";
 //		String filePath = "C:\\java\\kgparser\\doc\\voidmain\\kuvet_55\\kuvet_01_game_97265.json";
@@ -67,8 +69,8 @@ public class VoidmainJsonParser
 		Competition competition = parseCompetition(competitionName, dirPath, null);
 
 		JSONObject competitionJson = competition.toJson();
-		System.out.println("Competition json: ");
-		System.out.println(competitionJson.toString());
+		logger.info("Competition json: ");
+		logger.info(competitionJson);
 
 /*
 		String competitionName = "Серпантин №8 (11.02.2014)";
@@ -81,8 +83,8 @@ public class VoidmainJsonParser
 		AverageSpeedCounter.logCompetitionInfo(competition);
 
 		HighChartValue highChartValue = SpeedChartFiller.fillData(competition);
-		System.out.println("highchartValue: ");
-		System.out.println(highChartValue.toJson());
+		logger.info("highchartValue: ");
+		logger.info(highChartValue.toJson());
 */
 	}
 
@@ -93,7 +95,7 @@ public class VoidmainJsonParser
 		JSONObject jsonObject = new JSONObject(json);
 		String version = jsonObject.getString(EXPORT_SCRIPT_VERSION_FIELD_NAME);
 
-		if ( StringUtils.empty(version) )
+		if (StringUtils.empty(version))
 			return VERSION_1_5;
 
 		return version;
@@ -103,71 +105,72 @@ public class VoidmainJsonParser
 		byte[] jsonBytes = FileUtils.readFile(filePath);
 		String json = new String(jsonBytes, StandardCharsets.UTF_8);
 
-		if ( StringUtils.empty(scriptVersion) || scriptVersion.equals(VERSION_1_5) )
+		if (StringUtils.empty(scriptVersion) || scriptVersion.equals(VERSION_1_5))
 			return parseRound15(json);
 
-		if ( scriptVersion.equals(VERSION_1_7) )
+		if (scriptVersion.equals(VERSION_1_7))
 			return parseRound17(json);
 
-		if ( scriptVersion.equals(VERSION_1_8) )
+		if (scriptVersion.equals(VERSION_1_8))
 			return parseRound18(json);
 
-		throw new IllegalArgumentException( concat("Unsupported voidmain script version: ", scriptVersion) );
+		String errorMessage = String.format("Unsupported voidmain script version: %s", scriptVersion);
+		throw new IllegalArgumentException(errorMessage);
 	}
 
 	/**
 	 * Парсит соревнование на основе всех файлов, сохраненных в указанной директории.
 	 * Поддиректории не учитываются.
+	 *
 	 * @param competitionName название соревнования
-	 * @param dirPath путь к директории, в которой хранятся json-файлы с результатами заездов соревнования
-	 * @param scriptVersion версия скрипта voidmain.
-	 *                       Если равна <code>null</code>, то версия скрипта каждого заезда определяется на основе поля
-	 *                      &laquo;{@linkplain #EXPORT_SCRIPT_VERSION_FIELD_NAME exportScriptVersion}&raquo; в JSON каждого заезда.
+	 * @param dirPath         путь к директории, в которой хранятся json-файлы с результатами заездов соревнования
+	 * @param scriptVersion   версия скрипта voidmain.
+	 *                        Если равна <code>null</code>, то версия скрипта каждого заезда определяется на основе поля
+	 *                        &laquo;{@linkplain #EXPORT_SCRIPT_VERSION_FIELD_NAME exportScriptVersion}&raquo; в JSON каждого заезда.
 	 * @return распарсенная модель соревнования
 	 */
 	public static Competition parseCompetition(String competitionName, String dirPath, String scriptVersion) {
-		StringBuilder sb = new StringBuilder();
-
 		File dir = new File(dirPath);
-		if ( !dir.isDirectory() )
-			throw new IllegalArgumentException( concat(sb, "\"", dirPath, "\" is not a directory.") );
+		if (!dir.isDirectory()) {
+			String errorMessage = String.format("\"%s\" is not a directory.", dirPath);
+			throw new IllegalArgumentException(errorMessage);
+		}
 
 		List<Round> rounds = new ArrayList<>();
 
 		File[] files = dir.listFiles();
-		if ( (files == null) || (files.length == 0) )
-			throw new IllegalArgumentException( concat(sb, "Directory \"", dirPath, "\" does not contain any files.") );
+		if ((files == null) || (files.length == 0)) {
+			String errorMessage = String.format("Directory \"%s\" does not contain any files.", dirPath);
+			throw new IllegalArgumentException(errorMessage);
+		}
 
-		for (File file : files)
-		{
-			if ( file.isDirectory() ) // skip inner directories
+		for (File file : files) {
+			if (file.isDirectory()) // skip inner directories
 				continue;
 
 			String filePath = file.getAbsolutePath();
 			logger.info("");
 			logger.info("========================================================================");
-			logger.info( concat(sb, "Parsing Round from file \"", filePath, "\"") );
+			logger.info("Parsing Round from file \"{}\"...", filePath);
 
 			String version;
-			if ( StringUtils.notEmpty(scriptVersion) )
-			{
-				logger.info( concat(sb, "Using passed scriptVersion = \"", scriptVersion, "\".") );
+			if (StringUtils.notEmpty(scriptVersion)) {
+				logger.info("Using passed scriptVersion = \"{}\".", scriptVersion);
 				version = scriptVersion;
 			}
-			else
-			{
-				logger.info( concat(sb, "ScriptVersion is not passed. Getting scriptVersion from file \"", filePath, "\".") );
+			else {
+				logger.info("ScriptVersion is not passed. Getting scriptVersion from file \"{}\".", filePath);
 				version = getScriptVersionFromFile(filePath);
-				logger.info( concat(sb, "ScriptVersion from file \"", filePath, "\" is \"", version, "\".") );
+				logger.info("ScriptVersion from file \"{}\" is \"{}\".", filePath, version);
 			}
 
 			Round round = parseRoundFromFile(filePath, version);
 			rounds.add(round);
-			logger.info( concat(sb, "Round successfully parsed from file \"", filePath, "\".") );
+			logger.info("Round successfully parsed from file \"{}\".", filePath);
 		}
 
 		logger.info("========================================================================");
-		logger.info( concat(sb, "Total rounds parsed: ", rounds.size()) );
+		logger.info("Total rounds parsed: {}", rounds.size());
 
 		Competition competition = new Competition();
 		competition.setName(competitionName);
@@ -181,80 +184,75 @@ public class VoidmainJsonParser
 		logFilledCompetitionInfo(competition);
 		return competition;
 	}
+
 	private static void logFilledCompetitionInfo(Competition competition) {
-		StringBuilder sb = new StringBuilder();
 		logger.info("===========================================");
 		logger.info("Competition info:");
-		logger.info( concat(sb, "Name: ", competition.getName()) );
+		logger.info("Name: {}", competition.getName());
 
 		Set<Dictionary> dictionaries = competition.getDictionaries();
 		logger.info("");
-		logger.info( concat(sb, "Total dictionaries: ", dictionaries.size()) );
+		logger.info("Total dictionaries: {}", dictionaries.size());
 
-		for (Dictionary dictionary : dictionaries)
-		{
-			logger.info( concat(sb
-				, "Dictionary: "
-				, dictionary.getName(), "."
-				, " Code: ", dictionary.getCode(), "."
-			) );
+		for (Dictionary dictionary : dictionaries) {
+			logger.info("Dictionary: {}. Code: {}.", dictionary.getName(), dictionary.getCode());
 		}
 
 		logger.info("===========================================");
 		Map<String, List<Round>> roundsByDictionaries = competition.getRoundsByDictionariesMap();
-		for (String dictionaryCode : roundsByDictionaries.keySet())
-		{
+		for (String dictionaryCode : roundsByDictionaries.keySet()) {
 			List<Round> dictionaryRounds = roundsByDictionaries.get(dictionaryCode);
 			Dictionary dictionary = dictionaryRounds.get(0).getDictionary();
 
-			logger.info( concat(sb
-				, "Dictionary: "
-				, dictionary.getName(), "."
-				, " Code: ", dictionary.getCode(), "."
-				, " Rounds by dictionary count: ", dictionaryRounds.size(), "."
-			) );
+			logger.info(
+				"Dictionary: {}. Code: {}. Rounds by dictionary count: {}.",
+				dictionary.getName(),
+				dictionary.getCode(),
+				dictionaryRounds.size()
+			);
 		}
 
 		logger.info("===========================================");
 		SortedSet<Rank> ranks = competition.getRanks();
-		logger.info( concat(sb, "Present player dictionary ranks: ", ranks.toString()) );
+		logger.info("Present player dictionary ranks: {}", ranks.toString());
 
 		Set<Player> players = competition.getPlayers();
 		logger.info("");
-		logger.info( concat(sb, "Total players (not including guests): ", players.size()) );
+		logger.info("Total players (not including guests): {}.", players.size());
 
 		// todo: may be sort players by rounds count desc
-		for (Player player : players)
-		{
+		for (Player player : players) {
 			logger.info("===========================================");
-			logger.info( concat(sb, "Player ", player.getName(), " (profileId = ", player.getProfileId(), ")") );
+			logger.info("Player {} (profileId = {})", player.getName(), player.getProfileId());
 
 			int playerTotalRoundsCount = competition.getRoundsCount(player);
-			logger.info( concat(sb, "Player total rounds count: ", playerTotalRoundsCount) );
+			logger.info("Player total rounds count: {}", playerTotalRoundsCount);
 
-			for (Dictionary dictionary : dictionaries)
-			{ // players result for each dictionary
+			for (Dictionary dictionary : dictionaries) { // players result for each dictionary
 				int playerDictionaryRoundsCount = competition.getRoundsCount(player, dictionary);
-				logger.info( concat(sb
-					, "Dictionary: ", dictionary.getName(), " ( code = ", dictionary.getCode(), " )."
-					, " Player rounds count: ", playerDictionaryRoundsCount
-				) );
+				logger.info(
+					"Dictionary: {} (code = {}). Player rounds count: {}",
+					dictionary.getName(),
+					dictionary.getCode(),
+					playerDictionaryRoundsCount
+				);
 			}
 		}
 
 		List<Round> rounds = competition.getRounds();
 		logger.info("");
-		logger.info( concat(sb, "Total rounds: ", rounds.size()) );
+		logger.info("Total rounds: {}", rounds.size());
 
-		for (Round round : rounds)
-		{
+		for (Round round : rounds) {
 			Dictionary roundDictionary = round.getDictionary();
 
-			logger.info( concat(sb
-				, "Round number: ", round.getNumber(), "."
-				, " Dictionary: ", roundDictionary.getName(), " (code = ", roundDictionary.getCode(), ")."
-				, " Number in dictionary: ", round.getNumberInDictionary(), "."
-			) );
+			logger.info(
+				"Round number: {}. Dictionary: {} (code = {}). Number in dictionary: {}.",
+				round.getNumber(),
+				roundDictionary.getName(),
+				roundDictionary.getCode(),
+				round.getNumberInDictionary()
+			);
 		}
 	}
 
@@ -263,7 +261,6 @@ public class VoidmainJsonParser
 	 * @return модель заезда на основе json-данных заезда
 	 */
 	public static Round parseRound15(String json) {
-		StringBuilder sb = new StringBuilder();
 		JSONObject jsonObject = new JSONObject(json);
 
 		int gameId = jsonObject.getInt(GAME_ID_FIELD_NAME);
@@ -278,46 +275,45 @@ public class VoidmainJsonParser
 		String bookAuthor = null;
 		String bookName = null;
 		Integer textLength = null;
-		if ( JsonUtils.hasField(jsonObject, TEXT_INFO_FIELD_NAME_1_5) )
-		{
+		if (JsonUtils.hasField(jsonObject, TEXT_INFO_FIELD_NAME_1_5)) {
 			JSONObject textInfo = jsonObject.getJSONObject(TEXT_INFO_FIELD_NAME_1_5);
 
-			if ( !textInfo.isNull(TEXT_INFO_TEXT_FIELD_NAME) )
+			if (!textInfo.isNull(TEXT_INFO_TEXT_FIELD_NAME))
 				text = textInfo.getString(TEXT_INFO_TEXT_FIELD_NAME);
 
 //			if ( !textInfo.isNull(TEXT_INFO_LENGTH_FIELD_NAME) )
 //				textLength = textInfo.getInt(TEXT_INFO_LENGTH_FIELD_NAME);
 
-			if ( !textInfo.isNull(TEXT_INFO_BOOK_AUTHOR_FIELD_NAME) )
+			if (!textInfo.isNull(TEXT_INFO_BOOK_AUTHOR_FIELD_NAME))
 				bookAuthor = textInfo.getString(TEXT_INFO_BOOK_AUTHOR_FIELD_NAME);
 
-			if ( !textInfo.isNull(TEXT_INFO_BOOK_NAME_FIELD_NAME) )
+			if (!textInfo.isNull(TEXT_INFO_BOOK_NAME_FIELD_NAME))
 				bookName = textInfo.getString(TEXT_INFO_BOOK_NAME_FIELD_NAME);
 		}
 
 		JSONArray placesJson = jsonObject.getJSONArray(PLACES_FIELD_NAME);
 		int placesCount = placesJson.length();
-		logger.info( concat(sb, "places count: ", placesCount) );
+		logger.info("places count: {}", placesCount);
 		int[] placesIndices = new int[placesCount]; // по порядку мест - индексы в массиве "players"
 
-		for (int i = 0; i < placesCount; i++)
-		{
+		for (int i = 0; i < placesCount; i++) {
 			int playerIndex = placesJson.getInt(i);
-			if (playerIndex < 0)
-				throw new IllegalStateException( concat("places contains negative playerIndex: ", playerIndex) );
+			if (playerIndex < 0) {
+				String errorMessage = String.format("places contains negative playerIndex: %d.", playerIndex);
+				throw new IllegalStateException(errorMessage);
+			}
 
 			placesIndices[i] = playerIndex;
 		}
-		logger.info( concat(sb, "players places indices: ", Arrays.toString(placesIndices)) );
+		logger.info("players places indices: {}", Arrays.toString(placesIndices));
 
 		JSONArray players = jsonObject.getJSONArray(PLAYERS_FIELD_NAME);
 		int playersCount = players.length();
-		logger.info( concat(sb, "players count: ", playersCount) );
+		logger.info("players count: {}", playersCount);
 
 		List<PlayerRoundResult> results = new ArrayList<>();
 
-		for (int playerIndex = 0; playerIndex < playersCount; playerIndex++)
-		{
+		for (int playerIndex = 0; playerIndex < playersCount; playerIndex++) {
 			JSONObject playerJson = players.getJSONObject(playerIndex);
 			Player player = new Player();
 			PlayerRoundResult result = new PlayerRoundResult();
@@ -327,8 +323,7 @@ public class VoidmainJsonParser
 			Date finishedTime = null;
 
 			boolean isNotGuest = JsonUtils.hasField(playerJson, PLAYER_USER_FIELD_NAME);
-			if (isNotGuest)
-			{
+			if (isNotGuest) {
 				JSONObject userJson = playerJson.getJSONObject(PLAYER_USER_FIELD_NAME);
 
 				int profileId = userJson.getInt(PLAYER_USER_PROFILE_ID_FIELD_NAME);
@@ -341,36 +336,30 @@ public class VoidmainJsonParser
 				player.setName(login);
 				player.setRank(rank);
 
-				logger.info( concat(sb, "Player number ", playerIndex, " is ", login, " (profileId = ", profileId, ")."));
+				logger.info("Player number {} is {} (profileId = {}).", playerIndex, login, profileId);
 			}
-			else
-			{
-				logger.info( concat(sb, "Player number ", playerIndex, " is a guest."));
+			else {
+				logger.info("Player number {} is a guest.", playerIndex);
 			}
 
 			// "players[i].finishedTime"
-			if ( playerJson.has(PLAYER_FINISHED_TIME_FIELD_NAME) )
-			{
+			if (playerJson.has(PLAYER_FINISHED_TIME_FIELD_NAME)) {
 				Object finishedTimeObject = playerJson.get(PLAYER_FINISHED_TIME_FIELD_NAME);
-				if ( finishedTimeObject.toString().equals(Boolean.FALSE.toString()) )
-				{ // "finishedTime: false -> not finished
+				if (finishedTimeObject.toString().equals(Boolean.FALSE.toString())) { // "finishedTime: false -> not finished
 					finished = false;
 				}
-				else
-				{ // finished is long -> ok
+				else { // finished is long -> ok
 					finished = true;
 					finishedTimeMilliseconds = playerJson.getLong(PLAYER_FINISHED_TIME_FIELD_NAME);
 					finishedTime = new Date(finishedTimeMilliseconds);
 				}
 			}
-			else
-			{ // no "finishedTime" -> not finished
+			else { // no "finishedTime" -> not finished
 				finished = false;
 			}
 
 			// other fields from "players[i]"
-			if (finished)
-			{ // игрок проехал заезд
+			if (finished) { // игрок проехал заезд
 				int speed = playerJson.getInt(PLAYER_SPEED_FIELD_NAME);
 				int errorsCount = playerJson.getInt(PLAYER_ERRORS_COUNT_FIELD_NAME);
 				double errorsPercentage = playerJson.getDouble(PLAYER_ERRORS_PERCENTAGE_FIELD_NAME);
@@ -381,32 +370,35 @@ public class VoidmainJsonParser
 				result.setErrorsCount(errorsCount);
 				result.setErrorPercentage(errorsPercentage);
 
-				if (isNotGuest)
-				{ // player is not guest
+				if (isNotGuest) { // player is not guest
 					result.setPlayer(player);
 				}
-				else
-				{ // player is guest
+				else { // player is guest
 					result.setPlayer(player); // save guest as player
 				}
 
 				// todo: think about adding not guests
 				results.add(result);
 			}
-			else
-			{ // игрок не проехал заезд
+			else { // игрок не проехал заезд
 				// do not add result to list // todo: think about actions in this case
-				logger.info( concat(sb, "Player number ", playerIndex, " has not finished.") );
+				logger.info("Player number {} has not finished.", playerIndex);
 			}
 
 			// search player index in "places" array
-			for (int j = 0; j < placesIndices.length; j++)
-			{
-				if (placesIndices[j] == playerIndex)
-				{ // индекс игрока найден в массиве "places"
+			for (int j = 0; j < placesIndices.length; j++) {
+				if (placesIndices[j] == playerIndex) { // индекс игрока найден в массиве "places"
 					int place = j + PlayerRoundResult.FIRST_PLACE; // места начинаются с 1
-					if ( !finished )
-						throw new IllegalStateException( concat(sb, "Player number ", playerIndex, " has not finished, but he is present in \"players\" array (players[", j, "] = ", placesIndices[j], ")") );
+					if (!finished) {
+						String errorMessage = String.format(
+							"Player number %d has not finished, but he is present in \"players\" array (players[%s] = %d)",
+							playerIndex,
+							j,
+							placesIndices[j]
+						);
+
+						throw new IllegalStateException(errorMessage);
+					}
 
 					result.setPlace(place);
 				}
@@ -438,7 +430,6 @@ public class VoidmainJsonParser
 	 * @return модель заезда на основе json-данных заезда
 	 */
 	public static Round parseRound17(String json) {
-		StringBuilder sb = new StringBuilder();
 		JSONObject jsonObject = new JSONObject(json);
 
 		int gameId = jsonObject.getInt(GAME_ID_FIELD_NAME);
@@ -455,48 +446,47 @@ public class VoidmainJsonParser
 		String bookAuthor = null;
 		String bookName = null;
 		Integer textLength = null;
-		if ( JsonUtils.hasField(jsonObject, TEXT_INFO_FIELD_NAME) )
-		{
+		if (JsonUtils.hasField(jsonObject, TEXT_INFO_FIELD_NAME)) {
 			JSONObject textInfo = jsonObject.getJSONObject(TEXT_INFO_FIELD_NAME);
 
-			if ( !textInfo.isNull(TEXT_INFO_TEXT_FIELD_NAME) )
+			if (!textInfo.isNull(TEXT_INFO_TEXT_FIELD_NAME))
 				text = textInfo.getString(TEXT_INFO_TEXT_FIELD_NAME);
 
-			if ( !textInfo.isNull(TEXT_INFO_LENGTH_FIELD_NAME) )
+			if (!textInfo.isNull(TEXT_INFO_LENGTH_FIELD_NAME))
 				textLength = textInfo.getInt(TEXT_INFO_LENGTH_FIELD_NAME);
 
-			if ( !textInfo.isNull(TEXT_INFO_BOOK_AUTHOR_FIELD_NAME) )
+			if (!textInfo.isNull(TEXT_INFO_BOOK_AUTHOR_FIELD_NAME))
 				bookAuthor = textInfo.getString(TEXT_INFO_BOOK_AUTHOR_FIELD_NAME);
 
-			if ( !textInfo.isNull(TEXT_INFO_BOOK_NAME_FIELD_NAME) )
+			if (!textInfo.isNull(TEXT_INFO_BOOK_NAME_FIELD_NAME))
 				bookName = textInfo.getString(TEXT_INFO_BOOK_NAME_FIELD_NAME);
 		}
 
 		// "places"
 		JSONArray placesJson = jsonObject.getJSONArray(PLACES_FIELD_NAME);
 		int placesCount = placesJson.length();
-		logger.info( concat(sb, "places count: ", placesCount) );
+		logger.info("places count: {}", placesCount);
 		int[] placesIndices = new int[placesCount]; // по порядку мест - индексы в массиве "players"
 
-		for (int i = 0; i < placesCount; i++)
-		{
+		for (int i = 0; i < placesCount; i++) {
 			int playerIndex = placesJson.getInt(i);
-			if (playerIndex < 0)
-				throw new IllegalStateException( concat("places contains negative playerIndex: ", playerIndex) );
+			if (playerIndex < 0) {
+				String errorMessage = String.format("places contains negative playerIndex: %d.", playerIndex);
+				throw new IllegalStateException(errorMessage);
+			}
 
 			placesIndices[i] = playerIndex;
 		}
-		logger.info( concat(sb, "players places indices: ", Arrays.toString(placesIndices)) );
+		logger.info("players places indices: {}", Arrays.toString(placesIndices));
 
 		// "players"
 		JSONArray players = jsonObject.getJSONArray(PLAYERS_FIELD_NAME);
 		int playersCount = players.length();
-		logger.info( concat(sb, "players count: ", playersCount) );
+		logger.info("players count: {}", playersCount);
 
 		List<PlayerRoundResult> results = new ArrayList<>();
 
-		for (int playerIndex = 0; playerIndex < playersCount; playerIndex++)
-		{
+		for (int playerIndex = 0; playerIndex < playersCount; playerIndex++) {
 			JSONObject playerJson = players.getJSONObject(playerIndex);
 			Player player = new Player();
 			PlayerRoundResult result = new PlayerRoundResult();
@@ -505,8 +495,7 @@ public class VoidmainJsonParser
 
 			// "players[i].user"
 			boolean isNotGuest = JsonUtils.hasField(playerJson, PLAYER_USER_FIELD_NAME);
-			if (isNotGuest)
-			{
+			if (isNotGuest) {
 				JSONObject userJson = playerJson.getJSONObject(PLAYER_USER_FIELD_NAME);
 
 				int profileId = userJson.getInt(PLAYER_USER_PROFILE_ID_FIELD_NAME);
@@ -519,16 +508,14 @@ public class VoidmainJsonParser
 				player.setName(login);
 				player.setRank(rank);
 
-				logger.info( concat(sb, "Player number ", playerIndex, " is ", login, " (profileId = ", profileId, ")."));
+				logger.info("Player number {} is {} (profileId = {}).", playerIndex, login, profileId);
 			}
-			else
-			{
-				logger.info( concat(sb, "Player number ", playerIndex, " is a guest."));
+			else {
+				logger.info("Player number {} is a guest.", playerIndex);
 			}
 
 			// "players[i].result"
-			if ( JsonUtils.hasField(playerJson, PLAYER_RESULT_FIELD_NAME) )
-			{ // "result" is present in "players[i]" and "result" is not null
+			if (JsonUtils.hasField(playerJson, PLAYER_RESULT_FIELD_NAME)) { // "result" is present in "players[i]" and "result" is not null
 				finished = true;
 
 				JSONObject resultJson = playerJson.getJSONObject(PLAYER_RESULT_FIELD_NAME);
@@ -547,32 +534,35 @@ public class VoidmainJsonParser
 				result.setErrorsCount(errorsCount);
 				result.setErrorPercentage(errorsPercentage);
 
-				if (isNotGuest)
-				{ // player is not guest
+				if (isNotGuest) { // player is not guest
 					result.setPlayer(player);
 				}
-				else
-				{ // player is guest
+				else { // player is guest
 					result.setPlayer(player); // save guest as player
 				}
 
 				// add independently of whether player is guest or not guest
 				results.add(result);
 			}
-			else
-			{ // no "result" or "result" is null -> not finished
+			else { // no "result" or "result" is null -> not finished
 				finished = false;
-				logger.info( concat(sb, "Player number ", playerIndex, " has not finished. Do not add him to Round results.") );
+				logger.info("Player number {} has not finished. Do not add him to Round results.", playerIndex);
 			}
 
 			// search player index in "places" array
-			for (int j = 0; j < placesIndices.length; j++)
-			{
-				if (placesIndices[j] == playerIndex)
-				{ // индекс игрока найден в массиве "places"
+			for (int j = 0; j < placesIndices.length; j++) {
+				if (placesIndices[j] == playerIndex) { // индекс игрока найден в массиве "places"
 					int place = j + PlayerRoundResult.FIRST_PLACE; // места начинаются с 1
-					if ( !finished )
-						throw new IllegalStateException( concat(sb, "Player number ", playerIndex, " has not finished, but he is present in \"players\" array (players[", j, "] = ", placesIndices[j], ")") );
+					if (!finished) {
+						String errorMessage = String.format(
+							"Player number %d has not finished, but he is present in \"players\" array (players[%d] = %d)",
+							playerIndex,
+							j,
+							placesIndices[j]
+						);
+
+						throw new IllegalStateException(errorMessage);
+					}
 
 					result.setPlace(place);
 				}
@@ -609,49 +599,43 @@ public class VoidmainJsonParser
 	}
 
 	private static void logFilledRoundInfo(Round round) {
-		StringBuilder sb = new StringBuilder();
-
 		logger.info("===========================================");
 		logger.info("Round info:");
-		logger.info( concat(sb, "Begin time: ", DateUtils.getDayMonthYearHourMinuteSecondFormat().format(round.getBeginTime()) ) );
+		logger.info("Begin time: {}.", DateUtils.getDayMonthYearHourMinuteSecondFormat().format(round.getBeginTime()));
 
 		Dictionary dictionary = round.getDictionary();
-		logger.info( concat(sb
-			, "Dictionary: "
-			, dictionary.getName(), "."
-			, " Code: ", dictionary.getCode(), "."
-		) );
+		logger.info("Dictionary: {}. Code: {}.", dictionary.getName(), dictionary.getCode());
 
-//		logger.info( concat(sb, "Text length: ", round.getTextLength()) );
-		logger.info( concat(sb, "Text: ", round.getText()) );
-		logger.info( concat(sb, "Book author: ", round.getBookAuthor()) );
-		logger.info( concat(sb, "Book name: ", round.getBookName()) );
-		logger.info( concat(sb, "Min place: ", round.getMinPlace()) );
-		logger.info( concat(sb, "Max place: ", round.getMaxPlace()) );
+		logger.info("Text length: {}", round.getTextLength());
+		logger.info("Text: {}", round.getText());
+		logger.info("Book author: {}", round.getBookAuthor());
+		logger.info("Book name: {}", round.getBookName());
+		logger.info("Min place: {}", round.getMinPlace());
+		logger.info("Max place: {}", round.getMaxPlace());
 
 		List<PlayerRoundResult> results = round.getResultsSortedByPlace();
-		for (PlayerRoundResult result : results)
-		{
+		for (PlayerRoundResult result : results) {
 			Player player = result.getPlayer();
 			Integer place = result.getPlace();
 
-			if (player.isGuest())
-			{
-				logger.info( concat(sb
-					, "Place ", place, ": guest."
-					, " Speed = ", result.getSpeed(), "."
-					, " Errors count = ", result.getErrorsCount(), "."
-					, " Error percentage = ", result.getErrorPercentage(), "."
-				) );
+			if (player.isGuest()) {
+				logger.info(
+					"Place {}: guest. Speed = {}. Errors count = {}. Error percentage = {}.",
+					place,
+					result.getSpeed(),
+					result.getErrorsCount(),
+					result.getErrorPercentage()
+				);
 			}
-			else
-			{
-				logger.info( concat(sb
-					, "Place ", place, ": ", player.getName() , " (profileId = ", player.getProfileId(), ")."
-					, " Speed = ", result.getSpeed(), "."
-					, " Errors count = ", result.getErrorsCount(), "."
-					, " Error percentage = ", result.getErrorPercentage(), "."
-				) );
+			else {
+				logger.info("Place {}: {} (profileId = {}). Speed = {}. Errors count = {}. Error percentage = {}.",
+					place,
+					player.getName(),
+					player.getProfileId(),
+					result.getSpeed(),
+					result.getErrorsCount(),
+					result.getErrorPercentage()
+				);
 			}
 		}
 	}
@@ -708,5 +692,5 @@ public class VoidmainJsonParser
 	public static final String VERSION_1_7 = "1.7";
 	public static final String VERSION_1_8 = "1.8";
 
-	private static final Logger logger = Logger.getLogger(VoidmainJsonParser.class);
+	private static final Logger logger = LogManager.getLogger(VoidmainJsonParser.class);
 }
