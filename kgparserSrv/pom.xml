@@ -99,4 +99,37 @@
 		</dependency>
 
 	</dependencies>
+
+	<build>
+
+		<!-- assembly plugin works but does not exclude the transitive dependency on log4j2 with scope provided -->
+		<!-- Therefore use shade plugin that works nicely -->
+		<!-- todo: use this uber-jar build only under some profile, or don't override the original jar -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<configuration>
+					<!-- put your configurations here -->
+					<artifactSet>
+						<excludes>
+							<exclude>log4j:log4j:jar:</exclude>
+							<exclude>log4j:log4j</exclude>
+							<exclude>org.apache.logging.log4j:log4j-1.2-api</exclude>
+						</excludes>
+					</artifactSet>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

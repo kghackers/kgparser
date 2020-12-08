@@ -5,14 +5,21 @@
             <PatternLayout
                     pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
         </Console>
+
+<!--        <File name="MyFile" fileName="c:/logs/kg.log" immediateFlush="false" append="false">-->
+        <File name="MyFile" fileName="c:/logs/kg.log">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
     </Appenders>
     <Loggers>
         <Root level="info">
             <AppenderRef ref="console" />
+            <AppenderRef ref="MyFile" />
         </Root>
 
         <Logger name="ru.klavogonki" level="debug" additivity="false">
             <AppenderRef ref="console" />
+            <AppenderRef ref="MyFile" />
         </Logger>
 
     </Loggers>
