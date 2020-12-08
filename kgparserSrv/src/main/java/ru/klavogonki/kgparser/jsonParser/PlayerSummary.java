@@ -36,7 +36,18 @@ public class PlayerSummary {
 
     @JsonProperty("is_online")
     public Boolean isOnline;
+
+    /**
+     * Числовой код ранга.
+     * @see ru.klavogonki.kgparser.Rank#getLevel
+     */
     public Integer level;
+
+    /**
+     * Название ранга по-русски.
+     * @see ru.klavogonki.kgparser.Rank#getDisplayName
+     */
     public String title;
+
     public Integer blocked; // boolean?
 }

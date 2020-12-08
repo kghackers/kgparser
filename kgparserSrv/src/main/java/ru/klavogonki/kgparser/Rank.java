@@ -114,7 +114,7 @@ public enum Rank
 
 	/**
 	 * @param rank ранг
-	 * @return русское название рага для отображения
+	 * @return русское название ранга для отображения
 	 */
 	public static String getDisplayName(Rank rank) {
 		switch (rank)

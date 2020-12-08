@@ -24,7 +24,7 @@ class JacksonUtilsTest {
 
         assertThat(summary.err).isNull();
         assertThat(summary.isOnline).isTrue();
-        assertThat(summary.level).isEqualTo(7);
+        assertThat(summary.level).isEqualTo(Rank.getLevel(Rank.superman).intValue());
         assertThat(summary.title).isEqualTo(Rank.getDisplayName(Rank.superman));
         assertThat(summary.blocked).isZero();
 
@@ -56,7 +56,54 @@ class JacksonUtilsTest {
         assertThat(summary.car).isNull();
     }
 
-    private void logPlayerSummary(final PlayerSummary summary) {
+    @Test
+    @DisplayName("Test parsing an existing user index data from a json file")
+    void testPlayerIndexData() {
+        File file = readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-242585.json");
+
+        PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
+        logPlayerIndexData(data);
+
+        assertThat(data.ok).isEqualTo(PlayerIndexData.OK_CORRECT_VALUE);
+        assertThat(data.err).isNull();
+
+        assertThat(data.bio).isNotNull();
+        assertThat(data.bio.userId).isEqualTo(242585);
+        assertThat(data.bio.oldText).isNotBlank(); // huge html, no validation
+        assertThat(data.bio.text).isNotBlank(); // huge html, no validation
+
+        assertThat(data.stats).isNotNull();
+
+        assertThat(data.stats.registered).isNotNull();
+        assertThat(data.stats.registered.sec).isEqualTo(1297852113);
+        assertThat(data.stats.registered.usec).isZero();
+
+        assertThat(data.stats.achievementsCount).isEqualTo(225);
+        assertThat(data.stats.totalRacesCount).isEqualTo(60633);
+        assertThat(data.stats.bestSpeed).isEqualTo(626);
+        assertThat(data.stats.ratingLevel).isEqualTo(32);
+        assertThat(data.stats.friendsCount).isEqualTo(102);
+        assertThat(data.stats.vocabulariesCount).isEqualTo(109);
+        assertThat(data.stats.carsCount).isEqualTo(33);
+    }
+
+    @Test
+    @DisplayName("Test parsing a non-existing user index data from a json file")
+    void testInvalidPlayerIndexData() {
+        File file = readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-30001.json");
+
+        PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
+        logPlayerIndexData(data);
+
+        assertThat(data.ok).isNull();
+        assertThat(data.err).isEqualTo(PlayerSummary.INVALID_USER_ID_ERROR);
+
+        assertThat(data.bio).isNull();
+
+        assertThat(data.stats).isNull();
+    }
+
+    private static void logPlayerSummary(final PlayerSummary summary) {
         logger.info("Player summary: ");
         logger.info("- err: {}", summary.err);
         logger.info("- isOnline: {}", summary.isOnline);
@@ -87,6 +134,42 @@ class JacksonUtilsTest {
         }
     }
 
+    private static void logPlayerIndexData(final PlayerIndexData data) {
+        logger.info("Player index data: ");
+        logger.info("- ok: {}", data.ok);
+        logger.info("- err: {}", data.err);
+
+        logger.info("");
+
+        if (data.bio != null) {
+            logger.info("Bio:");
+            logger.info("- userId: {}", data.bio.userId);
+            logger.info("- oldText: {}", data.bio.oldText);
+            logger.info("- text: {}", data.bio.text);
+        }
+        else {
+            logger.info("Bio: null");
+        }
+
+        logger.info("");
+
+        if (data.stats != null) {
+            logger.info("Stats:");
+            logger.info("- registered.sec: {}", data.stats.registered.sec);
+            logger.info("- registered.usec: {}", data.stats.registered.usec);
+
+            logger.info("- achievementsCount: {}", data.stats.achievementsCount);
+            logger.info("- totalRacesCount: {}", data.stats.totalRacesCount);
+            logger.info("- bestSpeed: {}", data.stats.bestSpeed);
+            logger.info("- ratingLevel: {}", data.stats.ratingLevel);
+            logger.info("- friendsCount: {}", data.stats.friendsCount);
+            logger.info("- vocabulariesCount: {}", data.stats.vocabulariesCount);
+            logger.info("- carsCount: {}", data.stats.carsCount);
+        }
+        else {
+            logger.info("Stats: null");
+        }
+    }
 
     private static File readResourceFile(final String resourceName) {
         ClassLoader classLoader = JacksonUtilsTest.class.getClassLoader();
