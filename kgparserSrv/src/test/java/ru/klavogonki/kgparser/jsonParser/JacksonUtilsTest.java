@@ -5,9 +5,9 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.util.TestUtils;
 
 import java.io.File;
-import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,7 +22,7 @@ class JacksonUtilsTest {
     @Test
     @DisplayName("Test parsing an existing user summary from a json file")
     void testPlayerSummary() {
-        File file = readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-242585.json");
+        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-242585.json");
 
         PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
         logPlayerSummary(summary);
@@ -43,9 +43,32 @@ class JacksonUtilsTest {
     }
 
     @Test
+    @DisplayName("Test parsing a brand new user summary from a json file")
+    void testBrandNewPlayerSummary() {
+        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-624511.json");
+
+        PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
+        logPlayerSummary(summary);
+
+        assertThat(summary.err).isNull();
+        assertThat(summary.isOnline).isTrue();
+        assertThat(summary.level).isEqualTo(Rank.getLevel(Rank.novice).intValue());
+        assertThat(summary.title).isEqualTo(Rank.getDisplayName(Rank.novice));
+        assertThat(summary.blocked).isZero();
+
+        assertThat(summary.user).isNotNull();
+        assertThat(summary.user.id).isEqualTo(624511);
+        assertThat(summary.user.login).isEqualTo("nosferatum0");
+
+        assertThat(summary.car).isNotNull();
+        assertThat(summary.car.car).isEqualTo(1);
+        assertThat(summary.car.color).isEqualTo("#777777");
+    }
+
+    @Test
     @DisplayName("Test parsing a non-existing user summary from a json file")
     void testInvalidPlayerSummary() {
-        File file = readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-30001.json");
+        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-30001.json");
 
         PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
         logPlayerSummary(summary);
@@ -64,7 +87,7 @@ class JacksonUtilsTest {
     @Test
     @DisplayName("Test parsing an existing user index data from a json file")
     void testPlayerIndexData() {
-        File file = readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-242585.json");
+        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-242585.json");
 
         PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
         logPlayerIndexData(data);
@@ -91,7 +114,11 @@ class JacksonUtilsTest {
         assertThat(data.stats.vocabulariesCount).isEqualTo(109);
         assertThat(data.stats.carsCount).isEqualTo(33);
 
-        // todo: move this conversion to some utils class
+        convertUserRegisteredTime(data);
+    }
+
+    // todo: move this conversion to some utils class
+    private void convertUserRegisteredTime(final PlayerIndexData data) {
         // probably use ZoneOffset/ZoneId for Moscow time or use just localDate
         ZoneId moscowZoneId = ZoneId.of("Europe/Moscow");
 
@@ -110,9 +137,42 @@ class JacksonUtilsTest {
     }
 
     @Test
+    @DisplayName("Test parsing a brand new user index data from a json file")
+    void testBrandNewPlayerIndexData() {
+        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-624511.json");
+
+        PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
+        logPlayerIndexData(data);
+
+        assertThat(data.ok).isEqualTo(PlayerIndexData.OK_CORRECT_VALUE);
+        assertThat(data.err).isNull();
+
+        assertThat(data.bio).isNotNull();
+        assertThat(data.bio.userId).isEqualTo(624511);
+        assertThat(data.bio.oldText).isNull(); // no oldText for the new users
+        assertThat(data.bio.text).isEmpty(); // empty and not null
+
+        assertThat(data.stats).isNotNull();
+
+        assertThat(data.stats.registered).isNotNull();
+        assertThat(data.stats.registered.sec).isEqualTo(1607554944);
+        assertThat(data.stats.registered.usec).isZero();
+
+        assertThat(data.stats.achievementsCount).isZero();
+        assertThat(data.stats.totalRacesCount).isZero();
+        assertThat(data.stats.bestSpeed).isNull(); // no races in "Normal" -> no best speed
+        assertThat(data.stats.ratingLevel).isEqualTo(1); // user is level 1 from the start
+        assertThat(data.stats.friendsCount).isZero();
+        assertThat(data.stats.vocabulariesCount).isZero();
+        assertThat(data.stats.carsCount).isEqualTo(1); // user has 1 car from the start
+
+        convertUserRegisteredTime(data);
+    }
+
+    @Test
     @DisplayName("Test parsing a non-existing user index data from a json file")
     void testInvalidPlayerIndexData() {
-        File file = readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-30001.json");
+        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-30001.json");
 
         PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
         logPlayerIndexData(data);
@@ -191,13 +251,5 @@ class JacksonUtilsTest {
         else {
             logger.info("Stats: null");
         }
-    }
-
-    private static File readResourceFile(final String resourceName) {
-        ClassLoader classLoader = JacksonUtilsTest.class.getClassLoader();
-        URL resource = classLoader.getResource(resourceName);
-        assertThat(resource).isNotNull();
-
-        return new File(resource.getFile());
     }
 }

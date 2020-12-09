@@ -1,5 +1,9 @@
 package ru.klavogonki.kgparser;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * List of cars with ids and Russian names.
  */
@@ -131,6 +135,18 @@ public enum Car {
 
     public static boolean isPersonalId(int carId) {
         return carId >= FIRST_PERSONAL_CAR_ID;
+    }
+
+    public static Car getById(int carId) {
+        List<Car> carsWithGivenId = Arrays.stream(Car.values())
+            .filter(car -> car.id == carId)
+            .collect(Collectors.toList());
+
+        if (carsWithGivenId.size() != 1) {
+            throw new IllegalArgumentException(String.format("Found %d cars with = %d.", carsWithGivenId.size(), carId));
+        }
+
+        return carsWithGivenId.get(0);
     }
 
     public static final int FIRST_PERSONAL_CAR_ID = 1000;
