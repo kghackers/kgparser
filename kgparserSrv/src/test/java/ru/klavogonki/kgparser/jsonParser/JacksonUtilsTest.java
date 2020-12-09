@@ -8,6 +8,11 @@ import ru.klavogonki.kgparser.Rank;
 
 import java.io.File;
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -85,6 +90,23 @@ class JacksonUtilsTest {
         assertThat(data.stats.friendsCount).isEqualTo(102);
         assertThat(data.stats.vocabulariesCount).isEqualTo(109);
         assertThat(data.stats.carsCount).isEqualTo(33);
+
+        // todo: move this conversion to some utils class
+        // probably use ZoneOffset/ZoneId for Moscow time or use just localDate
+        ZoneId moscowZoneId = ZoneId.of("Europe/Moscow");
+
+        Instant instant = Instant.ofEpochSecond(data.stats.registered.sec, data.stats.registered.usec);
+        LocalDateTime localDateTimeUtc = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+        ZonedDateTime zonedDateTimeUtc = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
+
+        LocalDateTime localDateTimeMoscow = LocalDateTime.ofInstant(instant, moscowZoneId);
+        ZonedDateTime zonedDateTimeMoscow = ZonedDateTime.ofInstant(instant, moscowZoneId);
+
+        logger.info("registered as Instant: {}", instant);
+        logger.info("registered as LocalDateTime UTC: {}", localDateTimeUtc);
+        logger.info("registered as ZonedDateTime UTC: {}", zonedDateTimeUtc);
+        logger.info("registered as LocalDateTime Moscow: {}", localDateTimeMoscow);
+        logger.info("registered as ZonedDateTime Moscow: {}", zonedDateTimeMoscow);
     }
 
     @Test
