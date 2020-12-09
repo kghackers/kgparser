@@ -5,6 +5,21 @@ package ru.klavogonki.kgparser;
  */
 public enum Car {
     // common/public autos
+    ZAZ_965(1, "ЗАЗ 965"),
+    VAZ_2104(2, "ВАЗ 2104"),
+    BELARUS_922(3, "Беларус 922"),
+    PEUGEOT_BOXER(4, "Peugeot Boxer"),
+    FIAT_STRADA(5, "Fiat Strada"),
+    HUMMER_H3(6, "Hummer H3"),
+    DAEWOO_MATIZ(7, "Daewoo Matiz"),
+    FORD_FOCUS_MK2(8, "Ford Focus Mk2"),
+    TOYOTA_LAND_CRUISER(9, "Toyota Land Cruiser"),
+
+    VOLKSWAGEN_PASSAT_B3(10, "Volkswagen Passat B3"),
+    MITSUBISHI_LANCER_X(11, "Mitsubishi Lancer X"),
+    BMW_X6(12, "BMW X6"),
+    AUDI_TT(13, "Audi TT"),
+    BUGATTI_VEYRON(14, "Bugatti Veyron"),
     /**
      * Notably, car 21 is also the F1 car.
      * Looks like car 21 is now a tuning option for car 15.
@@ -12,49 +27,39 @@ public enum Car {
      * @see <a href="http://klavogonki.ru/img/cars/21.png">Image for car 21</a>
      */
     F1(15, "Болид F1"), // Notably, car 21 is also the F1 car,
-    FERRARI_FX_CONCEPT(22, "Ferrari FX Concept"),
-    ZAZ_965(1, "ЗАЗ 965"),
-    AIRBOAT(18, "Аэроглиссер"),
-    AUDI_TT(13, "Audi TT"),
-    SS_X(42, "SS-X"),
-    VOLKSWAGEN_PASSAT_B3(10, "Volkswagen Passat B3"),
-    VAZ_2104(2, "ВАЗ 2104"),
-    DAEWOO_MATIZ(7, "Daewoo Matiz"),
-    FIAT_STRADA(5, "Fiat Strada"),
-    UAZ_3151_HUNTER(38, "УАЗ 3151 Hunter"),
-    FORD_FOCUS_MK2(8, "Ford Focus Mk2"),
-    PEUGEOT_BOXER(4, "Peugeot Boxer"),
-    MITSUBISHI_LANCER_X(11, "Mitsubishi Lancer X"),
-    BATMOBILE(17, "Бэтмобиль"),
-    SMART_FORTWO(23, "Smart Fortwo"),
-    NISSAN_ROUND_BOX(37, "Nissan Round Box"),
-    BELARUS_922(3, "Беларус 922"),
-    RENAULT_MEGANE(29, "Renault Megane"),
-    CATERPILLAR_247B(24, "Caterpillar 247B"),
-    DODGE_VIPER(27, "Dodge Viper"),
-    TOYOTA_LAND_CRUISER(9, "Toyota Land Cruiser"),
-    BMW_X6(12, "BMW X6"),
-    SS_1(25, "SS-1"),
-    FERRARI_ZOBIN(36, "Ferrari Zobin"),
     LAMBORGHINI_MURCIELAGO(16, "Lamborghini Murcielago"),
-    BUGATTI_GALIBIER(33, "Bugatti Galibier"),
-    VOLKSWAGEN_BEETLE(26, "Volkswagen Beetle"),
-    BUGATTI_VEYRON(14, "Bugatti Veyron"),
+    BATMOBILE(17, "Бэтмобиль"),
+    AIRBOAT(18, "Аэроглиссер"),
     DUESENBERG_SPEEDSTER(19, "Duesenberg Speedster"),
-    FERRARI_250_TESTA_ROSSA(35, "Ferrari 250 Testa Rossa"),
+
     UFO(20, "НЛО"),
-    TRAM(31, "Трамвай", null, 1005), // todo: fill personal owner if we know it
-    CHEVROLET_EN_V(40, "Chevrolet EN-V"),
-    HUMMER_H3(6, "Hummer H3"),
-    CHEVROLET_ORLANDO(34, "Chevrolet Orlando"),
-    SUBARU_TOURER(30, "Subaru Tourer"),
+    // car 21 became a tuning for car 15
+    FERRARI_FX_CONCEPT(22, "Ferrari FX Concept"),
+    SMART_FORTWO(23, "Smart Fortwo"),
+    CATERPILLAR_247B(24, "Caterpillar 247B"),
+    SS_1(25, "SS-1"),
+    VOLKSWAGEN_BEETLE(26, "Volkswagen Beetle"),
+    DODGE_VIPER(27, "Dodge Viper"),
     CITROEN_HYPNOS(28, "Citroen Hypnos"),
-    PORSCHE_CAYENNE_S(43, "Porsche Cayenne S", null, 1009), // todo: fill personal owner if we know it
-    HONDA_CBR_1000RR(44, "Honda CBR 1000RR", null, 1004), // todo: fill personal owner if we know it
-    INSECATOR(32, "Инсекатор", null, 1007), // todo: fill personal owner if we know it
-    LM_RALLY_FIGHTER(41, "LM Rally Fighter"),
+    RENAULT_MEGANE(29, "Renault Megane"),
+
+    SUBARU_TOURER(30, "Subaru Tourer"),
+    TRAM(31, "Трамвай", 275949, 1005), // http://klavogonki.ru/u/#/275949/car/ - iWheelBuy is also Bombo on the other account
+    INSECATOR(32, "Инсекатор", 155280, 1007), // http://klavogonki.ru/u/#/155280/car/ - original owner
+    BUGATTI_GALIBIER(33, "Bugatti Galibier"),
+    CHEVROLET_ORLANDO(34, "Chevrolet Orlando"),
+    FERRARI_250_TESTA_ROSSA(35, "Ferrari 250 Testa Rossa"),
+    FERRARI_ZOBIN(36, "Ferrari Zobin"),
+    NISSAN_ROUND_BOX(37, "Nissan Round Box"),
+    UAZ_3151_HUNTER(38, "УАЗ 3151 Hunter"),
     DANNY_CHANG_CONCEPT(39, "Danny Chang Concept"),
-    CARAVEL(45, "Каравелла", null, 1019), // todo: fill personal owner if we know it
+
+    CHEVROLET_EN_V(40, "Chevrolet EN-V"),
+    LM_RALLY_FIGHTER(41, "LM Rally Fighter"),
+    SS_X(42, "SS-X"),
+    PORSCHE_CAYENNE_S(43, "Porsche Cayenne S", 157594, 1009), // http://klavogonki.ru/u/#/157594/car/ - original owner
+    HONDA_CBR_1000RR(44, "Honda CBR 1000RR", 64292, 1004), // http://klavogonki.ru/u/#/64292/car/ - original owner
+    CARAVEL(45, "Каравелла", 922, 1019), // http://klavogonki.ru/u/#/922/car/ - original owner
 
     // personal autos, looks like their ids start with 1000
     // see https://klavogonki.ru/forum/general/1722/page1/
@@ -73,6 +78,11 @@ public enum Car {
     PAGANI_ZONDA_R(1010, "Pagani Zonda R", 235269), // http://klavogonki.ru/u/#/235269/car/
     BATPOD(1011, "Бэтпод", 195256), // http://klavogonki.ru/u/#/195256/car/
     ZIS_155(1012, "ЗИС-155", 306936), // http://klavogonki.ru/u/#/306936/car/
+    /**
+     * 2 exclusive owners: Fenex & Аромат
+     * @see <a href="http://klavogonki.ru/u/#/82885/car/">Fenex' cars</a>
+     * @see <a href="http://klavogonki.ru/u/#/101646/car/">Аромат's cars</a>
+     */
     VOLKSWAGEN_CORRADO(1013, "Volkswagen Corrado", 101646), // http://klavogonki.ru/u/#/101646/car/
     RED_EAGLE(1015, "Red Eagle", 24119), // http://klavogonki.ru/u/#/24119/car/ // ! From Carmageddon!
     IHOUE(1016, "ΙΧΘΥΣ", 73879), // http://klavogonki.ru/u/#/73879/car/

@@ -60,4 +60,22 @@ class CarTest {
             assertThat(Car.isPersonalId(personalId)).isTrue();
         });
     }
+
+    @Test
+    void testAllPersonalCarsThatWereMadePublicHaveOriginalOwnerFilled() {
+        Car[] cars = Car.values();
+
+        List<Car> personalCarsThatWereMadePublic = Arrays.stream(cars)
+            .filter(Car::wasPersonalButMadePublic)
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
+
+        logger.info("cars that were personal but have been made public: \n{}", personalCarsThatWereMadePublic);
+
+        personalCarsThatWereMadePublic.forEach(car -> {
+            assertThat(car.ownerId).isNotNull();
+            assertThat(car.personalId).isNotNull();
+        });
+    }
 }
