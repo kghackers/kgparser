@@ -56,7 +56,7 @@ public class CompetitionResultsTest
 					"Dictionary: {} (name = \"{}\", dictionaryPageUrl = {}), Rounds count: {}.",
 					dictionary.getCode(),
 					dictionary.getName(),
-					UrlConstructor.getDictionaryPageUrl( dictionary.getId() ),
+					UrlConstructor.dictionaryPage( dictionary.getId() ),
 					roundsCount
 				);
 			}
@@ -70,7 +70,7 @@ public class CompetitionResultsTest
 				"Player {} (profileId = {}, profileLink = {})",
 				player.getName(),
 				player.getProfileId(),
-				UrlConstructor.getProfileUrl(player)
+				UrlConstructor.userProfileLink(player)
 			);
 
 			int totalRoundsCount = competition.getRoundsCount(player);

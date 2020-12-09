@@ -53,13 +53,14 @@ public class Player extends JsonObject implements Comparable<Player>
 
 	@Json(exclude = true)
 	public String getProfileLink() {
-		return UrlConstructor.getProfileUrl(profileId);
+		return UrlConstructor.userProfileLink(profileId);
 	}
 
 	@Json(exclude = true)
 	public Rank getRankByNormalRecord() {
 		return Rank.getRankByNormalRecord(normalRecord);
 	}
+
 	@Json(exclude = true)
 	public String getColor() {
 		if ( isGuest() )

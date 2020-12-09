@@ -3,6 +3,7 @@ package ru.klavogonki.kgparser;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.klavogonki.kgparser.http.UrlConstructor;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,7 +79,7 @@ public class PlayerSummaryDownloader {
     private static void savePlayerSummaryToJsonFile(final Config config, final int playerId) throws IOException {
         logger.debug("Loading player summary for player {}...", playerId);
 
-        String urlString = getSummaryUrl(playerId);
+        String urlString = UrlConstructor.getSummary(playerId);
 
         String out = loadUrlToString(urlString);
 
@@ -90,7 +91,7 @@ public class PlayerSummaryDownloader {
     private static void savePlayerIndexDataToJsonFile(final Config config, final int playerId) throws IOException {
         logger.debug("Loading player index data for player {}...", playerId);
 
-        String urlString = getIndexDataUrl(playerId);
+        String urlString = UrlConstructor.getIndexData(playerId);
 
         String out = loadUrlToString(urlString);
 
@@ -111,13 +112,5 @@ public class PlayerSummaryDownloader {
         logger.debug("Response for url {}:", urlString);
         logger.debug(out);
         return out;
-    }
-
-    private static String getSummaryUrl(final int playerId) {
-        return String.format("https://klavogonki.ru/api/profile/get-summary?id=%d", playerId);
-    }
-
-    private static String getIndexDataUrl(final int playerId) {
-        return String.format("http://klavogonki.ru/api/profile/get-index-data?userId=%d", playerId);
     }
 }

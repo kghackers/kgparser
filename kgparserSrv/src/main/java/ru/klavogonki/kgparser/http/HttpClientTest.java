@@ -60,7 +60,7 @@ public class HttpClientTest
 		String body;
 
 		logger.info("");
-		url = UrlConstructor.getGetPlayerSummaryUrl(playerId);
+		url = UrlConstructor.getSummary(playerId);
 		logger.info("url: {}", url);
 		body = getResponseBody(url);
 		logger.info("player summary body:\n{}", body);
@@ -71,7 +71,7 @@ public class HttpClientTest
 //		String dictionaryCode = StandardDictionary.normal.toString(); // обычный
 		String dictionaryCode = StandardDictionary.chars.toString(); // буквы
 //		String dictionaryCode = Dictionary.getDictionaryCode(192); // частотный
-		url = UrlConstructor.getGetPlayerStatsDetailsUrl(playerId, dictionaryCode);
+		url = UrlConstructor.getStatsDetail(playerId, dictionaryCode);
 		logger.info("url: {}",  url);
 		body = getResponseBody(url);
 		logger.info("player stats body:\n{}", body);
@@ -80,7 +80,7 @@ public class HttpClientTest
 	public static Rank getUserRank(int profileId) {
 		try
 		{
-			String url = UrlConstructor.getGetPlayerSummaryUrl(profileId);
+			String url = UrlConstructor.getSummary(profileId);
 			String body = getResponseBody(url);
 
 			JSONObject jsonObject = new JSONObject(body);
@@ -96,7 +96,7 @@ public class HttpClientTest
 	public static Integer getUserNormalRecord(int profileId) {
 		try
 		{
-			String url = UrlConstructor.getGetPlayerIndexData(profileId);
+			String url = UrlConstructor.getIndexData(profileId);
 //			String body = getResponseBody(url);
 			String body = getResponseBodyEnsureJson(url);
 
@@ -154,7 +154,7 @@ public class HttpClientTest
 
 		try
 		{
-			String url = UrlConstructor.getGetPlayerStatsOverviewUrl(NOSFERATUM_PROFILE_ID);
+			String url = UrlConstructor.getStatsOverview(NOSFERATUM_PROFILE_ID);
 			String body = getResponseBody(url);
 
 			JSONObject jsonObject = new JSONObject(body);
