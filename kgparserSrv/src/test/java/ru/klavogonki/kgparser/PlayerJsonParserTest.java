@@ -2,6 +2,7 @@ package ru.klavogonki.kgparser;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.klavogonki.kgparser.jsonParser.PlayerSummary;
 import ru.klavogonki.kgparser.util.TestUtils;
 
 import java.io.File;
@@ -32,12 +33,35 @@ class PlayerJsonParserTest {
     }
 
     @Test
+    @DisplayName("Data of a user with a hidden profile must be successfully parsed")
+    void testKlavoMechanicWithHiddenProfileParse() {
+        File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-21.json");
+        File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-21.json");
+
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(21, summaryFile, indexDataFile);
+        assertThat(playerOptional).isPresent();
+
+        PlayerJsonData player = playerOptional.get();
+        assertThat(player.indexData.err).isEqualTo(PlayerSummary.HIDDEN_PROFILE_USER_ERROR);
+    }
+
+    @Test
     @DisplayName("Data of an existing user must be successfully parsed")
     void testExistingUserParse() {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-242585.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-242585.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(242585, summaryFile, indexDataFile);
+        assertThat(playerOptional).isPresent();
+    }
+
+    @Test
+    @DisplayName("Data of an existing user with personal car id must be successfully parsed")
+    void testExistingWithPersonalCarIdUserParse() {
+        File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-922.json");
+        File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-922.json");
+
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(922, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
     }
 }

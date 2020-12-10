@@ -8,6 +8,8 @@ import ru.klavogonki.kgparser.jsonParser.PlayerIndexData;
 import ru.klavogonki.kgparser.jsonParser.PlayerSummary;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,6 +17,8 @@ import java.util.Optional;
  */
 public class PlayerJsonParser {
     private static final Logger logger = LogManager.getLogger(PlayerJsonParser.class);
+
+    public static final int REQUIRED_ARGUMENTS_COUNT = 4;
 
     static class ParserException extends RuntimeException {
         public ParserException(final String message, final Object... messageArguments) {
@@ -31,20 +35,42 @@ public class PlayerJsonParser {
     }
 
     public static void main(String[] args) {
-        // todo: get date as input
-        // todo: get rootDir as input
-        // todo: get fromPlayer, toPlayer as input
+        // todo: pass a path to a json file with config instead
 
-        // todo: iterate players
+        if (args.length != REQUIRED_ARGUMENTS_COUNT) {
+            // todo: use logger instead of System.out??
+            System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> <yyyy-MM-dd HH-mm-ss> %n", PlayerJsonParser.class.getSimpleName());
+            return;
+        }
 
-        // todo: check on brand new players: what will be the stats?
-/*
-        int playerId = ;
-        File summaryFile = ;
-        File indexDataFile = ;
+        PlayerSummaryDownloader.Config config = PlayerSummaryDownloader.Config.parseFromArguments(args);
+        config.startDate = args[3];
 
-        Optional<PlayerJsonData> player = readPlayerData(playerId, summaryFile, indexDataFile);
-*/
+        List<PlayerJsonData> players = new ArrayList<>();
+        List<Integer> nonExistingPlayerIds = new ArrayList<>();
+
+        int totalPlayersToHandle = config.maxPlayerId - config.minPlayerId + 1;
+        for (int playerId = config.minPlayerId; playerId <= config.maxPlayerId; playerId++) {
+            logger.info("=======================================================");
+            int indexOfCurrentPlayer = playerId - config.minPlayerId + 1; // starting from 1
+            logger.info("Handling player {} (player {} / {})...", playerId, indexOfCurrentPlayer, totalPlayersToHandle);
+
+            File summaryFile = new File(config.getPlayerSummaryFilePath(playerId));
+            File indexDataFile = new File(config.getPlayerIndexDataFilePath(playerId));
+
+            Optional<PlayerJsonData> playerOptional = readPlayerData(playerId, summaryFile, indexDataFile);
+            if (playerOptional.isPresent()) {
+                players.add(playerOptional.get());
+            }
+            else {
+                nonExistingPlayerIds.add(playerId);
+            }
+        }
+
+        logger.info("=======================================================");
+        logger.info("Total player ids handled: {}", totalPlayersToHandle);
+        logger.info("Total existing players parsed: {}", players.size());
+        logger.info("Total non existing players: {}", nonExistingPlayerIds.size());
 
         // todo: validate over all users
         // todo: all users must have unique id
@@ -82,7 +108,7 @@ public class PlayerJsonParser {
         return Optional.of(result);
     }
 
-    private static boolean validateErrorCase( // true if error, false if no error
+    private static boolean validateErrorCase( // true if user does not exist, false if user exists
         final String summaryFilePath,
         final String indexDataFilePath,
         final PlayerSummary summary,
@@ -90,6 +116,11 @@ public class PlayerJsonParser {
     ) {
         if (StringUtils.isBlank(summary.err) && StringUtils.isBlank(data.err)) {
             logger.info("Neither summary file {} nor index data file {} contain an error.", summaryFilePath, indexDataFilePath);
+            return false;
+        }
+
+        if (StringUtils.isBlank(summary.err) && data.err.equals(PlayerSummary.HIDDEN_PROFILE_USER_ERROR)) { // hidden profile -> ok user, there will be no index data
+            logger.info("Summary file {} contains nor error, index data file {} contain a error. User exists, but will have no index data.", summaryFilePath, indexDataFilePath);
             return false;
         }
 
@@ -155,8 +186,8 @@ public class PlayerJsonParser {
         }
 
         String expectedRankTitle = Rank.getDisplayName(rank);
-        if (!summary.title.equals(expectedRankTitle)) {
-            throw new ParserException("Summary file %s: summary.level has incorrect value %s, must be %s", summary.level, expectedRankTitle);
+        if (!summary.title.equals(expectedRankTitle) && !summary.title.equals(Rank.KLAVO_MECHANIC_TITLE)) {
+            throw new ParserException("Summary file %s: summary.level has incorrect value %s, must be %s", summaryFilePath, summary.title, expectedRankTitle);
         }
 
         // blocked
@@ -191,7 +222,10 @@ public class PlayerJsonParser {
 
     private static void validate(int playerId, PlayerIndexData data, String indexDataFilePath) {
         if (StringUtils.isNotBlank(data.err)) { // error case
-            if (!data.err.equals(PlayerSummary.INVALID_USER_ID_ERROR)) {
+            if (
+                !data.err.equals(PlayerSummary.INVALID_USER_ID_ERROR)
+                && !data.err.equals(PlayerSummary.HIDDEN_PROFILE_USER_ERROR)
+            ) {
                 throw new ParserException("Index data file %s: Unknown error: %s", indexDataFilePath, data.err);
             }
 

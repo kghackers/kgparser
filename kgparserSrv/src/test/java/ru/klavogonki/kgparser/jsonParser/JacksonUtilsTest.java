@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.klavogonki.kgparser.Car;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.util.TestUtils;
 
@@ -38,8 +39,31 @@ class JacksonUtilsTest {
         assertThat(summary.user.login).isEqualTo("nosferatum");
 
         assertThat(summary.car).isNotNull();
-        assertThat(summary.car.car).isEqualTo(15);
+        assertThat(summary.car.car).isEqualTo(Car.F1.id);
         assertThat(summary.car.color).isEqualTo("#BF1300");
+    }
+
+    @Test
+    @DisplayName("Test parsing an existing user summary for a user with a personal car id from a json file")
+    void testPlayerWithPersonalCarIdSummary() {
+        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-922.json");
+
+        PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
+        logPlayerSummary(summary);
+
+        assertThat(summary.err).isNull();
+        assertThat(summary.isOnline).isFalse();
+        assertThat(summary.level).isEqualTo(Rank.getLevel(Rank.maniac).intValue());
+        assertThat(summary.title).isEqualTo(Rank.getDisplayName(Rank.maniac));
+        assertThat(summary.blocked).isZero();
+
+        assertThat(summary.user).isNotNull();
+        assertThat(summary.user.id).isEqualTo(922);
+        assertThat(summary.user.login).isEqualTo("lovermann");
+
+        assertThat(summary.car).isNotNull();
+        assertThat(summary.car.car).isEqualTo(Car.CARAVEL.personalId);
+        assertThat(summary.car.color).isEqualTo("#000000");
     }
 
     @Test
@@ -61,8 +85,31 @@ class JacksonUtilsTest {
         assertThat(summary.user.login).isEqualTo("nosferatum0");
 
         assertThat(summary.car).isNotNull();
-        assertThat(summary.car.car).isEqualTo(1);
+        assertThat(summary.car.car).isEqualTo(Car.ZAZ_965.id);
         assertThat(summary.car.color).isEqualTo("#777777");
+    }
+
+    @Test
+    @DisplayName("Test parsing a summary of a klavomechanic with a hidden profile from a json file")
+    void testKlavoMechanicWithHiddenProfileSummary() {
+        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-21.json");
+
+        PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
+        logPlayerSummary(summary);
+
+        assertThat(summary.err).isNull();
+        assertThat(summary.isOnline).isFalse();
+        assertThat(summary.level).isEqualTo(Rank.getLevel(Rank.superman).intValue());
+        assertThat(summary.title).isEqualTo(Rank.KLAVO_MECHANIC_TITLE);
+        assertThat(summary.blocked).isZero();
+
+        assertThat(summary.user).isNotNull();
+        assertThat(summary.user.id).isEqualTo(21);
+        assertThat(summary.user.login).isEqualTo("Artch");
+
+        assertThat(summary.car).isNotNull();
+        assertThat(summary.car.car).isEqualTo(Car.AUDI_TT.id);
+        assertThat(summary.car.color).isEqualTo("#893425");
     }
 
     @Test
@@ -117,6 +164,39 @@ class JacksonUtilsTest {
         convertUserRegisteredTime(data);
     }
 
+    @Test
+    @DisplayName("Test parsing an existing user index data for a user with a personal car id from a json file")
+    void testPlayerWithPersonalCarIdIndexData() {
+        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-922.json");
+
+        PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
+        logPlayerIndexData(data);
+
+        assertThat(data.ok).isEqualTo(PlayerIndexData.OK_CORRECT_VALUE);
+        assertThat(data.err).isNull();
+
+        assertThat(data.bio).isNotNull();
+        assertThat(data.bio.userId).isEqualTo(922);
+        assertThat(data.bio.oldText).isNotBlank(); // huge html, no validation
+        assertThat(data.bio.text).isNotBlank(); // huge html, no validation
+
+        assertThat(data.stats).isNotNull();
+
+        assertThat(data.stats.registered).isNotNull();
+        assertThat(data.stats.registered.sec).isEqualTo(1211400000);
+        assertThat(data.stats.registered.usec).isZero();
+
+        assertThat(data.stats.achievementsCount).isEqualTo(171);
+        assertThat(data.stats.totalRacesCount).isEqualTo(47887);
+        assertThat(data.stats.bestSpeed).isEqualTo(554);
+        assertThat(data.stats.ratingLevel).isEqualTo(37);
+        assertThat(data.stats.friendsCount).isEqualTo(75);
+        assertThat(data.stats.vocabulariesCount).isEqualTo(83);
+        assertThat(data.stats.carsCount).isEqualTo(41);
+
+        convertUserRegisteredTime(data);
+    }
+
     // todo: move this conversion to some utils class
     private void convertUserRegisteredTime(final PlayerIndexData data) {
         // probably use ZoneOffset/ZoneId for Moscow time or use just localDate
@@ -167,6 +247,22 @@ class JacksonUtilsTest {
         assertThat(data.stats.carsCount).isEqualTo(1); // user has 1 car from the start
 
         convertUserRegisteredTime(data);
+    }
+
+    @Test
+    @DisplayName("Test parsing index data of a klavomechanic with a hidden profile from a json file. Request returns a \"hidden profile\" error.")
+    void testKlavoMechanicWithHiddenProfileIndexData() {
+        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-21.json");
+
+        PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
+        logPlayerIndexData(data);
+
+        assertThat(data.ok).isNull();
+        assertThat(data.err).isEqualTo(PlayerSummary.HIDDEN_PROFILE_USER_ERROR);
+
+        assertThat(data.bio).isNull();
+
+        assertThat(data.stats).isNull();
     }
 
     @Test

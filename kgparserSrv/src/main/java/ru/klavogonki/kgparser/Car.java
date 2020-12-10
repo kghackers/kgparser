@@ -138,15 +138,26 @@ public enum Car {
     }
 
     public static Car getById(int carId) {
-        List<Car> carsWithGivenId = Arrays.stream(Car.values())
+        List<Car> carsWithId = Arrays
+            .stream(Car.values())
             .filter(car -> car.id == carId)
             .collect(Collectors.toList());
 
-        if (carsWithGivenId.size() != 1) {
-            throw new IllegalArgumentException(String.format("Found %d cars with = %d.", carsWithGivenId.size(), carId));
+        if (carsWithId.size() == 1) {
+            return carsWithId.get(0);
         }
 
-        return carsWithGivenId.get(0);
+        // original owners might have cars with personalId ids!
+        List<Car> carsWithPersonalId = Arrays
+            .stream(Car.values())
+            .filter(car -> (car.personalId != null) && (car.personalId == carId))
+            .collect(Collectors.toList());
+
+        if (carsWithPersonalId.size() == 1) {
+            return carsWithPersonalId.get(0);
+        }
+
+        throw new IllegalArgumentException(String.format("Found %d cars with id or personalId = %d.", carsWithId.size(), carId));
     }
 
     public static final int FIRST_PERSONAL_CAR_ID = 1000;

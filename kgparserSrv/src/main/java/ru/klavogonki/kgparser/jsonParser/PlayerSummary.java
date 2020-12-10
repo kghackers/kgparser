@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerSummary {
     public static final String INVALID_USER_ID_ERROR = "invalid user id";
+    public static final String HIDDEN_PROFILE_USER_ERROR = "hidden profile";
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public class User {

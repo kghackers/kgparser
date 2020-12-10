@@ -178,4 +178,9 @@ public enum Rank
 	 * Цвет игрока-гостя.
 	 */
 	public static final String GUEST_COLOR = "#222222";
+
+	/**
+	 * У клавомехаников свойство {@code title} заполнено словом "Клавомеханик", а не названием ранга.
+	 */
+	public static final String KLAVO_MECHANIC_TITLE = "Клавомеханик";
 }

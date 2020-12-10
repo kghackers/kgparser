@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CarTest {
     private static final Logger logger = LogManager.getLogger(CarTest.class);
@@ -56,9 +57,9 @@ class CarTest {
 
         logger.info("personal car ids for cars that have been made public: \n{}", carPersonalIds);
 
-        carPersonalIds.forEach(personalId -> {
-            assertThat(Car.isPersonalId(personalId)).isTrue();
-        });
+        carPersonalIds.forEach(personalId ->
+            assertThat(Car.isPersonalId(personalId)).isTrue()
+        );
     }
 
     @Test
@@ -77,5 +78,28 @@ class CarTest {
             assertThat(car.ownerId).isNotNull();
             assertThat(car.personalId).isNotNull();
         });
+    }
+
+    @Test
+    void testCarById() {
+        Car publicCarById = Car.getById(Car.NISSAN_ROUND_BOX.id);
+        assertThat(publicCarById).isEqualTo(Car.NISSAN_ROUND_BOX);
+
+        Car personalCarById = Car.getById(Car.DUCATI_848_2010.id);
+        assertThat(personalCarById).isEqualTo(Car.DUCATI_848_2010);
+
+        Car publishedPersonalCarById = Car.getById(Car.TRAM.id);
+        assertThat(publishedPersonalCarById).isEqualTo(Car.TRAM);
+
+        assertThat(Car.TRAM.personalId).isNotNull();
+        Car publishedPersonalCarByPersonalId = Car.getById(Car.TRAM.personalId);
+        assertThat(publishedPersonalCarByPersonalId).isEqualTo(Car.TRAM);
+
+        assertThatThrownBy(() -> {
+            Car.getById(0);// non-existing car id
+        })
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("0 cars")
+            .hasMessageContaining(" = 0");
     }
 }
