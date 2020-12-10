@@ -25,8 +25,9 @@ class JacksonUtilsTest {
     // - 109842 - blank login
     // - 141327 - blocked: 1 and negative registered.sec !!! date parse will most probably fail
     // - 142478 - blocked: 4
-    // - 161997 - get-summary works, get-index-data returns error
+    // - 161997 - /get-summary works, /get-index-data returns error
     // - 368664 - bio.text == null, bio.oldText not present, bio.old_text_removed present
+    // - 498727 - /get-summary works, /get-index-data returns error (special MongoDB error)
 
     @Test
     @DisplayName("Test parsing an existing user summary from a json file")
