@@ -247,6 +247,7 @@ public class PlayerJsonParser {
             if (
                 !data.err.equals(PlayerSummary.INVALID_USER_ID_ERROR)
                 && !data.err.equals(PlayerSummary.HIDDEN_PROFILE_USER_ERROR)
+                && !data.err.equals(PlayerSummary.MONGO_REFS_ERROR_USER_498727)
             ) {
                 throw new ParserException("Index data file %s: Unknown error: %s", indexDataFilePath, data.err);
             }

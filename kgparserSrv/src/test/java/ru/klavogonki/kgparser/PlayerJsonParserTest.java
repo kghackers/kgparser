@@ -119,6 +119,21 @@ class PlayerJsonParserTest {
     }
 
     @Test
+    @DisplayName("Data of an existing user with successful /get-summary but failing /get-index-data on a MongoDB error must be successfully parsed")
+    void testUserWithSuccessfulGetSummaryAndMongoDbErrorInGetIndexData() {
+        File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-498727.json");
+        File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-498727.json");
+
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(498727, summaryFile, indexDataFile);
+        assertThat(playerOptional).isPresent();
+
+        PlayerJsonData player = playerOptional.get();
+        assertThat(player.summary.blocked).isZero();
+        assertThat(player.summary.err).isNull();
+        assertThat(player.indexData.err).isEqualTo(PlayerSummary.MONGO_REFS_ERROR_USER_498727);
+    }
+
+    @Test
     @DisplayName("Data of an existing user with indexData.bio.text == null must be successfully parsed")
     void testUserWithNullBioText() {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-368664.json");
