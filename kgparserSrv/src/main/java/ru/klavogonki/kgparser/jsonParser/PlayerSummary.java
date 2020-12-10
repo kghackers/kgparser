@@ -51,6 +51,7 @@ public class PlayerSummary {
 
     /**
      * Название ранга по-русски.
+     * Может быть перегружено в {@link ru.klavogonki.kgparser.Rank#KLAVO_MECHANIC_TITLE "Клавомеханик"}.
      * @see ru.klavogonki.kgparser.Rank#getDisplayName
      */
     public String title;
