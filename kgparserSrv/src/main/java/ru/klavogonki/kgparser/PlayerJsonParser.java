@@ -90,7 +90,7 @@ public class PlayerJsonParser {
         // validate expected data
         // todo: use some validation framework instead of this manual code hell
         validate(playerId, summary, summaryFilePath);
-        validate(playerId, data, indexDataFilePath);
+        validate(playerId, summary.blocked, data, indexDataFilePath);
 
         // check whether this is a parse error
 
@@ -134,12 +134,25 @@ public class PlayerJsonParser {
         }
 
         if (StringUtils.isNotBlank(data.err) && StringUtils.isBlank(summary.err)) { // error only in index-data
+            // https://klavogonki.ru/u/#/161997/ - possible case: /get-summary works, /get-index-data fails. Not blocked.
+            logger.warn(
+                "Summary file {} contains no error, but index data file {} contains error \"{}\". Player: {}",
+                summaryFilePath,
+                indexDataFilePath,
+                data.err,
+                summary.user.id
+            );
+
+            return false; // todo: a very-tricky case, but the user exists and his/her page can be accessed
+
+/*
             throw new ParserException(
                 "Summary file %s contains no error, but index data file %s contains error \"%s\"",
                 summaryFilePath,
                 indexDataFilePath,
                 data.err
             );
+*/
         }
 
         if (!summary.err.equals(data.err)) { // different errors in summary and index-data files
@@ -175,24 +188,29 @@ public class PlayerJsonParser {
 
         // level
         if (summary.level == null) {
-            throw new ParserException("Summary file %s: summary.level is null", summary.level);
+            throw new ParserException("Summary file %s: summary.level is null", summaryFilePath);
         }
 
         Rank rank = Rank.getRank(summary.level);// this method will throw on incorrect input
 
         // level title
         if (StringUtils.isBlank(summary.title)) {
-            throw new ParserException("Summary file %s: summary.title is null or blank", summary.title);
+            throw new ParserException("Summary file %s: summary.title is null or blank", summaryFilePath);
         }
 
         String expectedRankTitle = Rank.getDisplayName(rank);
         if (!summary.title.equals(expectedRankTitle) && !summary.title.equals(Rank.KLAVO_MECHANIC_TITLE)) {
-            throw new ParserException("Summary file %s: summary.level has incorrect value %s, must be %s", summaryFilePath, summary.title, expectedRankTitle);
+            throw new ParserException("Summary file %s: summary.title has incorrect value %s, must be %s", summaryFilePath, summary.title, expectedRankTitle);
         }
 
         // blocked
-        if (summary.isOnline == null) {
-            throw new ParserException("Summary file %s: summary.isOnline is null", summaryFilePath);
+        if (
+               (summary.blocked == null)
+            || ((summary.blocked != 0) && (summary.blocked != 1) && (summary.blocked != 4))
+        ) {
+            // https://klavogonki.ru/u/#/141327/ - blocked == 1
+            // https://klavogonki.ru/u/#/142478/ - blocked == 4
+            throw new ParserException("Summary file %s: summary.blocked has incorrect value: %s", summaryFilePath, summary.blocked);
         }
 
         // user
@@ -201,11 +219,15 @@ public class PlayerJsonParser {
         }
 
         if (summary.user.id != playerId) {
-            throw new ParserException("Summary file %s contains incorrect playerId %s. Expected playerId: %s", summaryFilePath, summary.user.id, playerId);
+            throw new ParserException("Summary file %s contains incorrect summary.user.id %s. Expected playerId: %s", summaryFilePath, summary.user.id, playerId);
         }
 
-        if (StringUtils.isBlank(summary.user.login)) {
-            throw new ParserException("Summary file %s: summary.user.login is null or blank", summary.title);
+        if (summary.user.login == null) { // login CAN be blank, see https://klavogonki.ru/u/#/109842/
+            throw new ParserException("Summary file %s: summary.user.login is null", summaryFilePath);
+        }
+
+        if (StringUtils.isBlank(summary.user.login)) { // login CAN be blank, see https://klavogonki.ru/u/#/109842/
+            logger.warn("Summary file {}: summary.user.login is blank: \"{}\".", summaryFilePath, summary.user.login);
         }
 
         // car
@@ -220,7 +242,7 @@ public class PlayerJsonParser {
         }
     }
 
-    private static void validate(int playerId, PlayerIndexData data, String indexDataFilePath) {
+    private static void validate(int playerId, Integer blocked, PlayerIndexData data, String indexDataFilePath) {
         if (StringUtils.isNotBlank(data.err)) { // error case
             if (
                 !data.err.equals(PlayerSummary.INVALID_USER_ID_ERROR)
@@ -249,15 +271,12 @@ public class PlayerJsonParser {
         }
 
         if (data.bio.userId != playerId) {
-            throw new ParserException("Index data file %s contains incorrect playerId %s. Expected playerId: %s", indexDataFilePath, data.bio.userId, playerId);
+            throw new ParserException("Index data file %s contains incorrect data.bio.userId %s. Expected playerId: %s", indexDataFilePath, data.bio.userId, playerId);
         }
 
         // bio.oldText can be null / empty - no need to validate
-
-        // bio.text can be empty, but cannot be null
-        if (data.bio.text == null) {
-            throw new ParserException("Index data file %s: data.text is null", indexDataFilePath);
-        }
+        // bio.oldTextRemoved can be null / empty - no need to validate
+        // bio.text can be null / empty - see https://klavogonki.ru/u/#/368664/ - no need to validate
 
         // stats
         if (data.stats == null) {
@@ -275,7 +294,12 @@ public class PlayerJsonParser {
 
         // todo: validate that (data.stats.registered.sec + data.stats.registered.usec) can parse to date
         if (data.stats.registered.sec <= 0) { // todo: compare to minimal unix date
-            throw new ParserException("Index data file %s: data.registered.sec has invalid value: %d", indexDataFilePath, data.stats.registered.sec);
+            if ((blocked != null) && (blocked == 1)) { // todo: maybe other blocked != 0 values can also contain crazy register dates
+                logger.warn("Index data file {}: User {} is blocked, data.registered.sec has invalid value: {}", indexDataFilePath, playerId, data.stats.registered.sec);
+            }
+            else {
+                throw new ParserException("Index data file %s: User is not blocked, but data.registered.sec has invalid value: %d", indexDataFilePath, data.stats.registered.sec);
+            }
         }
 
         if (data.stats.registered.usec == null) {

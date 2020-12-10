@@ -20,6 +20,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class JacksonUtilsTest {
     private static final Logger logger = LogManager.getLogger(JacksonUtilsTest.class);
 
+    // todo: add bio.oldTextRemoved validation to all indexData tests!
+    // todo: missing tests:
+    // - 109842 - blank login
+    // - 141327 - blocked: 1 and negative registered.sec !!! date parse will most probably fail
+    // - 142478 - blocked: 4
+    // - 161997 - get-summary works, get-index-data returns error
+    // - 368664 - bio.text == null, bio.oldText not present, bio.old_text_removed present
+
     @Test
     @DisplayName("Test parsing an existing user summary from a json file")
     void testPlayerSummary() {

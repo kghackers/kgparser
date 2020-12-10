@@ -19,6 +19,9 @@ public class PlayerIndexData {
         @JsonProperty("old_text")
         public String oldText;
 
+        @JsonProperty("old_text_removed")
+        public String oldTextRemoved;
+
         public String text;
     }
 
