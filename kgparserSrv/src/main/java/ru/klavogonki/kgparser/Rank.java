@@ -15,48 +15,47 @@ public enum Rank
 	/**
 	 * Новичок. Рекорд &lt; 100.
 	 */
-	  novice
+	novice,
 
 	/**
 	 * Любитель. Рекорд от 100 до 199.
 	 */
-	, amateur
+	amateur,
 
 	/**
 	 * Таксист. Рекорд от 200 до 299.
 	 */
-	, cabman
+	cabman,
 
 	/**
 	 * Профи. Рекорд от 300 до 399.
 	 */
-	, pro
+	pro,
 
 	/**
 	 * Гонщик. Рекорд от 400 до 499.
 	 */
-	, racer
+	racer,
 
 	/**
 	 * Маньяк. Рекорд от 500 до 599.
 	 */
-	, maniac
+	maniac,
 
 	/**
 	 * Супермен. Рекорд от 600 до 699.
 	 */
-	, superman
+	superman,
 
 	/**
 	 * Кибергонщик. Рекорд от 700 до 799.
 	 */
-	, cyberracer
+	cyberracer,
 
 	/**
 	 * Экстракибер. Рекорд >= 800.
 	 */
-	, extracyber
-
+	extracyber,
 	;
 
 	/**
@@ -137,7 +136,7 @@ public enum Rank
 	 * @param rank ранг
 	 * @return числовой код ранга (level)
 	 */
-	public static Byte getLevel(Rank rank) {
+	public static Byte getLevel(Rank rank) { // todo: change to int, stop this perversion!
 		switch (rank)
 		{
 			case novice: return 1;
