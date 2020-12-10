@@ -23,6 +23,10 @@ public class PlayerEntity {
 
     private LocalDateTime importDate; // when PlayerSummaryDownloader has been executed
 
+    private String getSummaryError; // we import all users, including non-existing
+
+    private String getIndexDataError; // we import all users, including non-existing and users with failed /get-indexData
+
     // fields from PlayerSummary
     private Integer playerId; // KG user id
 

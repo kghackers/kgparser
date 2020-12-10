@@ -6,14 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.klavogonki.kgparser.Car;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.kgparser.util.TestUtils;
 
 import java.io.File;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -170,7 +166,7 @@ class JacksonUtilsTest {
         assertThat(data.stats.vocabulariesCount).isEqualTo(109);
         assertThat(data.stats.carsCount).isEqualTo(33);
 
-        convertUserRegisteredTime(data);
+        DateUtils.convertUserRegisteredTime(data);
     }
 
     @Test
@@ -203,26 +199,7 @@ class JacksonUtilsTest {
         assertThat(data.stats.vocabulariesCount).isEqualTo(83);
         assertThat(data.stats.carsCount).isEqualTo(41);
 
-        convertUserRegisteredTime(data);
-    }
-
-    // todo: move this conversion to some utils class
-    private void convertUserRegisteredTime(final PlayerIndexData data) {
-        // probably use ZoneOffset/ZoneId for Moscow time or use just localDate
-        ZoneId moscowZoneId = ZoneId.of("Europe/Moscow");
-
-        Instant instant = Instant.ofEpochSecond(data.stats.registered.sec, data.stats.registered.usec);
-        LocalDateTime localDateTimeUtc = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
-        ZonedDateTime zonedDateTimeUtc = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
-
-        LocalDateTime localDateTimeMoscow = LocalDateTime.ofInstant(instant, moscowZoneId);
-        ZonedDateTime zonedDateTimeMoscow = ZonedDateTime.ofInstant(instant, moscowZoneId);
-
-        logger.info("registered as Instant: {}", instant);
-        logger.info("registered as LocalDateTime UTC: {}", localDateTimeUtc);
-        logger.info("registered as ZonedDateTime UTC: {}", zonedDateTimeUtc);
-        logger.info("registered as LocalDateTime Moscow: {}", localDateTimeMoscow);
-        logger.info("registered as ZonedDateTime Moscow: {}", zonedDateTimeMoscow);
+        DateUtils.convertUserRegisteredTime(data);
     }
 
     @Test
@@ -255,7 +232,7 @@ class JacksonUtilsTest {
         assertThat(data.stats.vocabulariesCount).isZero();
         assertThat(data.stats.carsCount).isEqualTo(1); // user has 1 car from the start
 
-        convertUserRegisteredTime(data);
+        DateUtils.convertUserRegisteredTime(data);
     }
 
     @Test

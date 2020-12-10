@@ -17,14 +17,14 @@ public class PlayerSummary {
     public static final String MONGO_REFS_ERROR_USER_498727 = "mongo refs joining failed: invalid key users.achieves.achieve_id=599bd392df4e4d963a8b4570";
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public class User {
+    public static class User {
         public int id;
         public String login;
         // todo: other fields if required
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public class Car {
+    public static class Car {
         public int car;
         public String color;
 

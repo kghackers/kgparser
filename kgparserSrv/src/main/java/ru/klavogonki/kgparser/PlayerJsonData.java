@@ -9,7 +9,7 @@ public class PlayerJsonData {
         this.indexData = indexData;
     }
 
-    // todo: write a MapStruct converter from this object to a plain entity object
+    // todo: add importDate and fill it
     public PlayerSummary summary;
     public PlayerIndexData indexData;
 }
