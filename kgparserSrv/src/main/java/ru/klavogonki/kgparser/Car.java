@@ -83,7 +83,7 @@ public enum Car {
     BATPOD(1011, "Бэтпод", 195256), // http://klavogonki.ru/u/#/195256/car/
     ZIS_155(1012, "ЗИС-155", 306936), // http://klavogonki.ru/u/#/306936/car/
     /**
-     * 2 exclusive owners: Fenex & Аромат
+     * 2 exclusive owners: Fenex &amp; Аромат
      * @see <a href="http://klavogonki.ru/u/#/82885/car/">Fenex' cars</a>
      * @see <a href="http://klavogonki.ru/u/#/101646/car/">Аромат's cars</a>
      */
