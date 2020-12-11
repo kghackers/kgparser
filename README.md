@@ -53,3 +53,38 @@ java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-srv-1.0.jar ru.klavogonki
 * Самый длинный логин
 * Корреляция общего пробега и рекорда
    * **TODO:** а как выбирать данные для корреляции?
+   
+   
+# MySQL
+
+## Create a read-only user
+See https://kodejava.org/how-to-create-a-read-only-mysql-user/ 
+
+User name: `report`, user password `secret`:
+```
+CREATE USER 'report'@'%' IDENTIFIED BY 'secret';
+
+GRANT SELECT ON kgparser.* TO 'report'@'%';
+
+FLUSH PRIVILEGES;
+```
+
+## Dump the database
+See https://phoenixnap.com/kb/how-to-backup-restore-a-mysql-database
+```
+mysqldump -u root -p kgparser > c:\java\kg\kgparser.sql
+```
+
+## Restore the database from dump
+See https://alvinalexander.com/blog/post/mysql/how-restore-mysql-database-from-backup-file/
+To restore the dump, we first need to create the database.
+```
+mysqladmin -u root -p create kgparser_from_dump
+mysql -u root -p kgparser_from_dump < c:\java\kg\kgparser.sql
+```
+
+## Drop the database
+See https://linuxize.com/post/how-to-delete-a-mysql-database/ 
+```
+mysqladmin -u root -p drop kgparser-from-dump
+```
