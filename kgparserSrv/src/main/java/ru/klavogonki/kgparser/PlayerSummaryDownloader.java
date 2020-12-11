@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class PlayerSummaryDownloader {
     private static final Logger logger = LogManager.getLogger(PlayerSummaryDownloader.class);
 
-    static class Config {
+    public static class Config {
         public static final int REQUIRED_ARGUMENTS_COUNT = 3;
 
         String rootDir;
