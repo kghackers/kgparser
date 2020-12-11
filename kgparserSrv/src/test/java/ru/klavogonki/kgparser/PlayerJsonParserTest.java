@@ -6,6 +6,7 @@ import ru.klavogonki.kgparser.jsonParser.PlayerSummary;
 import ru.klavogonki.kgparser.util.TestUtils;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,18 +19,22 @@ class PlayerJsonParserTest {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-624511.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-624511.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(624511, summaryFile, indexDataFile);
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 624511, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
     }
 
     @Test
-    @DisplayName("Data of a non-existing user must return an empty result")
+    @DisplayName("Data of a non-existing user must return an result with appropriate errors")
     void testNonExistingPlayerParse() {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-30001.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-30001.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(30001, summaryFile, indexDataFile);
-        assertThat(playerOptional).isNotPresent();
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 30001, summaryFile, indexDataFile);
+        assertThat(playerOptional).isPresent();
+
+        PlayerJsonData player = playerOptional.get();
+        assertThat(player.summary.err).isEqualTo(PlayerSummary.INVALID_USER_ID_ERROR);
+        assertThat(player.indexData.err).isEqualTo(PlayerSummary.INVALID_USER_ID_ERROR);
     }
 
     @Test
@@ -38,7 +43,7 @@ class PlayerJsonParserTest {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-21.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-21.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(21, summaryFile, indexDataFile);
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 21, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
@@ -51,7 +56,7 @@ class PlayerJsonParserTest {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-242585.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-242585.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(242585, summaryFile, indexDataFile);
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 242585, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
     }
 
@@ -61,7 +66,7 @@ class PlayerJsonParserTest {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-922.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-922.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(922, summaryFile, indexDataFile);
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(),922, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
     }
 
@@ -71,7 +76,7 @@ class PlayerJsonParserTest {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-109842.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-109842.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(109842, summaryFile, indexDataFile);
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(),109842, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
     }
 
@@ -81,7 +86,7 @@ class PlayerJsonParserTest {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-141327.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-141327.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(141327, summaryFile, indexDataFile);
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 141327, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
@@ -96,7 +101,7 @@ class PlayerJsonParserTest {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-142478.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-142478.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(142478, summaryFile, indexDataFile);
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(),142478, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
@@ -109,7 +114,7 @@ class PlayerJsonParserTest {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-161997.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-161997.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(161997, summaryFile, indexDataFile);
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(),161997, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
@@ -124,7 +129,7 @@ class PlayerJsonParserTest {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-498727.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-498727.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(498727, summaryFile, indexDataFile);
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 498727, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
@@ -139,7 +144,7 @@ class PlayerJsonParserTest {
         File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-368664.json");
         File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-368664.json");
 
-        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(368664, summaryFile, indexDataFile);
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 368664, summaryFile, indexDataFile);
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();

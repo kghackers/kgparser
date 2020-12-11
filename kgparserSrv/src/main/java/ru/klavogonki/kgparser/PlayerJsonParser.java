@@ -8,9 +8,11 @@ import ru.klavogonki.kgparser.jsonParser.PlayerIndexData;
 import ru.klavogonki.kgparser.jsonParser.PlayerSummary;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 /**
  * Parses the json files saved by {@link PlayerSummaryDownloader}.
@@ -44,31 +46,29 @@ public class PlayerJsonParser {
         }
 
         PlayerSummaryDownloader.Config config = PlayerSummaryDownloader.Config.parseFromArguments(args);
-        config.startDate = args[3];
+        config.setStartDate(args[3]);
 
         List<PlayerJsonData> players = new ArrayList<>();
         List<Integer> nonExistingPlayerIds = new ArrayList<>();
 
-        int totalPlayersToHandle = config.maxPlayerId - config.minPlayerId + 1;
-        for (int playerId = config.minPlayerId; playerId <= config.maxPlayerId; playerId++) {
-            logger.info("=======================================================");
-            int indexOfCurrentPlayer = playerId - config.minPlayerId + 1; // starting from 1
-            logger.info("Handling player {} (player {} / {})...", playerId, indexOfCurrentPlayer, totalPlayersToHandle);
-
-            File summaryFile = new File(config.getPlayerSummaryFilePath(playerId));
-            File indexDataFile = new File(config.getPlayerIndexDataFilePath(playerId));
-
-            Optional<PlayerJsonData> playerOptional = readPlayerData(playerId, summaryFile, indexDataFile);
+        BiConsumer<Integer, Optional<PlayerJsonData>> playerHandler = (playerId, playerOptional) -> {
             if (playerOptional.isPresent()) {
-                players.add(playerOptional.get());
+                PlayerJsonData player = playerOptional.get();
+                players.add(player);
+
+                if (player.summary.err.equals(PlayerSummary.INVALID_USER_ID_ERROR)) {
+                    nonExistingPlayerIds.add(playerId);
+                }
             }
             else {
                 nonExistingPlayerIds.add(playerId);
             }
-        }
+        };
+
+        handlePlayers(config, playerHandler);
 
         logger.info("=======================================================");
-        logger.info("Total player ids handled: {}", totalPlayersToHandle);
+        logger.info("Total player ids handled: {}", config.maxPlayerId - config.minPlayerId + 1);
         logger.info("Total existing players parsed: {}", players.size());
         logger.info("Total non existing players: {}", nonExistingPlayerIds.size());
 
@@ -77,7 +77,24 @@ public class PlayerJsonParser {
         // todo: should login be unique over all users?
     }
 
-    static Optional<PlayerJsonData> readPlayerData(final int playerId, final File summaryFile, final File indexDataFile) {
+    public static void handlePlayers(final PlayerSummaryDownloader.Config config, final BiConsumer<Integer, Optional<PlayerJsonData>> playerHandler) {
+        int totalPlayersToHandle = config.maxPlayerId - config.minPlayerId + 1;
+
+        for (int playerId = config.minPlayerId; playerId <= config.maxPlayerId; playerId++) {
+            logger.info("=======================================================");
+            int indexOfCurrentPlayer = playerId - config.minPlayerId + 1; // starting from 1
+            logger.info("Handling player {} (player {} / {})...", playerId, indexOfCurrentPlayer, totalPlayersToHandle);
+
+            File summaryFile = new File(config.getPlayerSummaryFilePath(playerId));
+            File indexDataFile = new File(config.getPlayerIndexDataFilePath(playerId));
+
+            Optional<PlayerJsonData> playerOptional = readPlayerData(config.startDate, playerId, summaryFile, indexDataFile);
+
+            playerHandler.accept(playerId, playerOptional);
+        }
+    }
+
+    static Optional<PlayerJsonData> readPlayerData(final LocalDateTime importDate, final int playerId, final File summaryFile, final File indexDataFile) {
         String summaryFilePath = summaryFile.getPath();
         String indexDataFilePath = indexDataFile.getPath();
 
@@ -99,12 +116,13 @@ public class PlayerJsonParser {
         if (isErrorCase) {
             // both files contain same errors -> return empty result, there is no such player
             logger.info("Player with id = {} is not found according to both summary file {} and index data file {}.", playerId, summaryFilePath, indexDataFilePath);
-            return Optional.empty();
+            PlayerJsonData result = new PlayerJsonData(importDate, summary, data);
+            return Optional.of(result); // we will save not found players as well, for the database consistency (and FGJ as well!)
         }
 
         // player validation passed -> return parsed player object
         logger.info("Player {} was successfully parsed from summary file {} and index data file {}.", playerId, summaryFilePath, indexDataFilePath);
-        PlayerJsonData result = new PlayerJsonData(summary, data);
+        PlayerJsonData result = new PlayerJsonData(importDate, summary, data);
         return Optional.of(result);
     }
 

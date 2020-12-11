@@ -4,21 +4,17 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.kgparser.http.UrlConstructor;
+import ru.klavogonki.kgparser.util.DateUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class PlayerSummaryDownloader {
     private static final Logger logger = LogManager.getLogger(PlayerSummaryDownloader.class);
-
-    private static final int NOSFERATUM_PLAYER_ID = 242585;
-    private static final int MIN_PLAYER_ID = 30000; // todo: confirm
-    private static final int MAX_PLAYER_ID = 623112; // todo: at 02.12.2020 00:20 (nice date)
 
     static class Config {
         public static final int REQUIRED_ARGUMENTS_COUNT = 3;
@@ -26,14 +22,20 @@ public class PlayerSummaryDownloader {
         String rootDir;
         int minPlayerId;
         int maxPlayerId;
-        String startDate;
+        private String startDateString;
+        LocalDateTime startDate;
+
+        public void setStartDate(String startDate) {
+            this.startDateString = startDate;
+            this.startDate = DateUtils.parseLocalDateTime(startDateString);
+        }
 
         public String getPlayerSummaryFilePath(final int playerId) {
-            return rootDir + File.separator + startDate + File.separator + "summary" + File.separator + playerId + ".json";
+            return rootDir + File.separator + startDateString + File.separator + "summary" + File.separator + playerId + ".json";
         }
 
         public String getPlayerIndexDataFilePath(final int playerId) {
-            return rootDir + File.separator + startDate + File.separator + "index-data" + File.separator + playerId + ".json";
+            return rootDir + File.separator + startDateString + File.separator + "index-data" + File.separator + playerId + ".json";
         }
 
         public void log() {
@@ -41,6 +43,7 @@ public class PlayerSummaryDownloader {
             logger.debug("  rootDir: {}", rootDir);
             logger.debug("  minPlayerId: {}", minPlayerId);
             logger.debug("  maxPlayerId: {}", maxPlayerId);
+            logger.debug("  startDateString: {}", startDateString);
             logger.debug("  startDate: {}", startDate);
         }
 
@@ -66,8 +69,7 @@ public class PlayerSummaryDownloader {
 
         Config config = Config.parseFromArguments(args);
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
-        config.startDate = LocalDateTime.now().format(dateTimeFormatter);
+        config.setStartDate(DateUtils.formatDateTime(LocalDateTime.now()));
         config.log();
 
         for (int playerId = config.minPlayerId; playerId <= config.maxPlayerId; playerId++) {

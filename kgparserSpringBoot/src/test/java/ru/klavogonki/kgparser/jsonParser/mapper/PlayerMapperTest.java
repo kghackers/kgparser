@@ -12,6 +12,8 @@ import ru.klavogonki.kgparser.jsonParser.entity.Assertions;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.util.DateUtils;
 
+import java.time.LocalDateTime;
+
 // todo: merge it with JacksonUtilsTest (problem with module/resource dependencies), so that user data can be read from json files
 class PlayerMapperTest {
 
@@ -52,7 +54,7 @@ class PlayerMapperTest {
         indexData.stats.vocabulariesCount = 109;
         indexData.stats.carsCount = 33;
 
-        PlayerJsonData jsonData = new PlayerJsonData(summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -60,7 +62,7 @@ class PlayerMapperTest {
 
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
-            .hasImportDate(null) // todo: we should fill it!
+            .hasImportDate(jsonData.importDate)
             .hasGetSummaryError(summary.err)
             .hasGetIndexDataError(indexData.err)
             .hasPlayerId(summary.user.id)
@@ -120,7 +122,7 @@ class PlayerMapperTest {
         indexData.stats.vocabulariesCount = 0;
         indexData.stats.carsCount = 1;
 
-        PlayerJsonData jsonData = new PlayerJsonData(summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -128,7 +130,7 @@ class PlayerMapperTest {
 
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
-            .hasImportDate(null) // todo: we should fill it!
+            .hasImportDate(jsonData.importDate)
             .hasGetSummaryError(summary.err)
             .hasGetIndexDataError(indexData.err)
             .hasPlayerId(summary.user.id)
@@ -172,7 +174,7 @@ class PlayerMapperTest {
         indexData.err = PlayerSummary.HIDDEN_PROFILE_USER_ERROR;
         indexData.ok = null; // FGJ
 
-        PlayerJsonData jsonData = new PlayerJsonData(summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -180,7 +182,7 @@ class PlayerMapperTest {
 
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
-            .hasImportDate(null) // todo: we should fill it!
+            .hasImportDate(jsonData.importDate)
             .hasGetSummaryError(summary.err)
             .hasGetIndexDataError(indexData.err)
             .hasPlayerId(summary.user.id)
@@ -213,7 +215,7 @@ class PlayerMapperTest {
         indexData.err = PlayerSummary.INVALID_USER_ID_ERROR;
         indexData.ok = null; // FGJ
 
-        PlayerJsonData jsonData = new PlayerJsonData(summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -221,7 +223,7 @@ class PlayerMapperTest {
 
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
-            .hasImportDate(null) // todo: we should fill it!
+            .hasImportDate(jsonData.importDate)
             .hasGetSummaryError(summary.err)
             .hasGetIndexDataError(indexData.err)
             .hasPlayerId(null)
