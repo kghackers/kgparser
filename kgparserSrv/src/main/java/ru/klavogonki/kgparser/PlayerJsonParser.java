@@ -47,6 +47,7 @@ public class PlayerJsonParser {
 
         PlayerSummaryDownloader.Config config = PlayerSummaryDownloader.Config.parseFromArguments(args);
         config.setStartDate(args[3]);
+        config.log();
 
         List<PlayerJsonData> players = new ArrayList<>();
         List<Integer> nonExistingPlayerIds = new ArrayList<>();

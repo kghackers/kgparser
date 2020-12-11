@@ -50,6 +50,7 @@ public class KgParserApplication implements CommandLineRunner {
 
 		PlayerSummaryDownloader.Config config = PlayerSummaryDownloader.Config.parseFromArguments(args);
 		config.setStartDate(args[3]);
+		config.log();
 
 		PlayerJsonParser.handlePlayers(config, this::handlePlayer);
 	}

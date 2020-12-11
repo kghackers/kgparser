@@ -39,12 +39,14 @@ public class PlayerSummaryDownloader {
         }
 
         public void log() {
+            logger.debug("============================================");
             logger.debug("Config:");
             logger.debug("  rootDir: {}", rootDir);
             logger.debug("  minPlayerId: {}", minPlayerId);
             logger.debug("  maxPlayerId: {}", maxPlayerId);
             logger.debug("  startDateString: {}", startDateString);
             logger.debug("  startDate: {}", startDate);
+            logger.debug("============================================");
         }
 
         public static Config parseFromArguments(final String[] args) {
