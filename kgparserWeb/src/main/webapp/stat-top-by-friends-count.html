@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Топ по числу друзей</title>
+    <link rel="stylesheet" type="text/css" href="./css/stats.css">
+</head>
+<body>
+<header>
+    <!-- todo: make header some html include for all pages -->
+    <a href="./stats.html">На главную</a>
+    | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
+    | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
+    <br/>
+    <a href="./stat-top-by-total-races.html">Топ по общему пробегу</a>
+    | <a href="./stat-top-by-best-speed.html">Топ по рекорду в &laquo;Обычном&raquo;</a>
+    | <a href="./stat-top-by-rating-level.html">Топ по уровню</a>
+    | <a href="./stat-top-by-friends-count.html">Топ по числу друзей</a>
+    | <a href="./stat-top-by-achievements-count.html">Топ по числу достижений</a>
+    | <a href="./stat-top-by-vocabularies-count.html">Топ по числу используемых словарей</a>
+    | <a href="./stat-top-by-cars-count.html">Топ по числу машин в гараже</a>
+</header>
+<main>
+    <div class="section">
+        <h2>Топ-500 по числу друзей</h2>
+    </div>
+
+    <div class="section" id="table-container"></div>
+</main>
+
+<script src="./js/stats-data.js"></script>
+<script src="./js/stat-data-top-500-by-friends-count.js"></script>
+<script src="./js/stats-top-table.js"></script>
+
+<script>
+    window.addEventListener('load', function() {
+        appendTable();
+    });
+
+    function appendTable() {
+        const table = new TopTable({
+            data: STATS_DATA.top500ByFriendsCount,
+            columns: [
+                TopTable.COLUMNS.NUMBER,
+                TopTable.COLUMNS.LOGIN,
+                TopTable.COLUMNS.FRIENDS_COUNT,
+                TopTable.COLUMNS.BEST_SPEED,
+                TopTable.COLUMNS.TOTAL_RACES_COUNT,
+                TopTable.COLUMNS.REGISTERED,
+                TopTable.COLUMNS.ACHIEVEMENTS_COUNT,
+                TopTable.COLUMNS.RATING_LEVEL,
+                TopTable.COLUMNS.VOCABULARIES_COUNT,
+                TopTable.COLUMNS.CARS_COUNT
+            ]
+        });
+
+        table.append('table-container');
+    }
+</script>
+
+</body>
+</html>

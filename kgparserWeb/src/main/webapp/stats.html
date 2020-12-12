@@ -7,8 +7,18 @@
 </head>
 <body>
 <header>
-    <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
+    <!-- todo: make header some html include for all pages -->
+    <a href="./stats.html">На главную</a>
+    | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
     | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
+    <br/>
+    <a href="./stat-top-by-total-races.html">Топ по общему пробегу</a>
+    | <a href="./stat-top-by-best-speed.html">Топ по рекорду в &laquo;Обычном&raquo;</a>
+    | <a href="./stat-top-by-rating-level.html">Топ по уровню</a>
+    | <a href="./stat-top-by-friends-count.html">Топ по числу друзей</a>
+    | <a href="./stat-top-by-achievements-count.html">Топ по числу достижений</a>
+    | <a href="./stat-top-by-vocabularies-count.html">Топ по числу используемых словарей</a>
+    | <a href="./stat-top-by-cars-count.html">Топ по числу машин в гараже</a>
 </header>
 <main>
 <!-- todo: make this info hideable-->
@@ -162,11 +172,11 @@ and p.get_index_data_error is not null;
                 <canvas id="chart-players_by_rank_2" width="30%" class="chart"></canvas>
             </td>
         </tr>
-    </table>
--->
+        </table>
+    -->
 
-        <!-- An attempt for responsive resizing, see https://www.chartjs.org/docs/latest/general/responsive.html  -->
-<!--    <div class="chart-container" style="height:40vh; width:80vw">-->
+            <!-- An attempt for responsive resizing, see https://www.chartjs.org/docs/latest/general/responsive.html  -->
+    <!--    <div class="chart-container" style="height:40vh; width:80vw">-->
         <canvas id="chart-players_by_rank_1" class="chart"></canvas>
 <!--    </div>-->
 <!--    <div class="chart-container" style="height:40vh; width:80vw">-->
@@ -199,37 +209,44 @@ from player p
         <tr>
             <td>Наибольший рекорд в &laquo;обычном&raquo;</td>
             <td><a href="https://klavogonki.ru/u/#/146269/">ant1k</a></td>
-            <td>1070</td>
+            <td class="right">1070</td>
+            <td><a href="./stat-top-by-best-speed.html">Топ</a></td>
         </tr>
         <tr>
             <td>Наибольший общий пробег</td>
             <td><a href="https://klavogonki.ru/u/#/211962/">Kenichi</a></td>
-            <td>294760</td>
+            <td class="right">294760</td>
+            <td><a href="./stat-top-by-total-races.html">Топ</a></td>
         </tr>
         <tr>
             <td>Наибольший рейтинговый уровень</td>
             <td><a href="https://klavogonki.ru/u/#/111001/">un4given</a></td>
-            <td>116</td>
+            <td class="right">116</td>
+            <td><a href="./stat-top-by-rating-level.html">Топ</a></td>
         </tr>
         <tr>
             <td>Больше всего достижений</td>
             <td><a href="https://klavogonki.ru/u/#/408656/">f0rtuna</a></td>
-            <td>2305</td>
+            <td class="right">2305</td>
+            <td><a href="./stat-top-by-achievements-count.html">Топ</a></td>
         </tr>
         <tr>
             <td>Больше всего машин в гараже</td>
             <td><a href="https://klavogonki.ru/u/#/155280/">pashkhan</a></td>
-            <td>45</td>
+            <td class="right">45</td>
+            <td><a href="./stat-top-by-cars-count.html">Топ</a></td>
         </tr>
         <tr>
             <td>Больше всего друзей</td>
             <td><a href="https://klavogonki.ru/u/#/152219/">oligarh83</a></td>
-            <td>3753</td>
+            <td class="right">3753</td>
+            <td><a href="./stat-top-by-friends-count.html">Топ</a></td>
         </tr>
         <tr>
             <td>Больше всего используемых словарей</td>
             <td><a href="https://klavogonki.ru/u/#/492643/">Novatin</a></td>
-            <td>2250</td>
+            <td class="right">2250</td>
+            <td><a href="./stat-top-by-vocabularies-count.html">Топ</a></td>
         </tr>
     </table>
 </div>
@@ -239,5 +256,7 @@ from player p
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous"></script>
 <script src="./js/stats-data.js"></script>
 <script src="./js/stats.js"></script>
+
+<!-- todo: make a web-component that creates a link to user profile by playerId, login (and probably rank) -->
 </body>
 </html>

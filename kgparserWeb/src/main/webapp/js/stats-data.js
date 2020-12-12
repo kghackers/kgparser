@@ -10,6 +10,21 @@ const RANK_COLORS = {
     extracyber: '#061956'
 };
 
+function getRank(rankLevel) {
+    switch (rankLevel) {
+        case 1: return 'novice';
+        case 2: return 'amateur';
+        case 3: return 'cabman';
+        case 4: return 'pro';
+        case 5: return 'racer';
+        case 6: return 'maniac';
+        case 7: return 'superman';
+        case 8: return 'cyberracer';
+        case 9: return 'extracyber';
+        default: throw 'Unknown rankLevel: ' + rankLevel
+    }
+}
+
 const STATS_DATA = {
 
 
