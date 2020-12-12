@@ -34,12 +34,14 @@ const horizontalBarChartConfig = {
     },
     options: {
         responsive: false,
+        // responsive: true, // responsive: true is necessary when 2 diagrams horizontally, especially for big screens
+        // maintainAspectRatio: true,
         title: {
             display: true,
             text: 'Действующие игроки по рангам'
         },
         legend: { // do not display the legend of the dataset
-            display: false,
+            display: false
         }
     }
 };

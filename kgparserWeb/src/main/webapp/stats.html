@@ -6,6 +6,11 @@
     <link rel="stylesheet" type="text/css" href="./css/stats.css">
 </head>
 <body>
+<header>
+    <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
+    | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
+</header>
+<main>
 <!-- todo: make this info hideable-->
 <div class="section">
 Экспорт шёл с 2020-12-08 02:39:07 по 2020-12-09 16:28:01, время на сервере UTC.
@@ -141,15 +146,36 @@ and p.get_index_data_error is not null;
 <div class="section" id="section-players_by_rank">
     <h2>Действующие игроки по рангам</h2>
 
-    <canvas id="chart-players_by_rank_1" class="chart">
-    </canvas>
-    <canvas id="chart-players_by_rank_2" class="chart">
-    </canvas>
+    <!-- 2 canvas horizontally does not work well on big screen :( -->
+    <!-- more or less works with responsive: true, but still a too big horizontal scroll on big screen :( -->
+<!--
+    <table border="1" style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 50%;">
+            <col span="1" style="width: 30%;">
+        </colgroup>
+        <tr>
+            <td>
+                <canvas id="chart-players_by_rank_1" class="chart"></canvas>
+            </td>
+            <td>
+                <canvas id="chart-players_by_rank_2" width="30%" class="chart"></canvas>
+            </td>
+        </tr>
+    </table>
+-->
+
+        <!-- An attempt for responsive resizing, see https://www.chartjs.org/docs/latest/general/responsive.html  -->
+<!--    <div class="chart-container" style="height:40vh; width:80vw">-->
+        <canvas id="chart-players_by_rank_1" class="chart"></canvas>
+<!--    </div>-->
+<!--    <div class="chart-container" style="height:40vh; width:80vw">-->
+        <canvas id="chart-players_by_rank_2" class="chart"></canvas>
+<!--    </div>-->
 
     <div id="table-container-section-players_by_rank"></div>
-
 </div>
-
+</main>
 <!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous"></script>
 <script src="./js/stats-data.js"></script>
