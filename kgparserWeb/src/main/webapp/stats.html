@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика по клавогонщикам</title>
+    <link rel="stylesheet" type="text/css" href="./css/stats.css">
+</head>
+<body>
+<!-- todo: make this info hideable-->
+<div class="section">
+Экспорт шёл с 2020-12-08 02:39:07 по 2020-12-09 16:28:01, время на сервере UTC.
+</div>
+<div class="section">
+    Выполняемые запросы (на примере пользователя <a href="https://klavogonki.ru/u/#/242585/">242585</a>):
+<ul>
+    <li><a href="http://klavogonki.ru/api/profile/get-stats-overview?userId=242585">http://klavogonki.ru/api/profile/get-stats-overview?userId=242585</a></li>
+    <li><a href="http://klavogonki.ru/api/profile/get-index-data?userId=242585">http://klavogonki.ru/api/profile/get-index-data?userId=242585</a></li>
+</ul>
+</div>
+<div class="section">
+Выполнялись запросы по userId от 1 до 625000.
+</div>
+<div class="section hidden">
+    Первый валидный id: <a href="https://klavogonki.ru/u/#/21/">21</a>
+<!-- todo: add select query -->
+<!--
+-- min existing player id: 21
+select
+min(p.player_id)
+from player p
+where p.login is not null;
+-->
+
+    Последний валидный id: <a href="https://klavogonki.ru/u/#/624450/">624450</a>
+<!-- todo: add select query -->
+<!--
+-- max existing player id: 624450
+select
+max(p.player_id)
+from player p
+where p.login is not null;
+-->
+</div>
+<div class="section hidden">
+    В заданном интервале несуществующих пользователей: 46442
+<!--
+-- 46442 non-existing users
+select
+count(*)
+from player p
+where
+-- p.get_summary_error = 'invalid user id'
+(p.get_summary_error is not null)
+-->
+</div>
+<div class="section hidden">
+    В заданном интервале заблокированных пользователей (<code>blocked > 0</code>): 49127
+<!--
+select
+count(*)
+from player p
+where (p.blocked > 0)
+-- and (p.get_summary_error is null); -- does not matter since
+-->
+</div>
+<div class="section hidden">
+    В заданном интервале валидных пользователей с 0 пробега (<code>total_races_count = 0</code>): 170621
+<!--
+select
+count(*)
+# p.player_id,
+# p.login,
+# p.blocked,
+# p.total_races_count,
+# p.registered,
+# p.car_color
+from player p
+where (1 = 1)
+and (p.get_summary_error is null) -- exclude non-existing users
+and (not (p.blocked > 0)) -- exclude blocked users
+and (p.total_races_count = 0);
+-->
+</div>
+<div class="section">
+    <table class="data">
+        <tr><td>Первый валидный id</td><td><a href="https://klavogonki.ru/u/#/21/">21</a></td></tr>
+        <tr><td>Последний валидный id</td><td><a href="https://klavogonki.ru/u/#/624450/">624450</a></td></tr>
+        <tr><td>Несуществующие пользователи (<code>"err": "invalid user id")</code></td><td>46442</td></tr>
+        <tr><td>Заблокированные пользователи (<code>blocked > 0</code>)</td><td>49127</td></tr>
+        <tr><td>Действующие пользователи, у которых падает <code>/get-index-data</code></td><td>6</td></tr>
+        <tr><td>Действующие пользователи с 0 пробега по всем режимам (<code>total_races_count = 0</code>)</td><td>170621</td></tr>
+        <tr><td>Действующие пользователи с хотя бы одним текстом пробега</td><td><strong>358804</strong></td></tr>
+        <tr><td>Всего пользователей в базе</td><td>625000</td></tr>
+    </table>
+</div>
+
+<div class="section">
+<!--
+select
+p.player_id,
+p.login,
+p.title,
+p.get_summary_error,
+p.get_index_data_error,
+p.blocked,
+p.*
+from player p
+where p.get_summary_error is null
+and p.get_index_data_error is not null;
+-->
+
+    <h2>Действующие пользователи, у которых падает <code>/get-index-data</code></h2>
+    <table class="data">
+        <tr>
+            <td>Пользователи со скрытым профилем</td>
+            <td><code>"err": "hidden profile"</code></td>
+            <td>
+                <a href="https://klavogonki.ru/u/#/21/">Artch</a>,
+                <a href="https://klavogonki.ru/u/#/216308/">norkas</a>,
+                <a href="https://klavogonki.ru/u/#/324864/">Клавобот</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Ошибка в базе? <code>/get-summary</code> такой ошибки не выдаёт</td>
+            <td><code>"err": "invalid user id"</code></td>
+            <td>
+                <a href="https://klavogonki.ru/u/#/161997/">ign66</a>,
+                <a href="https://klavogonki.ru/u/#/166851/">errato</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Явно ошибка в базе, что-то с достижениями</td>
+            <td><code>"err": "mongo refs joining failed: invalid key users.achieves.achieve_id=599bd392df4e4d963a8b4570"</code></td>
+            <td>
+                <a href="https://klavogonki.ru/u/#/498727/">Obroten54</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="section" id="section-players_by_rank">
+    <h2>Действующие игроки по рангам</h2>
+
+    <canvas id="chart-players_by_rank_1" class="chart">
+    </canvas>
+    <canvas id="chart-players_by_rank_2" class="chart">
+    </canvas>
+
+    <div id="table-container-section-players_by_rank"></div>
+
+</div>
+
+<!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous"></script>
+<script src="./js/stats-data.js"></script>
+<script src="./js/stats.js"></script>
+</body>
+</html>
