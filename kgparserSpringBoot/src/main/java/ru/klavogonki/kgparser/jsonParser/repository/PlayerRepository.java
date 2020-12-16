@@ -8,4 +8,7 @@ import java.util.List;
 public interface PlayerRepository extends CrudRepository<PlayerEntity, Long> {
 
     List<PlayerEntity> findByPlayerId(int playerId);
+
+//    List<PlayerEntity> findByTotalRacesCountGreaterThanEqualAndBlockedEqualsOrderByBestSpeedDesc(int totalRacesCount, int blocked);
+    List<PlayerEntity> findByTotalRacesCountGreaterThanEqualAndBlockedEqualsOrderByBestSpeedDescTotalRacesCountDesc(int totalRacesCount, int blocked);
 }

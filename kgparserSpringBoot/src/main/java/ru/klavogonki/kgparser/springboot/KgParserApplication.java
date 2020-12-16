@@ -31,6 +31,9 @@ public class KgParserApplication implements CommandLineRunner {
 	@Autowired
 	private PlayerRepository playerRepository;
 
+	@Autowired
+	private TopBySpeedExporter topBySpeedExporter;
+
 	// todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
 	private final PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -40,6 +43,12 @@ public class KgParserApplication implements CommandLineRunner {
 
 	@Override
 	public void run(final String... args) {
+		topBySpeedExporter.export();
+		if (true) {
+			return;
+		}
+
+
 		// todo: pass a path to a json file with config instead
 
 		if (args.length != REQUIRED_ARGUMENTS_COUNT) {
@@ -82,8 +91,9 @@ public class KgParserApplication implements CommandLineRunner {
 
 	private void savePlayerToDatabase(PlayerEntity player) {
 		final Integer playerId = player.getPlayerId();
-		logger.debug("Saving player {} to database...", playerId);
+		logger.debug("Saving player {} to database (NO EXISTING PLAYERS CHECK)...", playerId);
 
+/*
 		// todo: we must actually search by importedDate + playerId, if data is not sharded to different tables by importDate
 		List<PlayerEntity> existingPlayersWithId = playerRepository.findByPlayerId(playerId);
 
@@ -101,6 +111,7 @@ public class KgParserApplication implements CommandLineRunner {
 			playerRepository.deleteAll(existingPlayersWithId);
 			logger.debug("Deleted {} players with db ids: {}.", existingPlayersWithId.size(), playerDbIds);
 		}
+*/
 
 		playerRepository.save(player);
 		logger.debug("Successfully saved player {} (login = \"{}\") to database. Player dbId: {}.", player.getPlayerId(), player.getLogin(), player.getDbId());

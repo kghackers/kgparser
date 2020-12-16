@@ -15,6 +15,7 @@ public class DateUtils {
     private static final Logger logger = LogManager.getLogger(DateUtils.class);
 
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH-mm-ss";
+    private static final String DATE_TIME_FORMAT_FOR_UI = "yyyy-MM-dd HH:mm:ss";
 
     public static LocalDateTime convertUserRegisteredTime(final PlayerIndexData data) {
         if ((data == null) || (data.stats == null)) { // error in /get-index-data
@@ -52,6 +53,13 @@ public class DateUtils {
         Objects.requireNonNull(localDateTime);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        return localDateTime.format(dateTimeFormatter);
+    }
+
+    public static String formatDateTimeForUi(LocalDateTime localDateTime) {
+        Objects.requireNonNull(localDateTime);
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_FOR_UI);
         return localDateTime.format(dateTimeFormatter);
     }
 

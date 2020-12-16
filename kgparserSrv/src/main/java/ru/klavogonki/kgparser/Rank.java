@@ -53,7 +53,7 @@ public enum Rank
 	cyberracer,
 
 	/**
-	 * Экстракибер. Рекорд >= 800.
+	 * Экстракибер. Рекорд &gt;= 800.
 	 */
 	extracyber,
 	;
