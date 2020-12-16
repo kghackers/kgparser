@@ -88,3 +88,20 @@ See https://linuxize.com/post/how-to-delete-a-mysql-database/
 ```
 mysqladmin -u root -p drop kgparser-from-dump
 ```
+
+# Maven
+
+## Install main modules without tests and without javadoc generation
+From root directory, run
+```
+mvn install -DskipTests=true -Dmaven.javadoc.skip=true
+```
+
+## Execute MapStruct generation in `kgparserSpringBoot` 
+From `kgparserSpringBoot` directory, run
+```
+mvn compile
+```
+
+:exclamation: Now after making changes in `kgparserSrv`, you have to `mvn install`
+this module before running MapStruct in `kgparserSpringBoot`.
