@@ -28,6 +28,11 @@
         Учтены игроки с минимальным общим пробегом: ${totalRacesCountMin}
     </div>
 
+    <div>
+        <label for="player-search-input">Найти игрока по логину (полный логин):</label>&nbsp;
+        <input id="player-search-input" autofocus/>
+        <button id="search-button" class="search-button">Искать</button>
+    </div>
     <div class="paging" id="paging-top"></div>
 
     <div class="section" id="table-container">
@@ -49,10 +54,9 @@
 
             <#list players as player>
                 <tr>
-                    <#-- todo: number, from Mapped instance-->
                     <td class="right">${player.orderNumber}</td>
                     <td class="${player.rank}">
-                        ${player.login}&nbsp;
+                        <span class="login">${player.login}</span>
                         <a href="https://klavogonki.ru/u/#/${player.playerId}/" target="_blank" rel="noopener noreferrer">
                             <img src="img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
                         </a>
@@ -77,12 +81,17 @@
     <div class="paging" id="paging-bottom"></div>
 </main>
 
-<#-- todo: script with login -> page mapping -->
 <script src="./js/stats-top-table.js"></script>
+<script src="./js/stat-top-by-best-speed-login-to-page.js"></script>
 
 <script>
     window.addEventListener('load', function() {
+        const login = TopTable.getLoginFromQueryParameter();
+
         appendPaging();
+        bindSearch(login);
+
+        TopTable.highlightTableRow(login);
     });
 
     function appendPaging() {
@@ -91,15 +100,33 @@
             currentPage: ${pageNumber},
             bindLinks: true,
 
+<#noparse>
             getPagingLink: function(linkId, pageNumber) {
-                <#noparse>
                 return `<a href="./stat-top-by-best-speed-page-${pageNumber}.html" id="${linkId}">${pageNumber}</a>${Paging.SPACE_SEPARATOR}`;
-                </#noparse>
             }
         });
 
         paging.append('paging-top');
         paging.append('paging-bottom');
     }
-</script>
 
+    function bindSearch(login) {
+        const search = new PageSearch({
+            searchInputId: 'player-search-input',
+            searchButtonId: 'search-button',
+            searchMap: STATS_DATA.topBySpeedLoginToPage,
+
+            handleSearch: function(login, pageNumber) {
+                const redirectUrl = `./stat-top-by-best-speed-page-${pageNumber}.html?${TopTable.LOGIN_PARAMETER}=${login}`;
+                // console.log(`redirectUrl: ${redirectUrl}`);
+                window.location.href = redirectUrl;
+            }
+        });
+
+        search.bind();
+
+        // fill input field with given login parameter
+        search.fillInput(login)
+    }
+</script>
+</#noparse>

@@ -1,5 +1,7 @@
 /* todo: use some out-of-the-box table component */
 class TopTable {
+    static LOGIN_PARAMETER = 'login';
+
     static COLUMNS = Object.freeze({
         NUMBER: {
             header: '#',
@@ -103,6 +105,43 @@ class TopTable {
 
         document.getElementById(containerId).innerHTML = tableHtml;
     }
+
+    static getLoginFromQueryParameter() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const login = urlParams.get(TopTable.LOGIN_PARAMETER);
+        // console.log(`queryString: ${queryString}`);
+        // console.log(`login: ${login}`);
+        return login;
+    }
+
+    // see https://stackoverflow.com/questions/3813294/how-to-get-element-by-innertext
+    static highlightTableRow(login) {
+        if (!login) {
+            return;
+        }
+
+        const loginToFind = login.toLowerCase();
+
+        const spanLoginNodes = document.querySelectorAll("span.login");
+        // console.log(`spanLoginNodes size: ${spanLoginNodes.length}`);
+
+        for (const span of spanLoginNodes) {
+            if (span.textContent.toLowerCase() === loginToFind) { // case-insensitive
+                // console.log(`login ${login} found!`);
+                // console.log(`text content: "${span.textContent}"`);
+
+                // todo: it is better to get nearest parent 'td' by xpath or findClosest* and check whether it exists
+                const parentTd = span.parentNode.parentNode;
+
+                // see https://www.w3schools.com/howto/howto_js_add_class.asp
+                parentTd.classList.add('selected');
+                return;
+            }
+        }
+
+        // console.log(`login ${login} not found!`);
+    }
 }
 
 class Paging {
@@ -202,5 +241,71 @@ class Paging {
 
     getLinkId(containerId, pageNumber) {
         return `${containerId}-page-${pageNumber}-link`;
+    }
+}
+
+class PageSearch {
+    constructor(config) {
+        this.config = config;
+        // config.searchInputId
+        // config.searchButtonId
+        // config.searchMap
+        // config.handleSearch
+    }
+
+    bind() {
+        const input = document.getElementById(this.config.searchInputId);
+
+        const thisScope = this;
+
+        input.addEventListener("keyup", function(event) {
+            if (event.key === 'Enter') {
+                // console.log('Enter pressed in input field!');
+
+                // Cancel the default action, if needed
+                event.preventDefault();
+
+                thisScope.doSearch();
+            }
+        });
+
+
+        const button = document.getElementById(this.config.searchButtonId);
+        button.onclick = function() {
+            thisScope.doSearch();
+        };
+    }
+
+    doSearch() {
+        const input = document.getElementById(this.config.searchInputId);
+        const loginToSearch = (input.value || '').trim();
+
+        if (!loginToSearch) {
+            alert('Введите логин для поиска!'); // todo: use a nice error display
+            input.focus();
+            return;
+        }
+
+        const login = loginToSearch.toLowerCase();
+        const pageNumber = this.config.searchMap[login];
+
+        if (!pageNumber) {
+            alert(`Пользователь с логином "${loginToSearch}" не найден. Вводите полный логин существующего пользователя.`); // todo: use a nice error display
+            input.focus();
+            return;
+        }
+
+        // console.log(`login to search: ${loginToSearch}, page: ${pageNumber}`);
+        this.config.handleSearch(loginToSearch, pageNumber);
+    }
+
+    fillInput(login) {
+        const loginToFill = (login || '').trim();
+        if (!loginToFill) {
+            return;
+        }
+
+        const input = document.getElementById(this.config.searchInputId);
+        input.value = loginToFill;
     }
 }
