@@ -67,7 +67,7 @@
                     <td class="right">${player.ratingLevel}</td>
                     <td class="right">${player.friendsCount}</td>
                     <td class="right">${player.vocabulariesCount}</td>
-                    <td class="right">${player.carsCount}</td
+                    <td class="right">${player.carsCount}</td>
                 </tr>
             </#list>
         </table>
