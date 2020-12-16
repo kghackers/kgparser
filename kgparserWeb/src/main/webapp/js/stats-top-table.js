@@ -136,6 +136,9 @@ class TopTable {
 
                 // see https://www.w3schools.com/howto/howto_js_add_class.asp
                 parentTd.classList.add('selected');
+
+                // https://stackoverflow.com/a/38249954/8534088
+                parentTd.scrollIntoView(true);
                 return;
             }
         }
