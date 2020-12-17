@@ -35,15 +35,12 @@ jobs:
 
       - name: Install kefir
         working-directory: kefir
-        run: mvn install -DskipTests=true -Dmaven.javadoc.skip=true --no-transfer-progress
+        run: mvn install -Dmaven.javadoc.skip=true --no-transfer-progress
 
       - name: Install kgparserSrv
         working-directory: kgparserSrv
-        run: mvn install -DskipTests=true -Dmaven.javadoc.skip=true --no-transfer-progress
+        run: mvn install -Dmaven.javadoc.skip=true --no-transfer-progress
 
       - name: Install root
-        run: mvn install -DskipTests=true -Dmaven.javadoc.skip=true --no-transfer-progress
-      
-      - name: Test kgparserSrv
-        working-directory: kgparserSrv
-        run: mvn test --no-transfer-progress
+        run: mvn install -Dmaven.javadoc.skip=true --no-transfer-progress
+    
