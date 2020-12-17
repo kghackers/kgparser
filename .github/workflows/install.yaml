@@ -16,7 +16,7 @@ jobs:
           java-version: 1.11
          # for act caching download https://static.azul.com/zulu/bin/zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
          # to root workdir an uncomment
-         #jdkFile: zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
+         # jdkFile: zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
 
       - name: Cache Maven packages
         uses: actions/cache@v2
@@ -31,16 +31,14 @@ jobs:
           repository: dmitry-weirdo/pda-kefir
           path: kefir
           # for local act  
-          #token: 
+          #token:  
 
       - name: Install kefir
         working-directory: kefir
-        run: mvn install -Dmaven.javadoc.skip=true --no-transfer-progress
+        run: mvn install -Dmaven.javadoc.skip --no-transfer-progress
 
-      - name: Install kgparserSrv
-        working-directory: kgparserSrv
-        run: mvn install -Dmaven.javadoc.skip=true --no-transfer-progress
+      - name: Install package with all modules
+        run: mvn package -DskipTests -Dmaven.javadoc.skip --no-transfer-progress
 
-      - name: Install root
-        run: mvn install -Dmaven.javadoc.skip=true --no-transfer-progress
-    
+      - name: Test package
+        run: mvn test --no-transfer-progress
