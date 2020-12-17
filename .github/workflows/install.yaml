@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   build:
+    name: Build KG Parser
     runs-on: ubuntu-latest
 
     # for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
@@ -37,5 +38,5 @@ jobs:
         working-directory: kefir
         run: mvn install -Dmaven.javadoc.skip --no-transfer-progress
 
-      - name: Install package with modules
+      - name: Build kgparser project
         run: mvn package -Dmaven.javadoc.skip --no-transfer-progress
