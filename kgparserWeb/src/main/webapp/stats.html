@@ -98,7 +98,7 @@ and (p.total_races_count = 0);
 -->
 </div>
 <div class="section">
-    <table class="data">
+    <table class="data data-left">
         <tr><td>Первый валидный id</td><td><a href="https://klavogonki.ru/u/#/21/">21</a></td></tr>
         <tr><td>Последний валидный id</td><td><a href="https://klavogonki.ru/u/#/624450/">624450</a></td></tr>
         <tr><td>Несуществующие пользователи (<code>"err": "invalid user id")</code></td><td>46442</td></tr>
@@ -126,7 +126,7 @@ and p.get_index_data_error is not null;
 -->
 
     <h2>Действующие пользователи, у которых падает <code>/get-index-data</code></h2>
-    <table class="data">
+    <table class="data data-left">
         <tr>
             <td>Пользователи со скрытым профилем</td>
             <td><code>"err": "hidden profile"</code></td>
@@ -157,36 +157,13 @@ and p.get_index_data_error is not null;
 <div class="section" id="section-players_by_rank">
     <h2>Действующие игроки по рангам</h2>
 
-    <!-- 2 canvas horizontally does not work well on big screen :( -->
-    <!-- more or less works with responsive: true, but still a too big horizontal scroll on big screen :( -->
-<!--
-    <table border="1" style="width: 100%">
-        <colgroup>
-            <col span="1" style="width: 50%;">
-            <col span="1" style="width: 30%;">
-        </colgroup>
-        <tr>
-            <td>
-                <canvas id="chart-players_by_rank_1" class="chart"></canvas>
-            </td>
-            <td>
-                <canvas id="chart-players_by_rank_2" width="30%" class="chart"></canvas>
-            </td>
-        </tr>
-        </table>
-    -->
+    <div class="flexWrap">
+        <canvas id="chart-players_by_rank_1" class="chart-left"></canvas>
+        <canvas id="chart-players_by_rank_2" class="chart-right"></canvas>
 
-            <!-- An attempt for responsive resizing, see https://www.chartjs.org/docs/latest/general/responsive.html  -->
-    <!--    <div class="chart-container" style="height:40vh; width:80vw">-->
-        <canvas id="chart-players_by_rank_1" class="chart"></canvas>
-<!--    </div>-->
-<!--    <div class="chart-container" style="height:40vh; width:80vw">-->
-        <canvas id="chart-players_by_rank_2" class="chart"></canvas>
-<!--    </div>-->
-
-    <div id="table-container-section-players_by_rank"></div>
+        <div id="table-container-section-players_by_rank"></div>
+    </div>
 </div>
-
 <div class="section">
     <h2>Агрегированные данные по всем игрокам</h2>
 <!--
@@ -205,8 +182,7 @@ from player p
 <div class="section">
     <h2>Рекорды (только топ-1)</h2>
     <!-- todo: add links on "top 100 / top 1000 by the given criteria -->
-    <table class="data">
-
+    <table class="data data-left">
         <tr>
             <td>Наибольший рекорд в &laquo;обычном&raquo;</td>
             <td><a href="https://klavogonki.ru/u/#/146269/">ant1k</a></td>
