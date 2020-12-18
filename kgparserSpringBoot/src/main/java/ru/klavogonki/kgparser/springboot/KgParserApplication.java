@@ -12,13 +12,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import ru.klavogonki.kgparser.PlayerJsonData;
 import ru.klavogonki.kgparser.PlayerJsonParser;
 import ru.klavogonki.kgparser.PlayerSummaryDownloader;
+import ru.klavogonki.kgparser.export.TopBySpeedExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerRepository;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EntityScan(basePackages= {"ru.klavogonki.kgparser.jsonParser.entity"})
