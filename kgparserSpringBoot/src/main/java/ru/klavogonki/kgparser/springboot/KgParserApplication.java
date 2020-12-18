@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import ru.klavogonki.kgparser.PlayerJsonData;
 import ru.klavogonki.kgparser.PlayerJsonParser;
 import ru.klavogonki.kgparser.PlayerSummaryDownloader;
+import ru.klavogonki.kgparser.export.IndexPageExporter;
 import ru.klavogonki.kgparser.export.TopBySpeedExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
@@ -31,6 +32,9 @@ public class KgParserApplication implements CommandLineRunner {
 	private PlayerRepository playerRepository;
 
 	@Autowired
+	private IndexPageExporter indexPageExporter;
+
+	@Autowired
 	private TopBySpeedExporter topBySpeedExporter;
 
 	// todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
@@ -41,7 +45,12 @@ public class KgParserApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(final String... args) {
+	public void run(final String... args) { // todo: select mode by arguments
+		indexPageExporter.export();
+		if (true) {
+			return;
+		}
+
 		topBySpeedExporter.export();
 		if (true) {
 			return;
