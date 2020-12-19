@@ -69,4 +69,11 @@ public class DateUtils {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
         return LocalDateTime.parse(dateTimeString, dateTimeFormatter);
     }
+
+    public static LocalDateTime parseLocalDateTimeWithUiDateFormat(String dateTimeString) {
+        Objects.requireNonNull(dateTimeString);
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_FOR_UI);
+        return LocalDateTime.parse(dateTimeString, dateTimeFormatter);
+    }
 }

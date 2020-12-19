@@ -15,7 +15,7 @@ public class TopBySpeedPageTemplate extends FreemarkerTemplate {
 
     @Override
     public String getTemplatePath() {
-        return "top-by-speed-page.ftl";
+        return "ftl/top-by-speed-page.ftl";
     }
 
     public TopBySpeedPageTemplate totalPages(int totalPages) {

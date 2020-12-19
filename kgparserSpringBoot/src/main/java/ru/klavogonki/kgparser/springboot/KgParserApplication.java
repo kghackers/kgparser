@@ -12,11 +12,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import ru.klavogonki.kgparser.PlayerJsonData;
 import ru.klavogonki.kgparser.PlayerJsonParser;
 import ru.klavogonki.kgparser.PlayerSummaryDownloader;
+import ru.klavogonki.kgparser.export.ExportContext;
 import ru.klavogonki.kgparser.export.IndexPageExporter;
 import ru.klavogonki.kgparser.export.TopBySpeedExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerRepository;
+import ru.klavogonki.kgparser.util.DateUtils;
 
 import java.util.Optional;
 
@@ -45,13 +47,25 @@ public class KgParserApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(final String... args) { // todo: select mode by arguments
-		indexPageExporter.export();
+	public void run(final String... args) {
+		// todo: parse context from args of from json file given by args
+		ExportContext context = new ExportContext();
+		context.webRootDir = "C:/java/kgparser/kgparserWeb/src/main/webapp/";
+		context.minPlayerId = 1;
+		context.minPlayerId = 625000;
+		context.dataDownloadStartDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-08 02:39:07");
+		context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-09 16:28:01");
+
+		// todo: select mode (what to do) by arguments
+
+/*
+		indexPageExporter.export(context);
 		if (true) {
 			return;
 		}
+*/
 
-		topBySpeedExporter.export();
+		topBySpeedExporter.export(context);
 		if (true) {
 			return;
 		}

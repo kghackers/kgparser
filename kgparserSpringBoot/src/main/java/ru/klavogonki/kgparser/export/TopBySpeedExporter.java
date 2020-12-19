@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Log4j2
 @Component
-public class TopBySpeedExporter {
+public class TopBySpeedExporter implements DataExporter {
     private static final int TOTAL_RACES_COUNT_MIN = 1000;
     private static final int PAGE_SIZE = 100;
 
@@ -30,10 +30,7 @@ public class TopBySpeedExporter {
     // todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
     private final PlayerDtoMapper mapper = Mappers.getMapper(PlayerDtoMapper.class);
 
-    public void export() {
-        // todo: get rootDir from config
-        final String rootDir = "C:/java/kgparser/kgparserWeb/src/main/webapp/";
-
+    public void export(ExportContext context) {
         // !!! todo: !user paged query instead of manually splitting the result to pages
         List<PlayerEntity> players = playerRepository.findByTotalRacesCountGreaterThanEqualAndBlockedEqualsOrderByBestSpeedDescTotalRacesCountDesc(
             TOTAL_RACES_COUNT_MIN,
@@ -68,7 +65,7 @@ public class TopBySpeedExporter {
             });
 
             // export top by speed page to html
-            String topBySpeedPageFilePath = PageUrls.getTopBySpeedPageFilePath(rootDir, pageNumber);
+            String topBySpeedPageFilePath = PageUrls.getTopBySpeedPageFilePath(context.webRootDir, pageNumber);
 
             new TopBySpeedPageTemplate()
                 .totalRacesCountMin(TOTAL_RACES_COUNT_MIN)
@@ -81,7 +78,7 @@ public class TopBySpeedExporter {
         }
 
         // export login -> page map to a js file
-        String loginToPageFilePath = PageUrls.getTopBySpeedLoginToPageFilePath(rootDir);
+        String loginToPageFilePath = PageUrls.getTopBySpeedLoginToPageFilePath(context.webRootDir);
 
         String loginToPageString = JacksonUtils.serializeToString(loginToPage);
 

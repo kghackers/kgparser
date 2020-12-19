@@ -3,6 +3,8 @@ package ru.klavogonki.kgparser.export;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.klavogonki.kgparser.freemarker.IndexPageTemplate;
+import ru.klavogonki.kgparser.freemarker.PageUrls;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerRepository;
@@ -11,12 +13,12 @@ import java.util.List;
 
 @Log4j2
 @Component
-public class IndexPageExporter {
+public class IndexPageExporter implements DataExporter {
 
     @Autowired
     private PlayerRepository playerRepository;
 
-    public void export() {
+    public void export(ExportContext context) {
         Integer minExistingPlayerId = playerRepository.selectMinExistingPlayerId();
         logger.debug("Min existing player id: {}", minExistingPlayerId);
 
@@ -92,5 +94,42 @@ public class IndexPageExporter {
 
         PlayerEntity top1PlayerByCarsCount = playerRepository.findTopByOrderByCarsCountDesc();
         logger.debug("Top 1 player by cars count: {}", top1PlayerByCarsCount);
+
+        String indexPageFilePath = PageUrls.getIndexPageFilePath(context.webRootDir);
+
+        new IndexPageTemplate()
+            // todo: pass config (context) fields
+
+            // global players metrics
+            .minExistingPlayerId(minExistingPlayerId)
+            .maxExistingPlayerId(maxExistingPlayerId)
+            .nonExistingPlayersCount(nonExistingPlayersCount)
+            .blockedPlayersCount(blockedPlayersCount)
+            .playersWithGetIndexDataError(playersWithGetIndexDataError)
+            .actualPlayersWithoutRacesCount(actualPlayersWithoutRacesCount)
+            .actualPlayersWithAtLeast1RaceCount(actualPlayersWithAtLeast1RaceCount)
+            .totalUsersInDatabase(totalUsersInDatabase)
+
+            // players by rank
+            .playersByRankWithAtLeast1Race(playersByRankWithAtLeast1Race)
+            .playersByRankWithAtLeast10Races(playersByRankWithAtLeast10Races)
+            .playersByRankWithAtLeast100Races(playersByRankWithAtLeast100Races)
+            .playersByRankWithAtLeast1000Races(playersByRankWithAtLeast1000Races)
+            .playersByRankWithAtLeast10000Races(playersByRankWithAtLeast10000Races)
+
+            // aggregates
+            .totalRacesCountByAllPlayers(totalRacesCountByAllPlayers)
+            .totalCarsCountByAllPlayers(totalCarsCountByAllPlayers)
+
+            // top 1
+            .top1PlayerByTotalRacesCount(top1PlayerByTotalRacesCount)
+            .top1PlayerByBestSpeed(top1PlayerByTotalRacesCount)
+            .top1PlayerByRatingLevel(top1PlayerByRatingLevel)
+            .top1PlayerByAchievementsCount(top1PlayerByAchievementsCount)
+            .top1PlayerByFriendsCount(top1PlayerByFriendsCount)
+            .top1PlayerByVocabulariesCount(top1PlayerByVocabulariesCount)
+            .top1PlayerByCarsCount(top1PlayerByCarsCount)
+
+            .export(indexPageFilePath);
     }
 }

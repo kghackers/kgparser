@@ -27,6 +27,10 @@ public class PageUrls {
     public static final String TOP_TABLE_JS = "js/stats-top-table.js";
     public static final String TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS = "js/stat-top-by-best-speed-login-to-page.js";
 
+    public static String getIndexPageFilePath(final String rootDir) {
+        return rootDir + "/" + INDEX;
+    }
+
     public static String getTopBySpeedPageFilePath(final String rootDir, final int pageNumber) {
         return rootDir + "stat-top-by-best-speed-page-" + pageNumber + ".html";
     }

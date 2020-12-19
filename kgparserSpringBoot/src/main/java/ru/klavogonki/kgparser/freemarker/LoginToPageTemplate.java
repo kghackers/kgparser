@@ -12,7 +12,7 @@ public class LoginToPageTemplate extends FreemarkerTemplate {
 
     @Override
     public String getTemplatePath() {
-        return "top-by-speed-login-to-page.ftl";
+        return "ftl/top-by-speed-login-to-page.ftl";
     }
 
     public LoginToPageTemplate loginToPage(Map<String, Integer> loginToPage) {

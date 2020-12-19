@@ -10,12 +10,12 @@ import java.util.List;
 
 @Log4j2
 @Component
-public class Top500PagesExporter {
+public class Top500PagesExporter implements DataExporter {
 
     @Autowired
     private PlayerRepository playerRepository;
 
-    public void export() {
+    public void export(ExportContext context) {
         // todo: hardcoded top1 and top500 are ok for now,
         // todo: or implement with setMaxResults or something like this
 
