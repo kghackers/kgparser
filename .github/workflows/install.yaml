@@ -40,3 +40,11 @@ jobs:
 
       - name: Build kgparser project
         run: mvn package -Dmaven.javadoc.skip --no-transfer-progress
+
+      - name: Notify Telegram
+        uses: yanzay/notify-telegram@v0.1.0
+        if: always()
+        with:
+          chat: ${{ secrets.TGBOT_CHAT }}
+          token: ${{ secrets.TGBOT_TOKEN }}
+          status: ${{ job.status }}
