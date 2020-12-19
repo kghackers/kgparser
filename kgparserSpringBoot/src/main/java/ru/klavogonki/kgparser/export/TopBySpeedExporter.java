@@ -33,6 +33,7 @@ public class TopBySpeedExporter {
         // todo: get rootDir from config
         final String rootDir = "C:/java/kgparser/kgparserWeb/src/main/webapp/";
 
+        // !!! todo: !user paged query instead of manually splitting the result to pages
         List<PlayerEntity> players = playerRepository.findByTotalRacesCountGreaterThanEqualAndBlockedEqualsOrderByBestSpeedDescTotalRacesCountDesc(
             TOTAL_RACES_COUNT_MIN,
             0

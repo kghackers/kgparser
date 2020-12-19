@@ -2,6 +2,8 @@ package ru.klavogonki.kgparser.jsonParser.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 
 import java.util.List;
@@ -50,4 +52,58 @@ public interface PlayerRepository extends CrudRepository<PlayerEntity, Long> {
 
     // actual users with at least N total texts count
     Integer countByGetSummaryErrorIsNullAndGetIndexDataErrorIsNullAndBlockedEqualsAndTotalRacesCountIsGreaterThanEqual(int blocked, int totalRacesCount);
+
+    @Query(value =
+        "select" +
+        " new ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount(" + // full class name required else ClassLoadingException will be thrown
+        "   p.rankLevel as rankLevel," +
+        "   count(p.playerId) as playersCount" + // count returns long
+        " )" +
+        " from PlayerEntity p" +
+        " where (p.getSummaryError is null)" +
+        " and (p.getIndexDataError is null)" +
+        " and (p.blocked = 0)" +
+        " and (p.totalRacesCount >= :minTotalRacesCount)" +
+        " group by p.rankLevel" +
+        " order by p.rankLevel"
+    )
+    List<PlayersByRankCount> getActualPlayerCountByRank(@Param("minTotalRacesCount") int minTotalRacesCount);
+
+    // JPA query, non-native
+    @Query(value =
+        "select" +
+        " sum(p.totalRacesCount)" +
+        " from PlayerEntity p" // without any limits on players
+    )
+    Long selectSumOfTotalRacesCountByAllPlayers();
+
+    // JPA query, non-native
+    @Query(value =
+        "select" +
+        " sum(p.carsCount)" +
+        " from PlayerEntity p" // without any limits on players
+    )
+    Long selectSumOfCarsCountByAllPlayers();
+
+    // todo: for dynamic limit in top use setMaxResults of a page requests
+    PlayerEntity findTopByOrderByTotalRacesCountDesc();
+    List<PlayerEntity> findTop500ByOrderByTotalRacesCountDesc();
+
+    PlayerEntity findTopByOrderByBestSpeedDesc();
+    List<PlayerEntity> findTop500ByOrderByBestSpeedDesc();
+
+    PlayerEntity findTopByOrderByRatingLevelDesc();
+    List<PlayerEntity> findTop500ByOrderByRatingLevelDesc();
+
+    PlayerEntity findTopByOrderByAchievementsCountDesc();
+    List<PlayerEntity> findTop500ByOrderByAchievementsCountDesc();
+
+    PlayerEntity findTopByOrderByFriendsCountDesc();
+    List<PlayerEntity> findTop500ByOrderByFriendsCountDesc();
+
+    PlayerEntity findTopByOrderByVocabulariesCountDesc();
+    List<PlayerEntity> findTop500ByOrderByVocabulariesCountDesc();
+
+    PlayerEntity findTopByOrderByCarsCountDesc();
+    List<PlayerEntity> findTop500ByOrderByCarsCountDesc();
 }
