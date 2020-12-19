@@ -4,24 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Топ по рекорду в &laquo;Обычном&raquo;</title>
-    <link rel="stylesheet" type="text/css" href="./css/stats.css">
+    <link rel="stylesheet" type="text/css" href="./${links.statsCss}">
     <link rel="shortcut icon" href="img/favicon/favicon.ico"/>
 </head>
 <body>
 <header>
     <!-- todo: make header some html include for all pages -->
-    <a href="./stats.html">На главную</a>
+    <a href="./${links.index}">На главную</a>
     | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
     | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
     <br/>
-    <a href="./stat-top-by-total-races.html">Топ по общему пробегу</a>
-    | <a href="./stat-top-by-best-speed-page-1.html">Топ по рекорду в &laquo;Обычном&raquo;</a>
-    | <a href="./stat-top-by-best-speed.html">Топ-500 в &laquo;Обычном&raquo;</a> <#-- todo: think whether we need it -->
-    | <a href="./stat-top-by-rating-level.html">Топ по уровню</a>
-    | <a href="./stat-top-by-friends-count.html">Топ по числу друзей</a>
-    | <a href="./stat-top-by-achievements-count.html">Топ по числу достижений</a>
-    | <a href="./stat-top-by-vocabularies-count.html">Топ по числу используемых словарей</a>
-    | <a href="./stat-top-by-cars-count.html">Топ по числу машин в гараже</a>
+    <a href="./${links.topByTotalRaces}">Топ по общему пробегу</a>
+    | <a href="./${links.topByBestSpeedPage1}">Топ по рекорду в &laquo;Обычном&raquo;</a>
+    | <a href="./${links.topByBestSpeed}">Топ-500 в &laquo;Обычном&raquo;</a> <#-- todo: think whether we need it -->
+    | <a href="./${links.topByRatingLevel}">Топ по уровню</a>
+    | <a href="./${links.topByFriendsCount}">Топ по числу друзей</a>
+    | <a href="./${links.topByAchievementsCount}">Топ по числу достижений</a>
+    | <a href="./${links.topByVocabulariesCount}">Топ по числу используемых словарей</a>
+    | <a href="./${links.topByCarsCount}">Топ по числу машин в гараже</a>
 </header>
 <main>
     <div class="section">
@@ -82,8 +82,8 @@
     <div class="paging" id="paging-bottom"></div>
 </main>
 
-<script src="./js/stats-top-table.js"></script>
-<script src="./js/stat-top-by-best-speed-login-to-page.js"></script>
+<script src="./${links.topTableJs}"></script>
+<script src="./${links.topByBestSpeedLoginToPageJs}"></script>
 
 <script>
     window.addEventListener('load', function() {

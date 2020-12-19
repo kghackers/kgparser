@@ -18,6 +18,8 @@ public abstract class FreemarkerTemplate {
 
     public static final String FREEMARKER_VERSION = "2.3.30";
 
+    private static final String LINKS_KEY = "links";
+
     protected Map<String, Object> templateData = new HashMap<>();
 
     /**
@@ -26,6 +28,8 @@ public abstract class FreemarkerTemplate {
     public abstract String getTemplatePath();
 
     public void export(String filePath) {
+        templateData.put(LINKS_KEY, new Links());
+
         exportFreemarker(getTemplatePath(), filePath, templateData);
     }
 

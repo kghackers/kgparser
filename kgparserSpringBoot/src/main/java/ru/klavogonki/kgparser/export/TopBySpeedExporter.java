@@ -6,6 +6,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.klavogonki.kgparser.freemarker.LoginToPageTemplate;
+import ru.klavogonki.kgparser.freemarker.PageUrls;
 import ru.klavogonki.kgparser.freemarker.TopBySpeedPageTemplate;
 import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
@@ -67,7 +68,7 @@ public class TopBySpeedExporter {
             });
 
             // export top by speed page to html
-            String topBySpeedPageFilePath = getTopBySpeedPageFilePath(rootDir, pageNumber);
+            String topBySpeedPageFilePath = PageUrls.getTopBySpeedPageFilePath(rootDir, pageNumber);
 
             new TopBySpeedPageTemplate()
                 .totalRacesCountMin(TOTAL_RACES_COUNT_MIN)
@@ -80,7 +81,7 @@ public class TopBySpeedExporter {
         }
 
         // export login -> page map to a js file
-        String loginToPageFilePath = getLoginToPageFilePath(rootDir);
+        String loginToPageFilePath = PageUrls.getTopBySpeedLoginToPageFilePath(rootDir);
 
         String loginToPageString = JacksonUtils.serializeToString(loginToPage);
 
@@ -88,14 +89,6 @@ public class TopBySpeedExporter {
             .loginToPage(loginToPage)
             .loginToPageString(loginToPageString)
             .export(loginToPageFilePath);
-    }
-
-    private String getTopBySpeedPageFilePath(final String rootDir, final int pageNumber) {
-        return rootDir + "/stat-top-by-best-speed-page-" + pageNumber + ".html";
-    }
-
-    private String getLoginToPageFilePath(final String rootDir) {
-        return rootDir + "/js/stat-top-by-best-speed-login-to-page.js";
     }
 
     private int getPagesCount(int totalRecords, int pageSize) {
