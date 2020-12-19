@@ -1,3 +1,6 @@
+# Telegram group
+To join the Telegram group with webhooks of this project, [follow the link](https://t.me/joinchat/N3tfQFVvmbH21ipSy9yKcA)
+
 # How to execute `PlayerSummaryDownloader`
 Execution with overriding the log4j2.xml configuration file:
 ```
