@@ -12,7 +12,7 @@ class TopTable {
         LOGIN: {
             header: 'Логин',
             handler: function (player) {
-                const rankClass = getRank(player.rank_level);
+                const rankClass = TopTable.getRank(player.rank_level); // todo: rank must be filled in player itself
 
                 // https://stackoverflow.com/a/15551842/8534088 — how to open a link in new tab/window
                 return `<td class="${rankClass}">${player.login}&nbsp;
@@ -72,6 +72,21 @@ class TopTable {
             }
         }
     });
+
+    static getRank(rankLevel) {
+        switch (rankLevel) {
+            case 1: return 'novice';
+            case 2: return 'amateur';
+            case 3: return 'cabman';
+            case 4: return 'pro';
+            case 5: return 'racer';
+            case 6: return 'maniac';
+            case 7: return 'superman';
+            case 8: return 'cyberracer';
+            case 9: return 'extracyber';
+            default: throw 'Unknown rankLevel: ' + rankLevel
+        }
+    }
 
     constructor(config) {
         this.config = config;
