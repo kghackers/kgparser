@@ -1,6 +1,8 @@
 package ru.klavogonki.kgparser.jsonParser.entity;
 
 import lombok.Data;
+import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.http.UrlConstructor;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -10,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 
 @Data
@@ -71,4 +74,19 @@ public class PlayerEntity {
     private Integer vocabulariesCount;
 
     private Integer carsCount;
+
+    @Transient
+    public String getProfileLink() {
+        return UrlConstructor.userProfileLink(playerId);
+    }
+
+    @Transient
+    public String getRank() {
+        return Rank.getRank(rankLevel).name();
+    }
+
+    @Transient
+    public String getRankDisplayName() {
+        return Rank.getDisplayName(rankLevel);
+    }
 }

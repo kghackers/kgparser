@@ -27,9 +27,6 @@ function getRank(rankLevel) {
 
 const STATS_DATA = {
 
-
-
-
 /*
 -- total: 358804
 select

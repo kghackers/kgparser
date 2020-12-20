@@ -8,14 +8,13 @@
 </head>
 <body>
 <header>
-    <!-- todo: make header some html include for all pages -->
     <a href="./stats.html">На главную</a>
     | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
     | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
     <br/>
     <a href="./stat-top-by-total-races.html">Топ по общему пробегу</a>
     | <a href="./stat-top-by-best-speed-page-1.html">Топ по рекорду в &laquo;Обычном&raquo;</a>
-    | <a href="./stat-top-by-best-speed.html">Топ-500 в &laquo;Обычном&raquo;</a> <!-- todo: think whether we need it -->
+    | <a href="./stat-top-by-best-speed.html">Топ-500 в &laquo;Обычном&raquo;</a> 
     | <a href="./stat-top-by-rating-level.html">Топ по уровню</a>
     | <a href="./stat-top-by-friends-count.html">Топ по числу друзей</a>
     | <a href="./stat-top-by-achievements-count.html">Топ по числу достижений</a>
@@ -23,218 +22,275 @@
     | <a href="./stat-top-by-cars-count.html">Топ по числу машин в гараже</a>
 </header>
 <main>
-<!-- todo: make this info hideable-->
-<div class="section">
-Экспорт шёл с 2020-12-08 02:39:07 по 2020-12-09 16:28:01, время на сервере UTC.
-</div>
-<div class="section">
-    Выполняемые запросы (на примере пользователя <a href="https://klavogonki.ru/u/#/242585/">242585</a>):
-<ul>
-    <li><a href="http://klavogonki.ru/api/profile/get-stats-overview?userId=242585">http://klavogonki.ru/api/profile/get-stats-overview?userId=242585</a></li>
-    <li><a href="http://klavogonki.ru/api/profile/get-index-data?userId=242585">http://klavogonki.ru/api/profile/get-index-data?userId=242585</a></li>
-</ul>
-</div>
-<div class="section">
-Выполнялись запросы по userId от 1 до 625000.
-</div>
-<div class="section hidden">
-    Первый валидный id: <a href="https://klavogonki.ru/u/#/21/">21</a>
-<!-- todo: add select query -->
-<!--
--- min existing player id: 21
-select
-min(p.player_id)
-from player p
-where p.login is not null;
--->
-
-    Последний валидный id: <a href="https://klavogonki.ru/u/#/624450/">624450</a>
-<!-- todo: add select query -->
-<!--
--- max existing player id: 624450
-select
-max(p.player_id)
-from player p
-where p.login is not null;
--->
-</div>
-<div class="section hidden">
-    В заданном интервале несуществующих пользователей: 46442
-<!--
--- 46442 non-existing users
-select
-count(*)
-from player p
-where
--- p.get_summary_error = 'invalid user id'
-(p.get_summary_error is not null)
--->
-</div>
-<div class="section hidden">
-    В заданном интервале заблокированных пользователей (<code>blocked > 0</code>): 49127
-<!--
-select
-count(*)
-from player p
-where (p.blocked > 0)
--- and (p.get_summary_error is null); -- does not matter since
--->
-</div>
-<div class="section hidden">
-    В заданном интервале валидных пользователей с 0 пробега (<code>total_races_count = 0</code>): 170621
-<!--
-select
-count(*)
-# p.player_id,
-# p.login,
-# p.blocked,
-# p.total_races_count,
-# p.registered,
-# p.car_color
-from player p
-where (1 = 1)
-and (p.get_summary_error is null) -- exclude non-existing users
-and (not (p.blocked > 0)) -- exclude blocked users
-and (p.total_races_count = 0);
--->
-</div>
-<div class="section">
-    <table class="data data-left">
-        <tr><td>Первый валидный id</td><td><a href="https://klavogonki.ru/u/#/21/">21</a></td></tr>
-        <tr><td>Последний валидный id</td><td><a href="https://klavogonki.ru/u/#/624450/">624450</a></td></tr>
-        <tr><td>Несуществующие пользователи (<code>"err": "invalid user id")</code></td><td>46442</td></tr>
-        <tr><td>Заблокированные пользователи (<code>blocked > 0</code>)</td><td>49127</td></tr>
-        <tr><td>Действующие пользователи, у которых падает <code>/get-index-data</code></td><td>6</td></tr>
-        <tr><td>Действующие пользователи с 0 пробега по всем режимам (<code>total_races_count = 0</code>)</td><td>170621</td></tr>
-        <tr><td>Действующие пользователи с хотя бы одним текстом пробега</td><td><strong>358804</strong></td></tr>
-        <tr><td>Всего пользователей в базе</td><td>625000</td></tr>
-    </table>
-</div>
-
-<div class="section">
-<!--
-select
-p.player_id,
-p.login,
-p.title,
-p.get_summary_error,
-p.get_index_data_error,
-p.blocked,
-p.*
-from player p
-where p.get_summary_error is null
-and p.get_index_data_error is not null;
--->
-
-    <h2>Действующие пользователи, у которых падает <code>/get-index-data</code></h2>
-    <table class="data data-left">
-        <tr>
-            <td>Пользователи со скрытым профилем</td>
-            <td><code>"err": "hidden profile"</code></td>
-            <td>
-                <a href="https://klavogonki.ru/u/#/21/">Artch</a>,
-                <a href="https://klavogonki.ru/u/#/216308/">norkas</a>,
-                <a href="https://klavogonki.ru/u/#/324864/">Клавобот</a>
-            </td>
-        </tr>
-        <tr>
-            <td>Ошибка в базе? <code>/get-summary</code> такой ошибки не выдаёт</td>
-            <td><code>"err": "invalid user id"</code></td>
-            <td>
-                <a href="https://klavogonki.ru/u/#/161997/">ign66</a>,
-                <a href="https://klavogonki.ru/u/#/166851/">errato</a>
-            </td>
-        </tr>
-        <tr>
-            <td>Явно ошибка в базе, что-то с достижениями</td>
-            <td><code>"err": "mongo refs joining failed: invalid key users.achieves.achieve_id=599bd392df4e4d963a8b4570"</code></td>
-            <td>
-                <a href="https://klavogonki.ru/u/#/498727/">Obroten54</a>
-            </td>
-        </tr>
-    </table>
-</div>
-
-<div class="section" id="section-players_by_rank">
-    <h2>Действующие игроки по рангам</h2>
-
-    <div class="flexWrap">
-        <canvas id="chart-players_by_rank_1" class="chart-left"></canvas>
-        <canvas id="chart-players_by_rank_2" class="chart-right"></canvas>
-
-        <div id="table-container-section-players_by_rank"></div>
+    <div class="section">
+        Экспорт шёл с 2020-12-08 02:39:07 по 2020-12-09 16:28:01, время на сервере UTC.
     </div>
-</div>
-<div class="section">
-    <h2>Агрегированные данные по всем игрокам</h2>
-<!--
-select
-sum(p.total_races_count)
-from player p
 
--->
-    <!-- todo: use some library to convert this to a russian words :) -->
-    <ul>
-        <li>Всего текстов набрано всеми игроками: 127 122 127</li>
-        <li>Всего машин у всех игроков: 598128</li>
-    </ul>
-</div>
+    <div class="section">
+        Выполняемые запросы (на примере пользователя <a href="https://klavogonki.ru/u/#/242585/">242585</a>):
+        <ul>
+            <li><a href="http://klavogonki.ru/api/profile/get-summary?id=242585">http://klavogonki.ru/api/profile/get-summary?id=242585</a></li>
+            <li><a href="http://klavogonki.ru/api/profile/get-index-data?userId=242585">http://klavogonki.ru/api/profile/get-index-data?userId=242585</a></li>
+        </ul>
+    </div>
 
-<div class="section">
-    <h2>Рекорды (только топ-1)</h2>
-    <!-- todo: add links on "top 100 / top 1000 by the given criteria -->
-    <table class="data data-left">
-        <tr>
-            <td>Наибольший рекорд в &laquo;обычном&raquo;</td>
-            <td><a href="https://klavogonki.ru/u/#/146269/">ant1k</a></td>
-            <td class="right">1070</td>
-            <td><a href="./stat-top-by-best-speed.html">Топ</a></td>
-        </tr>
-        <tr>
-            <td>Наибольший общий пробег</td>
-            <td><a href="https://klavogonki.ru/u/#/211962/">Kenichi</a></td>
-            <td class="right">294760</td>
-            <td><a href="./stat-top-by-total-races.html">Топ</a></td>
-        </tr>
-        <tr>
-            <td>Наибольший рейтинговый уровень</td>
-            <td><a href="https://klavogonki.ru/u/#/111001/">un4given</a></td>
-            <td class="right">116</td>
-            <td><a href="./stat-top-by-rating-level.html">Топ</a></td>
-        </tr>
-        <tr>
-            <td>Больше всего достижений</td>
-            <td><a href="https://klavogonki.ru/u/#/408656/">f0rtuna</a></td>
-            <td class="right">2305</td>
-            <td><a href="./stat-top-by-achievements-count.html">Топ</a></td>
-        </tr>
-        <tr>
-            <td>Больше всего машин в гараже</td>
-            <td><a href="https://klavogonki.ru/u/#/155280/">pashkhan</a></td>
-            <td class="right">45</td>
-            <td><a href="./stat-top-by-cars-count.html">Топ</a></td>
-        </tr>
-        <tr>
-            <td>Больше всего друзей</td>
-            <td><a href="https://klavogonki.ru/u/#/152219/">oligarh83</a></td>
-            <td class="right">3753</td>
-            <td><a href="./stat-top-by-friends-count.html">Топ</a></td>
-        </tr>
-        <tr>
-            <td>Больше всего используемых словарей</td>
-            <td><a href="https://klavogonki.ru/u/#/492643/">Novatin</a></td>
-            <td class="right">2250</td>
-            <td><a href="./stat-top-by-vocabularies-count.html">Топ</a></td>
-        </tr>
-    </table>
-</div>
+    <div class="section">
+        Выполнялись запросы по userId от 1 до 625000.
+    </div>
 
+    <div class="section">
+        <table class="data data-left">
+            <tr>
+                <td>Первый валидный id</td>
+                <td><a href="https://klavogonki.ru/u/#/21/">21</a></td>
+            </tr>
+            <tr>
+                <td>Последний валидный id</td>
+                <td><a href="https://klavogonki.ru/u/#/624450/">624450</a></td>
+            </tr>
+            <tr>
+                <td>Несуществующие пользователи (<code>"err": "invalid user id")</code></td>
+                <td>46442</td>
+            </tr>
+            <tr>
+                <td>Заблокированные пользователи (<code>blocked > 0</code>)</td>
+                <td>49127</td>
+            </tr>
+            <tr>
+                <td>Действующие пользователи, у которых падает <code>/get-index-data</code></td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td>Действующие пользователи с 0 пробега по всем режимам (<code>total_races_count = 0</code>)</td>
+                <td>170621</td>
+            </tr>
+            <tr>
+                <td>Действующие пользователи с хотя бы одним текстом пробега</td>
+                <td><strong>358804</strong></td>
+            </tr>
+            <tr>
+                <td>Всего пользователей в базе</td>
+                <td>625000</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Действующие пользователи, у которых падает <code>/get-index-data</code></h2>
+        <table class="data data-left">
+                <tr>
+                    <td>
+                                Явно ошибка в базе, что-то с достижениями
+                    </td>
+                    <td><code>"err": "mongo refs joining failed: invalid key users.achieves.achieve_id=599bd392df4e4d963a8b4570"</code></td>
+                    <td>
+                            <a href="https://klavogonki.ru/u/#/498727/">Obroten54</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                                Ошибка в базе? <code>/get-summary</code> такой ошибки не выдаёт
+                    </td>
+                    <td><code>"err": "invalid user id"</code></td>
+                    <td>
+                            <a href="https://klavogonki.ru/u/#/161997/">ign66</a>, 
+                            <a href="https://klavogonki.ru/u/#/166851/">errato</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                                Пользователи со скрытым профилем
+                    </td>
+                    <td><code>"err": "hidden profile"</code></td>
+                    <td>
+                            <a href="https://klavogonki.ru/u/#/21/">Artch</a>, 
+                            <a href="https://klavogonki.ru/u/#/216308/">norkas</a>, 
+                            <a href="https://klavogonki.ru/u/#/324864/">Клавобот</a>
+                    </td>
+                </tr>
+        </table>
+    </div>
+
+    <div class="section" id="section-players_by_rank">
+        <h2>Действующие игроки по рангам</h2>
+
+        <div class="flexWrap">
+            <canvas id="playersByRank-1-race-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-1-race-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-1-race-table-container"></div>
+        </div>
+
+        <div class="flexWrap">
+            <canvas id="playersByRank-10-races-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-10-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-10-races-table-container"></div>
+        </div>
+
+        <div class="flexWrap">
+            <canvas id="playersByRank-100-races-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-100-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-100-races-table-container"></div>
+        </div>
+
+        <div class="flexWrap">
+            <canvas id="playersByRank-1000-races-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-1000-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-1000-races-table-container"></div>
+        </div>
+
+        <div class="flexWrap">
+            <canvas id="playersByRank-10000-races-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-10000-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-10000-races-table-container"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Агрегированные данные по всем игрокам</h2>
+        <ul>
+            <li>Всего текстов набрано всеми игроками: 127 122 127</li>
+            <li>Всего машин у всех игроков: 598 128</li>
+        </ul>
+    </div>
+
+
+    <div class="section">
+        <h2>Рекорды (только топ-1)</h2>
+        <table class="data data-left">
+            <tr>
+                <td>Наибольший рекорд в &laquo;Обычном&raquo;</td>
+                    <td class="extracyber">
+                        <span class="login">ant1k</span>
+                        <a href="https://klavogonki.ru/u/#/146269/" target="_blank" rel="noopener noreferrer">
+                            <img src="img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">1070</td>
+                <td><a href="./stat-top-by-best-speed-page-1.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Наибольший общий пробег</td>
+                    <td class="superman">
+                        <span class="login">Kenichi</span>
+                        <a href="https://klavogonki.ru/u/#/211962/" target="_blank" rel="noopener noreferrer">
+                            <img src="img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">294760</td>
+                <td><a href="./stat-top-by-total-races.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Наибольший рейтинговый уровень</td>
+                    <td class="cyberracer">
+                        <span class="login">un4given</span>
+                        <a href="https://klavogonki.ru/u/#/111001/" target="_blank" rel="noopener noreferrer">
+                            <img src="img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">116</td>
+                <td><a href="./stat-top-by-rating-level.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Больше всего достижений</td>
+                    <td class="pro">
+                        <span class="login">f0rtuna</span>
+                        <a href="https://klavogonki.ru/u/#/408656/" target="_blank" rel="noopener noreferrer">
+                            <img src="img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">2305</td>
+                <td><a href="./stat-top-by-achievements-count.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Больше всего машин в гараже</td>
+                    <td class="superman">
+                        <span class="login">pashkhan</span>
+                        <a href="https://klavogonki.ru/u/#/155280/" target="_blank" rel="noopener noreferrer">
+                            <img src="img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">45</td>
+                <td><a href="./stat-top-by-cars-count.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Больше всего друзей</td>
+                    <td class="maniac">
+                        <span class="login">oligarh83</span>
+                        <a href="https://klavogonki.ru/u/#/152219/" target="_blank" rel="noopener noreferrer">
+                            <img src="img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">3753</td>
+                <td><a href="./stat-top-by-friends-count.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Больше всего используемых словарей</td>
+                    <td class="maniac">
+                        <span class="login">Novatin</span>
+                        <a href="https://klavogonki.ru/u/#/492643/" target="_blank" rel="noopener noreferrer">
+                            <img src="img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">2250</td>
+                <td><a href="./stat-top-by-vocabularies-count.html">Топ</a></td>
+            </tr>
+        </table>
+    </div>
 </main>
+
 <!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous"></script>
-<script src="./js/stats-data.js"></script>
-<script src="./js/stats.js"></script>
+<script src="./js/players-by-rank-chart.js"></script>
+<script>
+    window.addEventListener('load', function () {
 
-<!-- todo: make a web-component that creates a link to user profile by playerId, login (and probably rank) -->
+        const playersByRankWithAtLeast1Race = [{"rankLevel":1,"rankName":"novice","rankDisplayName":"Новичок","playersCount":78118},{"rankLevel":2,"rankName":"amateur","rankDisplayName":"Любитель","playersCount":106686},{"rankLevel":3,"rankName":"cabman","rankDisplayName":"Таксист","playersCount":98285},{"rankLevel":4,"rankName":"pro","rankDisplayName":"Профи","playersCount":50124},{"rankLevel":5,"rankName":"racer","rankDisplayName":"Гонщик","playersCount":19690},{"rankLevel":6,"rankName":"maniac","rankDisplayName":"Маньяк","playersCount":4153},{"rankLevel":7,"rankName":"superman","rankDisplayName":"Супермен","playersCount":1298},{"rankLevel":8,"rankName":"cyberracer","rankDisplayName":"Кибергонщик","playersCount":363},{"rankLevel":9,"rankName":"extracyber","rankDisplayName":"Экстракибер","playersCount":87}];
+        const playersByRankWithAtLeast10Races = [{"rankLevel":1,"rankName":"novice","rankDisplayName":"Новичок","playersCount":19283},{"rankLevel":2,"rankName":"amateur","rankDisplayName":"Любитель","playersCount":46547},{"rankLevel":3,"rankName":"cabman","rankDisplayName":"Таксист","playersCount":66119},{"rankLevel":4,"rankName":"pro","rankDisplayName":"Профи","playersCount":41841},{"rankLevel":5,"rankName":"racer","rankDisplayName":"Гонщик","playersCount":17990},{"rankLevel":6,"rankName":"maniac","rankDisplayName":"Маньяк","playersCount":4046},{"rankLevel":7,"rankName":"superman","rankDisplayName":"Супермен","playersCount":1268},{"rankLevel":8,"rankName":"cyberracer","rankDisplayName":"Кибергонщик","playersCount":359},{"rankLevel":9,"rankName":"extracyber","rankDisplayName":"Экстракибер","playersCount":86}];
+        const playersByRankWithAtLeast100Races = [{"rankLevel":1,"rankName":"novice","rankDisplayName":"Новичок","playersCount":3549},{"rankLevel":2,"rankName":"amateur","rankDisplayName":"Любитель","playersCount":7481},{"rankLevel":3,"rankName":"cabman","rankDisplayName":"Таксист","playersCount":17835},{"rankLevel":4,"rankName":"pro","rankDisplayName":"Профи","playersCount":18271},{"rankLevel":5,"rankName":"racer","rankDisplayName":"Гонщик","playersCount":11129},{"rankLevel":6,"rankName":"maniac","rankDisplayName":"Маньяк","playersCount":3238},{"rankLevel":7,"rankName":"superman","rankDisplayName":"Супермен","playersCount":1090},{"rankLevel":8,"rankName":"cyberracer","rankDisplayName":"Кибергонщик","playersCount":323},{"rankLevel":9,"rankName":"extracyber","rankDisplayName":"Экстракибер","playersCount":83}];
+        const playersByRankWithAtLeast1000Races = [{"rankLevel":1,"rankName":"novice","rankDisplayName":"Новичок","playersCount":401},{"rankLevel":2,"rankName":"amateur","rankDisplayName":"Любитель","playersCount":670},{"rankLevel":3,"rankName":"cabman","rankDisplayName":"Таксист","playersCount":2731},{"rankLevel":4,"rankName":"pro","rankDisplayName":"Профи","playersCount":5008},{"rankLevel":5,"rankName":"racer","rankDisplayName":"Гонщик","playersCount":4486},{"rankLevel":6,"rankName":"maniac","rankDisplayName":"Маньяк","playersCount":1886},{"rankLevel":7,"rankName":"superman","rankDisplayName":"Супермен","playersCount":727},{"rankLevel":8,"rankName":"cyberracer","rankDisplayName":"Кибергонщик","playersCount":242},{"rankLevel":9,"rankName":"extracyber","rankDisplayName":"Экстракибер","playersCount":71}];
+        const playersByRankWithAtLeast10000Races = [{"rankLevel":1,"rankName":"novice","rankDisplayName":"Новичок","playersCount":18},{"rankLevel":2,"rankName":"amateur","rankDisplayName":"Любитель","playersCount":13},{"rankLevel":3,"rankName":"cabman","rankDisplayName":"Таксист","playersCount":64},{"rankLevel":4,"rankName":"pro","rankDisplayName":"Профи","playersCount":351},{"rankLevel":5,"rankName":"racer","rankDisplayName":"Гонщик","playersCount":742},{"rankLevel":6,"rankName":"maniac","rankDisplayName":"Маньяк","playersCount":630},{"rankLevel":7,"rankName":"superman","rankDisplayName":"Супермен","playersCount":325},{"rankLevel":8,"rankName":"cyberracer","rankDisplayName":"Кибергонщик","playersCount":126},{"rankLevel":9,"rankName":"extracyber","rankDisplayName":"Экстракибер","playersCount":44}];
+
+        const playersByRankWithAtLeast1RaceChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast1Race,
+            label: 'Действующие игроки по рангам (общий пробег >= 1 текста)'
+        });
+        playersByRankWithAtLeast1RaceChart.append('playersByRank-1-race-barChart-canvas', 'playersByRank-1-race-doughnutChart-canvas', 'playersByRank-1-race-table-container');
+
+        const playersByRankWithAtLeast10RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast10Races,
+            label: 'Действующие игроки по рангам (общий пробег >= 10 текстов)'
+        });
+        playersByRankWithAtLeast10RacesChart.append('playersByRank-10-races-barChart-canvas', 'playersByRank-10-races-doughnutChart-canvas', 'playersByRank-10-races-table-container');
+
+        const playersByRankWithAtLeast100RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast100Races,
+            label: 'Действующие игроки по рангам (общий пробег >= 100 текстов)'
+        });
+        playersByRankWithAtLeast100RacesChart.append('playersByRank-100-races-barChart-canvas', 'playersByRank-100-races-doughnutChart-canvas', 'playersByRank-100-races-table-container');
+
+        const playersByRankWithAtLeast1000RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast1000Races,
+            label: 'Действующие игроки по рангам (общий пробег >= 1000 текстов)'
+        });
+        playersByRankWithAtLeast1000RacesChart.append('playersByRank-1000-races-barChart-canvas', 'playersByRank-1000-races-doughnutChart-canvas', 'playersByRank-1000-races-table-container');
+
+        const playersByRankWithAtLeast10000RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast10000Races,
+            label: 'Действующие игроки по рангам (общий пробег >= 10000 текстов)'
+        });
+        playersByRankWithAtLeast10000RacesChart.append('playersByRank-10000-races-barChart-canvas', 'playersByRank-10000-races-doughnutChart-canvas', 'playersByRank-10000-races-table-container');
+    });
+</script>
+
 </body>
-</html>

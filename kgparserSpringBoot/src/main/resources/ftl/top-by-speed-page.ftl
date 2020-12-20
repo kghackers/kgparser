@@ -25,7 +25,6 @@
     <div class="section" id="table-container">
 
         <table class="data">
-            <#-- todo: headers-->
             <tr>
                 <th>#</th>
                 <th>Логин</th>
@@ -39,15 +38,12 @@
                 <th>Машин</th>
             </tr>
 
+            <#import "./player-td.ftl" as ptd>
+
             <#list players as player>
                 <tr>
                     <td class="right">${player.orderNumber}</td>
-                    <td class="${player.rank}">
-                        <span class="login">${player.login}</span>
-                        <a href="https://klavogonki.ru/u/#/${player.playerId}/" target="_blank" rel="noopener noreferrer">
-                            <img src="img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
-                        </a>
-                    </td>
+                    <@ptd.playerTd player=player/>
                     <td class="right">${(player.bestSpeed)!"&mdash;"}</td> <#-- BestSpeed can be null -->
                     <td class="right">${player.totalRacesCount}</td>
                     <#-- Java 8 Date/Time format does not work in Freemarker -->

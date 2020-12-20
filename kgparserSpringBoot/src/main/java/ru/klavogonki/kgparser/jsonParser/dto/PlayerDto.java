@@ -56,4 +56,6 @@ public class PlayerDto { // object to use in Freemarker templates
     private Integer vocabulariesCount;
 
     private Integer carsCount;
+
+    private String profileLink;
 }

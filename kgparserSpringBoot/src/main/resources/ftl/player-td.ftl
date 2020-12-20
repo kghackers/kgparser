@@ -1,0 +1,9 @@
+<#-- expects PlayerEntity as player, or something with same used properties -->
+<#macro playerTd player>
+                    <td class="${player.rank}">
+                        <span class="login">${player.login}</span>
+                        <a href="${player.profileLink}" target="_blank" rel="noopener noreferrer">
+                            <img src="img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+</#macro>

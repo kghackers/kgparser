@@ -5,10 +5,11 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
 import lombok.extern.log4j.Log4j2;
-import ru.klavogonki.kgparser.export.TopBySpeedExporter;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,28 +31,51 @@ public abstract class FreemarkerTemplate {
     public void export(String filePath) {
         templateData.put(LINKS_KEY, new Links());
 
-        exportFreemarker(getTemplatePath(), filePath, templateData);
+        exportFreemarkerToFile(getTemplatePath(), filePath, templateData);
     }
 
-    protected static void exportFreemarker(
+    public String exportToString() {
+        templateData.put(LINKS_KEY, new Links());
+
+        return exportFreemarkerToString(getTemplatePath(), templateData);
+    }
+
+    protected static void exportFreemarkerToFile(
         final String ftlTemplate,
         final String filePath,
         final Map<String, Object> templateData
     ) {
         try (FileWriter out = new FileWriter(filePath)) {
-            Configuration cfg = new Configuration(new Version(FREEMARKER_VERSION));
-
-            cfg.setClassForTemplateLoading(TopBySpeedExporter.class, "/");
-            cfg.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
-
-            Template template = cfg.getTemplate(ftlTemplate);
-
-            template.process(templateData, out);
-
-            out.flush();
+            export(ftlTemplate, templateData, out);
         }
         catch (IOException | TemplateException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    protected static String exportFreemarkerToString(
+        final String ftlTemplate,
+        final Map<String, Object> templateData
+    ) {
+        try (Writer out = new StringWriter()) {
+            export(ftlTemplate, templateData, out);
+            return out.toString();
+        }
+        catch (IOException | TemplateException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void export(final String ftlTemplate, final Map<String, Object> templateData, final Writer out) throws IOException, TemplateException {
+        Configuration configuration = new Configuration(new Version(FREEMARKER_VERSION));
+
+        configuration.setClassForTemplateLoading(FreemarkerTemplate.class, "/");
+        configuration.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
+
+        Template template = configuration.getTemplate(ftlTemplate);
+
+        template.process(templateData, out);
+
+        out.flush();
     }
 }

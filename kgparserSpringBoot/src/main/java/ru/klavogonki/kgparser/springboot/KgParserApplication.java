@@ -52,23 +52,23 @@ public class KgParserApplication implements CommandLineRunner {
 		ExportContext context = new ExportContext();
 		context.webRootDir = "C:/java/kgparser/kgparserWeb/src/main/webapp/";
 		context.minPlayerId = 1;
-		context.minPlayerId = 625000;
+		context.maxPlayerId = 625000;
 		context.dataDownloadStartDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-08 02:39:07");
 		context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-09 16:28:01");
 
 		// todo: select mode (what to do) by arguments
 
-/*
 		indexPageExporter.export(context);
 		if (true) {
 			return;
 		}
-*/
 
+/*
 		topBySpeedExporter.export(context);
 		if (true) {
 			return;
 		}
+*/
 
 
 		// todo: pass a path to a json file with config instead
