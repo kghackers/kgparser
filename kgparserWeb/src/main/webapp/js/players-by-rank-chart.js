@@ -1,3 +1,125 @@
+class PlayersByRankChartSwitcher {
+    static SPACE_SEPARATOR = '&nbsp;&nbsp;&nbsp;';
+    static COMBINED_CHARTS = 'COMBINED_CHARTS';
+
+    constructor(config) {
+        this.config = config;
+    }
+
+    append(containerId) {
+        let switcherHtml = '';
+
+        switcherHtml += `Общий пробег${PlayersByRankChartSwitcher.SPACE_SEPARATOR}`
+
+        this.config.containers.forEach(container => {
+            switcherHtml += this.getPageNumberHtml(containerId, container.minTotalRacesCount);
+        });
+
+        // append "Show all combined" link
+        switcherHtml += this.getCombinedHtml(containerId);
+
+        document.getElementById(containerId).innerHTML = switcherHtml;
+        this.bindLinks(containerId);
+        this.bindShowAllLink(containerId);
+    }
+
+    getPageNumberHtml(containerId, minTotalRacesCount) {
+        if (minTotalRacesCount === this.config.currentChart) {
+            return `${minTotalRacesCount}+${PlayersByRankChartSwitcher.SPACE_SEPARATOR}`;
+        }
+
+        const linkId = this.getLinkId(containerId, minTotalRacesCount);
+
+        return this.getSwitchLink(linkId, minTotalRacesCount);
+    }
+
+    getCombinedHtml(containerId) {
+        if (this.config.currentChart === PlayersByRankChartSwitcher.COMBINED_CHARTS) {
+            return `Все сразу`;
+        }
+
+        const linkId = this.getLinkId(containerId, PlayersByRankChartSwitcher.COMBINED_CHARTS);
+
+        return `<a href="javascript:void(0);" id="${linkId}">Все сразу</a>`; // no separator on the last link
+    }
+
+    getSwitchLink(linkId, minTotalRacesCount) {
+        return `<a href="javascript:void(0);" id="${linkId}">${minTotalRacesCount}+</a>${PlayersByRankChartSwitcher.SPACE_SEPARATOR}`;
+    }
+
+    getLinkId(containerId, minTotalRacesCount) {
+        return `${containerId}-playersByRankChartSwitcher-${minTotalRacesCount}-link`;
+    }
+
+    bindLinks(containerId) {
+        this.config.containers.forEach(container => {
+            if (container.minTotalRacesCount === this.config.currentChart) { // current position is not a link
+                return;
+            }
+
+            const linkId = this.getLinkId(containerId, container.minTotalRacesCount);
+            const link = document.getElementById(linkId);
+
+            const switcher = this;
+
+            link.onclick = function () {
+                switcher.config.currentChart = container.minTotalRacesCount;
+                switcher.append(containerId);
+                switcher.switchToCurrentContainer();
+            }
+        });
+    }
+
+    bindShowAllLink(containerId) {
+        // Bind "Show all" link
+        if (PlayersByRankChartSwitcher.COMBINED_CHARTS === this.config.currentChart) { // current position is not a link
+            return;
+        }
+
+        const linkId = this.getLinkId(containerId, PlayersByRankChartSwitcher.COMBINED_CHARTS);
+        const link = document.getElementById(linkId);
+
+        const switcher = this;
+
+        link.onclick = function () {
+            switcher.config.currentChart = PlayersByRankChartSwitcher.COMBINED_CHARTS;
+            switcher.append(containerId);
+            switcher.switchToCurrentContainer();
+        }
+    }
+
+    switchToCurrentContainer() {
+        if (this.config.currentChart === PlayersByRankChartSwitcher.COMBINED_CHARTS) {
+            // hide single container, show combined container
+            this.hideContainer(this.config.singleChartContainerId);
+            this.showContainer(this.config.combinedChartsContainerId);
+        }
+        else {
+            // hide combined container, show single container
+            this.hideContainer(this.config.combinedChartsContainerId);
+            this.showContainer(this.config.singleChartContainerId);
+        }
+
+        // single chart is updated with the different data
+        this.config.containers.forEach(container => {
+            if (container.minTotalRacesCount === this.config.currentChart) {
+                this.config.singleChart.update({
+                    data: container.data,
+                    label: container.label
+                });
+            }
+        });
+    }
+
+    hideContainer(containerId) {
+        document.getElementById(containerId).classList.add('hidden');
+    }
+
+    showContainer(containerId) {
+        document.getElementById(containerId).classList.remove('hidden');
+    }
+}
+
 class PlayersByRankChart {
     static RANK_COLORS = {
         novice: '#8D8D8D',
@@ -25,21 +147,35 @@ class PlayersByRankChart {
         this.appendTable(tableContainerId);
     }
 
+    update(config) {
+        // console.log('update started. Config:' + JSON.stringify(config));
+
+        this.config = config;
+        this.fillChartConfigs();
+
+        // update title
+        this.barChart.options.title.text = this.config.label;
+        this.doughnutChart.options.title.text = this.config.label;
+
+        // update data
+        this.barChart.config.data = this.getChartData(this.config);
+        this.doughnutChart.config.data = this.getChartData(this.config);
+
+        // reload same chart with new parameters
+        this.barChart.update();
+        this.doughnutChart.update();
+
+        this.appendTable(this.tableContainerId);
+
+        // console.log('update executed. I am: ' + this.config.label);
+    }
+
     fillChartConfigs() {
-        const playersByRankChartLabels = this.config.data.map(playersByRankCount => playersByRankCount.rankDisplayName); // horizontal axes
-        const playersByRankPlayersCount = this.config.data.map(playersByRankCount => playersByRankCount.playersCount); // data
-        const playersByRankBackgroundColors = this.config.data.map(playersByRankCount => PlayersByRankChart.RANK_COLORS[playersByRankCount.rankName]); // background colors according to ranks
+        const data = this.getChartData(this.config);
 
         this.barChartConfig = {
             type: 'horizontalBar',
-            data: {
-                label: this.config.label,
-                labels: playersByRankChartLabels,
-                datasets: [{
-                    data: playersByRankPlayersCount,
-                    backgroundColor: playersByRankBackgroundColors
-                }],
-            },
+            data: data,
             options: {
                 responsive: false,
                 // responsive: true, // responsive: true is necessary when 2 diagrams horizontally, especially for big screens
@@ -58,25 +194,43 @@ class PlayersByRankChart {
         this.doughnutChartConfig = Object.assign({}, this.barChartConfig, { type: 'doughnut'});
     }
 
+    getChartData(config) {
+        const playersByRankChartLabels = config.data.map(playersByRankCount => playersByRankCount.rankDisplayName); // horizontal axes
+        const playersByRankPlayersCount = config.data.map(playersByRankCount => playersByRankCount.playersCount); // data
+        const playersByRankBackgroundColors = config.data.map(playersByRankCount => PlayersByRankChart.RANK_COLORS[playersByRankCount.rankName]); // background colors according to ranks
+
+        return {
+            label: config.label,
+            labels: playersByRankChartLabels,
+            datasets: [{
+                data: playersByRankPlayersCount,
+                backgroundColor: playersByRankBackgroundColors
+            }],
+        };
+    }
+
     appendBarChart(canvasId) {
+        this.barChartContainerId = canvasId;
         this.barChart = new Chart(canvasId, this.barChartConfig);
     }
 
     appendDoughnutChart(canvasId) {
+        this.doughnutChartContainerId = canvasId;
         this.doughnutChart = new Chart(canvasId, this.doughnutChartConfig);
     }
 
     appendTable(containerId) {
+        this.tableContainerId = containerId;
+
         const totalPlayers = this.config.data
             .map(playersByRankCount => playersByRankCount.playersCount)
             .reduce((prev, next) => prev + next);
 
-        let playersByRankTable = '<table class="data">';
+        let playersByRankTable = '<table class="data data-no-header">';
 
         // rank rows
         this.config.data.forEach(playersByRankCount => {
             const percentageOfTotalPlayers = (playersByRankCount.playersCount / totalPlayers * 100)
-
             const percentageOfTotalPlayersString = parseFloat(
                 percentageOfTotalPlayers.toFixed(2)
             )

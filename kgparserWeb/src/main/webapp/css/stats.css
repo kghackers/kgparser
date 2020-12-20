@@ -68,7 +68,7 @@ table.data-left { /* for main page, tables should be left, not centered */
 
 table.data th {
     position: sticky;
-    top: 0em;
+    top: 0;
     text-align: center;
     padding: 5px;
 
@@ -78,6 +78,10 @@ table.data th {
 
     background-color: #e0e0e0;
     font-weight: normal;
+}
+
+table.data-no-header tr:first-child td { /* for tables with no header, provide a top-border in the first row */
+    border-top: 1px solid gray;
 }
 
 /* for border-collapse: separate, apply left border only for the leftmost cells */
@@ -110,7 +114,7 @@ table.data tr:nth-child(even) {
 }
 
 .left {
-    text-align: left;
+    text-align: left !important;
 }
 
 .center {
