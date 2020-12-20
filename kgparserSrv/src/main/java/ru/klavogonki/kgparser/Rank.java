@@ -111,6 +111,10 @@ public enum Rank
 		}
 	}
 
+	public static String getDisplayName(int level) {
+		return getDisplayName(Rank.getRank(level));
+	}
+
 	/**
 	 * @param rank ранг
 	 * @return русское название ранга для отображения

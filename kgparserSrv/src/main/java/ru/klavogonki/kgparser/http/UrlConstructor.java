@@ -14,9 +14,14 @@ import ru.klavogonki.kgparser.Player;
 public class UrlConstructor
 {
 	public static final String DOMAIN_NAME = "http://klavogonki.ru";
+	public static final String DOMAIN_NAME_HTTPS = "https://klavogonki.ru";
 
 	public static String getLink(String relativeUrl, Object... relativeUrlArguments) {
 		return DOMAIN_NAME + String.format(relativeUrl, relativeUrlArguments);
+	}
+
+	public static String getLinkHttps(String relativeUrl, Object... relativeUrlArguments) {
+		return DOMAIN_NAME_HTTPS + String.format(relativeUrl, relativeUrlArguments);
 	}
 
 	// web page links
@@ -34,7 +39,7 @@ public class UrlConstructor
 	 * @return ссылка на сводку игрока (корневая страница пользователя, саммари)
 	 */
 	public static String userProfileLink(final int playerId) {
-		return getLink("/u/#/%d/", playerId);
+		return getLinkHttps("/u/#/%d/", playerId);
 	}
 
 	/**

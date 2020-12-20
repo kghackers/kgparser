@@ -5,15 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.klavogonki.kgparser.freemarker.IndexPageTemplate;
 import ru.klavogonki.kgparser.freemarker.PageUrls;
+import ru.klavogonki.kgparser.http.UrlConstructor;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerRepository;
+import ru.klavogonki.kgparser.util.DateUtils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Component
 public class IndexPageExporter implements DataExporter {
+
+    private static final int EXAMPLE_PLAYER_ID = 242585; // nosferatum :)
 
     @Autowired
     private PlayerRepository playerRepository;
@@ -35,6 +41,12 @@ public class IndexPageExporter implements DataExporter {
         List<PlayerEntity> playersWithGetIndexDataError = playerRepository.findByGetSummaryErrorIsNullAndGetIndexDataErrorIsNotNull();
         logger.debug("Players with error on /get-index-data count: {}", playersWithGetIndexDataError.size());
         logger.debug("Players with error on /get-index-data: {}", playersWithGetIndexDataError);
+
+        Map<String, List<PlayerEntity>> playersWithIndexDataErrorGroupedByError = playersWithGetIndexDataError
+            .stream()
+            .collect(Collectors.groupingBy(PlayerEntity::getGetIndexDataError));
+
+        logger.debug("Players with error on /get-index-data grouped by error: {}", playersWithIndexDataErrorGroupedByError);
 
         Integer actualPlayersWithoutRacesCount = playerRepository.countByGetSummaryErrorIsNullAndGetIndexDataErrorIsNullAndBlockedEqualsAndTotalRacesCountEquals(0, 0);
         logger.debug("Actual players with no total races: {}", actualPlayersWithoutRacesCount);
@@ -98,14 +110,26 @@ public class IndexPageExporter implements DataExporter {
         String indexPageFilePath = PageUrls.getIndexPageFilePath(context.webRootDir);
 
         new IndexPageTemplate()
-            // todo: pass config (context) fields
+            .minPlayerId(context.minPlayerId)
+            .maxPlayerId(context.maxPlayerId)
+            .dataDownloadStartDate(DateUtils.formatDateTimeForUi(context.dataDownloadStartDate))
+            .dataDownloadEndDate(DateUtils.formatDateTimeForUi(context.dataDownloadEndDate))
+
+            // example player
+            .examplePlayerId(EXAMPLE_PLAYER_ID)
+            .examplePlayerProfileLink(UrlConstructor.userProfileLink(EXAMPLE_PLAYER_ID))
+            .examplePlayerGetSummaryUrl(UrlConstructor.getSummary(EXAMPLE_PLAYER_ID))
+            .examplePlayerGetIndexDataUrl(UrlConstructor.getIndexData(EXAMPLE_PLAYER_ID))
 
             // global players metrics
             .minExistingPlayerId(minExistingPlayerId)
+            .minExistingPlayerProfileLink(UrlConstructor.userProfileLink(minExistingPlayerId))
             .maxExistingPlayerId(maxExistingPlayerId)
+            .maxExistingPlayerProfileLink(UrlConstructor.userProfileLink(maxExistingPlayerId))
             .nonExistingPlayersCount(nonExistingPlayersCount)
             .blockedPlayersCount(blockedPlayersCount)
             .playersWithGetIndexDataError(playersWithGetIndexDataError)
+            .playersWithIndexDataErrorGroupedByError(playersWithIndexDataErrorGroupedByError)
             .actualPlayersWithoutRacesCount(actualPlayersWithoutRacesCount)
             .actualPlayersWithAtLeast1RaceCount(actualPlayersWithAtLeast1RaceCount)
             .totalUsersInDatabase(totalUsersInDatabase)
@@ -123,7 +147,7 @@ public class IndexPageExporter implements DataExporter {
 
             // top 1
             .top1PlayerByTotalRacesCount(top1PlayerByTotalRacesCount)
-            .top1PlayerByBestSpeed(top1PlayerByTotalRacesCount)
+            .top1PlayerByBestSpeed(top1PlayerByBestSpeed)
             .top1PlayerByRatingLevel(top1PlayerByRatingLevel)
             .top1PlayerByAchievementsCount(top1PlayerByAchievementsCount)
             .top1PlayerByFriendsCount(top1PlayerByFriendsCount)

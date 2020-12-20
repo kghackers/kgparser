@@ -5,20 +5,35 @@ import ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("unchecked")
 @Log4j2
 public class IndexPageTemplate extends FreemarkerTemplate {
 
     // todo: keys from config: minPlayerId, maxPlayerId, exportStartDate, exportEndDate
+    // fields from ExportContext
+    private static final String MIN_PLAYER_ID_KEY = "minPlayerId";
+    private static final String MAX_PLAYER_ID_KEY = "maxPlayerId";
+    private static final String DATA_DOWNLOAD_START_DATE_KEY = "dataDownloadStartDate";
+    private static final String DATA_DOWNLOAD_END_DATE_KEY = "dataDownloadEndDate";
+
+    // example player
+    private static final String EXAMPLE_PLAYER_ID_KEY = "examplePlayerId";
+    private static final String EXAMPLE_PLAYER_PROFILE_LINK_KEY = "examplePlayerProfileLink";
+    private static final String EXAMPLE_PLAYER_GET_SUMMARY_URL_KEY = "examplePlayerGetSummaryUrl";
+    private static final String EXAMPLE_PLAYER_GET_INDEX_DATA_URL_KEY = "examplePlayerGetIndexDataUrl";
 
     // global players metrics
     private static final String MIN_EXISTING_PLAYER_ID_KEY = "minExistingPlayerId";
+    private static final String MIN_EXISTING_PLAYER_PROFILE_LINK_KEY = "minExistingPlayerProfileLink";
     private static final String MAX_EXISTING_PLAYER_ID_KEY = "maxExistingPlayerId";
+    private static final String MAX_EXISTING_PLAYER_PROFILE_LINK_KEY = "maxExistingPlayerProfileLink";
 
     private static final String NON_EXISTING_PLAYER_COUNT_KEY = "nonExistingPlayersCount";
     private static final String BLOCKED_PLAYERS_COUNT_KEY = "blockedPlayersCount";
     private static final String PLAYERS_WITH_GET_INDEX_DATA_ERROR_KEY = "playersWithGetIndexDataError";
+    private static final String PLAYERS_WITH_GET_INDEX_DATA_ERROR_GROUPED_BY_ERROR_KEY = "playersWithIndexDataErrorGroupedByError";
     private static final String ACTUAL_PLAYERS_WITHOUT_RACES_COUNT_KEY = "actualPlayersWithoutRacesCount";
     private static final String ACTUAL_PLAYERS_WITH_AT_LEAST_1_RACE_COUNT_KEY = "actualPlayersWithAtLeast1RaceCount";
     private static final String TOTAL_USERS_IN_DATABASE_KEY = "totalUsersInDatabase";
@@ -48,6 +63,79 @@ public class IndexPageTemplate extends FreemarkerTemplate {
         return "ftl/index-page.ftl";
     }
 
+
+    public IndexPageTemplate minPlayerId(int minPlayerId) {
+        templateData.put(MIN_PLAYER_ID_KEY, minPlayerId);
+        return this;
+    }
+
+    public int getMinPlayerId() {
+        return (int) templateData.get(MIN_PLAYER_ID_KEY);
+    }
+
+    public IndexPageTemplate maxPlayerId(int maxPlayerId) {
+        templateData.put(MAX_PLAYER_ID_KEY, maxPlayerId);
+        return this;
+    }
+
+    public int getMaxPlayerId() {
+        return (int) templateData.get(MAX_PLAYER_ID_KEY);
+    }
+
+    public IndexPageTemplate dataDownloadStartDate(String dataDownloadStartDate) {
+        templateData.put(DATA_DOWNLOAD_START_DATE_KEY, dataDownloadStartDate);
+        return this;
+    }
+
+    public String getDataDownloadStartDate() {
+        return (String) templateData.get(DATA_DOWNLOAD_START_DATE_KEY);
+    }
+
+    public IndexPageTemplate dataDownloadEndDate(String dataDownloadEndDate) {
+        templateData.put(DATA_DOWNLOAD_END_DATE_KEY, dataDownloadEndDate);
+        return this;
+    }
+
+    public String getDataDownloadEndDate() {
+        return (String) templateData.get(DATA_DOWNLOAD_END_DATE_KEY);
+    }
+
+    public IndexPageTemplate examplePlayerId(int examplePlayerId) {
+        templateData.put(EXAMPLE_PLAYER_ID_KEY, examplePlayerId);
+        return this;
+    }
+
+    public int getExamplePlayerId() {
+        return (int) templateData.get(EXAMPLE_PLAYER_ID_KEY);
+    }
+
+    public IndexPageTemplate examplePlayerProfileLink(String examplePlayerProfileLink) {
+        templateData.put(EXAMPLE_PLAYER_PROFILE_LINK_KEY, examplePlayerProfileLink);
+        return this;
+    }
+
+    public String getExamplePlayerProfileLink() {
+        return (String) templateData.get(EXAMPLE_PLAYER_PROFILE_LINK_KEY);
+    }
+
+    public IndexPageTemplate examplePlayerGetSummaryUrl(String examplePlayerGetSummaryUrl) {
+        templateData.put(EXAMPLE_PLAYER_GET_SUMMARY_URL_KEY, examplePlayerGetSummaryUrl);
+        return this;
+    }
+
+    public String getExamplePlayerGetSummaryUrl() {
+        return (String) templateData.get(EXAMPLE_PLAYER_GET_SUMMARY_URL_KEY);
+    }
+
+    public IndexPageTemplate examplePlayerGetIndexDataUrl(String examplePlayerGetIndexDataUrl) {
+        templateData.put(EXAMPLE_PLAYER_GET_INDEX_DATA_URL_KEY, examplePlayerGetIndexDataUrl);
+        return this;
+    }
+
+    public String getExamplePlayerGetIndexDataUrl() {
+        return (String) templateData.get(EXAMPLE_PLAYER_GET_INDEX_DATA_URL_KEY);
+    }
+
     public IndexPageTemplate minExistingPlayerId(int minExistingPlayerId) {
         templateData.put(MIN_EXISTING_PLAYER_ID_KEY, minExistingPlayerId);
         return this;
@@ -57,6 +145,15 @@ public class IndexPageTemplate extends FreemarkerTemplate {
         return (int) templateData.get(MIN_EXISTING_PLAYER_ID_KEY);
     }
 
+    public IndexPageTemplate minExistingPlayerProfileLink(String minExistingPlayerProfileLink) {
+        templateData.put(MIN_EXISTING_PLAYER_PROFILE_LINK_KEY, minExistingPlayerProfileLink);
+        return this;
+    }
+
+    public String getMinExistingPlayerProfileLink() {
+        return (String) templateData.get(MIN_EXISTING_PLAYER_PROFILE_LINK_KEY);
+    }
+
     public IndexPageTemplate maxExistingPlayerId(int maxExistingPlayerId) {
         templateData.put(MAX_EXISTING_PLAYER_ID_KEY, maxExistingPlayerId);
         return this;
@@ -64,6 +161,15 @@ public class IndexPageTemplate extends FreemarkerTemplate {
 
     public int getMaxExistingPlayerId() {
         return (int) templateData.get(MAX_EXISTING_PLAYER_ID_KEY);
+    }
+
+    public IndexPageTemplate maxExistingPlayerProfileLink(String maxExistingPlayerProfileLink) {
+        templateData.put(MAX_EXISTING_PLAYER_PROFILE_LINK_KEY, maxExistingPlayerProfileLink);
+        return this;
+    }
+
+    public String getMaxExistingPlayerProfileLink() {
+        return (String) templateData.get(MAX_EXISTING_PLAYER_PROFILE_LINK_KEY);
     }
 
     public IndexPageTemplate nonExistingPlayersCount(int nonExistingPlayersCount) {
@@ -91,6 +197,15 @@ public class IndexPageTemplate extends FreemarkerTemplate {
 
     public List<PlayerEntity> getPlayersWithGetIndexDataError() {
         return (List<PlayerEntity>) templateData.get(BLOCKED_PLAYERS_COUNT_KEY);
+    }
+
+    public IndexPageTemplate playersWithIndexDataErrorGroupedByError(Map<String, List<PlayerEntity>> playersWithIndexDataErrorGroupedByError) {
+        templateData.put(PLAYERS_WITH_GET_INDEX_DATA_ERROR_GROUPED_BY_ERROR_KEY, playersWithIndexDataErrorGroupedByError);
+        return this;
+    }
+
+    public Map<String, List<PlayerEntity>> getPlayersWithIndexDataErrorGroupedByError() {
+        return (Map<String, List<PlayerEntity>>) templateData.get(PLAYERS_WITH_GET_INDEX_DATA_ERROR_GROUPED_BY_ERROR_KEY);
     }
 
     public IndexPageTemplate actualPlayersWithoutRacesCount(int actualPlayersWithoutRacesCount) {
