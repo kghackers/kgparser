@@ -137,8 +137,15 @@ class TopTable {
                 // see https://www.w3schools.com/howto/howto_js_add_class.asp
                 parentTd.classList.add('selected');
 
+                // this scroll right to the table row clashed with the sticky header
                 // https://stackoverflow.com/a/38249954/8534088
-                parentTd.scrollIntoView(true);
+                // parentTd.scrollIntoView(true);
+
+                // https://stackoverflow.com/a/56391657/8534088
+                // -27 is for excluding the sticky header height
+                const y = parentTd.getBoundingClientRect().top + window.pageYOffset - 27;
+                window.scrollTo({top: y, behavior: 'smooth'});
+
                 return;
             }
         }
