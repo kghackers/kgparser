@@ -1,7 +1,6 @@
 package ru.klavogonki.kgparser.freemarker;
 
 import lombok.extern.log4j.Log4j2;
-import ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 
 import java.util.List;
@@ -235,49 +234,49 @@ public class IndexPageTemplate extends FreemarkerTemplate {
         return (long) templateData.get(TOTAL_USERS_IN_DATABASE_KEY);
     }
 
-    public IndexPageTemplate playersByRankWithAtLeast1Race(List<PlayersByRankCount> playersByRankWithAtLeast1Race) {
+    public IndexPageTemplate playersByRankWithAtLeast1Race(String playersByRankWithAtLeast1Race) {
         templateData.put(PLAYERS_BY_RANK_WITH_AT_LEAST_1_RACE_KEY, playersByRankWithAtLeast1Race);
         return this;
     }
 
-    public List<PlayersByRankCount> getPlayersByRankWithAtLeast1Race() {
-        return (List<PlayersByRankCount>) templateData.get(PLAYERS_BY_RANK_WITH_AT_LEAST_1_RACE_KEY);
+    public String getPlayersByRankWithAtLeast1Race() {
+        return (String) templateData.get(PLAYERS_BY_RANK_WITH_AT_LEAST_1_RACE_KEY);
     }
 
-    public IndexPageTemplate playersByRankWithAtLeast10Races(List<PlayersByRankCount> playersByRankWithAtLeast10Races) {
+    public IndexPageTemplate playersByRankWithAtLeast10Races(String playersByRankWithAtLeast10Races) {
         templateData.put(PLAYERS_BY_RANK_WITH_AT_LEAST_10_RACES_KEY, playersByRankWithAtLeast10Races);
         return this;
     }
 
-    public List<PlayersByRankCount> getPlayersByRankWithAtLeast10Races() {
-        return (List<PlayersByRankCount>) templateData.get(PLAYERS_BY_RANK_WITH_AT_LEAST_10_RACES_KEY);
+    public String getPlayersByRankWithAtLeast10Races() {
+        return (String) templateData.get(PLAYERS_BY_RANK_WITH_AT_LEAST_10_RACES_KEY);
     }
 
-    public IndexPageTemplate playersByRankWithAtLeast100Races(List<PlayersByRankCount> playersByRankWithAtLeast100Races) {
+    public IndexPageTemplate playersByRankWithAtLeast100Races(String playersByRankWithAtLeast100Races) {
         templateData.put(PLAYERS_BY_RANK_WITH_AT_LEAST_100_RACES_KEY, playersByRankWithAtLeast100Races);
         return this;
     }
 
-    public List<PlayersByRankCount> getPlayersByRankWithAtLeast100Races() {
-        return (List<PlayersByRankCount>) templateData.get(PLAYERS_BY_RANK_WITH_AT_LEAST_100_RACES_KEY);
+    public String getPlayersByRankWithAtLeast100Races() {
+        return (String) templateData.get(PLAYERS_BY_RANK_WITH_AT_LEAST_100_RACES_KEY);
     }
 
-    public IndexPageTemplate playersByRankWithAtLeast1000Races(List<PlayersByRankCount> playersByRankWithAtLeast1000Races) {
+    public IndexPageTemplate playersByRankWithAtLeast1000Races(String playersByRankWithAtLeast1000Races) {
         templateData.put(PLAYERS_BY_RANK_WITH_AT_LEAST_1000_RACES_KEY, playersByRankWithAtLeast1000Races);
         return this;
     }
 
-    public List<PlayersByRankCount> getPlayersByRankWithAtLeast1000Races() {
-        return (List<PlayersByRankCount>) templateData.get(PLAYERS_BY_RANK_WITH_AT_LEAST_1000_RACES_KEY);
+    public String getPlayersByRankWithAtLeast1000Races() {
+        return (String) templateData.get(PLAYERS_BY_RANK_WITH_AT_LEAST_1000_RACES_KEY);
     }
 
-    public IndexPageTemplate playersByRankWithAtLeast10000Races(List<PlayersByRankCount> playersByRankWithAtLeast10000Races) {
+    public IndexPageTemplate playersByRankWithAtLeast10000Races(String playersByRankWithAtLeast10000Races) {
         templateData.put(PLAYERS_BY_RANK_WITH_AT_LEAST_10000_RACES_KEY, playersByRankWithAtLeast10000Races);
         return this;
     }
 
-    public List<PlayersByRankCount> getPlayersByRankWithAtLeast10000Races() {
-        return (List<PlayersByRankCount>) templateData.get(PLAYERS_BY_RANK_WITH_AT_LEAST_10000_RACES_KEY);
+    public String getPlayersByRankWithAtLeast10000Races() {
+        return (String) templateData.get(PLAYERS_BY_RANK_WITH_AT_LEAST_10000_RACES_KEY);
     }
 
     public IndexPageTemplate totalRacesCountByAllPlayers(long totalRacesCountByAllPlayers) {

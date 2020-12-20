@@ -95,7 +95,49 @@
     </div>
 
     <div class="section" id="section-players_by_rank">
-        <#-- todo: fill with different links-->
+        <h2>Действующие игроки по рангам</h2>
+
+        <#-- todo: switcher element -->
+
+        <#-- totalRacesCount >= 1 -->
+        <div class="flexWrap">
+            <canvas id="playersByRank-1-race-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-1-race-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-1-race-table-container"></div>
+        </div>
+
+        <#-- totalRacesCount >= 10 -->
+        <div class="flexWrap">
+            <canvas id="playersByRank-10-races-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-10-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-10-races-table-container"></div>
+        </div>
+
+        <#-- totalRacesCount >= 100 -->
+        <div class="flexWrap">
+            <canvas id="playersByRank-100-races-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-100-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-100-races-table-container"></div>
+        </div>
+
+        <#-- totalRacesCount >= 1000 -->
+        <div class="flexWrap">
+            <canvas id="playersByRank-1000-races-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-1000-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-1000-races-table-container"></div>
+        </div>
+
+        <#-- totalRacesCount >= 10000 -->
+        <div class="flexWrap">
+            <canvas id="playersByRank-10000-races-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-10000-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-10000-races-table-container"></div>
+        </div>
     </div>
 
     <div class="section">
@@ -161,7 +203,51 @@
             </tr>
         </table>
     </div>
-
-    <#-- todo: js that fills the chart data and initializes the switcher -->
 </main>
+
+<!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
+<script src="${links.chartJs}" integrity="${links.chartJsIntegrity}" crossorigin="anonymous"></script>
+<script src="./${links.playersByRankChartJs}"></script>
+<script>
+    window.addEventListener('load', function () {
+        <#-- todo: initialize the charts switcher -->
+
+        const playersByRankWithAtLeast1Race = ${playersByRankWithAtLeast1Race};
+        const playersByRankWithAtLeast10Races = ${playersByRankWithAtLeast10Races};
+        const playersByRankWithAtLeast100Races = ${playersByRankWithAtLeast100Races};
+        const playersByRankWithAtLeast1000Races = ${playersByRankWithAtLeast1000Races};
+        const playersByRankWithAtLeast10000Races = ${playersByRankWithAtLeast10000Races};
+
+        const playersByRankWithAtLeast1RaceChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast1Race,
+            label: 'Действующие игроки по рангам (общий пробег >= 1 текста)'
+        });
+        playersByRankWithAtLeast1RaceChart.append('playersByRank-1-race-barChart-canvas', 'playersByRank-1-race-doughnutChart-canvas', 'playersByRank-1-race-table-container');
+
+        const playersByRankWithAtLeast10RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast10Races,
+            label: 'Действующие игроки по рангам (общий пробег >= 10 текстов)'
+        });
+        playersByRankWithAtLeast10RacesChart.append('playersByRank-10-races-barChart-canvas', 'playersByRank-10-races-doughnutChart-canvas', 'playersByRank-10-races-table-container');
+
+        const playersByRankWithAtLeast100RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast100Races,
+            label: 'Действующие игроки по рангам (общий пробег >= 100 текстов)'
+        });
+        playersByRankWithAtLeast100RacesChart.append('playersByRank-100-races-barChart-canvas', 'playersByRank-100-races-doughnutChart-canvas', 'playersByRank-100-races-table-container');
+
+        const playersByRankWithAtLeast1000RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast1000Races,
+            label: 'Действующие игроки по рангам (общий пробег >= 1000 текстов)'
+        });
+        playersByRankWithAtLeast1000RacesChart.append('playersByRank-1000-races-barChart-canvas', 'playersByRank-1000-races-doughnutChart-canvas', 'playersByRank-1000-races-table-container');
+
+        const playersByRankWithAtLeast10000RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast10000Races,
+            label: 'Действующие игроки по рангам (общий пробег >= 10000 текстов)'
+        });
+        playersByRankWithAtLeast10000RacesChart.append('playersByRank-10000-races-barChart-canvas', 'playersByRank-10000-races-doughnutChart-canvas', 'playersByRank-10000-races-table-container');
+    });
+</script>
+
 </body>

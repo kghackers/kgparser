@@ -26,6 +26,10 @@ public class Links {
     private String statsCss = PageUrls.STATS_CSS;
 
     // js files
+    private String chartJs = PageUrls.CHART_JS;
+    private String chartJsIntegrity = PageUrls.CHART_JS_INTEGRITY;
+
+    private String playersByRankChartJs = PageUrls.PLAYERS_BY_RANK_CHART_JS;
     private String topTableJs = PageUrls.TOP_TABLE_JS;
     private String topByBestSpeedLoginToPageJs = PageUrls.TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS;
 }

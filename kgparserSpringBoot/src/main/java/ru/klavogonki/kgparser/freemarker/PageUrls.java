@@ -24,6 +24,12 @@ public class PageUrls {
     public static final String STATS_CSS = "css/stats.css";
 
     // js files
+    // Chart.js
+    // see https://www.chartjs.org/docs/latest/getting-started/installation.html
+    public static final String CHART_JS = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js";
+    public static final String CHART_JS_INTEGRITY = "sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==";
+
+    public static final String PLAYERS_BY_RANK_CHART_JS = "js/players-by-rank-chart.js";
     public static final String TOP_TABLE_JS = "js/stats-top-table.js";
     public static final String TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS = "js/stat-top-by-best-speed-login-to-page.js";
 

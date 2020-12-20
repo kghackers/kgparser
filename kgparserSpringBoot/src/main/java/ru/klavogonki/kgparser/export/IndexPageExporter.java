@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.klavogonki.kgparser.freemarker.IndexPageTemplate;
 import ru.klavogonki.kgparser.freemarker.PageUrls;
 import ru.klavogonki.kgparser.http.UrlConstructor;
+import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerRepository;
@@ -135,11 +136,11 @@ public class IndexPageExporter implements DataExporter {
             .totalUsersInDatabase(totalUsersInDatabase)
 
             // players by rank
-            .playersByRankWithAtLeast1Race(playersByRankWithAtLeast1Race)
-            .playersByRankWithAtLeast10Races(playersByRankWithAtLeast10Races)
-            .playersByRankWithAtLeast100Races(playersByRankWithAtLeast100Races)
-            .playersByRankWithAtLeast1000Races(playersByRankWithAtLeast1000Races)
-            .playersByRankWithAtLeast10000Races(playersByRankWithAtLeast10000Races)
+            .playersByRankWithAtLeast1Race(JacksonUtils.serializeToString(playersByRankWithAtLeast1Race))
+            .playersByRankWithAtLeast10Races(JacksonUtils.serializeToString(playersByRankWithAtLeast10Races))
+            .playersByRankWithAtLeast100Races(JacksonUtils.serializeToString(playersByRankWithAtLeast100Races))
+            .playersByRankWithAtLeast1000Races(JacksonUtils.serializeToString(playersByRankWithAtLeast1000Races))
+            .playersByRankWithAtLeast10000Races(JacksonUtils.serializeToString(playersByRankWithAtLeast10000Races))
 
             // aggregates
             .totalRacesCountByAllPlayers(totalRacesCountByAllPlayers)
