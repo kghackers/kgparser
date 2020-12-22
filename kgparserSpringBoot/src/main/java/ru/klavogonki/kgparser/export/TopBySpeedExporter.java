@@ -32,12 +32,13 @@ public class TopBySpeedExporter implements DataExporter {
 
     public void export(ExportContext context) {
         // !!! todo: !user paged query instead of manually splitting the result to pages
+        // todo: this will require changes to order number fill: ability to pass the start number. Therefore too complex (since same value can split over multiple pages)
         List<PlayerEntity> players = playerRepository.findByTotalRacesCountGreaterThanEqualAndBlockedEqualsOrderByBestSpeedDescTotalRacesCountDesc(
             TOTAL_RACES_COUNT_MIN,
             0
         );
 
-        List<PlayerDto> dtos = mapper.playerEntitiesToPlayerDtos(players);
+        List<PlayerDto> dtos = mapper.playerEntitiesToPlayerDtos(players, PlayerDto::getBestSpeed);
 
         int totalPlayers = players.size();
         logger.debug("Total players: {}", totalPlayers);

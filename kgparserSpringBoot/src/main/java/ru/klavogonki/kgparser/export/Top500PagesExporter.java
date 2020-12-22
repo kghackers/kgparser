@@ -46,7 +46,7 @@ public class Top500PagesExporter implements DataExporter {
 
     private void exportTop500ByTotalRacesCount(final ExportContext context) {
         List<PlayerEntity> top500PlayersByTotalRacesCount = playerRepository.findTop500ByOrderByTotalRacesCountDesc();
-        List<PlayerDto> top500PlayersByTotalRacesCountDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByTotalRacesCount);
+        List<PlayerDto> top500PlayersByTotalRacesCountDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByTotalRacesCount, PlayerDto::getTotalRacesCount);
         logger.debug("Top 500 players by total races count: {}", top500PlayersByTotalRacesCountDto);
 
         new TopByTotalRacesCountTemplate()
@@ -56,7 +56,7 @@ public class Top500PagesExporter implements DataExporter {
 
     private void exportTop500ByBestSpeed(final ExportContext context) {
         List<PlayerEntity> top500PlayersByBestSpeed = playerRepository.findTop500ByOrderByBestSpeedDesc();
-        List<PlayerDto> top500PlayersByBestSpeedDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByBestSpeed);
+        List<PlayerDto> top500PlayersByBestSpeedDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByBestSpeed, PlayerDto::getBestSpeed);
         logger.debug("Top 500 players by best speed: {}", top500PlayersByBestSpeedDto);
 
         new TopByBestSpeedTemplate()
@@ -66,7 +66,7 @@ public class Top500PagesExporter implements DataExporter {
 
     private void exportTop500ByRatingLevel(final ExportContext context) {
         List<PlayerEntity> top500PlayersByRatingLevel = playerRepository.findTop500ByOrderByRatingLevelDesc();
-        List<PlayerDto> top500PlayersByRatingLevelDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByRatingLevel);
+        List<PlayerDto> top500PlayersByRatingLevelDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByRatingLevel, PlayerDto::getRatingLevel);
         logger.debug("Top 500 players by rating level: {}", top500PlayersByRatingLevelDto);
 
         new TopByRatingLevelTemplate()
@@ -76,7 +76,7 @@ public class Top500PagesExporter implements DataExporter {
 
     private void exportTop500ByFriendsCount(final ExportContext context) {
         List<PlayerEntity> top500PlayersByFriendsCount = playerRepository.findTop500ByOrderByFriendsCountDesc();
-        List<PlayerDto> top500PlayersByFriendsCountDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByFriendsCount);
+        List<PlayerDto> top500PlayersByFriendsCountDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByFriendsCount, PlayerDto::getFriendsCount);
         logger.debug("Top 500 players by friends count: {}", top500PlayersByFriendsCountDto);
 
         new TopByFriendsCountTemplate()
@@ -86,7 +86,7 @@ public class Top500PagesExporter implements DataExporter {
 
     private void exportTop500ByAchievementsCount(final ExportContext context) {
         List<PlayerEntity> top500PlayersByAchievementsCount = playerRepository.findTop500ByOrderByAchievementsCountDesc();
-        List<PlayerDto> top500PlayersByAchievementsCountDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByAchievementsCount);
+        List<PlayerDto> top500PlayersByAchievementsCountDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByAchievementsCount, PlayerDto::getAchievementsCount);
         logger.debug("Top 500 players by achievements count: {}", top500PlayersByAchievementsCountDto);
 
         new TopByAchievementsCountTemplate()
@@ -96,7 +96,7 @@ public class Top500PagesExporter implements DataExporter {
 
     private void exportTop500ByVocabulariesCount(final ExportContext context) {
         List<PlayerEntity> top500PlayersByVocabulariesCount = playerRepository.findTop500ByOrderByVocabulariesCountDesc();
-        List<PlayerDto> top500PlayersByVocabulariesCountDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByVocabulariesCount);
+        List<PlayerDto> top500PlayersByVocabulariesCountDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByVocabulariesCount, PlayerDto::getVocabulariesCount);
         logger.debug("Top 500 players by vocabularies count: {}", top500PlayersByVocabulariesCountDto);
 
         new TopByVocabulariesCountTemplate()
@@ -106,7 +106,7 @@ public class Top500PagesExporter implements DataExporter {
 
     private void exportTop500ByCarsCount(final ExportContext context) {
         List<PlayerEntity> top500PlayersByCarsCount = playerRepository.findTop500ByOrderByCarsCountDesc();
-        List<PlayerDto> top500PlayersByCarsCountDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByCarsCount);
+        List<PlayerDto> top500PlayersByCarsCountDto = mapper.playerEntitiesToPlayerDtos(top500PlayersByCarsCount, PlayerDto::getCarsCount);
         logger.debug("Top 500 players by cars count: {}", top500PlayersByCarsCountDto);
 
         new TopByCarsCountTemplate()

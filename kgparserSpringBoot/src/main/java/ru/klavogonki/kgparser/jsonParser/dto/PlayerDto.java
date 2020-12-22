@@ -6,7 +6,7 @@ import ru.klavogonki.kgparser.Rank;
 @Data
 public class PlayerDto { // object to use in Freemarker templates
 
-    private Integer orderNumber; // to display in table
+    private String orderNumber; // to display in table
 
     private Long dbId;
 
