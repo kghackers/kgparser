@@ -9,6 +9,11 @@ jobs:
 
     # for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
     steps:
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: java, javascript
+
       - uses: actions/checkout@v2
       
       - name: Set up JDK 1.11
@@ -40,6 +45,9 @@ jobs:
 
       - name: Build kgparser project
         run: mvn package -Dmaven.javadoc.skip --no-transfer-progress
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
 
       - name: Notify Telegram
         uses: yanzay/notify-telegram@v0.1.0
