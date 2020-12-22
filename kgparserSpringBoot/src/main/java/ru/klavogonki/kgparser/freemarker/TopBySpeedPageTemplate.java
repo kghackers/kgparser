@@ -6,6 +6,7 @@ import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 import java.util.List;
 
 @Log4j2
+@SuppressWarnings("unchecked")
 public class TopBySpeedPageTemplate extends FreemarkerTemplate {
 
     private static final String TOTAL_PAGES_KEY = "totalPages";
@@ -76,5 +77,4 @@ public class TopBySpeedPageTemplate extends FreemarkerTemplate {
         export(filePath);
         logger.debug("Top speed {} players (page {}) exported to file {}", players.size(), pageNumber, filePath);
     }
-
 }

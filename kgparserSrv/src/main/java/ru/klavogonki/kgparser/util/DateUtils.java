@@ -17,6 +17,10 @@ public class DateUtils {
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH-mm-ss";
     private static final String DATE_TIME_FORMAT_FOR_UI = "yyyy-MM-dd HH:mm:ss";
 
+    private static ZoneId getMoscowZoneId() {
+        return ZoneId.of("Europe/Moscow");
+    }
+
     public static LocalDateTime convertUserRegisteredTime(final PlayerIndexData data) {
         if ((data == null) || (data.stats == null)) { // error in /get-index-data
             return null;
@@ -31,7 +35,7 @@ public class DateUtils {
         }
 
         // probably use ZoneOffset/ZoneId for Moscow time or use just localDate
-        ZoneId moscowZoneId = ZoneId.of("Europe/Moscow");
+        ZoneId moscowZoneId = getMoscowZoneId();
 
         Instant instant = Instant.ofEpochSecond(registered.sec, registered.usec);
 //        LocalDateTime localDateTimeUtc = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
@@ -59,8 +63,13 @@ public class DateUtils {
     public static String formatDateTimeForUi(LocalDateTime localDateTime) {
         Objects.requireNonNull(localDateTime);
 
+        // convert LocalDateTime -> ZonedDateTime
+        ZoneId moscowZoneId = getMoscowZoneId();
+        ZonedDateTime zonedDateTime = localDateTime.atZone(moscowZoneId);
+
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_FOR_UI);
-        return localDateTime.format(dateTimeFormatter);
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z"); // will be +0300 (Moscow Winter Time) / +0400 (Moscow Summer Time)
+        return zonedDateTime.format(dateTimeFormatter);
     }
 
     public static LocalDateTime parseLocalDateTime(String dateTimeString) {

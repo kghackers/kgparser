@@ -14,6 +14,7 @@ import ru.klavogonki.kgparser.PlayerJsonParser;
 import ru.klavogonki.kgparser.PlayerSummaryDownloader;
 import ru.klavogonki.kgparser.export.ExportContext;
 import ru.klavogonki.kgparser.export.IndexPageExporter;
+import ru.klavogonki.kgparser.export.Top500PagesExporter;
 import ru.klavogonki.kgparser.export.TopBySpeedExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
@@ -39,6 +40,9 @@ public class KgParserApplication implements CommandLineRunner {
 	@Autowired
 	private TopBySpeedExporter topBySpeedExporter;
 
+	@Autowired
+	private Top500PagesExporter top500PagesExporter;
+
 	// todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
 	private final PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -58,17 +62,20 @@ public class KgParserApplication implements CommandLineRunner {
 
 		// todo: select mode (what to do) by arguments
 
+		top500PagesExporter.export(context);
+		if (true) {
+			return;
+		}
+
 		indexPageExporter.export(context);
 		if (true) {
 			return;
 		}
 
-/*
 		topBySpeedExporter.export(context);
 		if (true) {
 			return;
 		}
-*/
 
 
 		// todo: pass a path to a json file with config instead
