@@ -44,7 +44,9 @@ jobs:
 
       - name: Install kefir
         working-directory: kefir
-        run: mvn install -DskipTests -Dmaven.javadoc.skip --no-transfer-progress
+        run: |
+          mvn install -DskipTests -Dmaven.javadoc.skip --no-transfer-progress
+          rm -rf kefir
 
       - name: Build kgparser project
         run: mvn compile -Dmaven.javadoc.skip --no-transfer-progress
