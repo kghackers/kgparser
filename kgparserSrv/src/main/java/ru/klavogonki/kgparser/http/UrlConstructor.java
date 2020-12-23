@@ -43,6 +43,14 @@ public class UrlConstructor
 	}
 
 	/**
+	 * @param playerId id игрока
+	 * @return ссылка на профиль игрока без символа {@code #}. Ссылки с {@code #} не открываются из Excel.
+	 */
+	public static String userProfileLinkWithNoHash(final int playerId) {
+		return getLinkHttps("/profile/%d/", playerId);
+	}
+
+	/**
 	 * Достижения
 	 * @param playerId id игрока
 	 * @return ссылка на достижения игрока
