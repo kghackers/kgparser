@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: | 
-          service mysql start
+          sudo service mysql start
           mysql -uroot -proot -e "show databases;"
 
       - name: Set up JDK 1.11
