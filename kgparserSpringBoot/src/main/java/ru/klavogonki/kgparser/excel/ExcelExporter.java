@@ -6,24 +6,40 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.excel.player.AchievementsCountColumn;
+import ru.klavogonki.kgparser.excel.player.BestSpeedColumn;
+import ru.klavogonki.kgparser.excel.player.CarsCountColumn;
+import ru.klavogonki.kgparser.excel.player.FriendsCountColumn;
+import ru.klavogonki.kgparser.excel.player.LoginColumn;
+import ru.klavogonki.kgparser.excel.player.OrderNumberColumn;
+import ru.klavogonki.kgparser.excel.player.PlayerColumn;
+import ru.klavogonki.kgparser.excel.player.ProfileLinkColumn;
+import ru.klavogonki.kgparser.excel.player.RatingLevelColumn;
+import ru.klavogonki.kgparser.excel.player.RegisteredColumn;
+import ru.klavogonki.kgparser.excel.player.TotalRacesCountColumn;
+import ru.klavogonki.kgparser.excel.player.VocabulariesCountColumn;
 import ru.klavogonki.kgparser.http.UrlConstructor;
+import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 
 import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,7 +50,20 @@ import java.util.Map;
 @Log4j2
 public class ExcelExporter {
 
+    private static final int HEADER_ROW = 0;
+    private static final String HEADER_BACKGROUND_COLOR = "#E0E0E0";
+    private static final String EVEN_ROW_BACKGROUND_COLOR = "#EEEEEE";
+    private static final String ODD_ROW_BACKGROUND_COLOR = "#FFFFFF";
+
+    // todo: remove this
+    private static final short HEADER_BACKGROUND_COLOR_INDEX = 0; // can se background colors only via index in palette
+
     public static void main(String[] args) {
+        testExportTotalRacesCountTop();
+        if (true) {
+            return;
+        }
+
         // from https://www.baeldung.com/java-microsoft-excel#2-writing-to-excel
         XSSFWorkbook workbook = new XSSFWorkbook();
 
@@ -167,6 +196,147 @@ public class ExcelExporter {
         writeToFile(workbook, "c:/java/test-poi.xlsx");
     }
 
+    public static void testExportTotalRacesCountTop() {
+        String filePath = "c:/java/export-top-by-total-races-count.xlsx";
+        String sheetName = "Топ-500 по общему пробегу";
+
+        PlayerDto player1 = new PlayerDto();
+        player1.setOrderNumber("1");
+        player1.setLogin("ant1k");
+        player1.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(146269));
+        player1.setBestSpeed(1070);
+        player1.setTotalRacesCount(30259);
+        player1.setRegistered("2009-07-31 12:31:23"); // todo: good date
+        player1.setAchievementsCount(74);
+        player1.setRatingLevel(38);
+        player1.setFriendsCount(101);
+        player1.setVocabulariesCount(44);
+        player1.setCarsCount(8);
+
+        PlayerDto player2 = new PlayerDto();
+        player2.setOrderNumber("2–3");
+        player2.setLogin("170000");
+        player2.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(169106));
+        player2.setBestSpeed(967);
+        player2.setTotalRacesCount(57976);
+        player2.setRegistered("2009-12-26 14:30:55"); // todo: good date
+        player2.setAchievementsCount(121);
+        player2.setRatingLevel(53);
+        player2.setFriendsCount(178);
+        player2.setVocabulariesCount(32);
+        player2.setCarsCount(19);
+
+        PlayerDto player3 = new PlayerDto();
+        player3.setOrderNumber("2–3");
+        player3.setLogin("HRUST");
+        player3.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(61254));
+        player3.setBestSpeed(967);
+        player3.setTotalRacesCount(154973);
+        player3.setRegistered("2008-11-04 18:38:19"); // todo: good date
+        player3.setAchievementsCount(220);
+        player3.setRatingLevel(62);
+        player3.setFriendsCount(375);
+        player3.setVocabulariesCount(150);
+        player3.setCarsCount(7);
+
+        List<PlayerDto> players = List.of(player1, player2, player3);
+
+        exportTotalRacesCountTop(filePath, sheetName, players);
+    }
+
+    public static void exportTotalRacesCountTop(String filePath, String sheetName, List<PlayerDto> players) {
+        List<? extends PlayerColumn<?>> columns = List.of(
+            new OrderNumberColumn(),
+            new LoginColumn(),
+            new ProfileLinkColumn(),
+            new TotalRacesCountColumn(),
+            new BestSpeedColumn(),
+            new RegisteredColumn(),
+            new AchievementsCountColumn(),
+            new RatingLevelColumn(),
+            new FriendsCountColumn(),
+            new VocabulariesCountColumn(),
+            new CarsCountColumn()
+        );
+
+        export(filePath, sheetName, players, columns);
+    }
+
+    public static void export(String filePath, String sheetName, List<PlayerDto> players, List<? extends PlayerColumn<?>> columns) {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+
+        Sheet sheet = workbook.createSheet(sheetName);
+
+        // set column widths
+        for (int i = 0; i < columns.size(); i++) {
+            final PlayerColumn<?> column = columns.get(i);
+            sheet.setColumnWidth(i, column.getColumnWidth());
+        }
+
+
+        // todo: maybe use same colorMap for header, zebra, ranks usw
+        DefaultIndexedColorMap colorMap = new DefaultIndexedColorMap();
+
+        // header row
+        Row headerRow = sheet.createRow(HEADER_ROW);
+
+        // todo: set text format
+        // todo: set font
+        // todo: set background color
+
+        XSSFCellStyle headerStyle = createStyle(workbook, colorMap, HEADER_BACKGROUND_COLOR);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+        XSSFCellStyle evenRowStyle = createStyle(workbook, colorMap, EVEN_ROW_BACKGROUND_COLOR);
+        XSSFCellStyle oddRowStyle = createStyle(workbook, colorMap, ODD_ROW_BACKGROUND_COLOR);
+
+        for (int columnNumber = 0; columnNumber < columns.size(); columnNumber++) {
+            final PlayerColumn<?> column = columns.get(columnNumber);
+            String headerText = column.getColumnName();
+
+            Cell headerCell = headerRow.createCell(columnNumber);
+            headerCell.setCellValue(headerText);
+            headerCell.setCellStyle(headerStyle);
+
+            logger.debug("Added \"{}\" header to row {}, column {}.", headerText, HEADER_ROW, columnNumber);
+        }
+
+        int rowNumber = HEADER_ROW + 1;
+
+        for (PlayerDto player : players) {
+            XSSFCellStyle rowStyle = ((rowNumber % 2) == 0) ? evenRowStyle : oddRowStyle;
+
+            Row playerRow = sheet.createRow(rowNumber++);
+            playerRow.setRowStyle(rowStyle);
+
+            for (int columnNumber = 0; columnNumber < columns.size(); columnNumber++) {
+                final PlayerColumn<?> column = columns.get(columnNumber);
+
+                Cell cell = playerRow.createCell(columnNumber);
+                cell.setCellValue(column.getValue(player).toString()); // todo: select appropriate type, handle null
+
+                logger.debug("Added player \"{}\" column {} header to row {}, column {}.", player.getLogin(), column.getColumnName(), rowNumber, columnNumber);
+            }
+        }
+
+        // todo: players data
+        // todo: zebra colours or the rows
+
+        writeToFile(workbook, filePath);
+    }
+
+    private static XSSFCellStyle createStyle(
+        final XSSFWorkbook workbook,
+        final DefaultIndexedColorMap colorMap,
+        final String color
+    ) {
+        XSSFCellStyle headerStyle = workbook.createCellStyle();
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        XSSFColor headerColor = new XSSFColor(getRgb(color), colorMap);
+        headerStyle.setFillForegroundColor(headerColor); // yes, it is setFillForegroundColor, NOT setFillBackgroundColor!
+        return headerStyle;
+    }
+
     private static Map<Rank, XSSFFont> getRankToFontMap(XSSFWorkbook workbook) {
         Map<Rank, XSSFColor> rankToColor = getRankToColorMap();
 
@@ -200,7 +370,11 @@ public class ExcelExporter {
     }
 
     private static byte[] getRgb(Rank rank) {
-        Color decoded = Color.decode(Rank.getColor(rank));
+        return getRgb(Rank.getColor(rank));
+    }
+
+    private static byte[] getRgb(final String hexColor) {
+        Color decoded = Color.decode(hexColor);
         return getRgb(decoded.getRed(), decoded.getGreen(), decoded.getBlue());
     }
 
