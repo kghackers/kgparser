@@ -1,11 +1,16 @@
 package ru.klavogonki.kgparser.excel;
 
 import lombok.extern.log4j.Log4j2;
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
 import org.apache.poi.xssf.usermodel.IndexedColorMap;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.klavogonki.kgparser.Rank;
@@ -29,6 +34,8 @@ public class ExcelExportContext {
 
     public Map<Rank, XSSFFont> rankToFont;
 
+    public XSSFFont linkFont;
+
     private ExcelExportContext() {
         // creation allowed only via #initContext()
     }
@@ -45,7 +52,15 @@ public class ExcelExportContext {
         context.dataFormat = dataFormat;
         context.colorMap = colorMap;
         context.rankToFont = getRankToFontMap(context);
+        context.linkFont = getLinkFont(workbook);
         return context;
+    }
+
+    private static XSSFFont getLinkFont(XSSFWorkbook workbook) {
+        XSSFFont linkFont = workbook.createFont();
+        linkFont.setUnderline(Font.U_SINGLE);
+        linkFont.setColor(IndexedColors.BLUE.index);
+        return linkFont;
     }
 
     private static Map<Rank, XSSFFont> getRankToFontMap(ExcelExportContext context) {
@@ -106,5 +121,19 @@ public class ExcelExportContext {
         cell
             .getCellStyle()
             .setFont(font);
+    }
+
+    public void setHyperlink(String url, Integer text) { // Integer since we use playerId
+        // set font as for link
+        cell
+            .getCellStyle()
+            .setFont(linkFont);
+
+        XSSFCreationHelper creationHelper = workbook.getCreationHelper();
+        Hyperlink link = creationHelper.createHyperlink(HyperlinkType.URL);
+        link.setAddress(url);
+
+        cell.setCellValue(text);
+        cell.setHyperlink(link);
     }
 }

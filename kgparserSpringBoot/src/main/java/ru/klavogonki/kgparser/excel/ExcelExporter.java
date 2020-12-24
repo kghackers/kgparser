@@ -195,7 +195,8 @@ public class ExcelExporter {
         player1.setRank(Rank.extracyber);
         player1.setOrderNumber("1");
         player1.setLogin("ant1k");
-        player1.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(146269));
+        player1.setPlayerId(146269);
+        player1.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(player1.getPlayerId()));
         player1.setBestSpeed(1070);
         player1.setTotalRacesCount(30259);
         player1.setRegistered("2009-07-31 12:31:23"); // todo: good date
@@ -209,7 +210,8 @@ public class ExcelExporter {
         player2.setRank(Rank.maniac);
         player2.setOrderNumber("2–3");
         player2.setLogin("170000");
-        player2.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(169106));
+        player2.setPlayerId(169106);
+        player2.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(player2.getPlayerId()));
         player2.setBestSpeed(967);
         player2.setTotalRacesCount(57976);
         player2.setRegistered("2009-12-26 14:30:55"); // todo: good date
@@ -223,7 +225,8 @@ public class ExcelExporter {
         player3.setRank(Rank.amateur);
         player3.setOrderNumber("2–3");
         player3.setLogin("HRUST");
-        player3.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(61254));
+        player3.setPlayerId(61254);
+        player3.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(player3.getPlayerId()));
         player3.setBestSpeed(967);
         player3.setTotalRacesCount(154973);
         player3.setRegistered("2008-11-04 18:38:19"); // todo: good date

@@ -16,14 +16,15 @@ public interface IntegerColumn extends PlayerColumn<Integer> {
 
     @Override
     default void formatCell(ExcelExportContext context) {
-        setCellFormat(context); // todo: if null, than text format?
-
         Integer value = getValue(context.player);
 
         if (value == null) {
+            context.setTextFormat();
+            context.setAlignRight(); // align right to be consistent with number values
             context.cell.setCellValue("—");
         }
         else {
+            setCellFormat(context); // todo: if null, than text format?
             context.cell.setCellValue(value);
         }
     }
