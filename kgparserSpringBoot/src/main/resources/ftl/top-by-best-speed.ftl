@@ -11,7 +11,10 @@
 <#include "./header.ftl">
 <main>
     <div class="section">
-        <h2>Топ-${players?size} по рекорду в &laquo;Обычном&raquo;</h2>
+        <h2>
+            Топ-${players?size} по рекорду в &laquo;Обычном&raquo;
+            <a class="excel" href="./${links.topByBestSpeedZip}"><img src="img/excel.png" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (в архиве)</a>
+        </h2>
     </div>
 
     <div class="section" id="table-container">

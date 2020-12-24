@@ -47,8 +47,8 @@ public class ExcelExporter {
     private static final int HEADER_ROW = 0;
     private static final String BORDER_COLOR = "#808080";
     private static final String HEADER_BACKGROUND_COLOR = "#E0E0E0";
-    private static final String EVEN_ROW_BACKGROUND_COLOR = "#EEEEEE";
-    private static final String ODD_ROW_BACKGROUND_COLOR = "#FFFFFF";
+    private static final String EVEN_ROW_BACKGROUND_COLOR = "#FFFFFF";
+    private static final String ODD_ROW_BACKGROUND_COLOR = "#EEEEEE";
 
     public static void main(String[] args) {
         testExportTotalRacesCountTop();
