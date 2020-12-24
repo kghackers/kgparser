@@ -3,6 +3,8 @@ package ru.klavogonki.kgparser.jsonParser.dto;
 import lombok.Data;
 import ru.klavogonki.kgparser.Rank;
 
+import java.time.LocalDateTime;
+
 @Data
 public class PlayerDto { // object to use in Freemarker templates
 
@@ -42,6 +44,9 @@ public class PlayerDto { // object to use in Freemarker templates
     // string since Java8 Date/Time formatting does not work in Freemarker
     // see https://stackoverflow.com/questions/32063276/java-time-java-8-support-in-freemarker
     private String registered;
+
+    // exact value of PlayerEntity#registered, for Excel
+    private LocalDateTime registeredDateTime;
 
     private Integer achievementsCount;
 

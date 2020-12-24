@@ -19,6 +19,8 @@ import java.util.function.Function;
 public interface PlayerDtoMapper {
 
     @Mapping(source = "rankLevel", target = "rank")
+    @Mapping(source = "registered", target = "registeredDateTime")
+    @Mapping(source = "registered", target = "registered")
     PlayerDto playerEntityToPlayerDto(PlayerEntity entity);
 
     List<PlayerDto> playerEntitiesToPlayerDtos(List<PlayerEntity> entities, @Context Function<PlayerDto, Integer> orderCriteriaGetter);

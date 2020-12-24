@@ -31,6 +31,7 @@ import ru.klavogonki.kgparser.excel.player.TotalRacesCountColumn;
 import ru.klavogonki.kgparser.excel.player.VocabulariesCountColumn;
 import ru.klavogonki.kgparser.http.UrlConstructor;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
+import ru.klavogonki.kgparser.util.DateUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -199,7 +200,8 @@ public class ExcelExporter {
         player1.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(player1.getPlayerId()));
         player1.setBestSpeed(1070);
         player1.setTotalRacesCount(30259);
-        player1.setRegistered("2009-07-31 12:31:23"); // todo: good date
+        player1.setRegistered("2009-07-31 12:31:23");
+        player1.setRegisteredDateTime(DateUtils.parseLocalDateTimeWithUiDateFormat("2009-07-31 12:31:23"));
         player1.setAchievementsCount(74);
         player1.setRatingLevel(38);
         player1.setFriendsCount(101);
@@ -214,7 +216,8 @@ public class ExcelExporter {
         player2.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(player2.getPlayerId()));
         player2.setBestSpeed(967);
         player2.setTotalRacesCount(57976);
-        player2.setRegistered("2009-12-26 14:30:55"); // todo: good date
+        player2.setRegistered("2009-12-26 14:30:55");
+        player2.setRegisteredDateTime(DateUtils.parseLocalDateTimeWithUiDateFormat("2009-12-26 14:30:55"));
         player2.setAchievementsCount(121);
         player2.setRatingLevel(53);
         player2.setFriendsCount(178);
@@ -229,7 +232,8 @@ public class ExcelExporter {
         player3.setProfileLink(UrlConstructor.userProfileLinkWithNoHash(player3.getPlayerId()));
         player3.setBestSpeed(967);
         player3.setTotalRacesCount(154973);
-        player3.setRegistered("2008-11-04 18:38:19"); // todo: good date
+        player3.setRegistered("2008-11-04 18:38:19");
+        player3.setRegisteredDateTime(DateUtils.parseLocalDateTimeWithUiDateFormat("2008-11-04 18:38:19"));
         player3.setAchievementsCount(220);
         player3.setRatingLevel(62);
         player3.setFriendsCount(375);
