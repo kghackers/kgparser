@@ -1,5 +1,6 @@
 package ru.klavogonki.kgparser.excel.player;
 
+import ru.klavogonki.kgparser.excel.ExcelExportContext;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 
 import java.util.function.Function;
@@ -14,10 +15,20 @@ public interface PlayerColumn<T> {
 
     Class<T> fieldClass();
 
-    // todo: add excel cell format if required
+    default T getValue(PlayerDto player) {
+        return playerFieldGetter().apply(player);
+    }
 
-    @SuppressWarnings("unchecked")
-    default <T> T getValue(PlayerDto player) {
-        return (T) playerFieldGetter().apply(player);
+    default void setCellFormat(ExcelExportContext context) {
+        context.setTextFormat();
+    }
+
+    default void formatCell(ExcelExportContext context) {
+        setCellFormat(context);
+
+        T value = getValue(context.player);
+        String cellValue = (value == null) ? "—" : value.toString();
+
+        context.cell.setCellValue(cellValue);
     }
 }

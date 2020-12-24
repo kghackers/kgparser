@@ -4,7 +4,7 @@ import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 
 import java.util.function.Function;
 
-public class BestSpeedColumn implements PlayerColumn<Integer> {
+public class BestSpeedColumn implements IntegerColumn {
 
     @Override
     public String getColumnName() {
@@ -19,10 +19,5 @@ public class BestSpeedColumn implements PlayerColumn<Integer> {
     @Override
     public Function<PlayerDto, Integer> playerFieldGetter() {
         return PlayerDto::getBestSpeed;
-    }
-
-    @Override
-    public Class<Integer> fieldClass() {
-        return Integer.class;
     }
 }
