@@ -52,6 +52,15 @@
         <button id="search-button" class="search-button">Искать</button>
     </div>
 
+    <div class="section" id="section-players_by_rank">
+        <div id="playersByRank-single-chart-wrapper" class="flexWrap">
+            <canvas id="playersByRank-single-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-single-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-single-table-container"></div>
+        </div>
+    </div>
+
 </main>
 <!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous"></script>
@@ -69,22 +78,44 @@
         [4, 500],
     ];
 
+    const MIN_TOTAL_RACES_COUNT = 1;
+    const MAX_TOTAL_RACES_COUNT = 294760;
+
+    let singleChart;
+
     window.addEventListener('load', function() {
+        const countsByRank = groupByRank(PLAYERS_DATA);
+        const chartData = convertToChartData(countsByRank);
+
+        console.log('initial chart data:');
+        console.log(chartData);
+
+        singleChart = new PlayersByRankChart({
+            data: chartData, // by default, show players with at least 1 race
+            label: getChartLabel(MIN_TOTAL_RACES_COUNT, MAX_TOTAL_RACES_COUNT)
+        });
+        singleChart.append('playersByRank-single-barChart-canvas', 'playersByRank-single-doughnutChart-canvas', 'playersByRank-single-table-container');
+
         bindSearch();
-
-        const maxTotalRacesCountFromAllPlayers = getMaxTotalRacesCount(PLAYERS_DATA);
-        console.log(`Max total races from all players: ${maxTotalRacesCountFromAllPlayers}`);
-
-        const minTotalRacesCount = undefined;
-        const maxTotalRacesCount = undefined;
-        const playersWithGivenTotalRacesCount = filter(PLAYERS_DATA, minTotalRacesCount, maxTotalRacesCount);
-        console.log(`Players filtered by minRacesCount = ${minTotalRacesCount}, maxRacesCount = ${maxTotalRacesCount}:`);
-        console.log(playersWithGivenTotalRacesCount);
-
-        if (playersWithGivenTotalRacesCount) {
-            groupByRank(playersWithGivenTotalRacesCount);
-        }
     });
+
+    function getChartLabel(minTotalRacesCount, maxTotalRacesCount) {
+        if (!minTotalRacesCount && !maxTotalRacesCount) {
+            return `Действующие игроки по рангам (общий пробег ${MIN_TOTAL_RACES_COUNT}+)`;
+        }
+
+        if (minTotalRacesCount && !maxTotalRacesCount) {
+            return `Действующие игроки по рангам (общий пробег ${minTotalRacesCount}+)`;
+        }
+
+        if (!minTotalRacesCount && maxTotalRacesCount) {
+            return `Действующие игроки по рангам (общий пробег ${MIN_TOTAL_RACES_COUNT}–${maxTotalRacesCount}`;
+        }
+
+        if (minTotalRacesCount && maxTotalRacesCount) {
+            return `Действующие игроки по рангам (общий пробег ${minTotalRacesCount}–${maxTotalRacesCount})`;
+        }
+    }
 
     /* todo: move the functions to the external script and to a class */
 
@@ -170,6 +201,11 @@
         console.log(chartData);
 
         // todo: update chart
+
+        singleChart.update({
+            data: chartData,
+            label: getChartLabel(minTotalRacesCount, maxTotalRacesCount)
+        });
     }
 
     function convertToChartData(countsByRank) {
@@ -178,7 +214,7 @@
         for (let [rankLevel, playersCount] of Object.entries(countsByRank)) {
 
             chartData.push({
-                rankLevel: rankLevel,
+                rankLevel: parseInt(rankLevel),
                 rankName: PlayersByRankChart.RANK_NAMES[rankLevel],
                 rankDisplayName: PlayersByRankChart.RANK_DISPLAY_NAMES[rankLevel],
                 playersCount: playersCount
@@ -224,8 +260,6 @@
     }
 
     function groupByRank(players) {
-        // todo: apply filter by totalRacesCount
-
         const countByRank = players.reduce(function(result, player) {
             const rank = player[RANK_INDEX];
 

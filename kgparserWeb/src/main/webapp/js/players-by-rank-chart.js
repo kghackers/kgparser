@@ -222,12 +222,29 @@ class PlayersByRankChart {
                 },
                 legend: { // do not display the legend of the dataset
                     display: false
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+
+                        ticks: {
+                            // beginAtZero: 0,
+                            // min: 0,
+                            suggestedMin: 0
+                        }
+                    }],
+                    yAxes: [{
+                        display: true
+                    }]
                 }
             }
         };
 
-        // same config, different diagram type
-        this.doughnutChartConfig = Object.assign({}, this.barChartConfig, { type: 'doughnut'});
+        // same config, different diagram type, no scales
+        // this.doughnutChartConfig = Object.assign({}, this.barChartConfig, { type: 'doughnut'}); // no, Object.assign does not make a copy, references stay the same!
+        this.doughnutChartConfig = JSON.parse(JSON.stringify(this.barChartConfig));
+        this.doughnutChartConfig.type = 'doughnut';
+        this.doughnutChartConfig.options.scales = undefined; // no axes on doughnutChart!
     }
 
     getChartData(config) {
@@ -260,7 +277,7 @@ class PlayersByRankChart {
 
         const totalPlayers = this.config.data
             .map(playersByRankCount => playersByRankCount.playersCount)
-            .reduce((prev, next) => prev + next);
+            .reduce((prev, next) => prev + next, 0);
 
         let playersByRankTable = '<table class="data data-no-header">';
 
