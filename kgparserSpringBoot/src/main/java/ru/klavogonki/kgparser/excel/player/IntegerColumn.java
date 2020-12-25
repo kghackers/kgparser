@@ -11,7 +11,7 @@ public interface IntegerColumn extends PlayerColumn<Integer> {
 
     @Override
     default void setCellFormat(final ExcelExportContext context) {
-        context.setIntegerFormat();
+        context.setIntegerStyle();
     }
 
     @Override
@@ -19,12 +19,11 @@ public interface IntegerColumn extends PlayerColumn<Integer> {
         Integer value = getValue(context.player);
 
         if (value == null) {
-            context.setTextFormat();
-            context.setAlignRight(); // align right to be consistent with number values
+            context.setTextAlignRightStyle(); // align right to be consistent with number values
             context.cell.setCellValue("—");
         }
         else {
-            setCellFormat(context); // todo: if null, than text format?
+            context.setIntegerStyle();
             context.cell.setCellValue(value);
         }
     }

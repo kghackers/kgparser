@@ -6,11 +6,14 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.IndexedColorMap;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.klavogonki.kgparser.Rank;
 
@@ -61,10 +64,19 @@ public final class ExcelUtils {
         return style;
     }
 
+    public static XSSFFont getLinkFont(XSSFWorkbook workbook) {
+        XSSFFont linkFont = workbook.createFont();
+        linkFont.setUnderline(Font.U_SINGLE);
+        linkFont.setColor(IndexedColors.BLUE.index);
+        return linkFont;
+    }
+
     public static void setIntegerFormat(Cell cell, DataFormat dataFormat) {
-        cell
-            .getCellStyle()
-            .setDataFormat(dataFormat.getFormat("0")); // no decimals. Works, with rounding
+        setIntegerFormat(cell.getCellStyle(), dataFormat);
+    }
+
+    public static void setIntegerFormat(final CellStyle style, final DataFormat dataFormat) {
+        style.setDataFormat(dataFormat.getFormat("0")); // no decimals. Works, with rounding
     }
 
     public static void setTextFormat(Cell cell, DataFormat dataFormat) {
@@ -76,9 +88,15 @@ public final class ExcelUtils {
     }
 
     public static void setAlignRight(Cell cell) {
-        cell
-            .getCellStyle()
-            .setAlignment(HorizontalAlignment.RIGHT);
+        setAlignRight(cell.getCellStyle());
+    }
+
+    public static void setAlignRight(final CellStyle style) {
+        style.setAlignment(HorizontalAlignment.RIGHT);
+    }
+
+    public static void setAlignLeft(final CellStyle style) {
+        style.setAlignment(HorizontalAlignment.LEFT);
     }
 
     public static void setAlignCenter(Cell cell) {

@@ -32,22 +32,18 @@ public class RegisteredColumn implements PlayerColumn<LocalDateTime> {
 
     @Override
     public void formatCell(final ExcelExportContext context) {
-        context.setAlignRight(); // date with a custom format is rendered right in Excel
-
         LocalDateTime registered = getValue(context.player);
 
         if (registered == null) {
             logger.warn("Player with id = {}, login = \"{}\" has no registeredDateTime. Cannot add a registerd date field for this player  player.", context.player.getPlayerId(), context.player.getLogin());
 
-            context.setTextFormat();
+            context.setTextAlignRightStyle();
+
             context.cell.setCellValue("—");
             return;
         }
 
-        context.cell
-            .getCellStyle()
-            .setDataFormat(context.dataFormat.getFormat("yyyy-MM-dd HH:mm:ss"));
-
+        context.setDateTimeStyle();
         context.cell.setCellValue(registered);
     }
 }

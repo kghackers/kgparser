@@ -11,7 +11,10 @@
 <#include "./header.ftl">
 <main>
     <div class="section">
-        <h2>Топ по лучшей скорости в &laquo;Обычном&raquo;</h2>
+        <h2>
+            Топ по лучшей скорости в &laquo;Обычном&raquo;
+            <a class="excel" href="./${links.topByBestSpeedAllPagesZip}"><img src="img/excel.png" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>
+        </h2>
         Учтены игроки с минимальным общим пробегом: ${totalRacesCountMin}
     </div>
 

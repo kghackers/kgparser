@@ -20,12 +20,16 @@ public interface PlayerColumn<T> {
     }
 
     default void setCellFormat(ExcelExportContext context) {
-        context.setTextFormat();
+        context.setTextAlignLeftStyle();
     }
 
     default void formatCell(ExcelExportContext context) {
         setCellFormat(context);
 
+        setCellValue(context);
+    }
+
+    default void setCellValue(final ExcelExportContext context) {
         T value = getValue(context.player);
         String cellValue = (value == null) ? "—" : value.toString();
 

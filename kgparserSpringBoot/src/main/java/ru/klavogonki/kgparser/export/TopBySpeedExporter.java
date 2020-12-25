@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.klavogonki.kgparser.excel.TopByBestSpeedPageExcelTemplate;
 import ru.klavogonki.kgparser.freemarker.LoginToPageTemplate;
 import ru.klavogonki.kgparser.freemarker.PageUrls;
 import ru.klavogonki.kgparser.freemarker.TopBySpeedPageTemplate;
@@ -87,6 +88,14 @@ public class TopBySpeedExporter implements DataExporter {
             .loginToPage(loginToPage)
             .loginToPageString(loginToPageString)
             .export(loginToPageFilePath);
+
+        // export all pages to one Excel
+        new TopByBestSpeedPageExcelTemplate()
+            .players(dtos)
+            .export(
+                PageUrls.getTopBySpeedAllPagesExcelFilePath(context.webRootDir),
+                PageUrls.getTopBySpeedAllPagesExcelZipFilePath(context.webRootDir)
+            );
     }
 
     private int getPagesCount(int totalRecords, int pageSize) {

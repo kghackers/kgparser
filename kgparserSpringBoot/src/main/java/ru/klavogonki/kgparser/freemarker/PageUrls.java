@@ -65,6 +65,12 @@ public class PageUrls {
     public static String getTopBySpeedPageFilePath(final String rootDir, final int pageNumber) {
         return rootDir + "stat-top-by-best-speed-page-" + pageNumber + ".html";
     }
+    public static String getTopBySpeedAllPagesExcelFilePath(final String rootDir) {
+        return rootDir + TOP_BY_BEST_SPEED_ALL_PAGES_XLSX;
+    }
+    public static String getTopBySpeedAllPagesExcelZipFilePath(final String rootDir) {
+        return rootDir + TOP_BY_BEST_SPEED_ALL_PAGES_ZIP;
+    }
 
     public static String getTopBySpeedLoginToPageFilePath(final String rootDir) {
         return rootDir + "/" + TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS;

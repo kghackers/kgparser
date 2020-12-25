@@ -29,8 +29,8 @@ public class OrderNumberColumn implements PlayerColumn<String> {
 
     @Override
     public void formatCell(final ExcelExportContext context) {
-        PlayerColumn.super.formatCell(context); // call default method of the given interface
+        context.setTextAlignRightStyle();
 
-        context.setAlignRight();
+        PlayerColumn.super.setCellValue(context); // call default method of the given interface
     }
 }

@@ -4,20 +4,12 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Hyperlink;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
 import org.apache.poi.xssf.usermodel.IndexedColorMap;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Log4j2
 public class ExcelExportContext {
@@ -26,23 +18,21 @@ public class ExcelExportContext {
 
     public DataFormat dataFormat;
 
+    public ExcelStylesMap stylesMap;
+
     public IndexedColorMap colorMap;
+
+    public int rowNumber;
 
     public Cell cell;
 
     public PlayerDto player; // todo: this may be <T> parameterizable in the future when we need to export other types
 
-    public Map<Rank, XSSFFont> rankToFont;
-
-    public XSSFFont linkFont;
-
     private ExcelExportContext() {
         // creation allowed only via #initContext()
     }
 
-    public static ExcelExportContext initContext() {
-        XSSFWorkbook workbook = new XSSFWorkbook();
-
+    public static ExcelExportContext initContext(XSSFWorkbook workbook, ExcelStylesMap.Config stylesMapConfig) {
         DataFormat dataFormat = workbook.createDataFormat();
 
         DefaultIndexedColorMap colorMap = new DefaultIndexedColorMap();
@@ -51,83 +41,57 @@ public class ExcelExportContext {
         context.workbook = workbook;
         context.dataFormat = dataFormat;
         context.colorMap = colorMap;
-        context.rankToFont = getRankToFontMap(context);
-        context.linkFont = getLinkFont(workbook);
+        context.stylesMap = ExcelStylesMap.init(context, stylesMapConfig);
         return context;
     }
 
-    private static XSSFFont getLinkFont(XSSFWorkbook workbook) {
-        XSSFFont linkFont = workbook.createFont();
-        linkFont.setUnderline(Font.U_SINGLE);
-        linkFont.setColor(IndexedColors.BLUE.index);
-        return linkFont;
+    public boolean isEvenRowNumber() {
+        return (rowNumber % 2) == 0;
     }
 
-    private static Map<Rank, XSSFFont> getRankToFontMap(ExcelExportContext context) {
-        Map<Rank, XSSFColor> rankToColor = getRankToColorMap(context);
-
-        Map<Rank, XSSFFont> rankToFont = new HashMap<>();
-
-        for (Rank rank : Rank.values()) {
-            XSSFColor rankColor = rankToColor.get(rank);
-
-            XSSFFont font = context.workbook.createFont();
-//            font.setFontName("Arial");
-//            font.setFontHeightInPoints((short) 16);
-            font.setColor(rankColor);
-//            font.setBold(true);
-
-            rankToFont.put(rank, font);
-        }
-
-        return rankToFont;
+    public boolean isOddRowNumber() {
+        return !isEvenRowNumber();
     }
 
-    private static Map<Rank, XSSFColor> getRankToColorMap(ExcelExportContext context) {
-        IndexedColorMap colorMap = context.colorMap;
-
-        Map<Rank, XSSFColor> rankToColor = new HashMap<>();
-        for (Rank rank : Rank.values()) {
-            XSSFColor rankColor = new XSSFColor(ExcelUtils.getRgb(rank), colorMap);
-            rankToColor.put(rank, rankColor);
-        }
-
-        return rankToColor;
+    public void setStyle(ExcelStylesMap.Style style) {
+        stylesMap.setStyle(cell, style);
     }
 
-    public void setIntegerFormat() {
-        ExcelUtils.setIntegerFormat(cell, dataFormat);
+    public void setStyle(Cell cell, ExcelStylesMap.Style style) {
+        stylesMap.setStyle(cell, style);
     }
 
-    public void setTextFormat() {
-        ExcelUtils.setTextFormat(cell, dataFormat);
+    public void setIntegerStyle() {
+        setStyle(isEvenRowNumber() ? ExcelStylesMap.Style.INTEGER_EVEN_ROW : ExcelStylesMap.Style.INTEGER_ODD_ROW);
     }
 
-    // todo: setDateFormat
+    public void setTextAlignLeftStyle() {
+        setStyle(isEvenRowNumber() ? ExcelStylesMap.Style.TEXT_ALIGN_LEFT_EVEN_ROW : ExcelStylesMap.Style.TEXT_ALIGN_LEFT_ODD_ROW);
+    }
 
-    public void setAlignRight() {
-        ExcelUtils.setAlignRight(cell);
+    public void setTextAlignRightStyle() {
+        setStyle(isEvenRowNumber() ? ExcelStylesMap.Style.TEXT_ALIGN_RIGHT_EVEN_ROW : ExcelStylesMap.Style.TEXT_ALIGN_RIGHT_ODD_ROW);
+    }
+
+    public void setDateTimeStyle() {
+        setStyle(isEvenRowNumber() ? ExcelStylesMap.Style.DATE_TIME_EVEN_ROW : ExcelStylesMap.Style.DATE_TIME_ODD_ROW);
+    }
+
+    public void setLinkIntegerStyle() {
+        setStyle(isEvenRowNumber() ? ExcelStylesMap.Style.LINK_INTEGER_EVEN_ROW : ExcelStylesMap.Style.LINK_INTEGER_ODD_ROW);
     }
 
     public void setRankTextColor() {
-        Rank rank = player.getRank();
-        if (rank == null) {
-            logger.warn("Player with id = {}, login = \"{}\" has no rank. Cannot define text color for this player.", player.getPlayerId(), player.getLogin());
-            return;
+        if (isEvenRowNumber()) {
+            stylesMap.setEvenRowRankStyle(cell, player.getRank());
         }
-
-        XSSFFont font = rankToFont.get(rank);
-
-        cell
-            .getCellStyle()
-            .setFont(font);
+        else {
+            stylesMap.setOddRowRankStyle(cell, player.getRank());
+        }
     }
 
-    public void setHyperlink(String url, Integer text) { // Integer since we use playerId
-        // set font as for link
-        cell
-            .getCellStyle()
-            .setFont(linkFont);
+    public void setIntegerHyperlink(String url, Integer text) { // Integer since we use playerId
+        setLinkIntegerStyle(); // in this method we know text is Integer, therefore set it explicitly
 
         XSSFCreationHelper creationHelper = workbook.getCreationHelper();
         Hyperlink link = creationHelper.createHyperlink(HyperlinkType.URL);
