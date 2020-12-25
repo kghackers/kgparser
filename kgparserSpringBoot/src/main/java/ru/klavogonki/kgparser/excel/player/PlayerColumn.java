@@ -9,7 +9,7 @@ public interface PlayerColumn<T> {
 
     String getColumnName();
 
-    int getColumnWidth(); // in excel format for Sheet#setColumnWidth
+    int getColumnWidth(); // in Excel format for Sheet#setColumnWidth
 
     Function<PlayerDto, T> playerFieldGetter();
 
