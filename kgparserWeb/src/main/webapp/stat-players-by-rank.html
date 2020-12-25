@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика по клавогонщикам</title>
+    <link rel="stylesheet" type="text/css" href="./css/stats.css">
+    <link rel="shortcut icon" href="img/favicon/favicon.ico"/>
+</head>
+<body>
+<header>
+    <table>
+        <tr>
+            <td>
+                <a href="./stats.html">На главную</a>
+                | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
+                | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
+                <br/>
+                <a href="./stat-top-by-total-races.html">Топ по общему пробегу</a>
+                | <a href="./stat-top-by-best-speed-page-1.html">Топ по рекорду в &laquo;Обычном&raquo;</a>
+                | <a href="./stat-top-by-best-speed.html">Топ-500 в &laquo;Обычном&raquo;</a>
+                | <a href="./stat-top-by-rating-level.html">Топ по уровню</a>
+                | <a href="./stat-top-by-friends-count.html">Топ по числу друзей</a>
+                | <a href="./stat-top-by-achievements-count.html">Топ по числу достижений</a>
+                | <a href="./stat-top-by-vocabularies-count.html">Топ по числу используемых словарей</a>
+                | <a href="./stat-top-by-cars-count.html">Топ по числу машин в гараже</a>
+            </td>
+            <td class="header-right">
+                <form action="https://www.paypal.com/donate" method="post" target="_top">
+                    <input type="hidden" name="hosted_button_id" value="WZ2BM3QJYGQTW"/>
+                    <input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0"
+                           name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button"/>
+                    <img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+</header>
+<main>
+    <div class="section">
+        <h2>Действующие игроки по рангам</h2>
+        Учтены существующие незаблокированные игроки с минимум 1 текстом пробега (всего игроков: 358804)
+        <br/>
+        Mаксимальный пробег: 294760
+    </div>
+
+    <div>
+        Выбрать игроков с общим пробегом
+        <label for="min-totalRacesCount-input">от</label>&nbsp;
+        <input id="min-totalRacesCount-input" autofocus value="1"/>
+        <label for="max-totalRacesCount-input">до</label>&nbsp;
+        <input id="max-totalRacesCount-input" value="294760"/>
+        <button id="search-button" class="search-button">Искать</button>
+    </div>
+
+</main>
+<!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous"></script>
+<script src="./js/players-by-rank-chart.js"></script>
+<script>
+    const RANK_INDEX = 0;
+    const TOTAL_RACES_COUNT_INDEX = 1;
+
+    const PLAYERS_DATA = [
+        [1, 100],
+        [1, 200],
+        [2, 200],
+        [2, 300],
+        [3, 300],
+        [4, 500],
+    ];
+
+    window.addEventListener('load', function() {
+        bindSearch();
+
+        const maxTotalRacesCountFromAllPlayers = getMaxTotalRacesCount(PLAYERS_DATA);
+        console.log(`Max total races from all players: ${maxTotalRacesCountFromAllPlayers}`);
+
+        const minTotalRacesCount = undefined;
+        const maxTotalRacesCount = undefined;
+        const playersWithGivenTotalRacesCount = filter(PLAYERS_DATA, minTotalRacesCount, maxTotalRacesCount);
+        console.log(`Players filtered by minRacesCount = ${minTotalRacesCount}, maxRacesCount = ${maxTotalRacesCount}:`);
+        console.log(playersWithGivenTotalRacesCount);
+
+        if (playersWithGivenTotalRacesCount) {
+            groupByRank(playersWithGivenTotalRacesCount);
+        }
+    });
+
+    /* todo: move the functions to the external script and to a class */
+
+    function bindSearch() {
+        const minInput = document.getElementById('min-totalRacesCount-input');
+        const maxInput = document.getElementById('max-totalRacesCount-input');
+
+        const inputSearch = function(event) {
+            if (event.key === 'Enter') {
+                // console.log('Enter pressed in input field!');
+
+                // Cancel the default action, if needed
+                event.preventDefault();
+
+                doSearch();
+            }
+        };
+
+        minInput.addEventListener("keyup", inputSearch)
+        maxInput.addEventListener("keyup", inputSearch)
+
+        const button = document.getElementById('search-button');
+        button.onclick = function() {
+            doSearch();
+        };
+    }
+
+    function doSearch() {
+        const minInput = document.getElementById('min-totalRacesCount-input');
+        const minValue = (minInput.value || '').trim();
+        if ((minValue !== '') && !isPositiveInteger(minValue)) {
+            alert('Минимальный пробег должен быть целым числом > 0.'); // todo: use a nice error display
+            minInput.focus();
+            return;
+        }
+
+        const maxInput = document.getElementById('max-totalRacesCount-input');
+        const maxValue = (maxInput.value || '').trim();
+        if ((maxValue !== '') && !isPositiveInteger(maxValue)) {
+            alert('Максимальный пробег должен быть целым числом > 0.'); // todo: use a nice error display
+            maxInput.focus();
+        }
+
+        const minValueInt = parseInt(minValue);
+        const maxValueInt = parseInt(maxValue);
+
+        if (minValueInt && maxValueInt && (minValueInt > maxValueInt)) {
+            alert('Минимальный пробег должен быть <= максимальному пробегу.');
+            maxInput.focus();
+            return;
+        }
+
+        // todo: implements method
+        console.log(`Performing search with ${minValueInt} <= totalRacesCount <= ${maxValueInt}`);
+        updateChartData(PLAYERS_DATA, minValueInt, maxValueInt);
+    }
+
+    function isPositiveInteger(s) {
+        const result = parseInt(s);
+        return !isNaN(result) && (result > 0);
+    }
+
+    function getMaxTotalRacesCount(players) {
+        return players.reduce(function(result, player) {
+            const totalRacesCount = player[TOTAL_RACES_COUNT_INDEX];
+
+            if (totalRacesCount && (totalRacesCount > result)) {
+                return totalRacesCount;
+            }
+
+            return result;
+        }, 0);
+    }
+
+    function updateChartData(players, minTotalRacesCount, maxTotalRacesCount) {
+        const playersWithGivenTotalRacesCount = filter(PLAYERS_DATA, minTotalRacesCount, maxTotalRacesCount);
+        console.log(`Players filtered by minRacesCount = ${minTotalRacesCount}, maxRacesCount = ${maxTotalRacesCount}:`);
+        console.log(playersWithGivenTotalRacesCount);
+
+        const countsByRank = groupByRank(playersWithGivenTotalRacesCount);
+        const chartData = convertToChartData(countsByRank);
+        console.log('converted to chart data format:')
+        console.log(chartData);
+
+        // todo: update chart
+    }
+
+    function convertToChartData(countsByRank) {
+        const chartData = [];
+
+        for (let [rankLevel, playersCount] of Object.entries(countsByRank)) {
+
+            chartData.push({
+                rankLevel: rankLevel,
+                rankName: PlayersByRankChart.RANK_NAMES[rankLevel],
+                rankDisplayName: PlayersByRankChart.RANK_DISPLAY_NAMES[rankLevel],
+                playersCount: playersCount
+            })
+        }
+
+        return chartData;
+    }
+
+    function filter(players, minTotalRacesCount, maxTotalRacesCount) {
+        if (minTotalRacesCount && maxTotalRacesCount && (minTotalRacesCount > maxTotalRacesCount)) {
+            alert('Минимальный пробег должен быть <= максимальному пробегу.');
+            return;
+        }
+
+        let filterFunction = getFilterFunction(minTotalRacesCount, maxTotalRacesCount);
+
+        return players.filter(player => {
+            const totalRacesCount = player[TOTAL_RACES_COUNT_INDEX];
+
+            return filterFunction(totalRacesCount);
+        });
+    }
+
+    function getFilterFunction(minTotalRacesCount, maxTotalRacesCount) {
+        if (!minTotalRacesCount && !maxTotalRacesCount) {
+            return totalRacesCount => true;
+        }
+
+        if (minTotalRacesCount && !maxTotalRacesCount) {
+            return totalRacesCount => (minTotalRacesCount <= totalRacesCount);
+        }
+
+        if (!minTotalRacesCount && maxTotalRacesCount) {
+            return totalRacesCount => (totalRacesCount <= maxTotalRacesCount);
+        }
+
+        if (minTotalRacesCount && maxTotalRacesCount) {
+            return totalRacesCount => (minTotalRacesCount <= totalRacesCount) && (totalRacesCount <= maxTotalRacesCount);
+        }
+
+        throw `Incorrect filter combination: minTotalRacesCount = ${minTotalRacesCount}, maxTotalRacesCount = ${maxTotalRacesCount}`;
+    }
+
+    function groupByRank(players) {
+        // todo: apply filter by totalRacesCount
+
+        const countByRank = players.reduce(function(result, player) {
+            const rank = player[RANK_INDEX];
+
+            const currentCount = result[rank] || 0;
+            result[rank] = currentCount + 1;
+            return result;
+        }, {});
+
+        console.log('countByRank:');
+        console.log(countByRank);
+
+        return countByRank;
+    }
+</script>
+</body>
+</html>

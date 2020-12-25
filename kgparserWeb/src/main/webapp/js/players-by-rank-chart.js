@@ -133,6 +133,42 @@ class PlayersByRankChart {
         extracyber: '#061956'
     };
 
+    static RANK_NAMES = {
+        1: 'novice',
+        2: 'amateur',
+        3: 'cabman',
+        4: 'pro',
+        5: 'racer',
+        6: 'maniac',
+        7: 'superman',
+        8: 'cyberracer',
+        9: 'extracyber'
+    };
+
+    static RANK_DISPLAY_NAMES = {
+        // by rank level
+        1: 'Новичок',
+        2: 'Любитель',
+        3: 'Таксист',
+        4: 'Профи',
+        5: 'Гонщик',
+        6: 'Маньяк',
+        7: 'Супермен',
+        8: 'Кибергонщик',
+        9: 'Экстракибер',
+
+        // by Rank enum name
+        novice: 'Новичок',
+        amateur: 'Любитель',
+        cabman: 'Таксист',
+        pro: 'Профи',
+        racer: 'Гонщик',
+        maniac: 'Маньяк',
+        superman: 'Супермен',
+        cyberracer: 'Кибергонщик',
+        extracyber: 'Экстракибер'
+    };
+
     constructor(config) {
         this.config = config;
         // config.data - array of PlayersByRankCount
