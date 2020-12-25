@@ -1,0 +1,17 @@
+package ru.klavogonki.kgparser.excel.player;
+
+import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
+
+import java.util.function.Function;
+
+public class RatingLevelColumn implements IntegerColumn {
+
+    @Override
+    public String getColumnName() {
+        return "Уровень";
+    }
+
+    public Function<PlayerDto, Integer> playerFieldGetter() {
+        return PlayerDto::getRatingLevel;
+    }
+}

@@ -11,7 +11,10 @@
 <#include "./header.ftl">
 <main>
     <div class="section">
-        <h2>Топ-${players?size} по числу используемых словарей</h2>
+        <h2>
+            Топ-${players?size} по числу используемых словарей
+            <a class="excel" href="./${links.topByVocabulariesCountZip}"><img src="img/excel.png" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (в архиве)</a>
+        </h2>
     </div>
 
     <div class="section" id="table-container">
