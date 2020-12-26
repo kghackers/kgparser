@@ -97,7 +97,9 @@
     <div class="section" id="section-players_by_rank">
         <h2>Действующие игроки по рангам</h2>
 
-        <div id="playersByRank-switcher-container" class="paging left"></div>
+        <div id="playersByRank-switcher-wrapper" class="paging left">
+            <span id="playersByRank-switcher-container"></span>&nbsp;&nbsp;&nbsp;<a href="./${links.playersByRank}">Страница с выбором диапазона</a>
+        </div>
 
         <div id="playersByRank-single-chart-wrapper" class="flexWrap">
             <canvas id="playersByRank-single-barChart-canvas" class="chart-left"></canvas>

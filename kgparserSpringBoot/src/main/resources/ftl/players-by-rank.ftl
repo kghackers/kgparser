@@ -23,7 +23,7 @@
         <input id="min-totalRacesCount-input" autofocus value="${minTotalRacesCount}"/>
         <label for="max-totalRacesCount-input">до</label>&nbsp;
         <input id="max-totalRacesCount-input" value="${maxTotalRacesCount}"/>
-        <button id="search-button" class="search-button">Искать</button>
+        <button id="search-button" class="search-button">Выбрать</button>
     </div>
 
     <div class="section" id="section-players_by_rank">
