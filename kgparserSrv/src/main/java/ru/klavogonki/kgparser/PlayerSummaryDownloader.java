@@ -16,13 +16,18 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerSummaryDownloader {
     private static final Logger logger = LogManager.getLogger(PlayerSummaryDownloader.class);
 
     public static class Config {
-        public static final int REQUIRED_ARGUMENTS_COUNT = 3;
+        public static final int REQUIRED_ARGUMENTS_COUNT = 4;
 
+        int threadsCount;
         String rootDir;
         int minPlayerId;
         int maxPlayerId;
@@ -45,6 +50,7 @@ public class PlayerSummaryDownloader {
         public void log() {
             logger.debug("============================================");
             logger.debug("Config:");
+            logger.debug("  threadsCount: {}", threadsCount);
             logger.debug("  rootDir: {}", rootDir);
             logger.debug("  minPlayerId: {}", minPlayerId);
             logger.debug("  maxPlayerId: {}", maxPlayerId);
@@ -60,16 +66,17 @@ public class PlayerSummaryDownloader {
             config.rootDir = args[index++];
             config.minPlayerId = Integer.parseInt(args[index++]);
             config.maxPlayerId = Integer.parseInt(args[index++]);
+            config.threadsCount = Integer.parseInt(args[index++]);
             return config;
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // todo: pass a path to a json file with config instead
 
         if (args.length != Config.REQUIRED_ARGUMENTS_COUNT) {
             // todo: use logger instead of System.out??
-            System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> %n", PlayerSummaryDownloader.class.getSimpleName());
+            System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> <threadsCount> %n", PlayerSummaryDownloader.class.getSimpleName());
             return;
         }
 
@@ -81,15 +88,89 @@ public class PlayerSummaryDownloader {
         config.setStartDate(DateUtils.formatDateTime(startDate));
         config.log();
 
+        // parallel loading
+        List<ImmutablePair<Integer, Integer>> threadChunks = split(config);
+        int threadsCount = threadChunks.size(); // might be config.threadsCount + 1 in case of threadsCount % totalPlayersCount != 0
+
+        ExecutorService executorService = Executors.newFixedThreadPool(threadsCount);
+
+        // fill callables for each chunk, each chunk performs all operations for players range for chunk
+        List<Callable<String>> callableTasks = new ArrayList<>(threadsCount);
+
+        for (ImmutablePair<Integer, Integer> chunk : threadChunks) {
+            Integer minPlayerId = chunk.getLeft();
+            Integer maxPlayerId = chunk.getRight();
+
+            Callable<String> chunkCallable = () -> {
+                try {
+                    return callableTask(config, minPlayerId, maxPlayerId);
+                }
+                catch (Exception e) {
+                    logger.error(String.format("Exception on handling players [%d; %d]", minPlayerId, maxPlayerId), e);
+                    throw e;
+                }
+            };
+
+            callableTasks.add(chunkCallable);
+        }
+
+        try {
+            executorService.invokeAll(callableTasks); // we don't use the returned futures
+        }
+        catch (InterruptedException e) {
+            logger.error("executorService.invokeAll was interrupted", e);
+            throw new RuntimeException(e);
+        }
+
+        executorService.shutdown();
+
+        try {
+            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.HOURS); // wait more or less infinitely
+            logger.debug("executorService.awaitTermination executed.");
+        }
+        catch (InterruptedException e) {
+            logger.error("executorService.awaitTermination was terminated. Shutting down NOW.", e);
+            executorService.shutdownNow();
+            throw new RuntimeException(e);
+        }
+
+/*
+        // load in 1 thread // todo: remove this, you can configure threadsCount = 1 if you need it
         for (int playerId = config.minPlayerId; playerId <= config.maxPlayerId; playerId++) {
             savePlayerSummaryToJsonFile(config, playerId);
             savePlayerIndexDataToJsonFile(config, playerId);
         }
+*/
 
         LocalDateTime endDate = LocalDateTime.now();
         logger.info("Download end date: {}", startDate);
 
         logger.info("Downloading data for {} players took:", config.maxPlayerId - config.minPlayerId + 1);
+        logDateTimeDiff(startDate, endDate);
+    }
+
+    public static String callableTask(final Config config, final Integer minPlayerId, final Integer maxPlayerId) throws IOException {
+        String threadName = String.format("players-from-%d-to-%d", minPlayerId, maxPlayerId);
+        Thread.currentThread().setName(threadName);
+
+        LocalDateTime chunkStartDate = LocalDateTime.now();
+        logger.info("Chunk download start date for players [{}; {}]: {}", minPlayerId, maxPlayerId, chunkStartDate);
+
+        for (int playerId = minPlayerId; playerId <= maxPlayerId; playerId++) {
+            savePlayerSummaryToJsonFile(config, playerId);
+            savePlayerIndexDataToJsonFile(config, playerId);
+        }
+
+        LocalDateTime chunkEndDate = LocalDateTime.now();
+        logger.info("Chunk download end date for players [{}; {}]: {}", minPlayerId, maxPlayerId, chunkEndDate);
+
+        logger.info("Downloading data for {} players took:", maxPlayerId - minPlayerId + 1);
+        logDateTimeDiff(chunkStartDate, chunkEndDate);
+
+        return String.format("Successfully downloaded player info for players from %d to %d", minPlayerId, maxPlayerId);
+    }
+
+    public static void logDateTimeDiff(final LocalDateTime startDate, final LocalDateTime endDate) {
         logger.info("Hours: {}", ChronoUnit.HOURS.between(startDate, endDate));
         logger.info("Minutes: {}", ChronoUnit.MINUTES.between(startDate, endDate));
         logger.info("Seconds: {}", ChronoUnit.SECONDS.between(startDate, endDate));
@@ -101,6 +182,8 @@ public class PlayerSummaryDownloader {
         String urlString = UrlConstructor.getSummary(playerId);
 
         String out = loadUrlToString(urlString);
+        // todo: make fake mode turned on/off with config
+//        String out = String.format("player-%d-fake-summary (url: %s)", playerId, urlString);
 
         String jsonFilePath = config.getPlayerSummaryFilePath(playerId);
         FileUtils.writeStringToFile(new File(jsonFilePath), out, StandardCharsets.UTF_8);
@@ -113,6 +196,8 @@ public class PlayerSummaryDownloader {
         String urlString = UrlConstructor.getIndexData(playerId);
 
         String out = loadUrlToString(urlString);
+        // todo: make fake mode turned on/off with config
+//        String out = String.format("player-%d-fake-index-data (url: %s)", playerId, urlString);
 
         String jsonFilePath = config.getPlayerIndexDataFilePath(playerId);
         FileUtils.writeStringToFile(new File(jsonFilePath), out, StandardCharsets.UTF_8);
@@ -131,6 +216,10 @@ public class PlayerSummaryDownloader {
         logger.debug("Response for url {}:", urlString);
         logger.debug(out);
         return out;
+    }
+
+    static List<ImmutablePair<Integer, Integer>> split(Config config) {
+        return split(config.threadsCount, config.minPlayerId, config.maxPlayerId);
     }
 
     // returns list of minPlayerId; maxPlayerId
