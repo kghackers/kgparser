@@ -209,13 +209,13 @@ class PlayerByRankFilter {
 
         this.config.chart.update({
             data: chartData,
-            label: PlayerByRankFilter.getChartLabel(minTotalRacesCount, maxTotalRacesCount)
+            label: PlayerByRankFilter.getChartLabel(this.config.minTotalRacesCount, minTotalRacesCount, maxTotalRacesCount)
         });
     }
 
-    static getChartLabel(minTotalRacesCount, maxTotalRacesCount) {
+    static getChartLabel(firstTotalRacesCount, minTotalRacesCount, maxTotalRacesCount) {
         if (!minTotalRacesCount && !maxTotalRacesCount) {
-            return `Действующие игроки по рангам (общий пробег ${this.config.minTotalRacesCount}+)`;
+            return `Действующие игроки по рангам (общий пробег ${firstTotalRacesCount}+)`;
         }
 
         if (minTotalRacesCount && !maxTotalRacesCount) {
@@ -223,7 +223,7 @@ class PlayerByRankFilter {
         }
 
         if (!minTotalRacesCount && maxTotalRacesCount) {
-            return `Действующие игроки по рангам (общий пробег ${this.config.minTotalRacesCount}–${maxTotalRacesCount}`;
+            return `Действующие игроки по рангам (общий пробег ${firstTotalRacesCount}–${maxTotalRacesCount}`;
         }
 
         if (minTotalRacesCount && maxTotalRacesCount) {
