@@ -2,27 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Статистика по клавогонщикам</title>
+    <title>Действующие игроки по рангам</title>
     <link rel="stylesheet" type="text/css" href="./css/stats.css">
     <link rel="shortcut icon" href="img/favicon/favicon.ico"/>
 </head>
 <body>
 <header>
-    <table>
+    <table> 
         <tr>
             <td>
                 <a href="./stats.html">На главную</a>
                 | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
+                | <a href="https://klavogonki.ru/forum/software/59/">Тема на форуме</a>
                 | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
                 <br/>
                 <a href="./stat-top-by-total-races.html">Топ по общему пробегу</a>
                 | <a href="./stat-top-by-best-speed-page-1.html">Топ по рекорду в &laquo;Обычном&raquo;</a>
-                | <a href="./stat-top-by-best-speed.html">Топ-500 в &laquo;Обычном&raquo;</a>
+                | <a href="./stat-top-by-best-speed.html">Топ-500 в &laquo;Обычном&raquo;</a> 
                 | <a href="./stat-top-by-rating-level.html">Топ по уровню</a>
                 | <a href="./stat-top-by-friends-count.html">Топ по числу друзей</a>
                 | <a href="./stat-top-by-achievements-count.html">Топ по числу достижений</a>
                 | <a href="./stat-top-by-vocabularies-count.html">Топ по числу используемых словарей</a>
                 | <a href="./stat-top-by-cars-count.html">Топ по числу машин в гараже</a>
+                | <a href="./stat-players-by-rank.html">Игроки по рангам</a>
             </td>
             <td class="header-right">
                 <form action="https://www.paypal.com/donate" method="post" target="_top">
@@ -60,8 +62,8 @@
             <div id="playersByRank-single-table-container"></div>
         </div>
     </div>
-
 </main>
+
 <!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous"></script>
 <script src="./js/players-by-rank-chart.js"></script>
@@ -90,7 +92,6 @@
             chart: singleChart,
             data: STATS_DATA.rankToTotalRacesCount
         });
-
 
         filter.bindSearch();
     });

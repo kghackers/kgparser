@@ -44,6 +44,8 @@ public class Links {
     private String topByCarsCountXlsx = PageUrls.TOP_BY_CARS_COUNT_XLSX;
     private String topByCarsCountZip = PageUrls.TOP_BY_CARS_COUNT_ZIP;
 
+    private String playersByRank = PageUrls.PLAYER_BY_RANK;
+
     // css files
     private String statsCss = PageUrls.STATS_CSS;
 
@@ -52,6 +54,7 @@ public class Links {
     private String chartJsIntegrity = PageUrls.CHART_JS_INTEGRITY;
 
     private String playersByRankChartJs = PageUrls.PLAYERS_BY_RANK_CHART_JS;
+    private String playersByRankDataJs = PageUrls.PLAYERS_BY_RANK_DATA_JS;
     private String topTableJs = PageUrls.TOP_TABLE_JS;
     private String topByBestSpeedLoginToPageJs = PageUrls.TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS;
 }
