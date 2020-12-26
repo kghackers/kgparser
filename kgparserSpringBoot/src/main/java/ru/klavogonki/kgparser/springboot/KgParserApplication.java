@@ -65,6 +65,7 @@ public class KgParserApplication implements CommandLineRunner {
 		context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-09 16:28:01");
 
 		// todo: select mode (what to do) by arguments
+		// todo: add an option to skip Excel import
 
 		playersByRankExporter.export(context);
 		if (true) {
