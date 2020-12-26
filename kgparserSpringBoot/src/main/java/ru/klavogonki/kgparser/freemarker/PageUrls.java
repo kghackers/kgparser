@@ -19,6 +19,8 @@ public class PageUrls {
     public static final String TOP_BY_VOCABULARIES_COUNT = "stat-top-by-vocabularies-count.html";
     public static final String TOP_BY_CARS_COUNT = "stat-top-by-cars-count.html";
 
+    public static final String PLAYER_BY_RANK = "stat-players-by-rank.html";
+
     // xls files and their zip form
     // big top by speed, all pages
     public static final String TOP_BY_BEST_SPEED_ALL_PAGES_XLSX = "xlsx/stat-top-by-best-speed-all-pages.xlsx";
@@ -55,6 +57,7 @@ public class PageUrls {
     public static final String CHART_JS_INTEGRITY = "sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==";
 
     public static final String PLAYERS_BY_RANK_CHART_JS = "js/players-by-rank-chart.js";
+    public static final String PLAYERS_BY_RANK_DATA_JS = "js/players-by-rank-data.js";
     public static final String TOP_TABLE_JS = "js/stats-top-table.js";
     public static final String TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS = "js/stat-top-by-best-speed-login-to-page.js";
 
@@ -144,5 +147,12 @@ public class PageUrls {
     }
     public static String getTopByCarsCountExcelZipFilePath(final String rootDir) {
         return rootDir + "/" + TOP_BY_CARS_COUNT_ZIP;
+    }
+
+    public static String getPlayerByRankFilePath(final String rootDir) {
+        return rootDir + "/" + PLAYER_BY_RANK;
+    }
+    public static String getPlayerByRankDataFilePath(final String rootDir) {
+        return rootDir + "/" + PLAYERS_BY_RANK_DATA_JS;
     }
 }

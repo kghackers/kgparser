@@ -1,5 +1,8 @@
-# Telegram group
-To join the Telegram group with webhooks of this project, [follow the link](https://t.me/joinchat/N3tfQFVvmbH21ipSy9yKcA)
+# Related resources
+* Проект задеплоен на http://kgparser-web.s3-website-us-east-1.amazonaws.com/
+* [Тема на форуме Клавогонок](https://klavogonki.ru/forum/software/59/)
+* Мой профиль на Клавогонках — [nosferatum](https://klavogonki.ru/u/#/242585/)
+* [Telegram канал](https://t.me/joinchat/N3tfQFVvmbH21ipSy9yKcA) с нотификациями о событиях в этом GitHub-проекте 
 
 
 # How to execute `PlayerSummaryDownloader`

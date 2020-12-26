@@ -3,6 +3,7 @@ package ru.klavogonki.kgparser.jsonParser.repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import ru.klavogonki.kgparser.jsonParser.dto.PlayerRankLevelAndTotalRacesCount;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 
@@ -52,6 +53,20 @@ public interface PlayerRepository extends CrudRepository<PlayerEntity, Long> {
 
     // actual users with at least N total texts count
     Integer countByGetSummaryErrorIsNullAndGetIndexDataErrorIsNullAndBlockedEqualsAndTotalRacesCountIsGreaterThanEqual(int blocked, int totalRacesCount);
+
+    @Query(value =
+        "select" +
+        " new ru.klavogonki.kgparser.jsonParser.dto.PlayerRankLevelAndTotalRacesCount(" + // full class name required else ClassLoadingException will be thrown
+        "   p.rankLevel as rankLevel," +
+        "   p.totalRacesCount" + // count returns long
+        " )" +
+        " from PlayerEntity p" +
+        " where (p.getSummaryError is null)" +
+        " and (p.getIndexDataError is null)" +
+        " and (p.blocked = 0)" +
+        " and (p.totalRacesCount >= :minTotalRacesCount)"
+    )
+    List<PlayerRankLevelAndTotalRacesCount> getActualPlayersRankLevelAndTotalRacesCount(@Param("minTotalRacesCount") int minTotalRacesCount);
 
     @Query(value =
         "select" +

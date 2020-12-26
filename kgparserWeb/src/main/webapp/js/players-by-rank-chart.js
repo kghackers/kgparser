@@ -120,6 +120,183 @@ class PlayersByRankChartSwitcher {
     }
 }
 
+class PlayerByRankFilter {
+    // index of field within 2D array of player data
+    static RANK_INDEX = 0;
+    static TOTAL_RACES_COUNT_INDEX = 1;
+
+    constructor(config) {
+        this.config = config;
+        // config.minRacesInputId
+        // config.maxRacesInputId
+        // config.searchButtonId
+        // config.chart
+        // config.data
+        // config.minTotalRacesCount
+    }
+
+    bindSearch() {
+        const minInput = document.getElementById(this.config.minRacesInputId);
+        const maxInput = document.getElementById(this.config.maxRacesInputId);
+
+        const thisScope = this;
+
+        // todo: extract "bind on Enter" to some common JS, use in both Filter and Search
+        const inputSearch = function(event) {
+            if (event.key === 'Enter') {
+                // console.log('Enter pressed in input field!');
+
+                // Cancel the default action, if needed
+                event.preventDefault();
+
+                thisScope.doSearch();
+            }
+        };
+
+        minInput.addEventListener("keyup", inputSearch)
+        maxInput.addEventListener("keyup", inputSearch)
+
+        const button = document.getElementById(this.config.searchButtonId);
+        button.onclick = function() {
+            thisScope.doSearch();
+        };
+    }
+
+    doSearch() {
+        const minInput = document.getElementById(this.config.minRacesInputId);
+        const minValue = (minInput.value || '').trim();
+        if ((minValue !== '') && !this.isPositiveInteger(minValue)) {
+            alert('Минимальный пробег должен быть целым числом > 0.'); // todo: use a nice error display
+            minInput.focus();
+            return;
+        }
+
+        const maxInput = document.getElementById(this.config.maxRacesInputId);
+        const maxValue = (maxInput.value || '').trim();
+        if ((maxValue !== '') && !this.isPositiveInteger(maxValue)) {
+            alert('Максимальный пробег должен быть целым числом > 0.'); // todo: use a nice error display
+            maxInput.focus();
+            return;
+        }
+
+        const minValueInt = parseInt(minValue);
+        const maxValueInt = parseInt(maxValue);
+
+        if (minValueInt && maxValueInt && (minValueInt > maxValueInt)) {
+            alert('Минимальный пробег должен быть <= максимальному пробегу.');
+            maxInput.focus();
+            return;
+        }
+
+        // console.log(`Performing search with ${minValueInt} <= totalRacesCount <= ${maxValueInt}`);
+        this.updateChartData(this.config.data, minValueInt, maxValueInt);
+    }
+
+    isPositiveInteger(s) {
+        const result = parseInt(s);
+        return !isNaN(result) && (result > 0);
+    }
+
+    updateChartData(players, minTotalRacesCount, maxTotalRacesCount) {
+        const playersWithGivenTotalRacesCount = this.filter(this.config.data, minTotalRacesCount, maxTotalRacesCount);
+        // console.log(`Players filtered by minRacesCount = ${minTotalRacesCount}, maxRacesCount = ${maxTotalRacesCount}:`);
+        // console.log(playersWithGivenTotalRacesCount);
+
+        const countsByRank = PlayerByRankFilter.groupByRank(playersWithGivenTotalRacesCount);
+        const chartData = PlayerByRankFilter.convertToChartData(countsByRank);
+        // console.log('converted to chart data format:')
+        // console.log(chartData);
+
+        this.config.chart.update({
+            data: chartData,
+            label: PlayerByRankFilter.getChartLabel(this.config.minTotalRacesCount, minTotalRacesCount, maxTotalRacesCount)
+        });
+    }
+
+    static getChartLabel(firstTotalRacesCount, minTotalRacesCount, maxTotalRacesCount) {
+        if (!minTotalRacesCount && !maxTotalRacesCount) {
+            return `Действующие игроки по рангам (общий пробег ${firstTotalRacesCount}+)`;
+        }
+
+        if (minTotalRacesCount && !maxTotalRacesCount) {
+            return `Действующие игроки по рангам (общий пробег ${minTotalRacesCount}+)`;
+        }
+
+        if (!minTotalRacesCount && maxTotalRacesCount) {
+            return `Действующие игроки по рангам (общий пробег ${firstTotalRacesCount}–${maxTotalRacesCount}`;
+        }
+
+        if (minTotalRacesCount && maxTotalRacesCount) {
+            return `Действующие игроки по рангам (общий пробег ${minTotalRacesCount}–${maxTotalRacesCount})`;
+        }
+    }
+
+    filter(players, minTotalRacesCount, maxTotalRacesCount) {
+        if (minTotalRacesCount && maxTotalRacesCount && (minTotalRacesCount > maxTotalRacesCount)) {
+            alert('Минимальный пробег должен быть <= максимальному пробегу.');
+            return;
+        }
+
+        let filterFunction = this.getFilterFunction(minTotalRacesCount, maxTotalRacesCount);
+
+        return players.filter(player => {
+            const totalRacesCount = player[PlayerByRankFilter.TOTAL_RACES_COUNT_INDEX];
+
+            return filterFunction(totalRacesCount);
+        });
+    }
+
+    getFilterFunction(minTotalRacesCount, maxTotalRacesCount) {
+        if (!minTotalRacesCount && !maxTotalRacesCount) {
+            return totalRacesCount => true;
+        }
+
+        if (minTotalRacesCount && !maxTotalRacesCount) {
+            return totalRacesCount => (minTotalRacesCount <= totalRacesCount);
+        }
+
+        if (!minTotalRacesCount && maxTotalRacesCount) {
+            return totalRacesCount => (totalRacesCount <= maxTotalRacesCount);
+        }
+
+        if (minTotalRacesCount && maxTotalRacesCount) {
+            return totalRacesCount => (minTotalRacesCount <= totalRacesCount) && (totalRacesCount <= maxTotalRacesCount);
+        }
+
+        throw `Incorrect filter combination: minTotalRacesCount = ${minTotalRacesCount}, maxTotalRacesCount = ${maxTotalRacesCount}`;
+    }
+
+    static groupByRank(players) {
+        const countByRank = players.reduce(function(result, player) {
+            const rank = player[PlayerByRankFilter.RANK_INDEX];
+
+            const currentCount = result[rank] || 0;
+            result[rank] = currentCount + 1;
+            return result;
+        }, {});
+
+        // console.log('countByRank:');
+        // console.log(countByRank);
+
+        return countByRank;
+    }
+
+    static convertToChartData(countsByRank) {
+        const chartData = [];
+
+        for (let [rankLevel, playersCount] of Object.entries(countsByRank)) {
+            chartData.push({
+                rankLevel: parseInt(rankLevel),
+                rankName: PlayersByRankChart.RANK_NAMES[rankLevel],
+                rankDisplayName: PlayersByRankChart.RANK_DISPLAY_NAMES[rankLevel],
+                playersCount: playersCount
+            })
+        }
+
+        return chartData;
+    }
+}
+
 class PlayersByRankChart {
     static RANK_COLORS = {
         novice: '#8D8D8D',
@@ -131,6 +308,42 @@ class PlayersByRankChart {
         superman: '#5E0B9E',
         cyberracer: '#00037C',
         extracyber: '#061956'
+    };
+
+    static RANK_NAMES = {
+        1: 'novice',
+        2: 'amateur',
+        3: 'cabman',
+        4: 'pro',
+        5: 'racer',
+        6: 'maniac',
+        7: 'superman',
+        8: 'cyberracer',
+        9: 'extracyber'
+    };
+
+    static RANK_DISPLAY_NAMES = {
+        // by rank level
+        1: 'Новичок',
+        2: 'Любитель',
+        3: 'Таксист',
+        4: 'Профи',
+        5: 'Гонщик',
+        6: 'Маньяк',
+        7: 'Супермен',
+        8: 'Кибергонщик',
+        9: 'Экстракибер',
+
+        // by Rank enum name
+        novice: 'Новичок',
+        amateur: 'Любитель',
+        cabman: 'Таксист',
+        pro: 'Профи',
+        racer: 'Гонщик',
+        maniac: 'Маньяк',
+        superman: 'Супермен',
+        cyberracer: 'Кибергонщик',
+        extracyber: 'Экстракибер'
     };
 
     constructor(config) {
@@ -186,12 +399,29 @@ class PlayersByRankChart {
                 },
                 legend: { // do not display the legend of the dataset
                     display: false
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+
+                        ticks: {
+                            // beginAtZero: 0,
+                            // min: 0,
+                            suggestedMin: 0
+                        }
+                    }],
+                    yAxes: [{
+                        display: true
+                    }]
                 }
             }
         };
 
-        // same config, different diagram type
-        this.doughnutChartConfig = Object.assign({}, this.barChartConfig, { type: 'doughnut'});
+        // same config, different diagram type, no scales
+        // this.doughnutChartConfig = Object.assign({}, this.barChartConfig, { type: 'doughnut'}); // no, Object.assign does not make a copy, references stay the same!
+        this.doughnutChartConfig = JSON.parse(JSON.stringify(this.barChartConfig));
+        this.doughnutChartConfig.type = 'doughnut';
+        this.doughnutChartConfig.options.scales = undefined; // no axes on doughnutChart!
     }
 
     getChartData(config) {
@@ -224,7 +454,7 @@ class PlayersByRankChart {
 
         const totalPlayers = this.config.data
             .map(playersByRankCount => playersByRankCount.playersCount)
-            .reduce((prev, next) => prev + next);
+            .reduce((prev, next) => prev + next, 0);
 
         let playersByRankTable = '<table class="data data-no-header">';
 

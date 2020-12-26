@@ -4,6 +4,7 @@
             <td>
                 <a href="./${links.index}">На главную</a>
                 | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
+                | <a href="https://klavogonki.ru/forum/software/59/">Тема на форуме</a>
                 | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
                 <br/>
                 <a href="./${links.topByTotalRaces}">Топ по общему пробегу</a>
@@ -14,6 +15,7 @@
                 | <a href="./${links.topByAchievementsCount}">Топ по числу достижений</a>
                 | <a href="./${links.topByVocabulariesCount}">Топ по числу используемых словарей</a>
                 | <a href="./${links.topByCarsCount}">Топ по числу машин в гараже</a>
+                | <a href="./${links.playersByRank}">Игроки по рангам</a>
             </td>
             <td class="header-right">
                 <form action="https://www.paypal.com/donate" method="post" target="_top">
