@@ -135,6 +135,10 @@ public class PlayerSummaryDownloader {
 
     // returns list of minPlayerId; maxPlayerId
     static List<ImmutablePair<Integer, Integer>> split(int threadsCount, int minPlayerId, int maxPlayerId) {
+        if (threadsCount < 1) {
+            throw new IllegalArgumentException(String.format("Incorrect threadsCount: %d, threadsCount must be >= 1", threadsCount));
+        }
+
         if (minPlayerId > maxPlayerId) {
             throw new IllegalArgumentException(String.format("minPlayerId = %d > maxPlayerId = %d", minPlayerId, maxPlayerId));
         }
@@ -169,6 +173,7 @@ public class PlayerSummaryDownloader {
             result.add(new ImmutablePair<>(chunkMinPlayerId, chunkMaxPlayerId));
         }
 
+        logger.debug("Total player chunks: {}", result.size());
         return result;
     }
 }

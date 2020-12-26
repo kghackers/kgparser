@@ -77,4 +77,15 @@ class PlayerSummaryDownloaderTest {
                 new ImmutablePair<>(108, 108)
             );
     }
+
+    @Test
+    void testOneThread() {
+        List<ImmutablePair<Integer, Integer>> split = PlayerSummaryDownloader.split(1, 100, 109);
+
+        assertThat(split)
+            .hasSize(1)
+            .containsExactly(
+                new ImmutablePair<>(100, 109)
+            );
+    }
 }
