@@ -39,6 +39,10 @@ public class PlayerSummaryDownloader {
             this.startDate = DateUtils.parseLocalDateTime(startDateString);
         }
 
+        public int getTotalPlayers() {
+            return maxPlayerId - minPlayerId + 1;
+        }
+
         public String getPlayerSummaryFilePath(final int playerId) {
             return rootDir + File.separator + startDateString + File.separator + "summary" + File.separator + playerId + ".json";
         }
@@ -118,12 +122,14 @@ public class PlayerSummaryDownloader {
             executorService.invokeAll(callableTasks); // we don't use the returned futures
         }
         catch (InterruptedException e) {
+            logger.debug("============================================");
             logger.error("executorService.invokeAll was interrupted", e);
             throw new RuntimeException(e);
         }
 
         executorService.shutdown();
 
+        // wait until all threads finish their execution
         try {
             executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.HOURS); // wait more or less infinitely
             logger.debug("executorService.awaitTermination executed.");
@@ -134,18 +140,14 @@ public class PlayerSummaryDownloader {
             throw new RuntimeException(e);
         }
 
-/*
-        // load in 1 thread // todo: remove this, you can configure threadsCount = 1 if you need it
-        for (int playerId = config.minPlayerId; playerId <= config.maxPlayerId; playerId++) {
-            savePlayerSummaryToJsonFile(config, playerId);
-            savePlayerIndexDataToJsonFile(config, playerId);
-        }
-*/
-
+        // log the results summary
         LocalDateTime endDate = LocalDateTime.now();
-        logger.info("Download end date: {}", startDate);
 
-        logger.info("Downloading data for {} players took:", config.maxPlayerId - config.minPlayerId + 1);
+        logger.info("Threads used: {}", threadsCount);
+        logger.info("Download start date: {}", startDate);
+        logger.info("Download end date: {}", endDate);
+
+        logger.info("Downloading data for players [{}; {}] (total {} players) took:", config.minPlayerId, config.maxPlayerId, config.getTotalPlayers());
         logDateTimeDiff(startDate, endDate);
     }
 
@@ -162,6 +164,7 @@ public class PlayerSummaryDownloader {
         }
 
         LocalDateTime chunkEndDate = LocalDateTime.now();
+        logger.info("Chunk download start date for players [{}; {}]: {}", minPlayerId, maxPlayerId, chunkStartDate);
         logger.info("Chunk download end date for players [{}; {}]: {}", minPlayerId, maxPlayerId, chunkEndDate);
 
         logger.info("Downloading data for {} players took:", maxPlayerId - minPlayerId + 1);
