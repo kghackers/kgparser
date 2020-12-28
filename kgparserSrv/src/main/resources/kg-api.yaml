@@ -124,8 +124,23 @@ paths:
 
   /profile/get-index-data:
     get:
-      summary:
+      summary: Получает данные для раздела «Сводка» профиля игрока
       description:
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            $ref: '#/components/schemas/PlayerId'
+          description: playerId
+      responses:
+        200:
+          description: Данные о сводке игрока либо ошибка, если игрок не найден или его профиль скрыт
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIndexDataResponse'
+
 
   /profile/get-journal:
     get:
@@ -205,17 +220,114 @@ paths:
 # todo: we need to try by hand for each parameter to identify whether it is mandatory
 components:
   schemas:
-    # todo: error model for
-    # todo: list known errors:
-# {"err":"no auth"}
-# {"err":"invalid user id"} - пользователь не сущетсвует
-# {"err":"hidden profile"} - скрытый профиль
+    Error:
+      description: Ответ на любой запрос в случае ошибки
+      type: object
+      properties:
+        err:
+          description: Описание ошибки
+          required: true
+          type: string
+          # todo: is "examples" supported? See https://swagger.io/docs/specification/adding-examples/
+          example:
+            - invalid user id # Пользователь не существует, https://klavogonki.ru/api/profile/get-index-data?userId=1
+            - hidden profile # Профиль пользователя скрыт, https://klavogonki.ru/api/profile/get-index-data?userId=21
+            - mongo refs joining failed: invalid key users.achieves.achieve_id=599bd392df4e4d963a8b4570 # Ошибка в БД, https://klavogonki.ru/api/profile/get-index-data?userId=498727
+            - permission blocked # Доступ запрещён. Например, скрытая статистика, https://klavogonki.ru/api/profile/get-stats-overview?userId=111001
+            - invalid gametype # Неправильный словарь. http://klavogonki.ru/api/profile/get-stats-details?userId=242585&gametype=voc-8 - возвращает "invalid gametype", если у меня нет пробега по словарю
 
-# {"err":"permission blocked"} - например, запрос чужих данных, если статистика скрыта
-# http://klavogonki.ru/api/profile/get-stats-details?userId=111001&gametype=voc-2 - возвращает "permission blocked", если статистика скрыта
+    Microtime:
+      description: Microtime PHP format, date in 3Unix time + nanoseconds
+      type: object
+      properties:
+        sec:
+          type: integer # todo: long format?
+          example: 1297852113 # 16.02.2011 @ 10:28am (UTC)
+        usec:
+          type: integer # todo: long format?
+          example: 0
 
-# {"err":"invalid gametype"} - неправильный словарь
-# http://klavogonki.ru/api/profile/get-stats-details?userId=242585&gametype=voc-8 - возвращает "invalid gametype", если у меня нет пробега по словарю
+    PlayerId:
+      description: Идентификатор игрока
+      type: integer
+      example: 242585
+
+    # see https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/
+    # see https://github.com/OAI/OpenAPI-Specification/issues/1758
+    GetIndexDataResponse:
+      oneOf:
+        - $ref: '#/components/schemas/Error'
+        - $ref: '#/components/schemas/GetIndexDataSuccess'
+
+    GetIndexDataSuccess:
+      description: Успешный ответ на запрос /get-index-data
+      type: object
+      # todo: descriptions for all properties
+      properties:
+        ok:
+          type: integer
+        bio:
+          $ref: '#/components/schemas/Bio'
+        stats:
+          $ref: '#/components/schemas/GetIndexDataStats'
+
+    GetIndexDataStats:
+      description: Данные раздела «Досье» страницы «Сводка»
+      type: object
+      # todo: > 0, >=0 restrictions
+      properties:
+        registered:
+#          description: Дата и время регистрации # todo: description no allowed with $ref, see https://github.com/OAI/OpenAPI-Specification/issues/1514, see https://github.com/TOMP-WG/TOMP-API/issues/275
+          $ref: '#/components/schemas/Microtime'
+        achieves_cnt:
+          description: Число достижений
+          type: integer
+          example: 225
+        total_num_races:
+          description: Общий пробег (по всем режимам)
+          type: integer
+          example: 60633
+        best_speed:
+          description: Рекорд в «Обычном». <b>Can be null if player has no races in normal!</b>
+          type: integer
+          example: 626
+        rating_level:
+          description: Рейтинговый уровень. Новые игроки получают уровень 1.
+          type: integer
+          example: 32
+        friends_cnt:
+          description: Число друзей
+          type: integer
+          example: 102
+        vocs_cnt:
+          description: Число используемых словарей
+          type: integer
+          example: 110
+        cars_cnt:
+          description: Машин в гараже
+          type: integer
+          example: 33
+
+    GetIndexDataAchieves:
+      description: Пять ачивок, вынесенных пользователем в раздел «Сводка»
+      type: object
+      # todo: fill properties
+      properties:
+
+    Bio:
+      description: Данные биографии из раздела «Сводка»
+      type: object
+      properties:
+        _id:
+          type: object #todo: add schema
+        old_text:
+          description: Старая разметка биографии (видимо, при импорте из старого профиля)
+          type: string
+        text:
+          description: Биография (текущая). Содержит Markdown разметку
+          type: string
+        user_id:
+          $ref: '#/components/schemas/PlayerId'
 
     # todo: most probably we should extend this (or probably use a string type instead) since requests also take gametype=voc-123
     # this is to document values for standard build-in dictionaries
