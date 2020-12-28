@@ -1,10 +1,14 @@
 package ru.klavogonki.kgparser;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.klavogonki.kgparser.http.UrlConstructor;
+import ru.klavogonki.kgparser.download.DataDownloader;
+import ru.klavogonki.kgparser.download.IndexDataDownloader;
+import ru.klavogonki.kgparser.download.StatsOverviewDownloader;
+import ru.klavogonki.kgparser.download.SummaryDownloader;
 import ru.klavogonki.kgparser.util.DateUtils;
 
 import java.io.File;
@@ -21,8 +25,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class PlayerSummaryDownloader {
-    private static final Logger logger = LogManager.getLogger(PlayerSummaryDownloader.class);
+public class PlayerDataDownloader {
+    private static final Logger logger = LogManager.getLogger(PlayerDataDownloader.class);
 
     public static class Config {
         public static final int REQUIRED_ARGUMENTS_COUNT = 4;
@@ -44,11 +48,19 @@ public class PlayerSummaryDownloader {
         }
 
         public String getPlayerSummaryFilePath(final int playerId) {
-            return rootDir + File.separator + startDateString + File.separator + "summary" + File.separator + playerId + ".json";
+            return getDataDirectory(playerId, "summary");
         }
 
         public String getPlayerIndexDataFilePath(final int playerId) {
-            return rootDir + File.separator + startDateString + File.separator + "index-data" + File.separator + playerId + ".json";
+            return getDataDirectory(playerId, "index-data");
+        }
+
+        public String getStatsOverviewFilePath(final int playerId) {
+            return getDataDirectory(playerId, "stats-overview");
+        }
+
+        public String getDataDirectory(final int playerId, final String subdir) {
+            return rootDir + File.separator + startDateString + File.separator + subdir + File.separator + playerId + ".json";
         }
 
         public void log() {
@@ -80,7 +92,7 @@ public class PlayerSummaryDownloader {
 
         if (args.length != Config.REQUIRED_ARGUMENTS_COUNT) {
             // todo: use logger instead of System.out??
-            System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> <threadsCount> %n", PlayerSummaryDownloader.class.getSimpleName());
+            System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> <threadsCount> %n", PlayerDataDownloader.class.getSimpleName());
             return;
         }
 
@@ -158,9 +170,15 @@ public class PlayerSummaryDownloader {
         LocalDateTime chunkStartDate = LocalDateTime.now();
         logger.info("Chunk download start date for players [{}; {}]: {}", minPlayerId, maxPlayerId, chunkStartDate);
 
+        // for great thread-safety, create the downloader objects in each of the threads
+        SummaryDownloader summaryDownloader = new SummaryDownloader();
+        IndexDataDownloader indexDataDownloader = new IndexDataDownloader();
+        StatsOverviewDownloader statsOverviewDownloader = new StatsOverviewDownloader();
+
         for (int playerId = minPlayerId; playerId <= maxPlayerId; playerId++) {
-            savePlayerSummaryToJsonFile(config, playerId);
-            savePlayerIndexDataToJsonFile(config, playerId);
+            savePlayerDataToJsonFile(summaryDownloader, config, playerId);
+            savePlayerDataToJsonFile(indexDataDownloader, config, playerId);
+            savePlayerDataToJsonFile(statsOverviewDownloader, config, playerId);
         }
 
         LocalDateTime chunkEndDate = LocalDateTime.now();
@@ -179,32 +197,19 @@ public class PlayerSummaryDownloader {
         logger.info("Seconds: {}", ChronoUnit.SECONDS.between(startDate, endDate));
     }
 
-    private static void savePlayerSummaryToJsonFile(final Config config, final int playerId) throws IOException {
-        logger.debug("Loading player summary for player {}...", playerId);
+    private static void savePlayerDataToJsonFile(final DataDownloader downloader, final Config config, final int playerId) throws IOException {
+        downloader.logDownloadStarting(playerId);
 
-        String urlString = UrlConstructor.getSummary(playerId);
-
-        String out = loadUrlToString(urlString);
-        // todo: make fake mode turned on/off with config
-//        String out = String.format("player-%d-fake-summary (url: %s)", playerId, urlString);
-
-        String jsonFilePath = config.getPlayerSummaryFilePath(playerId);
-        FileUtils.writeStringToFile(new File(jsonFilePath), out, StandardCharsets.UTF_8);
-        logger.debug("Summary for player {} successfully written to file {}.", playerId, jsonFilePath);
-    }
-
-    private static void savePlayerIndexDataToJsonFile(final Config config, final int playerId) throws IOException {
-        logger.debug("Loading player index data for player {}...", playerId);
-
-        String urlString = UrlConstructor.getIndexData(playerId);
+        String urlString = downloader.getUrl(playerId);
 
         String out = loadUrlToString(urlString);
         // todo: make fake mode turned on/off with config
-//        String out = String.format("player-%d-fake-index-data (url: %s)", playerId, urlString);
+//        String out = String.format("player-%d-fake-result (url: %s)", playerId, urlString);
 
-        String jsonFilePath = config.getPlayerIndexDataFilePath(playerId);
+        String jsonFilePath = downloader.getJsonFilePath(config, playerId);
         FileUtils.writeStringToFile(new File(jsonFilePath), out, StandardCharsets.UTF_8);
-        logger.debug("Index data for player {} successfully written to file {}.", playerId, jsonFilePath);
+
+        downloader.logDataWrittenToFile(playerId, jsonFilePath);
     }
 
     private static String loadUrlToString(final String urlString) throws IOException {
@@ -217,7 +222,7 @@ public class PlayerSummaryDownloader {
             .next();
 
         logger.debug("Response for url {}:", urlString);
-        logger.debug(out);
+        logger.debug(StringUtils.abbreviate(out, 100));  // do not spam the whole response to log!
         return out;
     }
 

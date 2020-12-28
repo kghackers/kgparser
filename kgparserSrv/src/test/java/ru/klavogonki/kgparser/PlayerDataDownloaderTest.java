@@ -7,11 +7,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PlayerSummaryDownloaderTest {
+class PlayerDataDownloaderTest {
 
     @Test
     void testSplitPlayerIdsWithoutMod() {
-        List<ImmutablePair<Integer, Integer>> split = PlayerSummaryDownloader.split(9, 100, 999);
+        List<ImmutablePair<Integer, Integer>> split = PlayerDataDownloader.split(9, 100, 999);
 
         assertThat(split)
             .hasSize(9)
@@ -30,7 +30,7 @@ class PlayerSummaryDownloaderTest {
 
     @Test
     void testSplitPlayerIdsWithMod() {
-        List<ImmutablePair<Integer, Integer>> split = PlayerSummaryDownloader.split(9, 100, 1000);
+        List<ImmutablePair<Integer, Integer>> split = PlayerDataDownloader.split(9, 100, 1000);
 
         assertThat(split)
             .hasSize(10)
@@ -50,7 +50,7 @@ class PlayerSummaryDownloaderTest {
 
     @Test
     void testThreadsMoreThanPlayers() {
-        List<ImmutablePair<Integer, Integer>> split = PlayerSummaryDownloader.split(9, 1, 1);
+        List<ImmutablePair<Integer, Integer>> split = PlayerDataDownloader.split(9, 1, 1);
 
         assertThat(split)
             .hasSize(1)
@@ -61,7 +61,7 @@ class PlayerSummaryDownloaderTest {
 
     @Test
     void testOnePlayerPerThread() {
-        List<ImmutablePair<Integer, Integer>> split = PlayerSummaryDownloader.split(9, 100, 108);
+        List<ImmutablePair<Integer, Integer>> split = PlayerDataDownloader.split(9, 100, 108);
 
         assertThat(split)
             .hasSize(9)
@@ -80,7 +80,7 @@ class PlayerSummaryDownloaderTest {
 
     @Test
     void testOneThread() {
-        List<ImmutablePair<Integer, Integer>> split = PlayerSummaryDownloader.split(1, 100, 109);
+        List<ImmutablePair<Integer, Integer>> split = PlayerDataDownloader.split(1, 100, 109);
 
         assertThat(split)
             .hasSize(1)

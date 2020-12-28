@@ -14,7 +14,7 @@ public class PlayerDto { // object to use in Freemarker templates
 
     // string since Java8 Date/Time formatting does not work in Freemarker
     // see https://stackoverflow.com/questions/32063276/java-time-java-8-support-in-freemarker
-    private String importDate; // when PlayerSummaryDownloader has been executed
+    private String importDate; // when PlayerDataDownloader has been executed
 
     private String getSummaryError; // we import all users, including non-existing
 

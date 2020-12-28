@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-// todo: move to kgParserSrv and use instead of PlayerSummaryDownloader.Config
+// todo: move to kgParserSrv and use instead of PlayerDataDownloader.Config
 @Data
 public class ExportContext {
 

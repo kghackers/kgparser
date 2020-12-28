@@ -5,10 +5,12 @@
 * [Telegram канал](https://t.me/joinchat/N3tfQFVvmbH21ipSy9yKcA) с нотификациями о событиях в этом GitHub-проекте 
 
 
-# How to execute `PlayerSummaryDownloader`
-Execution with overriding the log4j2.xml configuration file:
+# How to execute `PlayerDataDownloader`
+Execution with overriding the `log4j2.xml` configuration file:
+
+For example, to load players with `playerId in [30000; 30100]` (total 101 players) in 10 threads, execute
 ```
-java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-srv-1.0.jar ru.klavogonki.kgparser.PlayerSummaryDownloader c:/java/kg 30000 30010 
+java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-srv-1.0.jar ru.klavogonki.kgparser.PlayerDataDownloader c:/java/kg 30000 30100 10
 ```
 
 # Какие графики и таблицы можно сделать на текущих данных
