@@ -1,7 +1,6 @@
 name: Java CI
 
-on: 
-  - push
+on: [push, pull_request]
 
 jobs:
   build:
@@ -43,7 +42,6 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
         with: 
-          config-file: ./.github/codeql/java-config.yml
           languages: java
           queries: security-and-quality
 
