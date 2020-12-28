@@ -48,7 +48,7 @@ jobs:
           queries: security-and-quality
 
       - name: Build kgparser project
-        run: mvn compile -Dmaven.javadoc.skip --no-transfer-progress
+        run: mvn package -Dmaven.javadoc.skip --no-transfer-progress
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
