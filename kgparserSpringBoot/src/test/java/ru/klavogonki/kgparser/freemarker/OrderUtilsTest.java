@@ -1,7 +1,7 @@
 package ru.klavogonki.kgparser.freemarker;
 
 import org.junit.jupiter.api.Test;
-import ru.klavogonki.kgparser.jsonParser.dto.Assertions;
+import ru.klavogonki.kgparser.jsonParser.Assertions;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 
 import java.util.Collections;

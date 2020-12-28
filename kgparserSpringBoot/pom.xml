@@ -17,27 +17,17 @@
 	<name>kgparser-springboot</name>
 	<description>Spring Boot module of kgparser</description>
 
-	<properties>
-		<java.version>11</java.version>
-		<org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
-		<lombok.version>1.18.16</lombok.version>
-		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-		<freemarker.version>2.3.30</freemarker.version>
-		<poi.version>4.1.2</poi.version>
-		<springboot.version>2.4.0</springboot.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 		</dependency>
-		
+
 		<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
 		</dependency>
-		
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -46,7 +36,7 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -122,7 +112,7 @@
 		<dependency>
 			<groupId>net.lingala.zip4j</groupId>
 			<artifactId>zip4j</artifactId>
-			<version>2.6.4</version>
+			<version>${zip4j.versiono}</version>
 		</dependency>
 
 	</dependencies>
@@ -146,7 +136,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>11</source>					<!-- todo: use some global project property -->
 					<target>11</target>					<!-- todo: use some global project property -->
@@ -176,12 +166,15 @@
 			<plugin>
 				<groupId>org.assertj</groupId>
 				<artifactId>assertj-assertions-generator-maven-plugin</artifactId>
-				<version>2.2.0</version>
+				<version>${assertj-assertions-generator-maven-plugin.version}</version>
 				<configuration>
 					<packages>
 						<param>ru.klavogonki.kgparser.jsonParser.entity</param>
 						<param>ru.klavogonki.kgparser.jsonParser.dto</param>
 					</packages>
+
+					<entryPointClassPackage>ru.klavogonki.kgparser.jsonParser</entryPointClassPackage>
+					<hierarchical>true</hierarchical>
 				</configuration>
 				<executions>
 					<execution>

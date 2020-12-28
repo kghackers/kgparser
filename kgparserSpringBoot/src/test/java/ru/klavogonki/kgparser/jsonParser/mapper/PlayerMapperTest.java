@@ -6,9 +6,9 @@ import org.mapstruct.factory.Mappers;
 import ru.klavogonki.kgparser.Car;
 import ru.klavogonki.kgparser.PlayerJsonData;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.jsonParser.Assertions;
 import ru.klavogonki.kgparser.jsonParser.PlayerIndexData;
 import ru.klavogonki.kgparser.jsonParser.PlayerSummary;
-import ru.klavogonki.kgparser.jsonParser.entity.Assertions;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.util.DateUtils;
 
