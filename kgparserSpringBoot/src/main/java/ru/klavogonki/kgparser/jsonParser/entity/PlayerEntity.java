@@ -24,7 +24,7 @@ public class PlayerEntity {
     @GeneratedValue
     private Long dbId;
 
-    private LocalDateTime importDate; // when PlayerSummaryDownloader has been executed
+    private LocalDateTime importDate; // when PlayerDataDownloader has been executed
 
     private String getSummaryError; // we import all users, including non-existing
 

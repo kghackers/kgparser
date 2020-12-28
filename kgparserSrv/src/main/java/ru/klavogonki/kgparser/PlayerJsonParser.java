@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 
 /**
- * Parses the json files saved by {@link PlayerSummaryDownloader}.
+ * Parses the json files saved by {@link PlayerDataDownloader}.
  */
 public class PlayerJsonParser {
     private static final Logger logger = LogManager.getLogger(PlayerJsonParser.class);
@@ -45,7 +45,7 @@ public class PlayerJsonParser {
             return;
         }
 
-        PlayerSummaryDownloader.Config config = PlayerSummaryDownloader.Config.parseFromArguments(args);
+        PlayerDataDownloader.Config config = PlayerDataDownloader.Config.parseFromArguments(args);
         config.setStartDate(args[3]);
         config.log();
 
@@ -78,7 +78,7 @@ public class PlayerJsonParser {
         // todo: should login be unique over all users?
     }
 
-    public static void handlePlayers(final PlayerSummaryDownloader.Config config, final BiConsumer<Integer, Optional<PlayerJsonData>> playerHandler) {
+    public static void handlePlayers(final PlayerDataDownloader.Config config, final BiConsumer<Integer, Optional<PlayerJsonData>> playerHandler) {
         int totalPlayersToHandle = config.maxPlayerId - config.minPlayerId + 1;
 
         for (int playerId = config.minPlayerId; playerId <= config.maxPlayerId; playerId++) {

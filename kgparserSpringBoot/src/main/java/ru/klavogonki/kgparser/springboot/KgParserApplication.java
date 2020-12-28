@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import ru.klavogonki.kgparser.PlayerDataDownloader;
 import ru.klavogonki.kgparser.PlayerJsonData;
 import ru.klavogonki.kgparser.PlayerJsonParser;
-import ru.klavogonki.kgparser.PlayerSummaryDownloader;
 import ru.klavogonki.kgparser.export.ExportContext;
 import ru.klavogonki.kgparser.export.IndexPageExporter;
 import ru.klavogonki.kgparser.export.PlayersByRankExporter;
@@ -96,7 +96,7 @@ public class KgParserApplication implements CommandLineRunner {
 			return;
 		}
 
-		PlayerSummaryDownloader.Config config = PlayerSummaryDownloader.Config.parseFromArguments(args);
+		PlayerDataDownloader.Config config = PlayerDataDownloader.Config.parseFromArguments(args);
 		config.setStartDate(args[3]);
 		config.log();
 
