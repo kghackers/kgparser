@@ -11,6 +11,7 @@ public class RatingLevelColumn implements IntegerColumn {
         return "Уровень";
     }
 
+    @Override
     public Function<PlayerDto, Integer> playerFieldGetter() {
         return PlayerDto::getRatingLevel;
     }

@@ -74,15 +74,20 @@ public class Player extends JsonObject implements Comparable<Player>
 		return profileId == null;
 	}
 
+	@Override
 	public int compareTo(Player o) {
 		return this.profileId.compareTo(o.profileId);
 	}
+
+	@Override
 	public boolean equals(Object player) {
 		if (player instanceof Player)
 			return this.profileId.equals( ((Player) player).getProfileId() );
 
 		return false;
 	}
+
+	@Override
 	public int hashCode() {
 		return (profileId != null ? profileId.hashCode() : 0);
 	}

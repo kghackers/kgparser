@@ -25,6 +25,7 @@ public class IndexPageExporter implements DataExporter {
     @Autowired
     private PlayerRepository playerRepository;
 
+    @Override
     public void export(ExportContext context) {
         Integer minExistingPlayerId = playerRepository.selectMinExistingPlayerId();
         logger.debug("Min existing player id: {}", minExistingPlayerId);
