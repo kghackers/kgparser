@@ -1,10 +1,10 @@
-name: CI & CodeQL
+name: Java CI
 
 on: [push, pull_request]
 
 jobs:
   build:
-    name: Build and Analyze KG Parser
+    name: Build KG Parser
     runs-on: ubuntu-latest
     # for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
     steps:
@@ -47,18 +47,6 @@ jobs:
 
       - name: Build kgparser project
         run: mvn package -Dmaven.javadoc.skip --no-transfer-progress
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
-        with:
-          languages: javascript
-          queries: security-and-quality
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v1
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
