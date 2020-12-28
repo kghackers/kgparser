@@ -7,25 +7,9 @@ jobs:
   build:
     name: Build KG Parser
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: kgparser
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
     # for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
     steps:
       - uses: actions/checkout@v2
-      - run: | 
-          sudo service mysql start
-          mysql -uroot -proot -e "show databases;"
 
       - name: Set up JDK 1.11
         uses: actions/setup-java@v1
@@ -64,7 +48,7 @@ jobs:
           queries: security-and-quality
 
       - name: Build kgparser project
-        run: mvn compile -Dmaven.javadoc.skip --no-transfer-progress
+        run: mvn package -Dmaven.javadoc.skip --no-transfer-progress
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
