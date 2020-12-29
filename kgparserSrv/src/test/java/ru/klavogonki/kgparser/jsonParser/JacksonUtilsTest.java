@@ -3,6 +3,7 @@ package ru.klavogonki.kgparser.jsonParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import ru.klavogonki.kgparser.Car;
 import ru.klavogonki.kgparser.Rank;
@@ -31,8 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class JacksonUtilsTest {
     private static final Logger logger = LogManager.getLogger(JacksonUtilsTest.class);
 
-    // todo: @Nested subclasses for each of the methods
-
     // todo: add bio.oldTextRemoved validation to all indexData tests!
     // todo: missing tests:
     // - 109842 - blank login
@@ -42,406 +41,415 @@ class JacksonUtilsTest {
     // - 368664 - bio.text == null, bio.oldText not present, bio.old_text_removed present
     // - 498727 - /get-summary works, /get-index-data returns error (special MongoDB error)
 
-    @Test
-    @DisplayName("Test parsing an existing user summary from a json file")
-    void testPlayerSummary() {
-        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-242585.json");
+    @Nested
+    @DisplayName("Test parsing of /get-summary responses")
+    class GetSummary {
 
-        GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
-        logPlayerSummary(summary);
+        @Test
+        @DisplayName("Test parsing an existing user summary from a json file")
+        void existingPlayer() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-242585.json");
 
-        GetSummaryResponseAssert
-            .assertThat(summary)
-            .hasErr(null)
-            .hasIsOnline(Boolean.TRUE)
-            .hasLevel(Rank.getLevel(Rank.superman).intValue())
-            .hasTitle(Rank.getDisplayName(Rank.superman))
-            .hasBlocked(0);
+            GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
+            logPlayerSummary(summary);
 
-        GetSummaryUser user = summary.getUser();
-        GetSummaryUserAssert
-            .assertThat(user)
-            .isNotNull()
-            .hasId(242585)
-            .hasLogin("nosferatum")
-            .hasMigrateBookDone(Boolean.TRUE)
-            .hasMigrateDone(Boolean.TRUE);
+            GetSummaryResponseAssert
+                .assertThat(summary)
+                .hasErr(null)
+                .hasIsOnline(Boolean.TRUE)
+                .hasLevel(Rank.getLevel(Rank.superman).intValue())
+                .hasTitle(Rank.getDisplayName(Rank.superman))
+                .hasBlocked(0);
 
-        Microtime avatar = user.getAvatar();
-        MicrotimeAssert
-            .assertThat(avatar)
-            .hasSec(1388213197L)
-            .hasUsec(738000L);
+            GetSummaryUser user = summary.getUser();
+            GetSummaryUserAssert
+                .assertThat(user)
+                .isNotNull()
+                .hasId(242585)
+                .hasLogin("nosferatum")
+                .hasMigrateBookDone(Boolean.TRUE)
+                .hasMigrateDone(Boolean.TRUE);
 
-        ru.klavogonki.openapi.model.Car car = summary.getCar();
-        CarAssert
-            .assertThat(car)
-            .isNotNull()
-            .hasCar(Car.F1.id)
-            .hasColor("#BF1300");
+            Microtime avatar = user.getAvatar();
+            MicrotimeAssert
+                .assertThat(avatar)
+                .hasSec(1388213197L)
+                .hasUsec(738000L);
 
-        Map<String, Integer> tuning = (Map<String, Integer>) car.getTuning();
-        assertThat(tuning)
-            .hasSize(2)
-            .containsEntry("0", 3)
-            .containsEntry("3", 0);
+            ru.klavogonki.openapi.model.Car car = summary.getCar();
+            CarAssert
+                .assertThat(car)
+                .isNotNull()
+                .hasCar(Car.F1.id)
+                .hasColor("#BF1300");
+
+            Map<String, Integer> tuning = (Map<String, Integer>) car.getTuning();
+            assertThat(tuning)
+                .hasSize(2)
+                .containsEntry("0", 3)
+                .containsEntry("3", 0);
+        }
+
+        @Test
+        @DisplayName("Test parsing an existing user summary for a user with a personal car id from a json file")
+        void playerWithPersonalCarId() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-922.json");
+
+            GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
+            logPlayerSummary(summary);
+
+            GetSummaryResponseAssert
+                .assertThat(summary)
+                .hasErr(null)
+                .hasIsOnline(Boolean.FALSE)
+                .hasLevel(Rank.getLevel(Rank.maniac).intValue())
+                .hasTitle(Rank.getDisplayName(Rank.maniac))
+                .hasBlocked(0);
+
+            GetSummaryUser user = summary.getUser();
+            GetSummaryUserAssert
+                .assertThat(user)
+                .isNotNull()
+                .hasId(922)
+                .hasLogin("lovermann")
+                .hasMigrateBookDone(Boolean.TRUE)
+                .hasMigrateDone(Boolean.TRUE);
+
+            Microtime avatar = user.getAvatar();
+            MicrotimeAssert
+                .assertThat(avatar)
+                .hasSec(1388204842L)
+                .hasUsec(467000L);
+
+            ru.klavogonki.openapi.model.Car car = summary.getCar();
+            CarAssert
+                .assertThat(car)
+                .isNotNull()
+                .hasCar(Car.CARAVEL.personalId)
+                .hasColor("#000000");
+
+            List<Integer> tuning = (List<Integer>) car.getTuning();
+            assertThat(tuning)
+                .isEmpty();
+        }
+
+        @Test
+        @DisplayName("Test parsing a brand new user summary from a json file")
+        void brandNewPlayer() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-624511.json");
+
+            GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
+            logPlayerSummary(summary);
+
+
+            GetSummaryResponseAssert
+                .assertThat(summary)
+                .hasErr(null)
+                .hasIsOnline(Boolean.TRUE)
+                .hasLevel(Rank.getLevel(Rank.novice).intValue())
+                .hasTitle(Rank.getDisplayName(Rank.novice))
+                .hasBlocked(0);
+
+            GetSummaryUser user = summary.getUser();
+            GetSummaryUserAssert
+                .assertThat(user)
+                .isNotNull()
+                .hasId(624511)
+                .hasLogin("nosferatum0")
+                .hasMigrateBookDone(null) // no migrated flags for the new users
+                .hasMigrateDone(null); // no migrated flags for the new users
+
+            Microtime avatar = user.getAvatar();
+            MicrotimeAssert
+                .assertThat(avatar)
+                .isNull(); // new user without avatar -> no avatar date
+
+            ru.klavogonki.openapi.model.Car car = summary.getCar();
+            CarAssert
+                .assertThat(car)
+                .isNotNull()
+                .hasCar(Car.ZAZ_965.id)
+                .hasColor("#777777");
+
+            List<Integer> tuning = (List<Integer>) car.getTuning();
+            assertThat(tuning)
+                .isEmpty();
+        }
+
+        @Test
+        @DisplayName("Test parsing a summary of a klavomechanic with a hidden profile from a json file")
+        void klavoMechanicWithHiddenProfile() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-21.json");
+
+            GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
+            logPlayerSummary(summary);
+
+            GetSummaryResponseAssert
+                .assertThat(summary)
+                .hasErr(null)
+                .hasIsOnline(Boolean.FALSE)
+                .hasLevel(Rank.getLevel(Rank.superman).intValue())
+                .hasTitle(Rank.KLAVO_MECHANIC_TITLE)
+                .hasBlocked(0);
+
+            GetSummaryUser user = summary.getUser();
+            GetSummaryUserAssert
+                .assertThat(user)
+                .isNotNull()
+                .hasId(21)
+                .hasLogin("Artch")
+                .hasMigrateBookDone(Boolean.TRUE)
+                .hasMigrateDone(Boolean.TRUE);
+
+            Microtime avatar = user.getAvatar();
+            MicrotimeAssert
+                .assertThat(avatar)
+                .hasSec(1388650379L)
+                .hasUsec(184000L);
+
+            ru.klavogonki.openapi.model.Car car = summary.getCar();
+            CarAssert
+                .assertThat(car)
+                .isNotNull()
+                .hasCar(Car.AUDI_TT.id)
+                .hasColor("#893425");
+
+            Map<String, Integer> tuning = (Map<String, Integer>) car.getTuning();
+            assertThat(tuning)
+                .hasSize(1)
+                .containsEntry("1", 1);
+        }
+
+        @Test
+        @DisplayName("Test parsing a non-existing user summary from a json file")
+        void invalidPlayer() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-30001.json");
+
+            GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
+            logPlayerSummary(summary);
+
+            GetSummaryResponseAssert
+                .assertThat(summary)
+                .hasErr(ApiErrors.INVALID_USER_ID_ERROR)
+                .hasIsOnline(null)
+                .hasLevel(null)
+                .hasTitle(null)
+                .hasBlocked(null);
+
+            GetSummaryUser user = summary.getUser();
+            GetSummaryUserAssert
+                .assertThat(user)
+                .isNull();
+
+            ru.klavogonki.openapi.model.Car car = summary.getCar();
+            CarAssert
+                .assertThat(car)
+                .isNull();
+        }
+
+        private void logPlayerSummary(final GetSummaryResponse summary) {
+            logger.info("Player summary: ");
+            logger.info(summary);
+        }
     }
 
-    @Test
-    @DisplayName("Test parsing an existing user summary for a user with a personal car id from a json file")
-    void testPlayerWithPersonalCarIdSummary() {
-        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-922.json");
+    @Nested
+    @DisplayName("Test parsing of /get-index-data responses")
+    class GetIndexData {
+        @Test
+        @DisplayName("Test parsing an existing user index data from a json file")
+        void existingPlayer() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-242585.json");
 
-        GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
-        logPlayerSummary(summary);
+            GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
+            logPlayerIndexData(data);
 
-        GetSummaryResponseAssert
-            .assertThat(summary)
-            .hasErr(null)
-            .hasIsOnline(Boolean.FALSE)
-            .hasLevel(Rank.getLevel(Rank.maniac).intValue())
-            .hasTitle(Rank.getDisplayName(Rank.maniac))
-            .hasBlocked(0);
+            GetIndexDataResponseAssert
+                .assertThat(data)
+                .hasOk(ApiErrors.OK_CORRECT_VALUE)
+                .hasErr(null);
 
-        GetSummaryUser user = summary.getUser();
-        GetSummaryUserAssert
-            .assertThat(user)
-            .isNotNull()
-            .hasId(922)
-            .hasLogin("lovermann")
-            .hasMigrateBookDone(Boolean.TRUE)
-            .hasMigrateDone(Boolean.TRUE);
+            // bio
+            Bio bio = data.getBio();
+            BioAssert
+                .assertThat(bio)
+                .isNotNull()
+                .hasUserId(242585);
 
-        Microtime avatar = user.getAvatar();
-        MicrotimeAssert
-            .assertThat(avatar)
-            .hasSec(1388204842L)
-            .hasUsec(467000L);
+            assertThat(bio.getOldText()).isNotBlank(); // huge html, no validation
+            assertThat(bio.getText()).isNotBlank(); // huge html, no validation
 
-        ru.klavogonki.openapi.model.Car car = summary.getCar();
-        CarAssert
-            .assertThat(car)
-            .isNotNull()
-            .hasCar(Car.CARAVEL.personalId)
-            .hasColor("#000000");
+            // stats
+            GetIndexDataStats stats = data.getStats();
+            GetIndexDataStatsAssert
+                .assertThat(stats)
+                .isNotNull()
+                .hasAchievesCnt(225)
+                .hasTotalNumRaces(60633)
+                .hasBestSpeed(626)
+                .hasRatingLevel(32)
+                .hasFriendsCnt(102)
+                .hasVocsCnt(109)
+                .hasCarsCnt(33);
 
-        List<Integer> tuning = (List<Integer>) car.getTuning();
-        assertThat(tuning)
-            .isEmpty();
-    }
+            // stats.registered
+            Microtime registered = stats.getRegistered();
+            MicrotimeAssert
+                .assertThat(registered)
+                .isNotNull()
+                .hasSec(1297852113L)
+                .hasUsec(0L);
 
-    @Test
-    @DisplayName("Test parsing a brand new user summary from a json file")
-    void testBrandNewPlayerSummary() {
-        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-624511.json");
+            DateUtils.convertUserRegisteredTime(data);
+        }
 
-        GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
-        logPlayerSummary(summary);
+        @Test
+        @DisplayName("Test parsing an existing user index data for a user with a personal car id from a json file")
+        void playerWithPersonalCarId() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-922.json");
 
+            GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
+            logPlayerIndexData(data);
 
-        GetSummaryResponseAssert
-            .assertThat(summary)
-            .hasErr(null)
-            .hasIsOnline(Boolean.TRUE)
-            .hasLevel(Rank.getLevel(Rank.novice).intValue())
-            .hasTitle(Rank.getDisplayName(Rank.novice))
-            .hasBlocked(0);
+            GetIndexDataResponseAssert
+                .assertThat(data)
+                .hasOk(ApiErrors.OK_CORRECT_VALUE)
+                .hasErr(null);
 
-        GetSummaryUser user = summary.getUser();
-        GetSummaryUserAssert
-            .assertThat(user)
-            .isNotNull()
-            .hasId(624511)
-            .hasLogin("nosferatum0")
-            .hasMigrateBookDone(null) // no migrated flags for the new users
-            .hasMigrateDone(null); // no migrated flags for the new users
+            // bio
+            Bio bio = data.getBio();
+            BioAssert
+                .assertThat(bio)
+                .isNotNull()
+                .hasUserId(922);
 
-        Microtime avatar = user.getAvatar();
-        MicrotimeAssert
-            .assertThat(avatar)
-            .isNull(); // new user without avatar -> no avatar date
+            assertThat(bio.getOldText()).isNotBlank(); // huge html, no validation
+            assertThat(bio.getText()).isNotBlank(); // huge html, no validation
 
-        ru.klavogonki.openapi.model.Car car = summary.getCar();
-        CarAssert
-            .assertThat(car)
-            .isNotNull()
-            .hasCar(Car.ZAZ_965.id)
-            .hasColor("#777777");
+            // bio.editedDate
+            Microtime editedData = bio.getEditedDate();
+            MicrotimeAssert
+                .assertThat(editedData)
+                .isNotNull()
+                .hasSec(1508143960L)
+                .hasUsec(314000L);
 
-        List<Integer> tuning = (List<Integer>) car.getTuning();
-        assertThat(tuning)
-            .isEmpty();
-    }
+            // stats
+            GetIndexDataStats stats = data.getStats();
+            GetIndexDataStatsAssert
+                .assertThat(stats)
+                .isNotNull()
+                .hasAchievesCnt(171)
+                .hasTotalNumRaces(47887)
+                .hasBestSpeed(554)
+                .hasRatingLevel(37)
+                .hasFriendsCnt(75)
+                .hasVocsCnt(83)
+                .hasCarsCnt(41);
 
-    @Test
-    @DisplayName("Test parsing a summary of a klavomechanic with a hidden profile from a json file")
-    void testKlavoMechanicWithHiddenProfileSummary() {
-        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-21.json");
+            // stats.registered
+            Microtime registered = stats.getRegistered();
+            MicrotimeAssert
+                .assertThat(registered)
+                .isNotNull()
+                .hasSec(1211400000L)
+                .hasUsec(0L);
 
-        GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
-        logPlayerSummary(summary);
+            DateUtils.convertUserRegisteredTime(data);
+        }
 
-        GetSummaryResponseAssert
-            .assertThat(summary)
-            .hasErr(null)
-            .hasIsOnline(Boolean.FALSE)
-            .hasLevel(Rank.getLevel(Rank.superman).intValue())
-            .hasTitle(Rank.KLAVO_MECHANIC_TITLE)
-            .hasBlocked(0);
+        @Test
+        @DisplayName("Test parsing a brand new user index data from a json file")
+        void brandNewPlayer() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-624511.json");
 
-        GetSummaryUser user = summary.getUser();
-        GetSummaryUserAssert
-            .assertThat(user)
-            .isNotNull()
-            .hasId(21)
-            .hasLogin("Artch")
-            .hasMigrateBookDone(Boolean.TRUE)
-            .hasMigrateDone(Boolean.TRUE);
+            GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
+            logPlayerIndexData(data);
 
-        Microtime avatar = user.getAvatar();
-        MicrotimeAssert
-            .assertThat(avatar)
-            .hasSec(1388650379L)
-            .hasUsec(184000L);
+            GetIndexDataResponseAssert
+                .assertThat(data)
+                .hasOk(ApiErrors.OK_CORRECT_VALUE)
+                .hasErr(null);
 
-        ru.klavogonki.openapi.model.Car car = summary.getCar();
-        CarAssert
-            .assertThat(car)
-            .isNotNull()
-            .hasCar(Car.AUDI_TT.id)
-            .hasColor("#893425");
+            Bio bio = data.getBio();
+            BioAssert
+                .assertThat(bio)
+                .isNotNull()
+                .hasUserId(624511)
+                .hasOldText(null) // no oldText for the new users
+                .hasText(""); // empty and not null
 
-        Map<String, Integer> tuning = (Map<String, Integer>) car.getTuning();
-        assertThat(tuning)
-            .hasSize(1)
-            .containsEntry("1", 1);
-    }
+            // stats
+            GetIndexDataStats stats = data.getStats();
+            GetIndexDataStatsAssert
+                .assertThat(stats)
+                .isNotNull()
+                .hasAchievesCnt(0)
+                .hasTotalNumRaces(0)
+                .hasBestSpeed(null) // no races in "Normal" -> no best speed
+                .hasRatingLevel(1) // user is level 1 from the start
+                .hasFriendsCnt(0)
+                .hasVocsCnt(0)
+                .hasCarsCnt(1); // user has 1 car from the start
 
-    @Test
-    @DisplayName("Test parsing a non-existing user summary from a json file")
-    void testInvalidPlayerSummary() {
-        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-30001.json");
+            // stats.registered
+            Microtime registered = stats.getRegistered();
+            MicrotimeAssert
+                .assertThat(registered)
+                .isNotNull()
+                .hasSec(1607554944L)
+                .hasUsec(0L);
 
-        GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
-        logPlayerSummary(summary);
+            DateUtils.convertUserRegisteredTime(data);
+        }
 
-        GetSummaryResponseAssert
-            .assertThat(summary)
-            .hasErr(ApiErrors.INVALID_USER_ID_ERROR)
-            .hasIsOnline(null)
-            .hasLevel(null)
-            .hasTitle(null)
-            .hasBlocked(null);
+        @Test
+        @DisplayName("Test parsing index data of a klavomechanic with a hidden profile from a json file. Request returns a \"hidden profile\" error.")
+        void klavoMechanicWithHiddenProfile() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-21.json");
 
-        GetSummaryUser user = summary.getUser();
-        GetSummaryUserAssert
-            .assertThat(user)
-            .isNull();
+            GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
+            logPlayerIndexData(data);
 
-        ru.klavogonki.openapi.model.Car car = summary.getCar();
-        CarAssert
-            .assertThat(car)
-            .isNull();
-    }
+            GetIndexDataResponseAssert
+                .assertThat(data)
+                .hasOk(null)
+                .hasErr(ApiErrors.HIDDEN_PROFILE_USER_ERROR);
 
-    @Test
-    @DisplayName("Test parsing an existing user index data from a json file")
-    void testPlayerIndexData() {
-        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-242585.json");
+            BioAssert
+                .assertThat(data.getBio())
+                .isNull();
 
-        GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
-        logPlayerIndexData(data);
+            GetIndexDataStatsAssert
+                .assertThat(data.getStats())
+                .isNull();
+        }
 
-        GetIndexDataResponseAssert
-            .assertThat(data)
-            .hasOk(ApiErrors.OK_CORRECT_VALUE)
-            .hasErr(null);
+        @Test
+        @DisplayName("Test parsing a non-existing user index data from a json file")
+        void invalidPlayer() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-30001.json");
 
-        // bio
-        Bio bio = data.getBio();
-        BioAssert
-            .assertThat(bio)
-            .isNotNull()
-            .hasUserId(242585);
+            GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
+            logPlayerIndexData(data);
 
-        assertThat(bio.getOldText()).isNotBlank(); // huge html, no validation
-        assertThat(bio.getText()).isNotBlank(); // huge html, no validation
+            GetIndexDataResponseAssert
+                .assertThat(data)
+                .hasOk(null)
+                .hasErr(ApiErrors.INVALID_USER_ID_ERROR);
 
-        // stats
-        GetIndexDataStats stats = data.getStats();
-        GetIndexDataStatsAssert
-            .assertThat(stats)
-            .isNotNull()
-            .hasAchievesCnt(225)
-            .hasTotalNumRaces(60633)
-            .hasBestSpeed(626)
-            .hasRatingLevel(32)
-            .hasFriendsCnt(102)
-            .hasVocsCnt(109)
-            .hasCarsCnt(33);
+            BioAssert
+                .assertThat(data.getBio())
+                .isNull();
 
-        // stats.registered
-        Microtime registered = stats.getRegistered();
-        MicrotimeAssert
-            .assertThat(registered)
-            .isNotNull()
-            .hasSec(1297852113L)
-            .hasUsec(0L);
+            GetIndexDataStatsAssert
+                .assertThat(data.getStats())
+                .isNull();
+        }
 
-        DateUtils.convertUserRegisteredTime(data);
-    }
-
-    @Test
-    @DisplayName("Test parsing an existing user index data for a user with a personal car id from a json file")
-    void testPlayerWithPersonalCarIdIndexData() {
-        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-922.json");
-
-        GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
-        logPlayerIndexData(data);
-
-        GetIndexDataResponseAssert
-            .assertThat(data)
-            .hasOk(ApiErrors.OK_CORRECT_VALUE)
-            .hasErr(null);
-
-        // bio
-        Bio bio = data.getBio();
-        BioAssert
-            .assertThat(bio)
-            .isNotNull()
-            .hasUserId(922);
-
-        assertThat(bio.getOldText()).isNotBlank(); // huge html, no validation
-        assertThat(bio.getText()).isNotBlank(); // huge html, no validation
-
-        // bio.editedDate
-        Microtime editedData = bio.getEditedDate();
-        MicrotimeAssert
-            .assertThat(editedData)
-            .isNotNull()
-            .hasSec(1508143960L)
-            .hasUsec(314000L);
-
-        // stats
-        GetIndexDataStats stats = data.getStats();
-        GetIndexDataStatsAssert
-            .assertThat(stats)
-            .isNotNull()
-            .hasAchievesCnt(171)
-            .hasTotalNumRaces(47887)
-            .hasBestSpeed(554)
-            .hasRatingLevel(37)
-            .hasFriendsCnt(75)
-            .hasVocsCnt(83)
-            .hasCarsCnt(41);
-
-        // stats.registered
-        Microtime registered = stats.getRegistered();
-        MicrotimeAssert
-            .assertThat(registered)
-            .isNotNull()
-            .hasSec(1211400000L)
-            .hasUsec(0L);
-
-        DateUtils.convertUserRegisteredTime(data);
-    }
-
-    @Test
-    @DisplayName("Test parsing a brand new user index data from a json file")
-    void testBrandNewPlayerIndexData() {
-        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-624511.json");
-
-        GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
-        logPlayerIndexData(data);
-
-        GetIndexDataResponseAssert
-            .assertThat(data)
-            .hasOk(ApiErrors.OK_CORRECT_VALUE)
-            .hasErr(null);
-
-        Bio bio = data.getBio();
-        BioAssert
-            .assertThat(bio)
-            .isNotNull()
-            .hasUserId(624511)
-            .hasOldText(null) // no oldText for the new users
-            .hasText(""); // empty and not null
-
-        // stats
-        GetIndexDataStats stats = data.getStats();
-        GetIndexDataStatsAssert
-            .assertThat(stats)
-            .isNotNull()
-            .hasAchievesCnt(0)
-            .hasTotalNumRaces(0)
-            .hasBestSpeed(null) // no races in "Normal" -> no best speed
-            .hasRatingLevel(1) // user is level 1 from the start
-            .hasFriendsCnt(0)
-            .hasVocsCnt(0)
-            .hasCarsCnt(1); // user has 1 car from the start
-
-        // stats.registered
-        Microtime registered = stats.getRegistered();
-        MicrotimeAssert
-            .assertThat(registered)
-            .isNotNull()
-            .hasSec(1607554944L)
-            .hasUsec(0L);
-
-        DateUtils.convertUserRegisteredTime(data);
-    }
-
-    @Test
-    @DisplayName("Test parsing index data of a klavomechanic with a hidden profile from a json file. Request returns a \"hidden profile\" error.")
-    void testKlavoMechanicWithHiddenProfileIndexData() {
-        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-21.json");
-
-        GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
-        logPlayerIndexData(data);
-
-        GetIndexDataResponseAssert
-            .assertThat(data)
-            .hasOk(null)
-            .hasErr(ApiErrors.HIDDEN_PROFILE_USER_ERROR);
-
-        BioAssert
-            .assertThat(data.getBio())
-            .isNull();
-
-        GetIndexDataStatsAssert
-            .assertThat(data.getStats())
-            .isNull();
-    }
-
-    @Test
-    @DisplayName("Test parsing a non-existing user index data from a json file")
-    void testInvalidPlayerIndexData() {
-        File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-30001.json");
-
-        GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
-        logPlayerIndexData(data);
-
-        GetIndexDataResponseAssert
-            .assertThat(data)
-            .hasOk(null)
-            .hasErr(ApiErrors.INVALID_USER_ID_ERROR);
-
-        BioAssert
-            .assertThat(data.getBio())
-            .isNull();
-
-        GetIndexDataStatsAssert
-            .assertThat(data.getStats())
-            .isNull();
-    }
-
-    private static void logPlayerSummary(final GetSummaryResponse summary) {
-        logger.info("Player summary: ");
-        logger.info(summary);
-    }
-
-    private static void logPlayerIndexData(final GetIndexDataResponse data) {
-        logger.info("Player index data: ");
-        logger.info(data);
+        private void logPlayerIndexData(final GetIndexDataResponse data) {
+            logger.info("Player index data: ");
+            logger.info(data);
+        }
     }
 }
