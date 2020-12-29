@@ -739,6 +739,8 @@ components:
         - generator # Генератор
 
     VocabularyMode:
-      oneOf:
-        - $ref: '#/components/schemas/StandardVocabulary'
-        - type: string # todo: does this work or we need do define schema for string?
+      type: string
+      # todo: oneOf only works with "type: object" in both types, at least with jaxrs-spec/jackson generator
+#      oneOf:
+#        - $ref: '#/components/schemas/StandardVocabulary'
+#        - type: string # todo: does this work or we need do define schema for string?

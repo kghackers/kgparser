@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import ru.klavogonki.kgparser.Car;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.StandardDictionary;
 import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.kgparser.util.TestUtils;
 import ru.klavogonki.openapi.model.Bio;
@@ -16,6 +17,12 @@ import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetIndexDataResponseAssert;
 import ru.klavogonki.openapi.model.GetIndexDataStats;
 import ru.klavogonki.openapi.model.GetIndexDataStatsAssert;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeAssert;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeInfo;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeInfoAssert;
+import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
+import ru.klavogonki.openapi.model.GetStatsOverviewResponseAssert;
 import ru.klavogonki.openapi.model.GetSummaryResponse;
 import ru.klavogonki.openapi.model.GetSummaryResponseAssert;
 import ru.klavogonki.openapi.model.GetSummaryUser;
@@ -256,6 +263,7 @@ class JacksonUtilsTest {
     @Nested
     @DisplayName("Test parsing of /get-index-data responses")
     class GetIndexData {
+
         @Test
         @DisplayName("Test parsing an existing user index data from a json file")
         void existingPlayer() {
@@ -450,6 +458,86 @@ class JacksonUtilsTest {
         private void logPlayerIndexData(final GetIndexDataResponse data) {
             logger.info("Player index data: ");
             logger.info(data);
+        }
+    }
+
+    @Nested
+    @DisplayName("Test parsing of /get-stats-overview responses")
+    class GetStatsOverview {
+        @Test
+        @DisplayName("Test parsing an existing user stats overview from a json file")
+        void existingPlayer() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-stats-overview-242585.json");
+
+            GetStatsOverviewResponse stats = JacksonUtils.parse(file, GetStatsOverviewResponse.class);
+            logPlayerStatsOverview(stats);
+
+            GetStatsOverviewResponseAssert
+                .assertThat(stats)
+                .hasOk(ApiErrors.OK_CORRECT_VALUE);
+
+            Map<String, GetStatsOverviewGameType> gameTypes = stats.getGametypes();
+            // todo: validate size
+
+            // validate player stats in "normal"
+            GetStatsOverviewGameType normalStats = gameTypes.get(StandardDictionary.normal.name());// no getValue, but toString works
+            GetStatsOverviewGameTypeAssert
+                .assertThat(normalStats)
+                .isNotNull()
+                .hasName(StandardDictionary.getDisplayName(StandardDictionary.normal))
+                .hasNumRaces(29445)
+                .hasType(null) // type set for non-standard dictionaries only
+                .hasRows(null) // rows set for non-standard dictionaries only
+                .hasSymbols(null) // symbols set for non-standard dictionaries only
+                .hasBookDone(null) // bookDone set for book dictionaries only
+            ;
+
+            GetStatsOverviewGameTypeInfo normalStatsInfo = normalStats.getInfo();
+            GetStatsOverviewGameTypeInfoAssert
+                .assertThat(normalStatsInfo)
+                .hasId(1826608)
+                .hasUserId(242585)
+                .hasMode(StandardDictionary.normal.name())
+                .hasTexttype(StandardDictionary.getTextType(StandardDictionary.normal))
+                .hasNumRaces(29445)
+                .hasAvgSpeed(453.123)
+                .hasBestSpeed(626)
+                .hasAvgError(2.33079)
+                .hasHaul(1027636)
+                .hasQual(531)
+                .hasDirty(0)
+                .hasUpdated("2020-12-27 02:02:24")
+            ;
+
+            // todo: validate player stats in "chars" (negative text type)
+            // todo: validate player stats in non-standard "words" dictionary
+            // todo: validate player stats in non-standard "phrases" dictionary
+            // todo: validate player stats in non-standard "texts" dictionary
+            // todo: validate player stats in non-standard "url" dictionary
+            // todo: validate player stats in non-standard "book" dictionary
+            // todo: validate player stats in non-standard "generatoe" dictionary
+
+            // validate recent game types
+            List<String> recentGameTypes = stats.getRecentGametypes();
+            assertThat(recentGameTypes)
+                .hasSize(10)
+                .containsExactly(
+                    "normal",
+                    "chars",
+                    "voc-1432",
+                    "voc-203",
+                    "voc-13589",
+                    "voc-21357",
+                    "voc-13656",
+                    "voc-1141",
+                    "voc-17499",
+                    "voc-103209"
+                );
+        }
+
+        private void logPlayerStatsOverview(final GetStatsOverviewResponse response) {
+            logger.info("Player stats overview: ");
+            logger.info(response);
         }
     }
 }
