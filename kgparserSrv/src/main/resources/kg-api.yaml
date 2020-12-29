@@ -141,7 +141,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetIndexDataResponse'
 
-
   /profile/get-journal:
     get:
       summary:
@@ -164,8 +163,22 @@ paths:
 
   /profile/get-stats-overview:
     get:
-      summary:
+      summary: Данные о статистике игрока для раздела «Статистика» профиля игрока
       description:
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            $ref: '#/components/schemas/PlayerId'
+          description: playerId
+      responses:
+        200:
+          description: Данные о статистика игрока либо ошибка, если игрок не найден, его профиль скрыт или его статистика скрыта
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStatsOverviewResponse'
 
   /profile/get-stats-details-data:
     get:
@@ -276,7 +289,6 @@ components:
     GetIndexDataStats:
       description: Данные раздела «Досье» страницы «Сводка»
       type: object
-      # todo: > 0, >=0 restrictions
       properties:
         registered:
 #          description: Дата и время регистрации # todo: description no allowed with $ref, see https://github.com/OAI/OpenAPI-Specification/issues/1514, see https://github.com/TOMP-WG/TOMP-API/issues/275
@@ -284,30 +296,37 @@ components:
         achieves_cnt:
           description: Число достижений
           type: integer
+          minimum: 0
           example: 225
         total_num_races:
           description: Общий пробег (по всем режимам)
           type: integer
+          minimum: 0
           example: 60633
         best_speed:
           description: Рекорд в «Обычном». <b>Can be null if player has no races in normal!</b>
           type: integer
+          minimum: 0
           example: 626
         rating_level:
           description: Рейтинговый уровень. Новые игроки получают уровень 1.
           type: integer
+          minimum: 1
           example: 32
         friends_cnt:
           description: Число друзей
           type: integer
+          minimum: 0
           example: 102
         vocs_cnt:
           description: Число используемых словарей
           type: integer
+          minimum: 0
           example: 110
         cars_cnt:
           description: Машин в гараже
           type: integer
+          minimum: 1
           example: 33
 
     GetIndexDataAchieves:
@@ -330,6 +349,187 @@ components:
           type: string
         user_id:
           $ref: '#/components/schemas/PlayerId'
+
+
+    GetStatsOverviewResponse:
+      oneOf:
+        - $ref: '#/components/schemas/Error'
+        - $ref: '#/components/schemas/GetStatsOverviewSuccess'
+
+    GetStatsOverviewSuccess:
+      description: Успешный ответ на запрос /get-stats-overview
+      type: object
+      properties:
+        ok:
+          type: integer
+        gametypes: # Все словари игрока
+          $ref: '#/components/schemas/GetStatsOverviewGameTypes'
+        recent_gametypes: # Коды недавно используемых словарей
+          description: Коды недавно использованных игроком словарей aka режимов
+          type: array
+          items:
+            $ref: '#/components/schemas/VocabularyMode'
+
+    # map of string key to object
+    # todo: is it possible to use key type as oneOf(StandardVocabulary, string)?
+    # https://swagger.io/docs/specification/data-models/dictionaries/
+    # see https://stackoverflow.com/a/36711449/8534088
+
+    GetStatsOverviewGameTypes:
+      description: Статистика игрока по всем словарям
+      type: object
+      additionalProperties: # todo: how to define string key in this case?
+        $ref: '#/components/schemas/GetStatsOverviewGameType'
+#        type: string # key
+#        example: normal
+#        properties:
+#          name:
+#            type: string
+#            example: Обычный
+#            required: true
+
+    GetStatsOverviewGameType:
+      description: Статистика игрока по одному словарю
+      type: object
+      properties:
+        name:
+          description: Название словаря
+          type: string
+          example: Обычный
+          required: true
+
+        num_races:
+          description: Пробег игрока по словарю
+          type: integer
+          minimum: 0 # for a brand new player without races, there will be normal with num_races: 0
+          example: 29455
+          required: true
+
+        # ! только для нестандартных словарей, поэтому required: false
+        # todo: мб извлечь тип для нестандартного словаря в отдельный тип и сделать oneOf, и в типе будет required: true для всех свойств
+        type:
+          $ref: '#/components/schemas/NonStandardVocabularyType'
+#          example: phrases
+#          required: false
+#          description: 30436fkjds;g # will be taken from $ref
+
+        symbols:
+          description: Число символов суммарно в словаре.
+            <ul>
+              <li>В UI показывается для книг.</li>
+              <li>Для словарей типа «Слова» — включая пробелы.</li>
+              <li>Для словарей типа «Генератор» — включая пробелы.</li>
+              <li>Для словарей типа «URL» — 0.</li>
+            </ul>
+          type: integer
+          minimum: 0
+          example: 347
+          required: false
+
+        rows:
+          description: Количество пунктов в «Содержании» словаря.
+            <ul>
+              <li>Для словарей типа «Книга» — количество отрывков.</li>
+              <li>Для словарей типа «Фразы» — количество фраз.</li>
+              <li>Для словарей типа «Слова» — количество слов.</li>
+              <li>Для словарей типа «Генератор» — количество слов.</li>
+              <li>Для словарей типа «Тексты» — количество текстов.</li>
+              <li>Для словарей типа «URL» — 0.</li>
+            </ul>
+          type: integer
+          minimum: 0
+          example: 70
+          required: false
+
+        book_done:
+          description: Только для словарей-книг. Пройдена ли книга.
+          type: boolean
+          example: true
+          required: false
+
+        info:
+          $ref: '#/components/schemas/GetStatsOverviewGameTypeInfo'
+
+    GetStatsOverviewGameTypeInfo:
+      type: object
+      properties:
+        id:
+          description: Идентификатор??
+          type: integer
+          minimum: 1
+          example: 1829549
+
+        user_id:
+          $ref: '#/components/schemas/PlayerId'
+
+        mode:
+          $ref: '#/components/schemas/VocabularyMode'
+
+        texttype:
+          description:
+            <ul>
+              <li>Для нестандартных словарей - идентификатор словаря</li>
+              <li>Для normal, noerror, spring, marathon — 0</li>
+              <li>Для abra — -1</li>
+              <li>Для digits — -2</li>
+              <li>Для referats — -3</li>
+              <li>Для chars — -4</li>
+            </ul>
+          type: integer
+          example: -4
+
+        num_races:
+          description: Пробег игрока по словарю
+          type: integer
+          minimum: 0
+          example: 29445
+
+        avg_speed:
+          description: Средняя скорость игрока по словарю, знаков в минуту
+          type: number
+          format: double
+          minimum: 0
+          example: 453.123
+
+        best_speed:
+          description: Рекорд игрока по словарю. Может быть <code>null</code> (в частности, если нет рекорда в обычном).
+          type: integer
+          minimum: 0
+          required: false
+          example: 626
+
+        avg_error:
+          description: Процент ошибок. В процентах.
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100 # todo: can percentage be more than 100%?
+          example: 2.33079
+
+        haul:
+          description: Общее затраченное время по словарю
+          type: integer
+          minimum: 0
+          example: 1027636 # 1027636 sec = 11 days 21:27:16. = 285h 27m 16sec
+
+        qual:
+          description: Скорость, с которой пройдена квалификация по словарю. Засчитываться будут рекорды с результатом 1.2 * qual.
+          type: integer
+          minimum: 0
+          example: 531
+
+        dirty:
+          description: 'TODO: what is this? Наверное, флаг синхронизации реплик БД'
+          type: integer
+          minimum: 0
+          example: 0
+
+        updated:
+          description: Последняя дата апдейта данных игрока по словарю. Может быть <code>null</code> (в частности, если нет рекорда в обычном).
+          type: stirng
+          # todo: define a pattern, I guess the standard "format: date-time" will not work
+          example: '2020-12-27 02:02:24'
+          required: false
 
     # todo: most probably we should extend this (or probably use a string type instead) since requests also take gametype=voc-123
     # this is to document values for standard build-in dictionaries
@@ -359,3 +559,8 @@ components:
         - url # URL
         - book # Книга
         - generator # Генератор
+
+    VocabularyMode:
+      oneOf:
+        - $ref: '#/components/schemas/StandardVocabulary'
+        - type: string # todo: does this work or we need do define schema for string?
