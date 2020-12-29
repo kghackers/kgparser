@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerIndexData { // todo: remove this
 
-    public static final int OK_CORRECT_VALUE = 1;
+    public static final int OK_CORRECT_VALUE = ApiErrors.OK_CORRECT_VALUE;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Bio {

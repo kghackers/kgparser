@@ -157,14 +157,17 @@ class JacksonUtilsTest {
             .hasOk(ApiErrors.OK_CORRECT_VALUE)
             .hasErr(null);
 
+        // bio
         Bio bio = data.getBio();
         BioAssert
             .assertThat(bio)
+            .isNotNull()
             .hasUserId(242585);
 
         assertThat(bio.getOldText()).isNotBlank(); // huge html, no validation
         assertThat(bio.getText()).isNotBlank(); // huge html, no validation
 
+        // stats
         GetIndexDataStats stats = data.getStats();
         GetIndexDataStatsAssert
             .assertThat(stats)
@@ -177,9 +180,11 @@ class JacksonUtilsTest {
             .hasVocsCnt(109)
             .hasCarsCnt(33);
 
+        // stats.registered
         Microtime registered = stats.getRegistered();
         MicrotimeAssert
             .assertThat(registered)
+            .isNotNull()
             .hasSec(1297852113)
             .hasUsec(0);
 
@@ -191,30 +196,52 @@ class JacksonUtilsTest {
     void testPlayerWithPersonalCarIdIndexData() {
         File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-922.json");
 
-        PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
+        GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
         logPlayerIndexData(data);
 
-        assertThat(data.ok).isEqualTo(PlayerIndexData.OK_CORRECT_VALUE);
-        assertThat(data.err).isNull();
+        GetIndexDataResponseAssert
+            .assertThat(data)
+            .hasOk(ApiErrors.OK_CORRECT_VALUE)
+            .hasErr(null);
 
-        assertThat(data.bio).isNotNull();
-        assertThat(data.bio.userId).isEqualTo(922);
-        assertThat(data.bio.oldText).isNotBlank(); // huge html, no validation
-        assertThat(data.bio.text).isNotBlank(); // huge html, no validation
+        // bio
+        Bio bio = data.getBio();
+        BioAssert
+            .assertThat(bio)
+            .isNotNull()
+            .hasUserId(922);
 
-        assertThat(data.stats).isNotNull();
+        assertThat(bio.getOldText()).isNotBlank(); // huge html, no validation
+        assertThat(bio.getText()).isNotBlank(); // huge html, no validation
 
-        assertThat(data.stats.registered).isNotNull();
-        assertThat(data.stats.registered.sec).isEqualTo(1211400000);
-        assertThat(data.stats.registered.usec).isZero();
+        // bio.editedDate
+        Microtime editedData = bio.getEditedDate();
+        MicrotimeAssert
+            .assertThat(editedData)
+            .isNotNull()
+            .hasSec(1508143960)
+            .hasUsec(314000);
 
-        assertThat(data.stats.achievementsCount).isEqualTo(171);
-        assertThat(data.stats.totalRacesCount).isEqualTo(47887);
-        assertThat(data.stats.bestSpeed).isEqualTo(554);
-        assertThat(data.stats.ratingLevel).isEqualTo(37);
-        assertThat(data.stats.friendsCount).isEqualTo(75);
-        assertThat(data.stats.vocabulariesCount).isEqualTo(83);
-        assertThat(data.stats.carsCount).isEqualTo(41);
+        // stats
+        GetIndexDataStats stats = data.getStats();
+        GetIndexDataStatsAssert
+            .assertThat(stats)
+            .isNotNull()
+            .hasAchievesCnt(171)
+            .hasTotalNumRaces(47887)
+            .hasBestSpeed(554)
+            .hasRatingLevel(37)
+            .hasFriendsCnt(75)
+            .hasVocsCnt(83)
+            .hasCarsCnt(41);
+
+        // stats.registered
+        Microtime registered = stats.getRegistered();
+        MicrotimeAssert
+            .assertThat(registered)
+            .isNotNull()
+            .hasSec(1211400000)
+            .hasUsec(0);
 
         DateUtils.convertUserRegisteredTime(data);
     }
@@ -224,30 +251,42 @@ class JacksonUtilsTest {
     void testBrandNewPlayerIndexData() {
         File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-624511.json");
 
-        PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
+        GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
         logPlayerIndexData(data);
 
-        assertThat(data.ok).isEqualTo(PlayerIndexData.OK_CORRECT_VALUE);
-        assertThat(data.err).isNull();
+        GetIndexDataResponseAssert
+            .assertThat(data)
+            .hasOk(ApiErrors.OK_CORRECT_VALUE)
+            .hasErr(null);
 
-        assertThat(data.bio).isNotNull();
-        assertThat(data.bio.userId).isEqualTo(624511);
-        assertThat(data.bio.oldText).isNull(); // no oldText for the new users
-        assertThat(data.bio.text).isEmpty(); // empty and not null
+        Bio bio = data.getBio();
+        BioAssert
+            .assertThat(bio)
+            .isNotNull()
+            .hasUserId(624511)
+            .hasOldText(null) // no oldText for the new users
+            .hasText(""); // empty and not null
 
-        assertThat(data.stats).isNotNull();
+        // stats
+        GetIndexDataStats stats = data.getStats();
+        GetIndexDataStatsAssert
+            .assertThat(stats)
+            .isNotNull()
+            .hasAchievesCnt(0)
+            .hasTotalNumRaces(0)
+            .hasBestSpeed(null) // no races in "Normal" -> no best speed
+            .hasRatingLevel(1) // user is level 1 from the start
+            .hasFriendsCnt(0)
+            .hasVocsCnt(0)
+            .hasCarsCnt(1); // user has 1 car from the start
 
-        assertThat(data.stats.registered).isNotNull();
-        assertThat(data.stats.registered.sec).isEqualTo(1607554944);
-        assertThat(data.stats.registered.usec).isZero();
-
-        assertThat(data.stats.achievementsCount).isZero();
-        assertThat(data.stats.totalRacesCount).isZero();
-        assertThat(data.stats.bestSpeed).isNull(); // no races in "Normal" -> no best speed
-        assertThat(data.stats.ratingLevel).isEqualTo(1); // user is level 1 from the start
-        assertThat(data.stats.friendsCount).isZero();
-        assertThat(data.stats.vocabulariesCount).isZero();
-        assertThat(data.stats.carsCount).isEqualTo(1); // user has 1 car from the start
+        // stats.registered
+        Microtime registered = stats.getRegistered();
+        MicrotimeAssert
+            .assertThat(registered)
+            .isNotNull()
+            .hasSec(1607554944)
+            .hasUsec(0);
 
         DateUtils.convertUserRegisteredTime(data);
     }
@@ -257,15 +296,21 @@ class JacksonUtilsTest {
     void testKlavoMechanicWithHiddenProfileIndexData() {
         File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-21.json");
 
-        PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
+        GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
         logPlayerIndexData(data);
 
-        assertThat(data.ok).isNull();
-        assertThat(data.err).isEqualTo(PlayerSummary.HIDDEN_PROFILE_USER_ERROR);
+        GetIndexDataResponseAssert
+            .assertThat(data)
+            .hasOk(null)
+            .hasErr(ApiErrors.HIDDEN_PROFILE_USER_ERROR);
 
-        assertThat(data.bio).isNull();
+        BioAssert
+            .assertThat(data.getBio())
+            .isNull();
 
-        assertThat(data.stats).isNull();
+        GetIndexDataStatsAssert
+            .assertThat(data.getStats())
+            .isNull();
     }
 
     @Test
@@ -273,15 +318,21 @@ class JacksonUtilsTest {
     void testInvalidPlayerIndexData() {
         File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-30001.json");
 
-        PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
+        GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
         logPlayerIndexData(data);
 
-        assertThat(data.ok).isNull();
-        assertThat(data.err).isEqualTo(PlayerSummary.INVALID_USER_ID_ERROR);
+        GetIndexDataResponseAssert
+            .assertThat(data)
+            .hasOk(null)
+            .hasErr(ApiErrors.INVALID_USER_ID_ERROR);
 
-        assertThat(data.bio).isNull();
+        BioAssert
+            .assertThat(data.getBio())
+            .isNull();
 
-        assertThat(data.stats).isNull();
+        GetIndexDataStatsAssert
+            .assertThat(data.getStats())
+            .isNull();
     }
 
     private static void logPlayerSummary(final PlayerSummary summary) {
@@ -312,43 +363,6 @@ class JacksonUtilsTest {
         }
         else {
             logger.info("User: null");
-        }
-    }
-
-    private static void logPlayerIndexData(final PlayerIndexData data) {
-        logger.info("Player index data: ");
-        logger.info("- ok: {}", data.ok);
-        logger.info("- err: {}", data.err);
-
-        logger.info("");
-
-        if (data.bio != null) {
-            logger.info("Bio:");
-            logger.info("- userId: {}", data.bio.userId);
-            logger.info("- oldText: {}", data.bio.oldText);
-            logger.info("- text: {}", data.bio.text);
-        }
-        else {
-            logger.info("Bio: null");
-        }
-
-        logger.info("");
-
-        if (data.stats != null) {
-            logger.info("Stats:");
-            logger.info("- registered.sec: {}", data.stats.registered.sec);
-            logger.info("- registered.usec: {}", data.stats.registered.usec);
-
-            logger.info("- achievementsCount: {}", data.stats.achievementsCount);
-            logger.info("- totalRacesCount: {}", data.stats.totalRacesCount);
-            logger.info("- bestSpeed: {}", data.stats.bestSpeed);
-            logger.info("- ratingLevel: {}", data.stats.ratingLevel);
-            logger.info("- friendsCount: {}", data.stats.friendsCount);
-            logger.info("- vocabulariesCount: {}", data.stats.vocabulariesCount);
-            logger.info("- carsCount: {}", data.stats.carsCount);
-        }
-        else {
-            logger.info("Stats: null");
         }
     }
 

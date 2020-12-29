@@ -8,13 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerSummary {
-    public static final String INVALID_USER_ID_ERROR = "invalid user id";
+    public static final String INVALID_USER_ID_ERROR = ApiErrors.INVALID_USER_ID_ERROR;
 
-    // todo: this is actually an error on /get-index-data
-    public static final String HIDDEN_PROFILE_USER_ERROR = "hidden profile";
+    public static final String HIDDEN_PROFILE_USER_ERROR = ApiErrors.HIDDEN_PROFILE_USER_ERROR;
 
-    // todo: this is actually an error on /get-index-data
-    public static final String MONGO_REFS_ERROR_USER_498727 = "mongo refs joining failed: invalid key users.achieves.achieve_id=599bd392df4e4d963a8b4570";
+    public static final String MONGO_REFS_ERROR_USER_498727 = ApiErrors.MONGO_REFS_ERROR_USER_498727;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class User {
