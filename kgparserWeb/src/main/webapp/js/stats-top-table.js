@@ -84,7 +84,7 @@ class TopTable {
             case 7: return 'superman';
             case 8: return 'cyberracer';
             case 9: return 'extracyber';
-            default: throw 'Unknown rankLevel: ' + rankLevel
+            default: throw 'Unknown rankLevel: ' + rankLevel;
         }
     }
 
