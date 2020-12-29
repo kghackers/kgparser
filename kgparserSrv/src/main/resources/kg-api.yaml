@@ -117,10 +117,10 @@ paths:
   # todo: fill query and request body models for all paths
   # todo: fill response models for all paths
 
-  /profile/get-summary:
-    get:
-      summary:
-      description:
+#  /profile/get-summary:
+#    get:
+#      summary:
+#      description:
 
   /profile/get-index-data:
     get:
@@ -141,25 +141,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetIndexDataResponse'
 
-  /profile/get-journal:
-    get:
-      summary:
-      description:
-
-  /profile/get-achieves:
-    get:
-      summary:
-      description:
-
-  /profile/get-cars-list:
-    get:
-      summary:
-      description:
-
-  /profile/get-friends:
-    get:
-      summary:
-      description:
+#  /profile/get-journal:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-achieves:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-cars-list:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-friends:
+#    get:
+#      summary:
+#      description:
 
   /profile/get-stats-overview:
     get:
@@ -180,41 +180,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetStatsOverviewResponse'
 
-  /profile/get-stats-details-data:
-    get:
-      summary:
-      description:
-
-  /profile/get-stats-details:
-    get:
-      summary:
-      description:
+#  /profile/get-stats-details-data:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-stats-details:
+#    get:
+#      summary:
+#      description:
 
   ##################### PROFILE - PRIVATE ONLY #####################
-  /profile/get-private-prefs:
-    get:
-      summary:
-      description:
-
-  /profile/get-messages-contacts:
-    get:
-      summary:
-      description:
-
-  /profile/get-ignore-list:
-    get:
-      summary:
-      description:
-
-  /profile/select-car:
-    post:
-      summary:
-      description:
-
-  /profile/view-car:
-    post:
-      summary:
-      description:
+#  /profile/get-private-prefs:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-messages-contacts:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-ignore-list:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/select-car:
+#    post:
+#      summary:
+#      description:
+#
+#  /profile/view-car:
+#    post:
+#      summary:
+#      description:
 
 #  /users:
 #    get:
@@ -236,10 +236,11 @@ components:
     Error:
       description: Ответ на любой запрос в случае ошибки
       type: object
+      required:
+        - err
       properties:
         err:
           description: Описание ошибки
-          required: true
           type: string
           # todo: is "examples" supported? See https://swagger.io/docs/specification/adding-examples/
           # see https://www.viralpatel.net/openapi-multiple-examples/
@@ -333,7 +334,7 @@ components:
       description: Пять ачивок, вынесенных пользователем в раздел «Сводка»
       type: object
       # todo: fill properties
-      properties:
+#      properties:
 
     Bio:
       description: Данные биографии из раздела «Сводка»
@@ -343,6 +344,9 @@ components:
           type: object #todo: add schema
         old_text:
           description: Старая разметка биографии (видимо, при импорте из старого профиля)
+          type: string
+        old_text_removed:
+          description: Удалённая старая разметка биографии?
           type: string
         text:
           description: Биография (текущая). Содержит Markdown разметку
@@ -391,27 +395,32 @@ components:
     GetStatsOverviewGameType:
       description: Статистика игрока по одному словарю
       type: object
+
+      required:
+        - name
+        - num_races
+#        - type # present for non-standard dictionaries only
+#        - symbols # present for non-standard dictionaries only
+#        - rows # present for non-standard dictionaries only
+#        - book_done # present for book dictionaries only
       properties:
         name:
           description: Название словаря
           type: string
           example: Обычный
-          required: true
 
         num_races:
           description: Пробег игрока по словарю
           type: integer
           minimum: 0 # for a brand new player without races, there will be normal with num_races: 0
           example: 29455
-          required: true
 
         # ! только для нестандартных словарей, поэтому required: false
         # todo: мб извлечь тип для нестандартного словаря в отдельный тип и сделать oneOf, и в типе будет required: true для всех свойств
         type:
           $ref: '#/components/schemas/NonStandardVocabularyType'
 #          example: phrases
-#          required: false
-#          description: 30436fkjds;g # will be taken from $ref
+#          description: # will be taken from $ref
 
         symbols:
           description: Число символов суммарно в словаре.
@@ -424,7 +433,6 @@ components:
           type: integer
           minimum: 0
           example: 347
-          required: false
 
         rows:
           description: Количество пунктов в «Содержании» словаря.
@@ -439,19 +447,33 @@ components:
           type: integer
           minimum: 0
           example: 70
-          required: false
 
         book_done:
           description: Только для словарей-книг. Пройдена ли книга.
           type: boolean
           example: true
-          required: false
 
         info:
           $ref: '#/components/schemas/GetStatsOverviewGameTypeInfo'
 
     GetStatsOverviewGameTypeInfo:
       type: object
+
+      required:
+        - id
+        - user_id
+        - mode
+        - texttype
+        - num_races
+        - avg_speed
+#        - best_speed # can be null for brand new players
+        - avg_error
+        - best_speed
+        - haul
+        - qual
+        - dirty
+#        - updated # can be null for brand new players
+
       properties:
         id:
           description: Идентификатор??
@@ -495,7 +517,6 @@ components:
           description: Рекорд игрока по словарю. Может быть <code>null</code> (в частности, если нет рекорда в обычном).
           type: integer
           minimum: 0
-          required: false
           example: 626
 
         avg_error:
@@ -513,7 +534,6 @@ components:
           example: 1027636 # 1027636 sec = 11 days 21:27:16. = 285h 27m 16sec
 
         qual:
-          description: Скорость, с которой пройдена квалификация по словарю. Засчитываться будут рекорды с результатом 1.2 * qual.
           type: integer
           minimum: 0
           example: 531
@@ -529,7 +549,6 @@ components:
           type: stirng
           # todo: define a pattern, I guess the standard "format: date-time" will not work
           example: '2020-12-27 02:02:24'
-          required: false
 
     # todo: most probably we should extend this (or probably use a string type instead) since requests also take gametype=voc-123
     # this is to document values for standard build-in dictionaries
