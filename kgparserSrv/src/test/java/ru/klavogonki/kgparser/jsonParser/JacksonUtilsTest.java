@@ -535,6 +535,59 @@ class JacksonUtilsTest {
                 );
         }
 
+        @Test
+        @DisplayName("Test parsing a brand new user stats overview from a json file")
+        void brandNewPlayer() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-stats-overview-624511.json");
+
+            GetStatsOverviewResponse stats = JacksonUtils.parse(file, GetStatsOverviewResponse.class);
+            logPlayerStatsOverview(stats);
+
+            GetStatsOverviewResponseAssert
+                .assertThat(stats)
+                .hasOk(ApiErrors.OK_CORRECT_VALUE);
+
+            Map<String, GetStatsOverviewGameType> gameTypes = stats.getGametypes();
+            assertThat(gameTypes)
+                .hasSize(1); // for new player, only empty result for "normal" is present
+
+            // validate player stats in "normal"
+            GetStatsOverviewGameType normalStats = gameTypes.get(StandardDictionary.normal.name());// no getValue, but toString works
+            GetStatsOverviewGameTypeAssert
+                .assertThat(normalStats)
+                .isNotNull()
+                .hasName(StandardDictionary.getDisplayName(StandardDictionary.normal))
+                .hasNumRaces(0)
+                .hasType(null) // type set for non-standard dictionaries only
+                .hasRows(null) // rows set for non-standard dictionaries only
+                .hasSymbols(null) // symbols set for non-standard dictionaries only
+                .hasBookDone(null) // bookDone set for book dictionaries only
+            ;
+
+            // minimal 0/null info for a brand new user
+            GetStatsOverviewGameTypeInfo normalStatsInfo = normalStats.getInfo();
+            GetStatsOverviewGameTypeInfoAssert
+                .assertThat(normalStatsInfo)
+                .hasId(30914229)
+                .hasUserId(624511)
+                .hasMode(StandardDictionary.normal.name())
+                .hasTexttype(StandardDictionary.getTextType(StandardDictionary.normal))
+                .hasNumRaces(0)
+                .hasAvgSpeed(0d)
+                .hasBestSpeed(null)
+                .hasAvgError(0d)
+                .hasHaul(0)
+                .hasQual(0)
+                .hasDirty(0)
+                .hasUpdated(null)
+            ;
+
+            // validate recent game types - empty for the new playre
+            List<String> recentGameTypes = stats.getRecentGametypes();
+            assertThat(recentGameTypes)
+                .isEmpty();
+        }
+
         private void logPlayerStatsOverview(final GetStatsOverviewResponse response) {
             logger.info("Player stats overview: ");
             logger.info(response);
