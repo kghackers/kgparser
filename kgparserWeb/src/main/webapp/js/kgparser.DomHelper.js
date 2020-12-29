@@ -132,7 +132,7 @@ var DomHelper = function() {
 				return;
 			}
 
-			headElement.appendChild(cssLink)
+			headElement.appendChild(cssLink);
 		},
 
 		insertAfter: function(nodeBefore, nodeToInsert) {

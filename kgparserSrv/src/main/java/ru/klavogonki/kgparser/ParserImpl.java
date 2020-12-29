@@ -10,6 +10,7 @@ import java.util.List;
 
 public class ParserImpl implements Parser
 {
+	@Override
 	public Round getRound(String fileName) {
 		Round round = new Round();
 
@@ -17,7 +18,7 @@ public class ParserImpl implements Parser
 //		round.setNumber(); // todo: fill according to file name
 //		round.setDictionary(); // todo: create and fill vocabulary
 
-		List<PlayerRoundResult> results = new ArrayList<PlayerRoundResult>();
+		List<PlayerRoundResult> results = new ArrayList<>();
 
 		// todo: fill results
 		Player player = new Player();

@@ -36,6 +36,7 @@ public class Top500PagesExporter implements DataExporter {
     // todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
     private final PlayerDtoMapper mapper = Mappers.getMapper(PlayerDtoMapper.class);
 
+    @Override
     public void export(ExportContext context) {
         // todo: hardcoded top1 and top500 are ok for now,
         // todo: or implement with setMaxResults or something like this

@@ -2,9 +2,10 @@ package ru.klavogonki.kgparser.servlet.processing.playersTable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -49,13 +50,13 @@ public class PlayerResultsTableToXlsConverter
 		XSSFRow row = sheet.createRow(rowNum);
 
 		Font font = workbook.createFont();
-		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		font.setBold(true);
 
 		CellStyle style = workbook.createCellStyle();
 		style.setFont(font);
-		style.setAlignment(CellStyle.ALIGN_CENTER);
+		style.setAlignment(HorizontalAlignment.CENTER);
 
-		XSSFCell cell = row.createCell(colNum, Cell.CELL_TYPE_STRING);
+		XSSFCell cell = row.createCell(colNum, CellType.STRING);
 		cell.setCellStyle(style);
 		cell.setCellValue( table.getCompetitionName() );
 
@@ -78,13 +79,13 @@ public class PlayerResultsTableToXlsConverter
 			for (HeaderCell cell : cells)
 			{
 				Font font = workbook.createFont();
-				font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+				font.setBold(true);
 
 				CellStyle style = workbook.createCellStyle();
 				style.setFont(font);
-				style.setAlignment(CellStyle.ALIGN_CENTER);
+				style.setAlignment(HorizontalAlignment.CENTER);
 
-				XSSFCell xssfCell = row.createCell(colNum, Cell.CELL_TYPE_STRING);
+				XSSFCell xssfCell = row.createCell(colNum, CellType.STRING);
 				xssfCell.setCellStyle(style);
 
 				if (cell.hasColSpan())
@@ -123,7 +124,7 @@ public class PlayerResultsTableToXlsConverter
 //				style.setFont(font);
 //				style.setAlignment(CellStyle.ALIGN_CENTER);
 
-				XSSFCell xssfCell = row.createCell(colNum, Cell.CELL_TYPE_STRING); // todo: set type according to cell field
+				XSSFCell xssfCell = row.createCell(colNum, CellType.STRING); // todo: set type according to cell field
 //				xssfCell.setCellStyle(style);
 
 				if (cell.hasColSpan())

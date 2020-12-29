@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 
@@ -8,27 +8,45 @@
 	<!-- see https://docs.spring.io/spring-boot/docs/2.4.0/maven-plugin/reference/htmlsingle/#using-import -->
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>ru.klavogonki.kgparser</groupId>
+		<artifactId>kgparser</artifactId>
+		<version>1.0</version>
 	</parent>
-	<groupId>ru.klavogonki.kgparser</groupId>
+
 	<artifactId>kgparser-springboot</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>kgparser-springboot</name>
 	<description>Spring Boot module of kgparser</description>
 
-	<properties>
-		<java.version>11</java.version>
-		<org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
-		<lombok.version>1.18.16</lombok.version>
-		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-		<freemarker.version>2.3.30</freemarker.version>
-		<poi.version>4.1.2</poi.version>
-	</properties>
-
 	<dependencies>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+		</dependency>
+
+		<dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -37,30 +55,16 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>${lombok.version}</version>
-			<optional>true</optional>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 
-		<!-- Exclude Spring Boot's Default Logging -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<!-- Add Log4j2 Dependency -->
@@ -73,41 +77,34 @@
 		<dependency>
 			<groupId>ru.klavogonki.kgparser</groupId>
 			<artifactId>kgparser-srv</artifactId>
-			<version>1.0</version>
-			<scope>compile</scope>
 		</dependency>
 
 		<!-- mapstruct -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>${org.mapstruct.version}</version>
 		</dependency>
 
 		<!-- FreeMarker -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
-			<version>${freemarker.version}</version>
 		</dependency>
 
 		<!-- POI - for export to Excel (XLSX) -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>${poi.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>${poi.version}</version>
 		</dependency>
 
 		<!-- Zip4j - useful library for easily zipping/unzipping files -->
 		<dependency>
 			<groupId>net.lingala.zip4j</groupId>
 			<artifactId>zip4j</artifactId>
-			<version>2.6.4</version>
 		</dependency>
 
 	</dependencies>
@@ -117,16 +114,24 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${springboot.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- MapStruct and Lombok configuration -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>11</source> <!-- todo: use some global project property -->
-					<target>11</target> <!-- todo: use some global project property -->
+					<source>11</source>					<!-- todo: use some global project property -->
+					<target>11</target>					<!-- todo: use some global project property -->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>
@@ -153,12 +158,15 @@
 			<plugin>
 				<groupId>org.assertj</groupId>
 				<artifactId>assertj-assertions-generator-maven-plugin</artifactId>
-				<version>2.2.0</version>
+				<version>${assertj-assertions-generator-maven-plugin.version}</version>
 				<configuration>
 					<packages>
 						<param>ru.klavogonki.kgparser.jsonParser.entity</param>
 						<param>ru.klavogonki.kgparser.jsonParser.dto</param>
 					</packages>
+
+					<entryPointClassPackage>ru.klavogonki.kgparser.jsonParser</entryPointClassPackage>
+					<hierarchical>true</hierarchical>
 				</configuration>
 				<executions>
 					<execution>

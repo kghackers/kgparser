@@ -1,19 +1,61 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>ru.klavogonki.kgparser</groupId>
 	<artifactId>kgparser</artifactId>
 	<version>1.0</version>
 	<name>kgparser-parent</name>
-
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>kgparserSrv</module> <!-- relative path to module-->
-		<module>kgparserWeb</module> <!-- relative path to module-->
+		<module>kgparserSrv</module>		<!-- relative path to module-->
+		<module>kgparserWeb</module>		<!-- relative path to module-->
+		<module>kgparserSpringBoot</module>	<!-- relative path to module-->
 	</modules>
+
+	<properties>
+		<java.version>11</java.version>
+		<org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
+		<lombok.version>1.18.16</lombok.version>
+		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+		<freemarker.version>2.3.30</freemarker.version>
+		<springboot.version>2.4.1</springboot.version>
+		<jackson.version>2.5.2</jackson.version>
+		<poi.version>4.1.2</poi.version>
+		<zip4j.version>2.6.4</zip4j.version>
+		<log4j2.version>2.14.0</log4j2.version>
+		<mysql-connector-java.version>8.0.22</mysql-connector-java.version>
+		<commons-lang3.version>3.11</commons-lang3.version>
+		<commons-io.version>2.8.0</commons-io.version>
+		<commons-fileupload.version>1.4</commons-fileupload.version>
+		<httpclient.version>4.5.13</httpclient.version>
+
+		<!-- plugin versions -->
+		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+		<maven-war-plugin.version>2.1.1</maven-war-plugin.version>
+		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+		<maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+
+		<!-- test frameworks -->
+		<junit-jupiter.version>5.7.0</junit-jupiter.version>
+		<assertj-core.version>3.18.1</assertj-core.version>
+		<assertj-assertions-generator-maven-plugin.version>2.2.0</assertj-assertions-generator-maven-plugin.version>
+
+		<!-- libraries used for old modules, probably with old versions. May also be used by Kefir. -->
+		<servlet-api.version>2.5</servlet-api.version>
+		<persistence-api.version>1.0</persistence-api.version>
+		<javaee-api.version>6.0</javaee-api.version>
+		<org.json.json.version>20131018</org.json.json.version>
+		<org.htmlparser.thumbelina.version>2.1</org.htmlparser.thumbelina.version>
+		<kefir-util.version>1.0</kefir-util.version>
+		<kefir-srv.version>1.0</kefir-srv.version>
+
+		<!-- standard properties -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
 	<build>
 		<plugins>
@@ -21,7 +63,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<release>11</release>
 				</configuration>
@@ -30,13 +72,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M5</version>
+				<version>${maven-surefire-plugin.version}</version>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
+				<version>${maven-source-plugin.version}</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -50,16 +92,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1.1</version>
+				<version>${maven-war-plugin.version}</version>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
+				<version>${maven-javadoc-plugin.version}</version>
 				<configuration>
 					<show>private</show>
-
 					<!-- see https://stackoverflow.com/a/61884267/8534088 -->
 					<detectJavaApiLink>false</detectJavaApiLink>
 				</configuration>
@@ -77,54 +118,283 @@
 		</plugins>
 	</build>
 
+	<!-- see https://stackoverflow.com/a/37280943/8534088-->
+	<!-- dependencies will be ALWAYS inherited by all child modules -->
+
 	<dependencies>
-
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.11</version>
-		</dependency>
-
-		<!-- log4j1 used by kefir classes from which we extend or use (JsonServlet, JsonObject, FileUtils usw) -->
-		<!-- todo: remove kefir usage or migrate kefir to log4j2 -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-1.2-api</artifactId>
-			<version>2.14.0</version>
-<!--
-			<scope>provided</scope>
-			<optional>true</optional>
--->
-		</dependency>
-
-		<!-- User log4j2 instead of slf4j -->
+		<!-- Use log4j2 instead of slf4j -->
 		<!-- see https://stackoverflow.com/a/41500347/8534088 -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.14.0</version>
+			<version>${log4j2.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.14.0</version>
+			<version>${log4j2.version}</version>
+		</dependency>
+
+		<!-- todo: think about defining maven-compiler-plugin with lombok also in parent (see kgparser-springboot module) -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+
+		<!-- Test frameworks -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit-jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit-jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- todo: think about defining assertj-assertions-generator-maven-plugin also in parent (see kgparser-springboot module) -->
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj-core.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<!-- see https://stackoverflow.com/a/41500347/8534088 -->
+	<!-- dependencyManagement - just define versions in the parent, you still need to specify them in the child modules, but without <version> -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
+			<!-- log4j1 used by kefir classes from which we extend or use (JsonServlet, JsonObject, FileUtils usw) -->
+			<!-- todo: remove kefir usage or migrate kefir to log4j2 -->
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-1.2-api</artifactId>
+				<version>${log4j2.version}</version>
+				<!--
+			<scope>provided</scope><optional>true</optional>
+-->
+			</dependency>
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${servlet-api.version}</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+
+			<dependency>
+				<groupId>org.json</groupId>
+				<artifactId>json</artifactId>
+				<version>${org.json.json.version}</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+
+			<dependency>
+				<groupId>su.opencode.kefir</groupId>
+				<artifactId>kefir-util</artifactId>
+				<version>${kefir-util.version}</version>
+				<optional>true</optional>
+				<scope>provided</scope>
+				<!-- For local act
+				<scope>system</scope>
+				<systemPath>/github/workspace/kefir/kefirUtil/target/kefir-util-1.0.jar</systemPath>
+				-->
+			</dependency>
+
+			<dependency>
+				<groupId>su.opencode.kefir</groupId>
+				<artifactId>kefir-srv</artifactId>
+				<version>${kefir-srv.version}</version>
+				<optional>true</optional>
+				<scope>provided</scope>
+				<!-- For local act
+				<scope>system</scope>
+				<systemPath>/github/workspace/kefir/kefirSrv/target/kefir-srv-1.0.jar</systemPath>
+				-->
+			</dependency>
+
+			<dependency>
+				<!-- server module dependency -->
+				<groupId>ru.klavogonki.kgparser</groupId>
+				<artifactId>kgparser-srv</artifactId>
+				<version>1.0</version>
+				<scope>compile</scope>
+				<optional>true</optional>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>${commons-fileupload.version}</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.persistence</groupId>
+				<artifactId>persistence-api</artifactId>
+				<version>${persistence-api.version}</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+
+			<dependency>
+				<groupId>javax</groupId>
+				<artifactId>javaee-api</artifactId>
+				<version>${javaee-api.version}</version>
+				<scope>compile</scope>
+				<optional>true</optional>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${httpclient.version}</version>
+				<scope>compile</scope>
+				<optional>true</optional>
+			</dependency>
+
+			<!-- Html Parser - used in HtmlParserTest only -->
+			<dependency>
+				<groupId>org.htmlparser</groupId>
+				<artifactId>thumbelina</artifactId>
+				<version>${org.htmlparser.thumbelina.version}</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons-io.version}</version>
+			</dependency>
+
+			<!-- Spring Boot -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-jpa</artifactId>
+				<version>${springboot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<version>${springboot.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- Exclude Spring Boot's Default Logging -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter</artifactId>
+				<version>${springboot.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-log4j2</artifactId>
+				<version>${springboot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${springboot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- mapstruct -->
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct</artifactId>
+				<version>${org.mapstruct.version}</version>
+			</dependency>
+
+			<!-- FreeMarker -->
+			<dependency>
+				<groupId>org.freemarker</groupId>
+				<artifactId>freemarker</artifactId>
+				<version>${freemarker.version}</version>
+			</dependency>
+
+			<!-- POI -->
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>${poi.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml</artifactId>
+				<version>${poi.version}</version>
+			</dependency>
+
+			<!-- MySQL -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql-connector-java.version}</version>
+			</dependency>
+
+			<!-- Zip4j - useful library for easily zipping/unzipping files -->
+			<dependency>
+				<groupId>net.lingala.zip4j</groupId>
+				<artifactId>zip4j</artifactId>
+				<version>${zip4j.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
 
 	<developers>
-
 		<developer>
 			<id>nosferatum</id>
-			<name>Dmitriy</name>
+			<name>Dmitriy Popov</name>
 			<email>dmitry.weirdo@gmail.com</email>
-			<timezone>+4</timezone>
+			<timezone>+1</timezone>
 		</developer>
-
 	</developers>
 
 </project>
