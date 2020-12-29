@@ -6,8 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Required data from <a href="http://klavogonki.ru/api/profile/get-index-data?userId=242585">get-index-data</a> API request.
  */
+@Deprecated(forRemoval = true) // "Use GetIndexDataResponse generated from OAS instead"
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PlayerIndexData {
+public class PlayerIndexData { // todo: remove this
 
     public static final int OK_CORRECT_VALUE = 1;
 

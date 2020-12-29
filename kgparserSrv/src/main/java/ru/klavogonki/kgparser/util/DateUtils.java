@@ -3,6 +3,8 @@ package ru.klavogonki.kgparser.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.kgparser.jsonParser.PlayerIndexData;
+import ru.klavogonki.openapi.model.GetIndexDataResponse;
+import ru.klavogonki.openapi.model.Microtime;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -29,15 +31,28 @@ public class DateUtils {
         return convertUserRegisteredTime(data.stats.registered); // we assume it is not null
     }
 
+    public static LocalDateTime convertUserRegisteredTime(final GetIndexDataResponse data) {
+        if ((data == null) || (data.getStats() == null)) { // error in /get-index-data
+            return null;
+        }
+
+        Microtime registered = data.getStats().getRegistered();
+        return convertUserRegisteredTime(registered.getSec().longValue(), registered.getUsec().longValue()); // we assume it is not null
+    }
+
     public static LocalDateTime convertUserRegisteredTime(final PlayerIndexData.Registered registered) {
         if (registered == null) {
             return null;
         }
 
+        return convertUserRegisteredTime(registered.sec, registered.usec);
+    }
+
+    public static LocalDateTime convertUserRegisteredTime(final Long sec, final Long usec) {
         // probably use ZoneOffset/ZoneId for Moscow time or use just localDate
         ZoneId moscowZoneId = getMoscowZoneId();
 
-        Instant instant = Instant.ofEpochSecond(registered.sec, registered.usec);
+        Instant instant = Instant.ofEpochSecond(sec, usec);
 //        LocalDateTime localDateTimeUtc = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
 //        ZonedDateTime zonedDateTimeUtc = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
 

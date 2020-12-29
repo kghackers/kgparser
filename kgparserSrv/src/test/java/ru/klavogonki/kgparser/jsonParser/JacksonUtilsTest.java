@@ -8,6 +8,14 @@ import ru.klavogonki.kgparser.Car;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.kgparser.util.TestUtils;
+import ru.klavogonki.openapi.model.Bio;
+import ru.klavogonki.openapi.model.BioAssert;
+import ru.klavogonki.openapi.model.GetIndexDataResponse;
+import ru.klavogonki.openapi.model.GetIndexDataResponseAssert;
+import ru.klavogonki.openapi.model.GetIndexDataStats;
+import ru.klavogonki.openapi.model.GetIndexDataStatsAssert;
+import ru.klavogonki.openapi.model.Microtime;
+import ru.klavogonki.openapi.model.MicrotimeAssert;
 
 import java.io.File;
 
@@ -141,30 +149,39 @@ class JacksonUtilsTest {
     void testPlayerIndexData() {
         File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-242585.json");
 
-        PlayerIndexData data = JacksonUtils.parse(file, PlayerIndexData.class);
+        GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
         logPlayerIndexData(data);
 
-        assertThat(data.ok).isEqualTo(PlayerIndexData.OK_CORRECT_VALUE);
-        assertThat(data.err).isNull();
+        GetIndexDataResponseAssert
+            .assertThat(data)
+            .hasOk(ApiErrors.OK_CORRECT_VALUE)
+            .hasErr(null);
 
-        assertThat(data.bio).isNotNull();
-        assertThat(data.bio.userId).isEqualTo(242585);
-        assertThat(data.bio.oldText).isNotBlank(); // huge html, no validation
-        assertThat(data.bio.text).isNotBlank(); // huge html, no validation
+        Bio bio = data.getBio();
+        BioAssert
+            .assertThat(bio)
+            .hasUserId(242585);
 
-        assertThat(data.stats).isNotNull();
+        assertThat(bio.getOldText()).isNotBlank(); // huge html, no validation
+        assertThat(bio.getText()).isNotBlank(); // huge html, no validation
 
-        assertThat(data.stats.registered).isNotNull();
-        assertThat(data.stats.registered.sec).isEqualTo(1297852113);
-        assertThat(data.stats.registered.usec).isZero();
+        GetIndexDataStats stats = data.getStats();
+        GetIndexDataStatsAssert
+            .assertThat(stats)
+            .isNotNull()
+            .hasAchievesCnt(225)
+            .hasTotalNumRaces(60633)
+            .hasBestSpeed(626)
+            .hasRatingLevel(32)
+            .hasFriendsCnt(102)
+            .hasVocsCnt(109)
+            .hasCarsCnt(33);
 
-        assertThat(data.stats.achievementsCount).isEqualTo(225);
-        assertThat(data.stats.totalRacesCount).isEqualTo(60633);
-        assertThat(data.stats.bestSpeed).isEqualTo(626);
-        assertThat(data.stats.ratingLevel).isEqualTo(32);
-        assertThat(data.stats.friendsCount).isEqualTo(102);
-        assertThat(data.stats.vocabulariesCount).isEqualTo(109);
-        assertThat(data.stats.carsCount).isEqualTo(33);
+        Microtime registered = stats.getRegistered();
+        MicrotimeAssert
+            .assertThat(registered)
+            .hasSec(1297852113)
+            .hasUsec(0);
 
         DateUtils.convertUserRegisteredTime(data);
     }
@@ -333,5 +350,10 @@ class JacksonUtilsTest {
         else {
             logger.info("Stats: null");
         }
+    }
+
+    private static void logPlayerIndexData(final GetIndexDataResponse data) {
+        logger.info("Player index data: ");
+        logger.info(data);
     }
 }
