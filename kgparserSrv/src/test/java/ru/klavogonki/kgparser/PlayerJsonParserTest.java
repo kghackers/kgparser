@@ -37,7 +37,7 @@ class PlayerJsonParserTest {
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
-        assertThat(player.summary.err).isEqualTo(ApiErrors.INVALID_USER_ID_ERROR);
+        assertThat(player.summary.getErr()).isEqualTo(ApiErrors.INVALID_USER_ID_ERROR);
         assertThat(player.indexData.getErr()).isEqualTo(ApiErrors.INVALID_USER_ID_ERROR);
     }
 
@@ -94,7 +94,7 @@ class PlayerJsonParserTest {
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
-        assertThat(player.summary.blocked).isEqualTo(1);
+        assertThat(player.summary.getBlocked()).isEqualTo(1);
 
         Microtime registered = player.indexData.getStats().getRegistered();
         MicrotimeAssert
@@ -113,7 +113,7 @@ class PlayerJsonParserTest {
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
-        assertThat(player.summary.blocked).isEqualTo(4);
+        assertThat(player.summary.getBlocked()).isEqualTo(4);
     }
 
     @Test
@@ -126,8 +126,8 @@ class PlayerJsonParserTest {
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
-        assertThat(player.summary.blocked).isZero();
-        assertThat(player.summary.err).isNull();
+        assertThat(player.summary.getBlocked()).isZero();
+        assertThat(player.summary.getErr()).isNull();
         assertThat(player.indexData.getErr()).isEqualTo(ApiErrors.INVALID_USER_ID_ERROR);
     }
 
@@ -141,8 +141,8 @@ class PlayerJsonParserTest {
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
-        assertThat(player.summary.blocked).isZero();
-        assertThat(player.summary.err).isNull();
+        assertThat(player.summary.getBlocked()).isZero();
+        assertThat(player.summary.getErr()).isNull();
         assertThat(player.indexData.getErr()).isEqualTo(ApiErrors.MONGO_REFS_ERROR_USER_498727);
     }
 
@@ -156,7 +156,7 @@ class PlayerJsonParserTest {
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
-        assertThat(player.summary.blocked).isZero(); // user is not blocked
+        assertThat(player.summary.getBlocked()).isZero(); // user is not blocked
 
         Bio bio = player.indexData.getBio();
         BioAssert

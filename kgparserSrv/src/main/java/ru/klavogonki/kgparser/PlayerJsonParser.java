@@ -5,9 +5,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.kgparser.jsonParser.ApiErrors;
 import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
-import ru.klavogonki.kgparser.jsonParser.PlayerSummary;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetIndexDataStats;
+import ru.klavogonki.openapi.model.GetSummaryResponse;
+import ru.klavogonki.openapi.model.GetSummaryUser;
 import ru.klavogonki.openapi.model.Microtime;
 
 import java.io.File;
@@ -60,7 +61,7 @@ public class PlayerJsonParser {
                 PlayerJsonData player = playerOptional.get();
                 players.add(player);
 
-                if (player.summary.err.equals(ApiErrors.INVALID_USER_ID_ERROR)) {
+                if (player.summary.getErr().equals(ApiErrors.INVALID_USER_ID_ERROR)) {
                     nonExistingPlayerIds.add(playerId);
                 }
             }
@@ -103,7 +104,7 @@ public class PlayerJsonParser {
         String indexDataFilePath = indexDataFile.getPath();
 
         // parse summary file
-        PlayerSummary summary = JacksonUtils.parse(summaryFile, PlayerSummary.class);
+        GetSummaryResponse summary = JacksonUtils.parse(summaryFile, GetSummaryResponse.class);
 
         // parse index-data file
         GetIndexDataResponse indexData = JacksonUtils.parse(indexDataFile, GetIndexDataResponse.class);
@@ -111,7 +112,7 @@ public class PlayerJsonParser {
         // validate expected data
         // todo: use some validation framework instead of this manual code hell
         validate(playerId, summary, summaryFilePath);
-        validate(playerId, summary.blocked, indexData, indexDataFilePath);
+        validate(playerId, summary.getBlocked(), indexData, indexDataFilePath);
 
         // check whether this is a parse error
 
@@ -133,37 +134,39 @@ public class PlayerJsonParser {
     private static boolean validateErrorCase( // true if user does not exist, false if user exists
         final String summaryFilePath,
         final String indexDataFilePath,
-        final PlayerSummary summary,
+        final GetSummaryResponse summary,
         final GetIndexDataResponse data
     ) {
-        String err = data.getErr();
-        if (StringUtils.isBlank(summary.err) && StringUtils.isBlank(err)) {
+        String summaryError = summary.getErr();
+        String indexDataError = data.getErr();
+
+        if (StringUtils.isBlank(summaryError) && StringUtils.isBlank(indexDataError)) {
             logger.info("Neither summary file {} nor index data file {} contain an error.", summaryFilePath, indexDataFilePath);
             return false;
         }
 
-        if (StringUtils.isBlank(summary.err) && err.equals(ApiErrors.HIDDEN_PROFILE_USER_ERROR)) { // hidden profile -> ok user, there will be no index data
-            logger.info("Summary file {} contains nor error, index data file {} contain a error. User exists, but will have no index data.", summaryFilePath, indexDataFilePath);
+        if (StringUtils.isBlank(summaryError) && indexDataError.equals(ApiErrors.HIDDEN_PROFILE_USER_ERROR)) { // hidden profile -> ok user, there will be no index data
+            logger.info("Summary file {} contains no error, index data file {} contain a error. User exists, but will have no index data.", summaryFilePath, indexDataFilePath);
             return false;
         }
 
-        if (StringUtils.isNotBlank(summary.err) && StringUtils.isBlank(err)) { // error only in summary
+        if (StringUtils.isNotBlank(summaryError) && StringUtils.isBlank(indexDataError)) { // error only in summary
             throw new ParserException(
                 "Summary file %s contains error \"%s\", but index data file %s contains no error",
                 summaryFilePath,
-                summary.err,
+                summaryError,
                 indexDataFilePath
             );
         }
 
-        if (StringUtils.isNotBlank(err) && StringUtils.isBlank(summary.err)) { // error only in index-data
+        if (StringUtils.isNotBlank(indexDataError) && StringUtils.isBlank(summaryError)) { // error only in index-data
             // https://klavogonki.ru/u/#/161997/ - possible case: /get-summary works, /get-index-data fails. Not blocked.
             logger.warn(
                 "Summary file {} contains no error, but index data file {} contains error \"{}\". Player: {}",
                 summaryFilePath,
                 indexDataFilePath,
-                err,
-                summary.user.id
+                indexDataError,
+                summary.getUser().getId()
             );
 
             return false; // todo: a very-tricky case, but the user exists and his/her page can be accessed
@@ -178,25 +181,26 @@ public class PlayerJsonParser {
 */
         }
 
-        if (!summary.err.equals(err)) { // different errors in summary and index-data files
+        if (!summaryError.equals(indexDataError)) { // different errors in summary and index-data files
             throw new ParserException(
                 "Summary file %s contains error \"%s\", but index data file %s contains different error \"%s\"",
                 summaryFilePath,
-                summary.err,
+                summaryError,
                 indexDataFilePath,
-                err
+                indexDataError
             );
         }
 
         // both files contain same errors -> return empty result, there is no such player
-        logger.info("Both summary file {} and index data file {} contain the same correct error \"{}\".", summaryFilePath, indexDataFilePath, summary.err);
+        logger.info("Both summary file {} and index data file {} contain the same correct error \"{}\".", summaryFilePath, indexDataFilePath, summaryError);
         return true;
     }
 
-    private static void validate(int playerId, PlayerSummary summary, String summaryFilePath) {
-        if (StringUtils.isNotBlank(summary.err)) { // error case
-            if (!summary.err.equals(ApiErrors.INVALID_USER_ID_ERROR)) {
-                throw new ParserException("Summary file %s: Unknown error: %s", summaryFilePath, summary.err);
+    private static void validate(int playerId, GetSummaryResponse summary, String summaryFilePath) {
+        String err = summary.getErr();
+        if (StringUtils.isNotBlank(err)) { // error case
+            if (!err.equals(ApiErrors.INVALID_USER_ID_ERROR)) {
+                throw new ParserException("Summary file %s: Unknown error: %s", summaryFilePath, err);
             }
 
             return;
@@ -205,62 +209,68 @@ public class PlayerJsonParser {
         // no-error
 
         // isOnline
-        if (summary.isOnline == null) {
+        if (summary.getIsOnline() == null) {
             throw new ParserException("Summary file %s: summary.isOnline is null", summaryFilePath);
         }
 
         // level
-        if (summary.level == null) {
+        if (summary.getLevel() == null) {
             throw new ParserException("Summary file %s: summary.level is null", summaryFilePath);
         }
 
-        Rank rank = Rank.getRank(summary.level);// this method will throw on incorrect input
+        Rank rank = Rank.getRank(summary.getLevel());// this method will throw on incorrect input
 
         // level title
-        if (StringUtils.isBlank(summary.title)) {
+        String title = summary.getTitle();
+        if (StringUtils.isBlank(title)) {
             throw new ParserException("Summary file %s: summary.title is null or blank", summaryFilePath);
         }
 
         String expectedRankTitle = Rank.getDisplayName(rank);
-        if (!summary.title.equals(expectedRankTitle) && !summary.title.equals(Rank.KLAVO_MECHANIC_TITLE)) {
-            throw new ParserException("Summary file %s: summary.title has incorrect value %s, must be %s", summaryFilePath, summary.title, expectedRankTitle);
+        if (!title.equals(expectedRankTitle) && !title.equals(Rank.KLAVO_MECHANIC_TITLE)) {
+            throw new ParserException("Summary file %s: summary.title has incorrect value %s, must be %s", summaryFilePath, title, expectedRankTitle);
         }
 
         // blocked
+        Integer blocked = summary.getBlocked();
         if (
-               (summary.blocked == null)
-            || ((summary.blocked != 0) && (summary.blocked != 1) && (summary.blocked != 4))
+               (blocked == null)
+            || ((blocked != 0) && (blocked != 1) && (blocked != 4))
         ) {
             // https://klavogonki.ru/u/#/141327/ - blocked == 1
             // https://klavogonki.ru/u/#/142478/ - blocked == 4
-            throw new ParserException("Summary file %s: summary.blocked has incorrect value: %s", summaryFilePath, summary.blocked);
+            throw new ParserException("Summary file %s: summary.blocked has incorrect value: %s", summaryFilePath, blocked);
         }
 
         // user
-        if (summary.user == null) {
+        GetSummaryUser user = summary.getUser();
+        if (user == null) {
             throw new ParserException("Summary file %s: summary.user is null", summaryFilePath);
         }
 
-        if (summary.user.id != playerId) {
-            throw new ParserException("Summary file %s contains incorrect summary.user.id %s. Expected playerId: %s", summaryFilePath, summary.user.id, playerId);
+        Integer userId = user.getId();
+        if (userId != playerId) {
+            throw new ParserException("Summary file %s contains incorrect summary.user.id %s. Expected playerId: %s", summaryFilePath, userId, playerId);
         }
 
-        if (summary.user.login == null) { // login CAN be blank, see https://klavogonki.ru/u/#/109842/
+        String login = user.getLogin();
+        if (login == null) { // login CAN be blank, see https://klavogonki.ru/u/#/109842/
             throw new ParserException("Summary file %s: summary.user.login is null", summaryFilePath);
         }
 
-        if (StringUtils.isBlank(summary.user.login)) { // login CAN be blank, see https://klavogonki.ru/u/#/109842/
-            logger.warn("Summary file {}: summary.user.login is blank: \"{}\".", summaryFilePath, summary.user.login);
+        if (StringUtils.isBlank(login)) { // login CAN be blank, see https://klavogonki.ru/u/#/109842/
+            logger.warn("Summary file {}: summary.user.login is blank: \"{}\".", summaryFilePath, login);
         }
 
         // car
-        if (summary.car == null) {
+        ru.klavogonki.openapi.model.Car car = summary.getCar();
+        if (car == null) {
             throw new ParserException("Summary file %s: summary.car is null", summaryFilePath);
         }
 
-        Car.getById(summary.car.car); // this method will throw on incorrect input
+        Car.getById(car.getCar()); // this method will throw on incorrect input
 
-        if (StringUtils.isBlank(summary.car.color)) {
+        if (StringUtils.isBlank(car.getColor())) {
             throw new ParserException("Summary file %s: summary.car.color is null or blank", summaryFilePath);
         }
     }
