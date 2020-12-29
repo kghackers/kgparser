@@ -2,7 +2,6 @@ package ru.klavogonki.kgparser.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.klavogonki.kgparser.jsonParser.PlayerIndexData;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.Microtime;
 
@@ -23,31 +22,21 @@ public class DateUtils {
         return ZoneId.of("Europe/Moscow");
     }
 
-    @Deprecated // todo: remove this
-    public static LocalDateTime convertUserRegisteredTime(final PlayerIndexData data) {
-        if ((data == null) || (data.stats == null)) { // error in /get-index-data
-            return null;
-        }
-
-        return convertUserRegisteredTime(data.stats.registered); // we assume it is not null
-    }
-
     public static LocalDateTime convertUserRegisteredTime(final GetIndexDataResponse data) {
         if ((data == null) || (data.getStats() == null)) { // error in /get-index-data
             return null;
         }
 
         Microtime registered = data.getStats().getRegistered();
-        return convertUserRegisteredTime(registered.getSec(), registered.getUsec()); // we assume it is not null
+        return convertUserRegisteredTime(registered); // we assume it is not null
     }
 
-    @Deprecated // todo: remove this
-    public static LocalDateTime convertUserRegisteredTime(final PlayerIndexData.Registered registered) {
+    public static LocalDateTime convertUserRegisteredTime(final Microtime registered) {
         if (registered == null) {
             return null;
         }
 
-        return convertUserRegisteredTime(registered.sec, registered.usec);
+        return convertUserRegisteredTime(registered.getSec(), registered.getUsec());
     }
 
     public static LocalDateTime convertUserRegisteredTime(final Long sec, final Long usec) {
