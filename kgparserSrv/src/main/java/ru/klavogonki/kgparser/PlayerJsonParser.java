@@ -3,9 +3,12 @@ package ru.klavogonki.kgparser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.klavogonki.kgparser.jsonParser.ApiErrors;
 import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
-import ru.klavogonki.kgparser.jsonParser.PlayerIndexData;
 import ru.klavogonki.kgparser.jsonParser.PlayerSummary;
+import ru.klavogonki.openapi.model.GetIndexDataResponse;
+import ru.klavogonki.openapi.model.GetIndexDataStats;
+import ru.klavogonki.openapi.model.Microtime;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -57,7 +60,7 @@ public class PlayerJsonParser {
                 PlayerJsonData player = playerOptional.get();
                 players.add(player);
 
-                if (player.summary.err.equals(PlayerSummary.INVALID_USER_ID_ERROR)) {
+                if (player.summary.err.equals(ApiErrors.INVALID_USER_ID_ERROR)) {
                     nonExistingPlayerIds.add(playerId);
                 }
             }
@@ -103,27 +106,27 @@ public class PlayerJsonParser {
         PlayerSummary summary = JacksonUtils.parse(summaryFile, PlayerSummary.class);
 
         // parse index-data file
-        PlayerIndexData data = JacksonUtils.parse(indexDataFile, PlayerIndexData.class);
+        GetIndexDataResponse indexData = JacksonUtils.parse(indexDataFile, GetIndexDataResponse.class);
 
         // validate expected data
         // todo: use some validation framework instead of this manual code hell
         validate(playerId, summary, summaryFilePath);
-        validate(playerId, summary.blocked, data, indexDataFilePath);
+        validate(playerId, summary.blocked, indexData, indexDataFilePath);
 
         // check whether this is a parse error
 
         // validate erratic cases
-        boolean isErrorCase = validateErrorCase(summaryFilePath, indexDataFilePath, summary, data);
+        boolean isErrorCase = validateErrorCase(summaryFilePath, indexDataFilePath, summary, indexData);
         if (isErrorCase) {
             // both files contain same errors -> return empty result, there is no such player
             logger.info("Player with id = {} is not found according to both summary file {} and index data file {}.", playerId, summaryFilePath, indexDataFilePath);
-            PlayerJsonData result = new PlayerJsonData(importDate, summary, data);
+            PlayerJsonData result = new PlayerJsonData(importDate, summary, indexData);
             return Optional.of(result); // we will save not found players as well, for the database consistency (and FGJ as well!)
         }
 
         // player validation passed -> return parsed player object
         logger.info("Player {} was successfully parsed from summary file {} and index data file {}.", playerId, summaryFilePath, indexDataFilePath);
-        PlayerJsonData result = new PlayerJsonData(importDate, summary, data);
+        PlayerJsonData result = new PlayerJsonData(importDate, summary, indexData);
         return Optional.of(result);
     }
 
@@ -131,19 +134,20 @@ public class PlayerJsonParser {
         final String summaryFilePath,
         final String indexDataFilePath,
         final PlayerSummary summary,
-        final PlayerIndexData data
+        final GetIndexDataResponse data
     ) {
-        if (StringUtils.isBlank(summary.err) && StringUtils.isBlank(data.err)) {
+        String err = data.getErr();
+        if (StringUtils.isBlank(summary.err) && StringUtils.isBlank(err)) {
             logger.info("Neither summary file {} nor index data file {} contain an error.", summaryFilePath, indexDataFilePath);
             return false;
         }
 
-        if (StringUtils.isBlank(summary.err) && data.err.equals(PlayerSummary.HIDDEN_PROFILE_USER_ERROR)) { // hidden profile -> ok user, there will be no index data
+        if (StringUtils.isBlank(summary.err) && err.equals(ApiErrors.HIDDEN_PROFILE_USER_ERROR)) { // hidden profile -> ok user, there will be no index data
             logger.info("Summary file {} contains nor error, index data file {} contain a error. User exists, but will have no index data.", summaryFilePath, indexDataFilePath);
             return false;
         }
 
-        if (StringUtils.isNotBlank(summary.err) && StringUtils.isBlank(data.err)) { // error only in summary
+        if (StringUtils.isNotBlank(summary.err) && StringUtils.isBlank(err)) { // error only in summary
             throw new ParserException(
                 "Summary file %s contains error \"%s\", but index data file %s contains no error",
                 summaryFilePath,
@@ -152,13 +156,13 @@ public class PlayerJsonParser {
             );
         }
 
-        if (StringUtils.isNotBlank(data.err) && StringUtils.isBlank(summary.err)) { // error only in index-data
+        if (StringUtils.isNotBlank(err) && StringUtils.isBlank(summary.err)) { // error only in index-data
             // https://klavogonki.ru/u/#/161997/ - possible case: /get-summary works, /get-index-data fails. Not blocked.
             logger.warn(
                 "Summary file {} contains no error, but index data file {} contains error \"{}\". Player: {}",
                 summaryFilePath,
                 indexDataFilePath,
-                data.err,
+                err,
                 summary.user.id
             );
 
@@ -174,13 +178,13 @@ public class PlayerJsonParser {
 */
         }
 
-        if (!summary.err.equals(data.err)) { // different errors in summary and index-data files
+        if (!summary.err.equals(err)) { // different errors in summary and index-data files
             throw new ParserException(
                 "Summary file %s contains error \"%s\", but index data file %s contains different error \"%s\"",
                 summaryFilePath,
                 summary.err,
                 indexDataFilePath,
-                data.err
+                err
             );
         }
 
@@ -191,7 +195,7 @@ public class PlayerJsonParser {
 
     private static void validate(int playerId, PlayerSummary summary, String summaryFilePath) {
         if (StringUtils.isNotBlank(summary.err)) { // error case
-            if (!summary.err.equals(PlayerSummary.INVALID_USER_ID_ERROR)) {
+            if (!summary.err.equals(ApiErrors.INVALID_USER_ID_ERROR)) {
                 throw new ParserException("Summary file %s: Unknown error: %s", summaryFilePath, summary.err);
             }
 
@@ -261,14 +265,15 @@ public class PlayerJsonParser {
         }
     }
 
-    private static void validate(int playerId, Integer blocked, PlayerIndexData data, String indexDataFilePath) {
-        if (StringUtils.isNotBlank(data.err)) { // error case
+    private static void validate(int playerId, Integer blocked, GetIndexDataResponse data, String indexDataFilePath) {
+        String err = data.getErr();
+        if (StringUtils.isNotBlank(err)) { // error case
             if (
-                !data.err.equals(PlayerSummary.INVALID_USER_ID_ERROR)
-                && !data.err.equals(PlayerSummary.HIDDEN_PROFILE_USER_ERROR)
-                && !data.err.equals(PlayerSummary.MONGO_REFS_ERROR_USER_498727)
+                !err.equals(ApiErrors.INVALID_USER_ID_ERROR)
+                && !err.equals(ApiErrors.HIDDEN_PROFILE_USER_ERROR)
+                && !err.equals(ApiErrors.MONGO_REFS_ERROR_USER_498727)
             ) {
-                throw new ParserException("Index data file %s: Unknown error: %s", indexDataFilePath, data.err);
+                throw new ParserException("Index data file %s: Unknown error: %s", indexDataFilePath, err);
             }
 
             return;
@@ -276,22 +281,23 @@ public class PlayerJsonParser {
 
         // non-error case
         // ok
-        if (data.ok != PlayerIndexData.OK_CORRECT_VALUE) { // should be null-safe
+        Integer ok = data.getOk();
+        if (ok != ApiErrors.OK_CORRECT_VALUE) { // should be null-safe
             throw new ParserException(
                 "Index data file %s contains no error, but data.ok = %s. It must be = %s",
                 indexDataFilePath,
-                data.ok,
-                PlayerIndexData.OK_CORRECT_VALUE
+                ok,
+                ApiErrors.OK_CORRECT_VALUE
             );
         }
 
         // bio
-        if (data.bio == null) {
+        if (data.getBio() == null) {
             throw new ParserException("Index data file %s: data.bio is null", indexDataFilePath);
         }
 
-        if (data.bio.userId != playerId) {
-            throw new ParserException("Index data file %s contains incorrect data.bio.userId %s. Expected playerId: %s", indexDataFilePath, data.bio.userId, playerId);
+        if (data.getBio().getUserId() != playerId) {
+            throw new ParserException("Index data file %s contains incorrect data.bio.userId %s. Expected playerId: %s", indexDataFilePath, data.getBio().getUserId(), playerId);
         }
 
         // bio.oldText can be null / empty - no need to validate
@@ -299,66 +305,76 @@ public class PlayerJsonParser {
         // bio.text can be null / empty - see https://klavogonki.ru/u/#/368664/ - no need to validate
 
         // stats
-        if (data.stats == null) {
+        GetIndexDataStats stats = data.getStats();
+
+        if (stats == null) {
             throw new ParserException("Index data file %s: data.stats is null", indexDataFilePath);
         }
 
         // stats.registered
-        if (data.stats.registered == null) {
+        Microtime registered = stats.getRegistered();
+        if (registered == null) {
             throw new ParserException("Index data file %s: data.registered is null", indexDataFilePath);
         }
 
-        if (data.stats.registered.sec == null) {
+        if (registered.getSec() == null) {
             throw new ParserException("Index data file %s: data.registered.sec is null", indexDataFilePath);
         }
 
         // todo: validate that (data.stats.registered.sec + data.stats.registered.usec) can parse to date
-        if (data.stats.registered.sec <= 0) { // todo: compare to minimal unix date
+        if (registered.getSec() <= 0) { // todo: compare to minimal unix date
             if ((blocked != null) && (blocked == 1)) { // todo: maybe other blocked != 0 values can also contain crazy register dates
-                logger.warn("Index data file {}: User {} is blocked, data.registered.sec has invalid value: {}", indexDataFilePath, playerId, data.stats.registered.sec);
+                logger.warn("Index data file {}: User {} is blocked, data.registered.sec has invalid value: {}", indexDataFilePath, playerId, registered.getSec());
             }
             else {
-                throw new ParserException("Index data file %s: User is not blocked, but data.registered.sec has invalid value: %d", indexDataFilePath, data.stats.registered.sec);
+                throw new ParserException("Index data file %s: User is not blocked, but data.registered.sec has invalid value: %d", indexDataFilePath, registered.getSec());
             }
         }
 
-        if (data.stats.registered.usec == null) {
+        if (registered.getUsec() == null) {
             throw new ParserException("Index data file %s: data.registered.usec is null", indexDataFilePath);
         }
 
-        if (data.stats.registered.usec < 0) { // todo: validate range, from 0 to 1000?
-            throw new ParserException("Index data file %s: data.stats.registered.usec has invalid value: %d", indexDataFilePath, data.stats.registered.usec);
+        if (registered.getUsec() < 0) { // todo: validate range, from 0 to 1000?
+            throw new ParserException("Index data file %s: data.stats.registered.usec has invalid value: %d", indexDataFilePath, registered.getUsec());
         }
 
         // statistics in stats
-        if (data.stats.achievementsCount == null || data.stats.achievementsCount < 0) {
-            throw new ParserException("Index data file %s: data.stats.achievementsCount has invalid value: %d", indexDataFilePath, data.stats.achievementsCount);
+        Integer achievementsCount = stats.getAchievesCnt();
+        if (achievementsCount == null || achievementsCount < 0) {
+            throw new ParserException("Index data file %s: data.stats.achievementsCount has invalid value: %d", indexDataFilePath, achievementsCount);
         }
 
-        if (data.stats.totalRacesCount == null || data.stats.totalRacesCount < 0) {
-            throw new ParserException("Index data file %s: data.stats.totalRacesCount has invalid value: %d", indexDataFilePath, data.stats.totalRacesCount);
+        Integer totalRacesCount = stats.getTotalNumRaces();
+        if (totalRacesCount == null || totalRacesCount < 0) {
+            throw new ParserException("Index data file %s: data.stats.totalRacesCount has invalid value: %d", indexDataFilePath, totalRacesCount);
         }
 
         // best speed can be null for player without races in Normal
-        if (data.stats.bestSpeed != null && data.stats.bestSpeed <= 0) {
-            throw new ParserException("Index data file %s: data.stats.bestSpeed has invalid value: %d", indexDataFilePath, data.stats.bestSpeed);
+        Integer bestSpeed = stats.getBestSpeed();
+        if (bestSpeed != null && bestSpeed <= 0) {
+            throw new ParserException("Index data file %s: data.stats.bestSpeed has invalid value: %d", indexDataFilePath, bestSpeed);
         }
 
-        if (data.stats.ratingLevel == null || data.stats.ratingLevel < 1) { // todo: move 1 to constant in Player etc
-            throw new ParserException("Index data file %s: data.stats.ratingLevel has invalid value: %d", indexDataFilePath, data.stats.ratingLevel);
+        Integer ratingLevel = stats.getRatingLevel();
+        if (ratingLevel == null || ratingLevel < 1) { // todo: move 1 to constant in Player etc
+            throw new ParserException("Index data file %s: data.stats.ratingLevel has invalid value: %d", indexDataFilePath, ratingLevel);
         }
 
-        if (data.stats.friendsCount == null || data.stats.friendsCount < 0) {
-            throw new ParserException("Index data file %s: data.stats.friendsCount has invalid value: %d", indexDataFilePath, data.stats.friendsCount);
+        Integer friendsCount = stats.getFriendsCnt();
+        if (friendsCount == null || friendsCount < 0) {
+            throw new ParserException("Index data file %s: data.stats.friendsCount has invalid value: %d", indexDataFilePath, friendsCount);
         }
 
-        if (data.stats.vocabulariesCount == null || data.stats.vocabulariesCount < 0) {
-            throw new ParserException("Index data file %s: data.stats.vocabulariesCount has invalid value: %d", indexDataFilePath, data.stats.vocabulariesCount);
+        Integer vocabulariesCount = stats.getVocsCnt();
+        if (vocabulariesCount == null || vocabulariesCount < 0) {
+            throw new ParserException("Index data file %s: data.stats.vocabulariesCount has invalid value: %d", indexDataFilePath, vocabulariesCount);
         }
 
         // cannot own no cars or more than total cars
-        if (data.stats.carsCount == null || data.stats.carsCount < 1 || data.stats.carsCount > Car.values().length) {
-            throw new ParserException("Index data file %s: data.stats.carsCount has invalid value: %d", indexDataFilePath, data.stats.carsCount);
+        Integer carsCount = stats.getCarsCnt();
+        if (carsCount == null || carsCount < 1 || carsCount > Car.values().length) {
+            throw new ParserException("Index data file %s: data.stats.carsCount has invalid value: %d", indexDataFilePath, carsCount);
         }
     }
 }

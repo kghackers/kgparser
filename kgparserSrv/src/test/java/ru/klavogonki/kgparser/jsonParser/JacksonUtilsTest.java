@@ -133,7 +133,7 @@ class JacksonUtilsTest {
         PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
         logPlayerSummary(summary);
 
-        assertThat(summary.err).isEqualTo(PlayerSummary.INVALID_USER_ID_ERROR);
+        assertThat(summary.err).isEqualTo(ApiErrors.INVALID_USER_ID_ERROR);
         assertThat(summary.isOnline).isNull();
         assertThat(summary.level).isNull();
         assertThat(summary.title).isNull();
@@ -185,8 +185,8 @@ class JacksonUtilsTest {
         MicrotimeAssert
             .assertThat(registered)
             .isNotNull()
-            .hasSec(1297852113)
-            .hasUsec(0);
+            .hasSec(1297852113L)
+            .hasUsec(0L);
 
         DateUtils.convertUserRegisteredTime(data);
     }
@@ -219,8 +219,8 @@ class JacksonUtilsTest {
         MicrotimeAssert
             .assertThat(editedData)
             .isNotNull()
-            .hasSec(1508143960)
-            .hasUsec(314000);
+            .hasSec(1508143960L)
+            .hasUsec(314000L);
 
         // stats
         GetIndexDataStats stats = data.getStats();
@@ -240,8 +240,8 @@ class JacksonUtilsTest {
         MicrotimeAssert
             .assertThat(registered)
             .isNotNull()
-            .hasSec(1211400000)
-            .hasUsec(0);
+            .hasSec(1211400000L)
+            .hasUsec(0L);
 
         DateUtils.convertUserRegisteredTime(data);
     }
@@ -285,8 +285,8 @@ class JacksonUtilsTest {
         MicrotimeAssert
             .assertThat(registered)
             .isNotNull()
-            .hasSec(1607554944)
-            .hasUsec(0);
+            .hasSec(1607554944L)
+            .hasUsec(0L);
 
         DateUtils.convertUserRegisteredTime(data);
     }

@@ -23,6 +23,7 @@ public class DateUtils {
         return ZoneId.of("Europe/Moscow");
     }
 
+    @Deprecated // todo: remove this
     public static LocalDateTime convertUserRegisteredTime(final PlayerIndexData data) {
         if ((data == null) || (data.stats == null)) { // error in /get-index-data
             return null;
@@ -37,9 +38,10 @@ public class DateUtils {
         }
 
         Microtime registered = data.getStats().getRegistered();
-        return convertUserRegisteredTime(registered.getSec().longValue(), registered.getUsec().longValue()); // we assume it is not null
+        return convertUserRegisteredTime(registered.getSec(), registered.getUsec()); // we assume it is not null
     }
 
+    @Deprecated // todo: remove this
     public static LocalDateTime convertUserRegisteredTime(final PlayerIndexData.Registered registered) {
         if (registered == null) {
             return null;

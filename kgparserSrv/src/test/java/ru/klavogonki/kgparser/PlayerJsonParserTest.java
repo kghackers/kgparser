@@ -2,8 +2,12 @@ package ru.klavogonki.kgparser;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.klavogonki.kgparser.jsonParser.PlayerSummary;
+import ru.klavogonki.kgparser.jsonParser.ApiErrors;
 import ru.klavogonki.kgparser.util.TestUtils;
+import ru.klavogonki.openapi.model.Bio;
+import ru.klavogonki.openapi.model.BioAssert;
+import ru.klavogonki.openapi.model.Microtime;
+import ru.klavogonki.openapi.model.MicrotimeAssert;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -33,8 +37,8 @@ class PlayerJsonParserTest {
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
-        assertThat(player.summary.err).isEqualTo(PlayerSummary.INVALID_USER_ID_ERROR);
-        assertThat(player.indexData.err).isEqualTo(PlayerSummary.INVALID_USER_ID_ERROR);
+        assertThat(player.summary.err).isEqualTo(ApiErrors.INVALID_USER_ID_ERROR);
+        assertThat(player.indexData.getErr()).isEqualTo(ApiErrors.INVALID_USER_ID_ERROR);
     }
 
     @Test
@@ -47,7 +51,7 @@ class PlayerJsonParserTest {
         assertThat(playerOptional).isPresent();
 
         PlayerJsonData player = playerOptional.get();
-        assertThat(player.indexData.err).isEqualTo(PlayerSummary.HIDDEN_PROFILE_USER_ERROR);
+        assertThat(player.indexData.getErr()).isEqualTo(ApiErrors.HIDDEN_PROFILE_USER_ERROR);
     }
 
     @Test
@@ -91,8 +95,12 @@ class PlayerJsonParserTest {
 
         PlayerJsonData player = playerOptional.get();
         assertThat(player.summary.blocked).isEqualTo(1);
-        assertThat(player.indexData.stats.registered.sec).isEqualTo(-62169993079L); // Mein Gott, muss das sein?! So ein Bockmist aber auch!
-        assertThat(player.indexData.stats.registered.usec).isZero();
+
+        Microtime registered = player.indexData.getStats().getRegistered();
+        MicrotimeAssert
+            .assertThat(registered)
+            .hasSec(-62169993079L) // Mein Gott, muss das sein?! So ein Bockmist aber auch!
+            .hasUsec(0L);
     }
 
     @Test
@@ -120,7 +128,7 @@ class PlayerJsonParserTest {
         PlayerJsonData player = playerOptional.get();
         assertThat(player.summary.blocked).isZero();
         assertThat(player.summary.err).isNull();
-        assertThat(player.indexData.err).isEqualTo(PlayerSummary.INVALID_USER_ID_ERROR);
+        assertThat(player.indexData.getErr()).isEqualTo(ApiErrors.INVALID_USER_ID_ERROR);
     }
 
     @Test
@@ -135,7 +143,7 @@ class PlayerJsonParserTest {
         PlayerJsonData player = playerOptional.get();
         assertThat(player.summary.blocked).isZero();
         assertThat(player.summary.err).isNull();
-        assertThat(player.indexData.err).isEqualTo(PlayerSummary.MONGO_REFS_ERROR_USER_498727);
+        assertThat(player.indexData.getErr()).isEqualTo(ApiErrors.MONGO_REFS_ERROR_USER_498727);
     }
 
     @Test
@@ -149,8 +157,12 @@ class PlayerJsonParserTest {
 
         PlayerJsonData player = playerOptional.get();
         assertThat(player.summary.blocked).isZero(); // user is not blocked
-        assertThat(player.indexData.bio.text).isNull(); // null text
-        assertThat(player.indexData.bio.oldText).isNull();
-        assertThat(player.indexData.bio.oldTextRemoved).isEqualTo("<img  src=\"http://iplogger.ru/1LZq3.jpg\" border=\"0\" class=\"linked-image\" />");
+
+        Bio bio = player.indexData.getBio();
+        BioAssert
+            .assertThat(bio)
+            .hasText(null) // null text
+            .hasOldText(null)
+            .hasOldTextRemoved("<img  src=\"http://iplogger.ru/1LZq3.jpg\" border=\"0\" class=\"linked-image\" />");
     }
 }

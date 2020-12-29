@@ -6,6 +6,7 @@ import org.mapstruct.factory.Mappers;
 import ru.klavogonki.kgparser.Car;
 import ru.klavogonki.kgparser.PlayerJsonData;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.jsonParser.ApiErrors;
 import ru.klavogonki.kgparser.jsonParser.Assertions;
 import ru.klavogonki.kgparser.jsonParser.PlayerIndexData;
 import ru.klavogonki.kgparser.jsonParser.PlayerSummary;
@@ -35,7 +36,7 @@ class PlayerMapperTest {
         summary.car.color = "#BF1300";
 
         PlayerIndexData indexData = new PlayerIndexData();
-        indexData.ok = PlayerIndexData.OK_CORRECT_VALUE; // FGJ
+        indexData.ok = ApiErrors.OK_CORRECT_VALUE; // FGJ
 
         indexData.bio = new PlayerIndexData.Bio();
         indexData.bio.userId = 242585;
@@ -103,7 +104,7 @@ class PlayerMapperTest {
         summary.car.color = "#777777";
 
         PlayerIndexData indexData = new PlayerIndexData();
-        indexData.ok = PlayerIndexData.OK_CORRECT_VALUE; // FGJ
+        indexData.ok = ApiErrors.OK_CORRECT_VALUE; // FGJ
 
         indexData.bio = new PlayerIndexData.Bio();
         indexData.bio.userId = 624511;
@@ -171,7 +172,7 @@ class PlayerMapperTest {
         summary.car.color = "#893425";
 
         PlayerIndexData indexData = new PlayerIndexData();
-        indexData.err = PlayerSummary.HIDDEN_PROFILE_USER_ERROR;
+        indexData.err = ApiErrors.HIDDEN_PROFILE_USER_ERROR;
         indexData.ok = null; // FGJ
 
         PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
@@ -209,10 +210,10 @@ class PlayerMapperTest {
     @DisplayName("Test a non-existing user for which both /get-summary and /get-index-data returns return \"invalid user id\" error")
     void testNonExistingUser() {
         PlayerSummary summary = new PlayerSummary();
-        summary.err = PlayerSummary.INVALID_USER_ID_ERROR;
+        summary.err = ApiErrors.INVALID_USER_ID_ERROR;
 
         PlayerIndexData indexData = new PlayerIndexData();
-        indexData.err = PlayerSummary.INVALID_USER_ID_ERROR;
+        indexData.err = ApiErrors.INVALID_USER_ID_ERROR;
         indexData.ok = null; // FGJ
 
         PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);

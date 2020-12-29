@@ -257,10 +257,14 @@ components:
       type: object
       properties:
         sec:
-          type: integer # todo: long format?
-          example: 1297852113 # 16.02.2011 @ 10:28am (UTC)
+          type: integer
+          format: int64
+          example:
+            - 1297852113 # 16.02.2011 @ 10:28am (UTC)
+            - '-62169993079' # some incorrect time
         usec:
-          type: integer # todo: long format?
+          type: integer
+          format: int64
           example: 0
 
     PlayerId:

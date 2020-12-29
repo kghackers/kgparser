@@ -10,8 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerIndexData { // todo: remove this
 
-    public static final int OK_CORRECT_VALUE = ApiErrors.OK_CORRECT_VALUE;
-
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Bio {
         @JsonProperty("user_id")
@@ -88,12 +86,12 @@ public class PlayerIndexData { // todo: remove this
 
     /**
      * Non-empty error will indicate error.
-     * Typically, it is {@link PlayerSummary#INVALID_USER_ID_ERROR "invalid user id"}.
+     * Typically, it is {@link ApiErrors#INVALID_USER_ID_ERROR "invalid user id"}.
      */
     public String err;
 
     /**
-     * Should be {@link #OK_CORRECT_VALUE 1} for empty {@link #err}.
+     * Should be {@link ApiErrors#OK_CORRECT_VALUE 1} for empty {@link #err}.
      */
     public Integer ok;
 

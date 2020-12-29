@@ -8,11 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerSummary {
-    public static final String INVALID_USER_ID_ERROR = ApiErrors.INVALID_USER_ID_ERROR;
-
-    public static final String HIDDEN_PROFILE_USER_ERROR = ApiErrors.HIDDEN_PROFILE_USER_ERROR;
-
-    public static final String MONGO_REFS_ERROR_USER_498727 = ApiErrors.MONGO_REFS_ERROR_USER_498727;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class User {
@@ -31,7 +26,7 @@ public class PlayerSummary {
 
     /**
      * Non-empty error will indicate error.
-     * Typically, it is {@link #INVALID_USER_ID_ERROR "invalid user id"}.
+     * Typically, it is {@link ApiErrors#INVALID_USER_ID_ERROR "invalid user id"}.
      */
     public String err;
 
