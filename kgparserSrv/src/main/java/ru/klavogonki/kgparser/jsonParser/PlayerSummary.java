@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Required data from <a href="https://klavogonki.ru/api/profile/get-summary?id=242585">get-summary</a> API request.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Deprecated(forRemoval = true) // todo: remove this
 public class PlayerSummary {
 
     @JsonIgnoreProperties(ignoreUnknown = true)

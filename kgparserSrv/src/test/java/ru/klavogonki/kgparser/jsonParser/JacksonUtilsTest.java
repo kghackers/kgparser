@@ -10,19 +10,28 @@ import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.kgparser.util.TestUtils;
 import ru.klavogonki.openapi.model.Bio;
 import ru.klavogonki.openapi.model.BioAssert;
+import ru.klavogonki.openapi.model.CarAssert;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetIndexDataResponseAssert;
 import ru.klavogonki.openapi.model.GetIndexDataStats;
 import ru.klavogonki.openapi.model.GetIndexDataStatsAssert;
+import ru.klavogonki.openapi.model.GetSummaryResponse;
+import ru.klavogonki.openapi.model.GetSummaryResponseAssert;
+import ru.klavogonki.openapi.model.GetSummaryUser;
+import ru.klavogonki.openapi.model.GetSummaryUserAssert;
 import ru.klavogonki.openapi.model.Microtime;
 import ru.klavogonki.openapi.model.MicrotimeAssert;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JacksonUtilsTest {
     private static final Logger logger = LogManager.getLogger(JacksonUtilsTest.class);
+
+    // todo: @Nested subclasses for each of the methods
 
     // todo: add bio.oldTextRemoved validation to all indexData tests!
     // todo: missing tests:
@@ -38,22 +47,44 @@ class JacksonUtilsTest {
     void testPlayerSummary() {
         File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-242585.json");
 
-        PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
+        GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
         logPlayerSummary(summary);
 
-        assertThat(summary.err).isNull();
-        assertThat(summary.isOnline).isTrue();
-        assertThat(summary.level).isEqualTo(Rank.getLevel(Rank.superman).intValue());
-        assertThat(summary.title).isEqualTo(Rank.getDisplayName(Rank.superman));
-        assertThat(summary.blocked).isZero();
+        GetSummaryResponseAssert
+            .assertThat(summary)
+            .hasErr(null)
+            .hasIsOnline(Boolean.TRUE)
+            .hasLevel(Rank.getLevel(Rank.superman).intValue())
+            .hasTitle(Rank.getDisplayName(Rank.superman))
+            .hasBlocked(0);
 
-        assertThat(summary.user).isNotNull();
-        assertThat(summary.user.id).isEqualTo(242585);
-        assertThat(summary.user.login).isEqualTo("nosferatum");
+        GetSummaryUser user = summary.getUser();
+        GetSummaryUserAssert
+            .assertThat(user)
+            .isNotNull()
+            .hasId(242585)
+            .hasLogin("nosferatum")
+            .hasMigrateBookDone(Boolean.TRUE)
+            .hasMigrateDone(Boolean.TRUE);
 
-        assertThat(summary.car).isNotNull();
-        assertThat(summary.car.car).isEqualTo(Car.F1.id);
-        assertThat(summary.car.color).isEqualTo("#BF1300");
+        Microtime avatar = user.getAvatar();
+        MicrotimeAssert
+            .assertThat(avatar)
+            .hasSec(1388213197L)
+            .hasUsec(738000L);
+
+        ru.klavogonki.openapi.model.Car car = summary.getCar();
+        CarAssert
+            .assertThat(car)
+            .isNotNull()
+            .hasCar(Car.F1.id)
+            .hasColor("#BF1300");
+
+        Map<String, Integer> tuning = (Map<String, Integer>) car.getTuning();
+        assertThat(tuning)
+            .hasSize(2)
+            .containsEntry("0", 3)
+            .containsEntry("3", 0);
     }
 
     @Test
@@ -61,22 +92,42 @@ class JacksonUtilsTest {
     void testPlayerWithPersonalCarIdSummary() {
         File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-922.json");
 
-        PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
+        GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
         logPlayerSummary(summary);
 
-        assertThat(summary.err).isNull();
-        assertThat(summary.isOnline).isFalse();
-        assertThat(summary.level).isEqualTo(Rank.getLevel(Rank.maniac).intValue());
-        assertThat(summary.title).isEqualTo(Rank.getDisplayName(Rank.maniac));
-        assertThat(summary.blocked).isZero();
+        GetSummaryResponseAssert
+            .assertThat(summary)
+            .hasErr(null)
+            .hasIsOnline(Boolean.FALSE)
+            .hasLevel(Rank.getLevel(Rank.maniac).intValue())
+            .hasTitle(Rank.getDisplayName(Rank.maniac))
+            .hasBlocked(0);
 
-        assertThat(summary.user).isNotNull();
-        assertThat(summary.user.id).isEqualTo(922);
-        assertThat(summary.user.login).isEqualTo("lovermann");
+        GetSummaryUser user = summary.getUser();
+        GetSummaryUserAssert
+            .assertThat(user)
+            .isNotNull()
+            .hasId(922)
+            .hasLogin("lovermann")
+            .hasMigrateBookDone(Boolean.TRUE)
+            .hasMigrateDone(Boolean.TRUE);
 
-        assertThat(summary.car).isNotNull();
-        assertThat(summary.car.car).isEqualTo(Car.CARAVEL.personalId);
-        assertThat(summary.car.color).isEqualTo("#000000");
+        Microtime avatar = user.getAvatar();
+        MicrotimeAssert
+            .assertThat(avatar)
+            .hasSec(1388204842L)
+            .hasUsec(467000L);
+
+        ru.klavogonki.openapi.model.Car car = summary.getCar();
+        CarAssert
+            .assertThat(car)
+            .isNotNull()
+            .hasCar(Car.CARAVEL.personalId)
+            .hasColor("#000000");
+
+        List<Integer> tuning = (List<Integer>) car.getTuning();
+        assertThat(tuning)
+            .isEmpty();
     }
 
     @Test
@@ -84,22 +135,42 @@ class JacksonUtilsTest {
     void testBrandNewPlayerSummary() {
         File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-624511.json");
 
-        PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
+        GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
         logPlayerSummary(summary);
 
-        assertThat(summary.err).isNull();
-        assertThat(summary.isOnline).isTrue();
-        assertThat(summary.level).isEqualTo(Rank.getLevel(Rank.novice).intValue());
-        assertThat(summary.title).isEqualTo(Rank.getDisplayName(Rank.novice));
-        assertThat(summary.blocked).isZero();
 
-        assertThat(summary.user).isNotNull();
-        assertThat(summary.user.id).isEqualTo(624511);
-        assertThat(summary.user.login).isEqualTo("nosferatum0");
+        GetSummaryResponseAssert
+            .assertThat(summary)
+            .hasErr(null)
+            .hasIsOnline(Boolean.TRUE)
+            .hasLevel(Rank.getLevel(Rank.novice).intValue())
+            .hasTitle(Rank.getDisplayName(Rank.novice))
+            .hasBlocked(0);
 
-        assertThat(summary.car).isNotNull();
-        assertThat(summary.car.car).isEqualTo(Car.ZAZ_965.id);
-        assertThat(summary.car.color).isEqualTo("#777777");
+        GetSummaryUser user = summary.getUser();
+        GetSummaryUserAssert
+            .assertThat(user)
+            .isNotNull()
+            .hasId(624511)
+            .hasLogin("nosferatum0")
+            .hasMigrateBookDone(null) // no migrated flags for the new users
+            .hasMigrateDone(null); // no migrated flags for the new users
+
+        Microtime avatar = user.getAvatar();
+        MicrotimeAssert
+            .assertThat(avatar)
+            .isNull(); // new user without avatar -> no avatar date
+
+        ru.klavogonki.openapi.model.Car car = summary.getCar();
+        CarAssert
+            .assertThat(car)
+            .isNotNull()
+            .hasCar(Car.ZAZ_965.id)
+            .hasColor("#777777");
+
+        List<Integer> tuning = (List<Integer>) car.getTuning();
+        assertThat(tuning)
+            .isEmpty();
     }
 
     @Test
@@ -107,22 +178,43 @@ class JacksonUtilsTest {
     void testKlavoMechanicWithHiddenProfileSummary() {
         File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-21.json");
 
-        PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
+        GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
         logPlayerSummary(summary);
 
-        assertThat(summary.err).isNull();
-        assertThat(summary.isOnline).isFalse();
-        assertThat(summary.level).isEqualTo(Rank.getLevel(Rank.superman).intValue());
-        assertThat(summary.title).isEqualTo(Rank.KLAVO_MECHANIC_TITLE);
-        assertThat(summary.blocked).isZero();
+        GetSummaryResponseAssert
+            .assertThat(summary)
+            .hasErr(null)
+            .hasIsOnline(Boolean.FALSE)
+            .hasLevel(Rank.getLevel(Rank.superman).intValue())
+            .hasTitle(Rank.KLAVO_MECHANIC_TITLE)
+            .hasBlocked(0);
 
-        assertThat(summary.user).isNotNull();
-        assertThat(summary.user.id).isEqualTo(21);
-        assertThat(summary.user.login).isEqualTo("Artch");
+        GetSummaryUser user = summary.getUser();
+        GetSummaryUserAssert
+            .assertThat(user)
+            .isNotNull()
+            .hasId(21)
+            .hasLogin("Artch")
+            .hasMigrateBookDone(Boolean.TRUE)
+            .hasMigrateDone(Boolean.TRUE);
 
-        assertThat(summary.car).isNotNull();
-        assertThat(summary.car.car).isEqualTo(Car.AUDI_TT.id);
-        assertThat(summary.car.color).isEqualTo("#893425");
+        Microtime avatar = user.getAvatar();
+        MicrotimeAssert
+            .assertThat(avatar)
+            .hasSec(1388650379L)
+            .hasUsec(184000L);
+
+        ru.klavogonki.openapi.model.Car car = summary.getCar();
+        CarAssert
+            .assertThat(car)
+            .isNotNull()
+            .hasCar(Car.AUDI_TT.id)
+            .hasColor("#893425");
+
+        Map<String, Integer> tuning = (Map<String, Integer>) car.getTuning();
+        assertThat(tuning)
+            .hasSize(1)
+            .containsEntry("1", 1);
     }
 
     @Test
@@ -130,18 +222,26 @@ class JacksonUtilsTest {
     void testInvalidPlayerSummary() {
         File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-30001.json");
 
-        PlayerSummary summary = JacksonUtils.parse(file, PlayerSummary.class);
+        GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
         logPlayerSummary(summary);
 
-        assertThat(summary.err).isEqualTo(ApiErrors.INVALID_USER_ID_ERROR);
-        assertThat(summary.isOnline).isNull();
-        assertThat(summary.level).isNull();
-        assertThat(summary.title).isNull();
-        assertThat(summary.blocked).isNull();
+        GetSummaryResponseAssert
+            .assertThat(summary)
+            .hasErr(ApiErrors.INVALID_USER_ID_ERROR)
+            .hasIsOnline(null)
+            .hasLevel(null)
+            .hasTitle(null)
+            .hasBlocked(null);
 
-        assertThat(summary.user).isNull();
+        GetSummaryUser user = summary.getUser();
+        GetSummaryUserAssert
+            .assertThat(user)
+            .isNull();
 
-        assertThat(summary.car).isNull();
+        ru.klavogonki.openapi.model.Car car = summary.getCar();
+        CarAssert
+            .assertThat(car)
+            .isNull();
     }
 
     @Test
@@ -335,35 +435,9 @@ class JacksonUtilsTest {
             .isNull();
     }
 
-    private static void logPlayerSummary(final PlayerSummary summary) {
+    private static void logPlayerSummary(final GetSummaryResponse summary) {
         logger.info("Player summary: ");
-        logger.info("- err: {}", summary.err);
-        logger.info("- isOnline: {}", summary.isOnline);
-        logger.info("- level: {}", summary.level);
-        logger.info("- title: {}", summary.title);
-        logger.info("- blocked: {}", summary.blocked);
-
-        logger.info("");
-
-        if (summary.user != null) {
-            logger.info("User:");
-            logger.info("- id: {}", summary.user.id);
-            logger.info("- login: {}", summary.user.login);
-        }
-        else {
-            logger.info("User: null");
-        }
-
-        logger.info("");
-
-        if (summary.car != null) {
-            logger.info("Car:");
-            logger.info("- car: {}", summary.car.car);
-            logger.info("- color: {}", summary.car.color);
-        }
-        else {
-            logger.info("User: null");
-        }
+        logger.info(summary);
     }
 
     private static void logPlayerIndexData(final GetIndexDataResponse data) {
