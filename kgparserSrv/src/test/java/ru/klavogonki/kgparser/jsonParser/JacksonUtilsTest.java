@@ -29,6 +29,7 @@ import ru.klavogonki.openapi.model.GetSummaryUser;
 import ru.klavogonki.openapi.model.GetSummaryUserAssert;
 import ru.klavogonki.openapi.model.Microtime;
 import ru.klavogonki.openapi.model.MicrotimeAssert;
+import ru.klavogonki.openapi.model.VocabularyMode;
 
 import java.io.File;
 import java.util.List;
@@ -497,7 +498,7 @@ class JacksonUtilsTest {
                 .assertThat(normalStatsInfo)
                 .hasId(1826608)
                 .hasUserId(242585)
-                .hasMode(StandardDictionary.normal.name())
+                .hasMode(VocabularyMode.NORMAL)
                 .hasTexttype(StandardDictionary.getTextType(StandardDictionary.normal))
                 .hasNumRaces(29445)
                 .hasAvgSpeed(453.123)
@@ -515,7 +516,7 @@ class JacksonUtilsTest {
             // todo: validate player stats in non-standard "texts" dictionary
             // todo: validate player stats in non-standard "url" dictionary
             // todo: validate player stats in non-standard "book" dictionary
-            // todo: validate player stats in non-standard "generatoe" dictionary
+            // todo: validate player stats in non-standard "generator" dictionary
 
             // validate recent game types
             List<String> recentGameTypes = stats.getRecentGametypes();
@@ -570,7 +571,7 @@ class JacksonUtilsTest {
                 .assertThat(normalStatsInfo)
                 .hasId(30914229)
                 .hasUserId(624511)
-                .hasMode(StandardDictionary.normal.name())
+                .hasMode(VocabularyMode.NORMAL)
                 .hasTexttype(StandardDictionary.getTextType(StandardDictionary.normal))
                 .hasNumRaces(0)
                 .hasAvgSpeed(0d)
@@ -585,6 +586,27 @@ class JacksonUtilsTest {
             // validate recent game types - empty for the new playre
             List<String> recentGameTypes = stats.getRecentGametypes();
             assertThat(recentGameTypes)
+                .isEmpty();
+        }
+
+        @Test
+        @DisplayName("Test parsing stats overview for a player who is hidden or denied the access to his/her statistics")
+        void permissionBlocked() {
+            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-stats-overview-21.json");
+
+            GetStatsOverviewResponse stats = JacksonUtils.parse(file, GetStatsOverviewResponse.class);
+            logPlayerStatsOverview(stats);
+
+            GetStatsOverviewResponseAssert
+                .assertThat(stats)
+                .isNotNull()
+                .hasErr(ApiErrors.PERMISSION_BLOCKED_ERROR)
+                .hasOk(null);
+
+            assertThat(stats.getGametypes())
+                .isEmpty();
+
+            assertThat(stats.getRecentGametypes())
                 .isEmpty();
         }
 

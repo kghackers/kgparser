@@ -1,6 +1,7 @@
 package ru.klavogonki.kgparser.jsonParser.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.http.UrlConstructor;
 
@@ -28,9 +29,12 @@ public class PlayerEntity {
 
     private String getSummaryError; // we import all users, including non-existing
 
-    private String getIndexDataError; // we import all users, including non-existing and users with failed /get-indexData
+    private String getIndexDataError; // we import all users, including non-existing and users with failed /get-index-data
+
+    private String getStatsOverviewError; // we import all users, including non-existing and users with failed /get-stats-overview
 
     // fields from PlayerSummary
+    @NaturalId
     private Integer playerId; // KG user id
 
     private String login;

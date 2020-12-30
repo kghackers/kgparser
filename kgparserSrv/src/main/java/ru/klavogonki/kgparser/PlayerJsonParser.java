@@ -7,6 +7,8 @@ import ru.klavogonki.kgparser.jsonParser.ApiErrors;
 import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetIndexDataStats;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
+import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 import ru.klavogonki.openapi.model.GetSummaryResponse;
 import ru.klavogonki.openapi.model.GetSummaryUser;
 import ru.klavogonki.openapi.model.Microtime;
@@ -15,6 +17,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
@@ -92,16 +95,24 @@ public class PlayerJsonParser {
 
             File summaryFile = new File(config.getPlayerSummaryFilePath(playerId));
             File indexDataFile = new File(config.getPlayerIndexDataFilePath(playerId));
+            File statsOverviewFile = new File(config.getStatsOverviewFilePath(playerId));
 
-            Optional<PlayerJsonData> playerOptional = readPlayerData(config.startDate, playerId, summaryFile, indexDataFile);
+            Optional<PlayerJsonData> playerOptional = readPlayerData(config.startDate, playerId, summaryFile, indexDataFile, statsOverviewFile);
 
             playerHandler.accept(playerId, playerOptional);
         }
     }
 
-    static Optional<PlayerJsonData> readPlayerData(final LocalDateTime importDate, final int playerId, final File summaryFile, final File indexDataFile) {
+    static Optional<PlayerJsonData> readPlayerData(
+        final LocalDateTime importDate,
+        final int playerId,
+        final File summaryFile,
+        final File indexDataFile,
+        final File statsOverviewFile
+    ) {
         String summaryFilePath = summaryFile.getPath();
         String indexDataFilePath = indexDataFile.getPath();
+        String statsOverviewFilePath = statsOverviewFile.getPath();
 
         // parse summary file
         GetSummaryResponse summary = JacksonUtils.parse(summaryFile, GetSummaryResponse.class);
@@ -109,10 +120,14 @@ public class PlayerJsonParser {
         // parse index-data file
         GetIndexDataResponse indexData = JacksonUtils.parse(indexDataFile, GetIndexDataResponse.class);
 
+        // parse stats-overview file
+        GetStatsOverviewResponse statsOverview = JacksonUtils.parse(statsOverviewFile, GetStatsOverviewResponse.class);
+
         // validate expected data
         // todo: use some validation framework instead of this manual code hell
         validate(playerId, summary, summaryFilePath);
         validate(playerId, summary.getBlocked(), indexData, indexDataFilePath);
+        validate(playerId, statsOverview, statsOverviewFilePath);
 
         // check whether this is a parse error
 
@@ -386,5 +401,44 @@ public class PlayerJsonParser {
         if (carsCount == null || carsCount < 1 || carsCount > Car.values().length) {
             throw new ParserException("Index data file %s: data.stats.carsCount has invalid value: %d", indexDataFilePath, carsCount);
         }
+    }
+
+    private static void validate(int playerId, GetStatsOverviewResponse response, String statsOverviewFilePath) {
+        String err = response.getErr();
+
+        if (StringUtils.isNotBlank(err)) {
+            if (!err.equals(ApiErrors.INVALID_USER_ID_ERROR) && !err.equals(ApiErrors.PERMISSION_BLOCKED_ERROR)) {
+                throw new ParserException("Stats overview file %s: Unknown error: %s", statsOverviewFilePath, err);
+            }
+
+            return;
+        }
+
+        Map<String, GetStatsOverviewGameType> gameTypes = response.getGametypes();
+        for (Map.Entry<String, GetStatsOverviewGameType> entry : gameTypes.entrySet()) {
+            String vocabularyCode = entry.getKey();
+
+            GetStatsOverviewGameType vocabularyStats = entry.getValue();
+
+            if (Dictionary.isStandard(vocabularyCode)) {
+
+            }
+            else if (!Dictionary.isStandard(vocabularyCode)) {
+
+            }
+            else {
+                throw new ParserException("Stats overview file %s: Incorrect vocabulary code in gametypes: %s", statsOverviewFilePath, vocabularyCode);
+            }
+        }
+
+
+        String vocabularyCode = "voc-666";
+
+        Dictionary.isStandard(vocabularyCode);
+
+        Dictionary.getDictionaryId(vocabularyCode);
+
+        // todo: recent gametypes - all types must be present in gametypes
+        // todo: recent gametypes - size from 0 to 10
     }
 }

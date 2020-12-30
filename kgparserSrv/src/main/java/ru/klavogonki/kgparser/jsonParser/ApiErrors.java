@@ -13,4 +13,6 @@ public class ApiErrors {
     // happens on /get-index-data
     public static final String MONGO_REFS_ERROR_USER_498727 = "mongo refs joining failed: invalid key users.achieves.achieve_id=599bd392df4e4d963a8b4570";
 
+    // happens in /get-stats-overview
+    public static final String PERMISSION_BLOCKED_ERROR = "permission blocked";
 }

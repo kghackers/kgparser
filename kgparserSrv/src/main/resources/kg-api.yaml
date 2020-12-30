@@ -531,7 +531,7 @@ components:
           description: Коды недавно использованных игроком словарей aka режимов
           type: array
           items:
-            $ref: '#/components/schemas/VocabularyMode'
+            $ref: '#/components/schemas/VocabularyCode'
 
     # map of string key to object
     # todo: is it possible to use key type as oneOf(StandardVocabulary, string)?
@@ -657,6 +657,7 @@ components:
               <li>Для chars — -4</li>
             </ul>
           type: integer
+          minimum: -4
           example: -4
 
         num_races:
@@ -738,9 +739,17 @@ components:
         - book # Книга
         - generator # Генератор
 
-    VocabularyMode:
+    VocabularyCode:
       type: string
       # todo: oneOf only works with "type: object" in both types, at least with jaxrs-spec/jackson generator
 #      oneOf:
 #        - $ref: '#/components/schemas/StandardVocabulary'
 #        - type: string # todo: does this work or we need do define schema for string?
+
+    VocabularyMode:
+      type: string
+      enum:
+        - normal # Обычный, Буквы, Абракадабра, Яндекс.Рефераты, Цифры, нестандартные словари
+        - noerror # Безошибочный
+        - sprint # Спринт
+        - marathon # Марафон

@@ -15,43 +15,42 @@ public enum StandardDictionary
 	/**
 	 * Обычный.
 	 */
-	  normal
+	normal,
 
 	/**
 	 * Безошибочный.
 	 */
-	, noerror
+	noerror,
 
 	/**
 	 * Буквы.
 	 */
-	, chars
+	chars,
 
 	/**
 	 * Марафон.
 	 */
-	, marathon
+	marathon,
 
 	/**
 	 * Абракадабра.
 	 */
-	, abra
+	abra,
 
 	/**
 	 * Яндекс.Рефераты.
 	 */
-	, referats
+	referats,
 
 	/**
 	 * Цифры.
 	 */
-	, digits
+	digits,
 
 	/**
 	 * Спринт.
 	 */
-	, sprint
-
+	sprint,
 	;
 
 	/**
@@ -139,6 +138,16 @@ public enum StandardDictionary
 
 			default:
 				throw new IllegalArgumentException("Unknown standard dictionary: " + dictionary); // todo: use concat
+		}
+	}
+
+	public static boolean isValidStandardDictionaryCode(String code) {
+		try {
+			StandardDictionary.valueOf(code);
+			return true;
+		}
+		catch (IllegalArgumentException e) {
+			return false;
 		}
 	}
 }
