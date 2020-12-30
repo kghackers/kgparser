@@ -88,6 +88,11 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 		return getDictionaryPageUrl(this.code);
 	}
 
+	@Json(exclude = true)
+	public static boolean isValid(String code) {
+		return code.startsWith(NON_STANDARD_DICTIONARY_ID_PREFIX) || StandardDictionary.isValidStandardDictionaryCode(code);
+	}
+
 	/**
 	 * @param code строковый код словаря (gametype в ajax-api)
 	 * @return <code>true</code> &mdash; если словарь с указанным кодом является {@linkplain StandardDictionary стандартным};
@@ -96,7 +101,15 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	 */
 	@Json(exclude = true)
 	public static boolean isStandard(String code) {
-		return !code.startsWith(NON_STANDARD_DICTIONARY_ID_PREFIX) && (StandardDictionary.isValidStandardDictionaryCode(code));
+		if (code.startsWith(NON_STANDARD_DICTIONARY_ID_PREFIX)) {
+			return false;
+		}
+
+		if (StandardDictionary.isValidStandardDictionaryCode(code)) {
+			return true;
+		}
+
+		throw new IllegalArgumentException(String.format("Incorrect dictionary code: \"%s\".", code));
 	}
 
 	/**

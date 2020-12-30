@@ -12,6 +12,7 @@ import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 import ru.klavogonki.openapi.model.GetSummaryResponse;
 import ru.klavogonki.openapi.model.GetSummaryUser;
 import ru.klavogonki.openapi.model.Microtime;
+import ru.klavogonki.openapi.model.NonStandardVocabularyType;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -411,6 +412,8 @@ public class PlayerJsonParser {
                 throw new ParserException("Stats overview file %s: Unknown error: %s", statsOverviewFilePath, err);
             }
 
+            logger.debug("Stats overview file %s contains a valid error \"{}\".", err);
+
             return;
         }
 
@@ -420,25 +423,131 @@ public class PlayerJsonParser {
 
             GetStatsOverviewGameType vocabularyStats = entry.getValue();
 
-            if (Dictionary.isStandard(vocabularyCode)) {
-
+            if (!Dictionary.isValid(vocabularyCode)) { // we have dictionaries with "" code
+                logger.warn("Stats overview file {}: Invalid vocabulary code: {}. Cannot validate it as standard or non-standard.", statsOverviewFilePath, vocabularyCode);
+                // todo: we may write some heuristic determination whether this dictionary is standard or non-standard
+//                throw new ParserException("Stats overview file %s: Incorrect vocabulary code in gametypes: \"%s\"", statsOverviewFilePath, vocabularyCode);
             }
-            else if (!Dictionary.isStandard(vocabularyCode)) {
-
+            else if (Dictionary.isStandard(vocabularyCode)) {
+                validateCommon(statsOverviewFilePath, vocabularyCode, vocabularyStats);
+                validateStandardVocabulary(statsOverviewFilePath, vocabularyCode, vocabularyStats);
             }
             else {
-                throw new ParserException("Stats overview file %s: Incorrect vocabulary code in gametypes: %s", statsOverviewFilePath, vocabularyCode);
+                validateCommon(statsOverviewFilePath, vocabularyCode, vocabularyStats);
+                validateNonStandardVocabulary(statsOverviewFilePath, vocabularyCode, vocabularyStats);
             }
         }
 
+        List<String> recentGameTypes = response.getRecentGametypes();
 
-        String vocabularyCode = "voc-666";
-
-        Dictionary.isStandard(vocabularyCode);
-
-        Dictionary.getDictionaryId(vocabularyCode);
 
         // todo: recent gametypes - all types must be present in gametypes
         // todo: recent gametypes - size from 0 to 10
+    }
+
+    private static void validateCommon(final String statsOverviewFilePath, final String vocabularyCode, final GetStatsOverviewGameType vocabularyStats) {
+        if (StringUtils.isBlank(vocabularyStats.getName())) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: name is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        Integer numRaces = vocabularyStats.getNumRaces();
+        if (numRaces == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: numRaces is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        if (numRaces < 0) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: numRaces %d is negative.", statsOverviewFilePath, vocabularyCode, numRaces);
+        }
+    }
+
+    private static void validateStandardVocabulary(final String statsOverviewFilePath, final String vocabularyCode, final GetStatsOverviewGameType vocabularyStats) {
+        Integer id = vocabularyStats.getId();
+        if (id != null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is standard, but id = %d is present.", statsOverviewFilePath, vocabularyCode, id);
+        }
+
+        NonStandardVocabularyType type = vocabularyStats.getType();
+        if (type != null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is standard, but type = %s is present.", statsOverviewFilePath, vocabularyCode, type);
+        }
+
+        Integer symbols = vocabularyStats.getSymbols();
+        if (symbols != null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is standard, but symbols = %d is present.", statsOverviewFilePath, vocabularyCode, symbols);
+        }
+
+        Integer rows = vocabularyStats.getRows();
+        if (rows != null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is standard, but rows = %d is present.", statsOverviewFilePath, vocabularyCode, rows);
+        }
+
+        Boolean bookDone = vocabularyStats.getBookDone();
+        if (bookDone != null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is standard, but bookDone = %s is present.", statsOverviewFilePath, vocabularyCode, bookDone);
+        }
+    }
+
+    private static void validateNonStandardVocabulary(final String statsOverviewFilePath, final String vocabularyCode, final GetStatsOverviewGameType vocabularyStats) {
+        // id
+        Integer id = vocabularyStats.getId();
+        if (id == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but id is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        if (id <= 0) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but id %d is non-positive.", statsOverviewFilePath, vocabularyCode, id);
+        }
+
+        // type
+        NonStandardVocabularyType type = vocabularyStats.getType();
+        if (type == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but type is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        // symbols
+        Integer symbols = vocabularyStats.getSymbols();
+        if (symbols == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but symbols is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        // ! there exist vocabularies with symbols = 0, e.g. voc-73806 (words), voc-62586 (texts)
+//        if (symbols <= 0) {
+//            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but symbols %d is non-positive.", statsOverviewFilePath, vocabularyCode, symbols);
+//        }
+        if (symbols < 0) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but symbols %d is negative.", statsOverviewFilePath, vocabularyCode, symbols);
+        }
+        if (symbols == 0) {
+            logger.warn("Stats overview file {}: Vocabulary {} is non-standard, but symbols {} is 0.", statsOverviewFilePath, vocabularyCode, symbols);
+        }
+
+        Integer rows = vocabularyStats.getRows();
+        if (rows == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but rows is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        // ! there exist vocabularies rows = 0, e.g. voc-53 (RSS)
+//        if (rows <= 0) {
+//            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but rows %d is non-positive.", statsOverviewFilePath, vocabularyCode, rows);
+//        }
+        if (rows < 0) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but rows %d is negative.", statsOverviewFilePath, vocabularyCode, rows);
+        }
+        if (rows == 0) {
+            logger.warn("Stats overview file {}: Vocabulary {} is non-standard, but rows {} is 0.", statsOverviewFilePath, vocabularyCode, rows);
+        }
+
+        // book_done - must be present for books only
+        Boolean bookDone = vocabularyStats.getBookDone();
+        if (type == NonStandardVocabularyType.BOOK) { // book vocabulary -> book_done must be present
+            if (bookDone == null) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard and has type = %s, but bookDone is not present.", statsOverviewFilePath, vocabularyCode, type);
+            }
+        }
+        else { // non-book vocabulary -> book_done must NOT be present
+            if (bookDone != null) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard and has type = %s, but bookDone = %s is present.", statsOverviewFilePath, vocabularyCode, type, bookDone);
+            }
+        }
     }
 }
