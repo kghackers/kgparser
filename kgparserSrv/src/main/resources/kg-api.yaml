@@ -558,11 +558,17 @@ components:
       required:
         - name
         - num_races
+#        - id # present for non-standard dictionaries only
 #        - type # present for non-standard dictionaries only
 #        - symbols # present for non-standard dictionaries only
 #        - rows # present for non-standard dictionaries only
 #        - book_done # present for book dictionaries only
       properties:
+        id:
+          description: Числовой идентификатор словаря, только для нестандартных словарей.
+          type: integer
+          minimum: 1
+
         name:
           description: Название словаря
           type: string
