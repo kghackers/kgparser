@@ -648,6 +648,11 @@ public class PlayerJsonParser {
         // best_speed - nullable
         Integer bestSpeed = info.getBestSpeed();
         if (bestSpeed == null) {
+            logger.warn("Stats overview file {}: Vocabulary {}: info.best_speed is not present. NumRaces = {}.", statsOverviewFilePath, vocabularyCode, numRaces);
+
+            // player 215941 has ugly data: 1 race in "voc-11315", but avg_speed = null, avg_error = null, best_speed = null  // todo: maybe validate that numRaces <= 1 and voc in (voc-11315)
+
+/*
             if (!vocabularyCode.equals(StandardDictionary.normal.name())) {
                 throw new ParserException("Stats overview file %s: Vocabulary %s: info.best_speed is not present and vocabularyCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
             }
@@ -655,6 +660,7 @@ public class PlayerJsonParser {
             if (numRaces > 0) {
                 throw new ParserException("Stats overview file %s: Vocabulary %s: info.best_speed %s is null, but numRaces = %d != 0.", statsOverviewFilePath, vocabularyCode, bestSpeed, numRaces);
             }
+*/
         }
         else { // bestSpeed != 0
             if (bestSpeed < 0) {

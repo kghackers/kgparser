@@ -12,6 +12,7 @@ import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeInfo;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeInfoAssert;
 import ru.klavogonki.openapi.model.Microtime;
 import ru.klavogonki.openapi.model.MicrotimeAssert;
+import ru.klavogonki.openapi.model.NonStandardVocabularyType;
 import ru.klavogonki.openapi.model.VocabularyMode;
 
 import java.io.File;
@@ -213,6 +214,47 @@ class PlayerJsonParserTest {
             .hasQual(0)
             .hasDirty(0)
             .hasUpdated("2008-08-16 15:30:36")
+        ;
+    }
+
+    @Test
+    @DisplayName("User with 1 race in book \"voc-11315\", but avg_speed == null, avg_error == null, best_speed == null")
+    void testUserWith1BookRaceButWithNullAvgSpeedAndAvgErrorAndBestSpeed() {
+        File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-215941.json");
+        File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-215941.json");
+        File statsOverviewFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-stats-overview-215941.json");
+
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 215941, summaryFile, indexDataFile, statsOverviewFile);
+        assertThat(playerOptional).isPresent();
+
+        PlayerJsonData player = playerOptional.get();
+        assertThat(player.summary.getBlocked()).isZero(); // user is not blocked
+
+        GetStatsOverviewGameType bookStats = player.statsOverview.getGametypes().get("voc-11315");
+
+        GetStatsOverviewGameTypeAssert
+            .assertThat(bookStats)
+            .hasId(11315)
+            .hasName("Стефани Майер. Новолуние")
+            .hasType(NonStandardVocabularyType.BOOK)
+            .hasSymbols(655617)
+            .hasRows(1476)
+            .hasNumRaces(1)
+            .hasBookDone(false);
+
+        GetStatsOverviewGameTypeInfo bookStatsInfo = bookStats.getInfo();
+        GetStatsOverviewGameTypeInfoAssert
+            .assertThat(bookStatsInfo)
+            .hasId(12222256)
+            .hasUserId(215941)
+            .hasNumRaces(1)
+            .hasAvgSpeed(null)
+            .hasBestSpeed(null)
+            .hasAvgError(null)
+            .hasHaul(130)
+            .hasQual(0)
+            .hasDirty(0)
+            .hasUpdated("2015-01-26 11:12:44")
         ;
     }
 
