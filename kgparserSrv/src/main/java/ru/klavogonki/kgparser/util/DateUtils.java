@@ -15,8 +15,8 @@ import java.util.Objects;
 public class DateUtils {
     private static final Logger logger = LogManager.getLogger(DateUtils.class);
 
-    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH-mm-ss";
-    private static final String DATE_TIME_FORMAT_FOR_UI = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH-mm-ss";
+    public static final String DATE_TIME_FORMAT_FOR_UI = "yyyy-MM-dd HH:mm:ss";
 
     private static ZoneId getMoscowZoneId() {
         return ZoneId.of("Europe/Moscow");

@@ -12,7 +12,7 @@ public enum DictionaryMode {
 
     ;
 
-    public DictionaryMode getDictionaryMode(String dictionaryCode) {
+    public static DictionaryMode getDictionaryMode(String dictionaryCode) {
         if (!Dictionary.isStandard(dictionaryCode)) {
             return normal;
         }

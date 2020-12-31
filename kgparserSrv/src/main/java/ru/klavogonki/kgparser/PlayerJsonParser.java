@@ -5,14 +5,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.kgparser.jsonParser.ApiErrors;
 import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
+import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetIndexDataStats;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeInfo;
 import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 import ru.klavogonki.openapi.model.GetSummaryResponse;
 import ru.klavogonki.openapi.model.GetSummaryUser;
 import ru.klavogonki.openapi.model.Microtime;
 import ru.klavogonki.openapi.model.NonStandardVocabularyType;
+import ru.klavogonki.openapi.model.VocabularyMode;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -129,6 +132,7 @@ public class PlayerJsonParser {
         validate(playerId, summary, summaryFilePath);
         validate(playerId, summary.getBlocked(), indexData, indexDataFilePath);
         validate(playerId, statsOverview, statsOverviewFilePath);
+        // todo: we can check that summary.stats.totalNumRaces = sum(stats.gametypes.num_races) , but this is not very reliable since data can change between 2 requests
 
         // check whether this is a parse error
 
@@ -137,13 +141,13 @@ public class PlayerJsonParser {
         if (isErrorCase) {
             // both files contain same errors -> return empty result, there is no such player
             logger.info("Player with id = {} is not found according to both summary file {} and index data file {}.", playerId, summaryFilePath, indexDataFilePath);
-            PlayerJsonData result = new PlayerJsonData(importDate, summary, indexData);
+            PlayerJsonData result = new PlayerJsonData(importDate, summary, indexData, statsOverview);
             return Optional.of(result); // we will save not found players as well, for the database consistency (and FGJ as well!)
         }
 
         // player validation passed -> return parsed player object
         logger.info("Player {} was successfully parsed from summary file {} and index data file {}.", playerId, summaryFilePath, indexDataFilePath);
-        PlayerJsonData result = new PlayerJsonData(importDate, summary, indexData);
+        PlayerJsonData result = new PlayerJsonData(importDate, summary, indexData, statsOverview);
         return Optional.of(result);
     }
 
@@ -431,10 +435,12 @@ public class PlayerJsonParser {
             else if (Dictionary.isStandard(vocabularyCode)) {
                 validateCommon(statsOverviewFilePath, vocabularyCode, vocabularyStats);
                 validateStandardVocabulary(statsOverviewFilePath, vocabularyCode, vocabularyStats);
+                validateInfo(playerId, statsOverviewFilePath, vocabularyCode, vocabularyStats);
             }
             else {
                 validateCommon(statsOverviewFilePath, vocabularyCode, vocabularyStats);
                 validateNonStandardVocabulary(statsOverviewFilePath, vocabularyCode, vocabularyStats);
+                validateInfo(playerId, statsOverviewFilePath, vocabularyCode, vocabularyStats);
             }
         }
 
@@ -494,8 +500,9 @@ public class PlayerJsonParser {
             throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but id is not present.", statsOverviewFilePath, vocabularyCode);
         }
 
-        if (id <= 0) {
-            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but id %d is non-positive.", statsOverviewFilePath, vocabularyCode, id);
+        int expectedId = Dictionary.getDictionaryId(vocabularyCode);
+        if (id != expectedId) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but id = %d is not equal to expectedId = %d.", statsOverviewFilePath, vocabularyCode, id, expectedId);
         }
 
         // type
@@ -547,6 +554,163 @@ public class PlayerJsonParser {
         else { // non-book vocabulary -> book_done must NOT be present
             if (bookDone != null) {
                 throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard and has type = %s, but bookDone = %s is present.", statsOverviewFilePath, vocabularyCode, type, bookDone);
+            }
+        }
+    }
+
+    private static void validateInfo(final int playerId, final String statsOverviewFilePath, final String vocabularyCode, final GetStatsOverviewGameType vocabularyStats) {
+        GetStatsOverviewGameTypeInfo info = vocabularyStats.getInfo();
+
+        if (info == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        // id
+        Integer id = info.getId();
+        if (id == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.id is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        if (id <= 0) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.id %d is non-positive.", statsOverviewFilePath, vocabularyCode, id);
+        }
+
+        // user_id
+        Integer userId = info.getUserId();
+        if (userId == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.userId is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        if (userId != playerId) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.userId = %d is not equal to playerId = %d.", statsOverviewFilePath, vocabularyCode, userId, playerId);
+        }
+
+        // mode
+        VocabularyMode mode = info.getMode();
+        if (mode == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.mode is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        DictionaryMode expectedMode = DictionaryMode.getDictionaryMode(vocabularyCode);
+
+        // todo: mapper conversion VocabularyMode -> DictionaryMode?
+        if (!mode.toString().equals(expectedMode.toString())) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.mode %s is not equal to expected mode = %d.", statsOverviewFilePath, vocabularyCode, mode, expectedMode);
+        }
+
+        // texttype
+        Integer textType = info.getTexttype();
+        if (textType == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.texttype is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        int expectedTextType = Dictionary.getTextType(vocabularyCode);
+        if (!textType.equals(expectedTextType)) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.texttype %s is not equal to expected textType = %d.", statsOverviewFilePath, vocabularyCode, textType, expectedTextType);
+        }
+
+        // num_races
+        Integer numRaces = info.getNumRaces();
+        if (numRaces == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.num_races is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        Integer expectedNumRaces = vocabularyStats.getNumRaces();
+        if (!numRaces.equals(expectedNumRaces)) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.num_races %s is not equal to expected num_races = %d.", statsOverviewFilePath, vocabularyCode, numRaces, expectedNumRaces);
+        }
+
+        // avg_speed
+        Double avgSpeed = info.getAvgSpeed();
+        if (avgSpeed == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_speed is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        if (avgSpeed < 0) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_speed %s is negative.", statsOverviewFilePath, vocabularyCode, avgSpeed);
+        }
+
+        // best_speed - nullable
+        Integer bestSpeed = info.getBestSpeed();
+        if (bestSpeed == null) {
+            if (!vocabularyCode.equals(StandardDictionary.normal.name())) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.best_speed is not present and dictionaryCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
+            }
+
+            if (numRaces > 0) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.best_speed %s is null, but numRaces = %d != 0.", statsOverviewFilePath, vocabularyCode, bestSpeed, numRaces);
+            }
+        }
+        else { // bestSpeed != 0
+            if (bestSpeed < 0) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.best_speed %s is negative.", statsOverviewFilePath, vocabularyCode, bestSpeed);
+            }
+        }
+
+        // avg_error - nullable, eg players 142478, 141327, 109842
+        Double avgError = info.getAvgError();
+        if (avgError == null) {
+            if (!vocabularyCode.equals(StandardDictionary.normal.name())) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avgError is not present and dictionaryCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
+            }
+
+            if (numRaces > 0) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avgError %s is null, but numRaces = %d != 0.", statsOverviewFilePath, vocabularyCode, bestSpeed, numRaces);
+            }
+        }
+        else { // avgSpeed != 0
+            if (avgError < 0) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avgError %s is negative.", statsOverviewFilePath, vocabularyCode, avgError);
+            }
+        }
+
+        // haul
+        Integer haul = info.getHaul();
+        if (haul == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.haul is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        if (haul < 0) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.haul %s is negative.", statsOverviewFilePath, vocabularyCode, haul);
+        }
+
+        // qual
+        Integer qual = info.getQual();
+        if (qual == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.qual is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        if (qual < 0) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.qual %s is negative.", statsOverviewFilePath, vocabularyCode, qual);
+        }
+
+        // dirty
+        Integer dirty = info.getDirty();
+        if (dirty == null) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.dirty is not present.", statsOverviewFilePath, vocabularyCode);
+        }
+
+        if (dirty < 0) {
+            throw new ParserException("Stats overview file %s: Vocabulary %s: info.dirty %s is negative.", statsOverviewFilePath, vocabularyCode, dirty);
+        }
+
+        // updated - nullable
+        String updated = info.getUpdated();
+        if (updated == null) {
+            if (!vocabularyCode.equals(StandardDictionary.normal.name())) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.updated is not present and dictionaryCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
+            }
+
+            if (numRaces > 0) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.updated %s is null, but numRaces = %d != 0.", statsOverviewFilePath, vocabularyCode, updated, numRaces);
+            }
+        }
+        else { // updated != 0
+            try {
+                DateUtils.parseLocalDateTimeWithUiDateFormat(updated);
+            }
+            catch (Exception e) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.updated %s cannot be parsed to LocalDateTime using %s format.", statsOverviewFilePath, vocabularyCode, updated, DateUtils.DATE_TIME_FORMAT_FOR_UI);
             }
         }
     }

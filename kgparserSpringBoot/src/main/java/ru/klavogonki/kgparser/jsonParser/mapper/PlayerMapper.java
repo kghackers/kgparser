@@ -14,7 +14,7 @@ public interface PlayerMapper {
 
     // todo: add importDate?
     /* Yes, MapStruct works with public fields - a great library! */
-    // PlayerSummary fields
+    // GetSummaryResponse fields
     @Mapping(source = "summary.err", target = "getSummaryError")
     @Mapping(source = "summary.user.id", target = "playerId")
     @Mapping(source = "summary.user.login", target = "login")
@@ -24,7 +24,7 @@ public interface PlayerMapper {
     @Mapping(source = "summary.title", target = "title")
     @Mapping(source = "summary.blocked", target = "blocked")
 
-    // PlayerIndexData fields
+    // GetIndexDataResponse fields
     @Mapping(source = "indexData.err", target = "getIndexDataError")
     @Mapping(source = "indexData.stats.registered", target = "registered")
     @Mapping(source = "indexData.stats.achievesCnt", target = "achievementsCount")
@@ -34,6 +34,11 @@ public interface PlayerMapper {
     @Mapping(source = "indexData.stats.friendsCnt", target = "friendsCount")
     @Mapping(source = "indexData.stats.vocsCnt", target = "vocabulariesCount")
     @Mapping(source = "indexData.stats.carsCnt", target = "carsCount")
+
+    // GetStatsOverviewResponse fields
+    @Mapping(source = "statsOverview.err", target = "getStatsOverviewError")
+    // other fields will be parsed to PlayerVocabularyStatsEntity in a separate parser
+
     PlayerEntity playerJsonDataToPlayerEntity(PlayerJsonData data);
 
     default LocalDateTime registeredToLocalDateTime(Microtime registered) {

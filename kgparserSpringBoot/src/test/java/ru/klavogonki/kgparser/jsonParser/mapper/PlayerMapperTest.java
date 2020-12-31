@@ -64,7 +64,7 @@ class PlayerMapperTest {
             .bio(bio)
             .stats(stats);
 
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null); // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -137,7 +137,7 @@ class PlayerMapperTest {
             .bio(bio)
             .stats(stats);
 
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null);  // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -192,7 +192,7 @@ class PlayerMapperTest {
             .err(ApiErrors.HIDDEN_PROFILE_USER_ERROR)
             .ok(null); // FGJ
 
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null); // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -235,7 +235,7 @@ class PlayerMapperTest {
             .err(ApiErrors.INVALID_USER_ID_ERROR)
             .ok(null); // FGJ
 
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null);  // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 

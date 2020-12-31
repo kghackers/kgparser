@@ -118,8 +118,9 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	 */
 	@Json(exclude = true)
 	public static int getDictionaryId(String code) {
-		if ( isStandard(code) )
+		if ( isStandard(code) ) {
 			throw new IllegalArgumentException("Dictionary with code = \"" + code + "\" is standard. Cannot get dictionary id from it."); // todo: use concat
+		}
 
 		String codeStr = code.substring( NON_STANDARD_DICTIONARY_ID_PREFIX.length() );
 		return Integer.parseInt(codeStr);
@@ -135,7 +136,7 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	}
 
 	@Json(exclude = true)
-	public static Integer getTextType(String code) {
+	public static int getTextType(String code) {
 		if (!isStandard(code)) {
 			return getDictionaryId(code);
 		}
