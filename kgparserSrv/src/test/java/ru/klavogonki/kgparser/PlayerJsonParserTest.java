@@ -299,4 +299,47 @@ class PlayerJsonParserTest {
             .hasUpdated("2015-05-28 20:28:07")
         ;
     }
+
+    @Test
+    @DisplayName("Vocabulary with -56 symbols: \"voc-186079\"")
+    void testVocabularyWithMinus56Symbols() {
+        File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-486990.json");
+        File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-486990.json");
+        File statsOverviewFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-stats-overview-486990.json");
+
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 486990, summaryFile, indexDataFile, statsOverviewFile);
+        assertThat(playerOptional).isPresent();
+
+        PlayerJsonData player = playerOptional.get();
+        assertThat(player.summary.getBlocked()).isZero(); // user is not blocked
+
+        GetStatsOverviewGameType vocabularyWithNegativeSymbols = player.statsOverview.getGametypes().get("voc-186079");
+
+        GetStatsOverviewGameTypeAssert
+            .assertThat(vocabularyWithNegativeSymbols)
+            .hasId(186079)
+            .hasType(NonStandardVocabularyType.BOOK)
+            .hasSymbols(-56) // Mein Gott, muss das sein?!
+            .hasRows(3)
+            .hasNumRaces(1)
+            .hasBookDone(false)
+        ;
+
+        GetStatsOverviewGameTypeInfo marathonStatsInfo = vocabularyWithNegativeSymbols.getInfo();
+        GetStatsOverviewGameTypeInfoAssert
+            .assertThat(marathonStatsInfo)
+            .hasId(30411112)
+            .hasUserId(486990)
+            .hasMode(VocabularyMode.NORMAL)
+            .hasTexttype(186079)
+            .hasNumRaces(1)
+            .hasAvgSpeed(117D)
+            .hasBestSpeed(117)
+            .hasAvgError(7.14286)
+            .hasHaul(7)
+            .hasQual(0)
+            .hasDirty(0)
+            .hasUpdated("2020-09-16 19:36:19")
+        ;
+    }
 }

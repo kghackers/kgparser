@@ -525,7 +525,10 @@ public class PlayerJsonParser {
 //            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but symbols %d is non-positive.", statsOverviewFilePath, vocabularyCode, symbols);
 //        }
         if (symbols < 0) {
-            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but symbols %d is negative.", statsOverviewFilePath, vocabularyCode, symbols);
+            // https://klavogonki.ru/vocs/186079 - has -56 symbols!
+            logger.warn("Stats overview file {}: Vocabulary {} is non-standard, but symbols {} is negative.", statsOverviewFilePath, vocabularyCode, symbols);
+
+//            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but symbols %d is negative.", statsOverviewFilePath, vocabularyCode, symbols);
         }
         if (symbols == 0) {
             logger.warn("Stats overview file {}: Vocabulary {} is non-standard, but symbols {} is 0.", statsOverviewFilePath, vocabularyCode, symbols);
