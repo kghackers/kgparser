@@ -30,7 +30,7 @@ import java.util.Optional;
 @EnableJpaRepositories("ru.klavogonki.kgparser")
 @Log4j2
 public class KgParserApplication implements CommandLineRunner {
-	public static final int REQUIRED_ARGUMENTS_COUNT = 4;
+	public static final int REQUIRED_ARGUMENTS_COUNT = 5;
 
 	@Autowired
 	private PlayerRepository playerRepository;
@@ -67,6 +67,11 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: select mode (what to do) by arguments
 		// todo: add an option to skip Excel import
 
+/*
+		if (true) {
+			return;
+		}
+
 		playersByRankExporter.export(context);
 		if (true) {
 			return;
@@ -86,18 +91,19 @@ public class KgParserApplication implements CommandLineRunner {
 		if (true) {
 			return;
 		}
+*/
 
 
 		// todo: pass a path to a json file with config instead
 
 		if (args.length != REQUIRED_ARGUMENTS_COUNT) {
 			// todo: use logger instead of System.out??
-			System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> <yyyy-MM-dd HH-mm-ss> %n", KgParserApplication.class.getSimpleName());
+			System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> <threadsCount> <yyyy-MM-dd HH-mm-ss> %n", KgParserApplication.class.getSimpleName());
 			return;
 		}
 
 		PlayerDataDownloader.Config config = PlayerDataDownloader.Config.parseFromArguments(args);
-		config.setStartDate(args[3]);
+		config.setStartDate(args[4]);
 		config.log();
 
 		PlayerJsonParser.handlePlayers(config, this::handlePlayer);
@@ -108,6 +114,10 @@ public class KgParserApplication implements CommandLineRunner {
 			String errorMessage = String.format("Something really serious happened for player %d. JsonData is not present.", playerId);
 			logger.error(errorMessage);
 			throw new IllegalStateException(errorMessage);
+		}
+
+		if (true) {
+			return;
 		}
 
 		PlayerJsonData jsonData = jsonDataOptional.get();

@@ -416,7 +416,7 @@ public class PlayerJsonParser {
                 throw new ParserException("Stats overview file %s: Unknown error: %s", statsOverviewFilePath, err);
             }
 
-            logger.debug("Stats overview file %s contains a valid error \"{}\".", err);
+            logger.debug("Stats overview file {} contains a valid error \"{}\".", statsOverviewFilePath, err);
 
             return;
         }
@@ -623,11 +623,18 @@ public class PlayerJsonParser {
         // avg_speed
         Double avgSpeed = info.getAvgSpeed();
         if (avgSpeed == null) {
-            throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_speed is not present.", statsOverviewFilePath, vocabularyCode);
-        }
+            if (!vocabularyCode.equals(StandardDictionary.normal.name())) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_speed is not present and dictionaryCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
+            }
 
-        if (avgSpeed < 0) {
-            throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_speed %s is negative.", statsOverviewFilePath, vocabularyCode, avgSpeed);
+            if (numRaces > 0) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_speed %s is null, but numRaces = %d != 0.", statsOverviewFilePath, vocabularyCode, avgSpeed, numRaces);
+            }
+        }
+        else { // bestSpeed != 0
+            if (avgSpeed < 0) {
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_speed %s is negative.", statsOverviewFilePath, vocabularyCode, avgSpeed);
+            }
         }
 
         // best_speed - nullable
