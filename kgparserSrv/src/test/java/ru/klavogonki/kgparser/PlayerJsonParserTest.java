@@ -6,6 +6,10 @@ import ru.klavogonki.kgparser.jsonParser.ApiErrors;
 import ru.klavogonki.kgparser.util.TestUtils;
 import ru.klavogonki.openapi.model.Bio;
 import ru.klavogonki.openapi.model.BioAssert;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeAssert;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeInfo;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeInfoAssert;
 import ru.klavogonki.openapi.model.Microtime;
 import ru.klavogonki.openapi.model.MicrotimeAssert;
 
@@ -175,5 +179,39 @@ class PlayerJsonParserTest {
             .hasText(null) // null text
             .hasOldText(null)
             .hasOldTextRemoved("<img  src=\"http://iplogger.ru/1LZq3.jpg\" border=\"0\" class=\"linked-image\" />");
+    }
+
+    @Test
+    @DisplayName("User with 1 race in marathon, but avg_speed == null and avg_error == null")
+    void testUserWith1MarathonRaceButWithNullAvgSpeedAndAvgError() {
+        File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-24646.json");
+        File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-24646.json");
+        File statsOverviewFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-stats-overview-24646.json");
+
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 24646, summaryFile, indexDataFile, statsOverviewFile);
+        assertThat(playerOptional).isPresent();
+
+        PlayerJsonData player = playerOptional.get();
+        assertThat(player.summary.getBlocked()).isZero(); // user is not blocked
+
+        GetStatsOverviewGameType marathonStats = player.statsOverview.getGametypes().get(StandardDictionary.marathon.name());
+
+        GetStatsOverviewGameTypeAssert
+            .assertThat(marathonStats)
+            .hasNumRaces(1);
+
+        GetStatsOverviewGameTypeInfo marathonStatsInfo = marathonStats.getInfo();
+        GetStatsOverviewGameTypeInfoAssert
+            .assertThat(marathonStatsInfo)
+            .hasUserId(24646)
+            .hasNumRaces(1)
+            .hasAvgSpeed(null)
+            .hasBestSpeed(0)
+            .hasAvgError(null)
+            .hasHaul(299)
+            .hasQual(0)
+            .hasDirty(0)
+            .hasUpdated("2008-08-16 15:30:36")
+        ;
     }
 }

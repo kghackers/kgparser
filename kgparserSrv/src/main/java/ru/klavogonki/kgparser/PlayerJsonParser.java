@@ -623,13 +623,18 @@ public class PlayerJsonParser {
         // avg_speed
         Double avgSpeed = info.getAvgSpeed();
         if (avgSpeed == null) {
+            logger.warn("Stats overview file {}: Vocabulary {}: info.avg_speed is not present. NumRaces = {}.", statsOverviewFilePath, vocabularyCode, numRaces);
+
+            // player 24646 has ugly data: 1 race in marathon, but avg_speed = 0 and avg_error = 0 // todo: maybe validate that numRaces <= 1 and voc in (normal, marathon)
+/*
             if (!vocabularyCode.equals(StandardDictionary.normal.name())) {
-                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_speed is not present and dictionaryCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_speed is not present and vocabularyCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
             }
 
             if (numRaces > 0) {
                 throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_speed %s is null, but numRaces = %d != 0.", statsOverviewFilePath, vocabularyCode, avgSpeed, numRaces);
             }
+*/
         }
         else { // bestSpeed != 0
             if (avgSpeed < 0) {
@@ -641,7 +646,7 @@ public class PlayerJsonParser {
         Integer bestSpeed = info.getBestSpeed();
         if (bestSpeed == null) {
             if (!vocabularyCode.equals(StandardDictionary.normal.name())) {
-                throw new ParserException("Stats overview file %s: Vocabulary %s: info.best_speed is not present and dictionaryCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.best_speed is not present and vocabularyCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
             }
 
             if (numRaces > 0) {
@@ -657,13 +662,18 @@ public class PlayerJsonParser {
         // avg_error - nullable, eg players 142478, 141327, 109842
         Double avgError = info.getAvgError();
         if (avgError == null) {
+            logger.warn("Stats overview file {}: Vocabulary {}: info.avg_error is not present. NumRaces = {}.", statsOverviewFilePath, vocabularyCode, numRaces);
+
+            // player 24646 has ugly data: 1 race in marathon, but avg_speed = 0 and avg_error = 0 // todo: maybe validate that numRaces <= 1 and voc in (normal, marathon)
+/*
             if (!vocabularyCode.equals(StandardDictionary.normal.name())) {
-                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avgError is not present and dictionaryCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_error is not present and vocabularyCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
             }
 
             if (numRaces > 0) {
-                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avgError %s is null, but numRaces = %d != 0.", statsOverviewFilePath, vocabularyCode, bestSpeed, numRaces);
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.avg_error %s is null, but numRaces = %d != 0.", statsOverviewFilePath, vocabularyCode, bestSpeed, numRaces);
             }
+*/
         }
         else { // avgSpeed != 0
             if (avgError < 0) {
@@ -705,7 +715,7 @@ public class PlayerJsonParser {
         String updated = info.getUpdated();
         if (updated == null) {
             if (!vocabularyCode.equals(StandardDictionary.normal.name())) {
-                throw new ParserException("Stats overview file %s: Vocabulary %s: info.updated is not present and dictionaryCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
+                throw new ParserException("Stats overview file %s: Vocabulary %s: info.updated is not present and vocabularyCode != %s.", statsOverviewFilePath, vocabularyCode, StandardDictionary.normal);
             }
 
             if (numRaces > 0) {
