@@ -485,6 +485,7 @@ class JacksonUtilsTest {
             GetStatsOverviewGameTypeAssert
                 .assertThat(normalStats)
                 .isNotNull()
+                .hasId(null)
                 .hasName(StandardDictionary.getDisplayName(StandardDictionary.normal))
                 .hasNumRaces(29445)
                 .hasType(null) // type set for non-standard dictionaries only
@@ -557,6 +558,7 @@ class JacksonUtilsTest {
             GetStatsOverviewGameTypeAssert
                 .assertThat(normalStats)
                 .isNotNull()
+                .hasId(null)
                 .hasName(StandardDictionary.getDisplayName(StandardDictionary.normal))
                 .hasNumRaces(0)
                 .hasType(null) // type set for non-standard dictionaries only

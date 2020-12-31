@@ -41,6 +41,8 @@ public class PlayerVocabularyStatsEntity {
 
     private Integer vocabularyId; // for non-standard dictionaries only
 
+    private Integer vocabularyInfoId; // probably the db id from KG database, gametype[i].info.id
+
     private String vocabularyName;
 
     @Enumerated(EnumType.STRING)

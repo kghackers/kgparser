@@ -18,10 +18,18 @@ import ru.klavogonki.kgparser.export.PlayersByRankExporter;
 import ru.klavogonki.kgparser.export.Top500PagesExporter;
 import ru.klavogonki.kgparser.export.TopBySpeedExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
+import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
+import ru.klavogonki.kgparser.jsonParser.mapper.PlayerVocabularyStatsMapper;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerRepository;
+import ru.klavogonki.kgparser.jsonParser.repository.PlayerVocabularyStatsRepository;
 import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
+import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -34,6 +42,9 @@ public class KgParserApplication implements CommandLineRunner {
 
 	@Autowired
 	private PlayerRepository playerRepository;
+
+	@Autowired
+	private PlayerVocabularyStatsRepository playerVocabularyStatsRepository;
 
 	@Autowired
 	private IndexPageExporter indexPageExporter;
@@ -49,6 +60,9 @@ public class KgParserApplication implements CommandLineRunner {
 
 	// todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
 	private final PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
+
+	// todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
+	private final PlayerVocabularyStatsMapper statsMapper = Mappers.getMapper(PlayerVocabularyStatsMapper.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(KgParserApplication.class, args);
@@ -116,14 +130,17 @@ public class KgParserApplication implements CommandLineRunner {
 			throw new IllegalStateException(errorMessage);
 		}
 
-		if (true) {
+/*
+		if (true) { // just test the parsing + validation, no DB save. Todo: make it configurable, like "dry-run"
 			return;
 		}
+*/
 
 		PlayerJsonData jsonData = jsonDataOptional.get();
 
 		PlayerEntity player = mapper.playerJsonDataToPlayerEntity(jsonData);
 
+		// todo: this can be done in @AfterMapping in the mapper, passing playerId as @Context
 		if (player.getPlayerId() == null) { // non-existing user -> no playerId in neither summary nor indexData
 			logger.debug(
 				"Player {}: setting playerId manually. Most probably this player does not exist.\n/get-summary error: {}\n/get-index/data error: {}",
@@ -136,6 +153,20 @@ public class KgParserApplication implements CommandLineRunner {
 		}
 
 		savePlayerToDatabase(player);
+
+		GetStatsOverviewResponse statsOverview = jsonData.statsOverview;
+		Map<String, GetStatsOverviewGameType> gameTypes = statsOverview.getGametypes();
+
+		List<PlayerVocabularyStatsEntity> allPlayerStats = new ArrayList<>();
+		for (Map.Entry<String, GetStatsOverviewGameType> entry : gameTypes.entrySet()) {
+			String vocabularyCode = entry.getKey();
+			GetStatsOverviewGameType gameType = entry.getValue();
+
+			PlayerVocabularyStatsEntity stats = statsMapper.statsGameTypeToEntity(gameType, jsonData.importDate, statsOverview, vocabularyCode, player);
+			allPlayerStats.add(stats);
+		}
+
+		saveStatsToDatabase(player, allPlayerStats);
 	}
 
 	private void savePlayerToDatabase(PlayerEntity player) {
@@ -164,5 +195,15 @@ public class KgParserApplication implements CommandLineRunner {
 
 		playerRepository.save(player);
 		logger.debug("Successfully saved player {} (login = \"{}\") to database. Player dbId: {}.", player.getPlayerId(), player.getLogin(), player.getDbId());
+	}
+
+	private void saveStatsToDatabase(PlayerEntity player, List<PlayerVocabularyStatsEntity> statsList) {
+		logger.debug("Saving player {} stats (total {} vocabularies) to database (NO EXISTING STATS CHECK)...", player.getPlayerId(), statsList.size());
+
+		/* todo: any db checks if required */
+
+		playerVocabularyStatsRepository.saveAll(statsList);
+
+		logger.debug("Successfully player {} stats (total {} vocabularies) to database.", player.getPlayerId(), statsList.size());
 	}
 }
