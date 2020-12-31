@@ -12,6 +12,7 @@ import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeInfo;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameTypeInfoAssert;
 import ru.klavogonki.openapi.model.Microtime;
 import ru.klavogonki.openapi.model.MicrotimeAssert;
+import ru.klavogonki.openapi.model.VocabularyMode;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -212,6 +213,48 @@ class PlayerJsonParserTest {
             .hasQual(0)
             .hasDirty(0)
             .hasUpdated("2008-08-16 15:30:36")
+        ;
+    }
+
+    @Test
+    @DisplayName("Deleted Vocabulary with type: \"\"")
+    void testVocabularyWithEmptyType() {
+        File summaryFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-80523.json");
+        File indexDataFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-80523.json");
+        File statsOverviewFile = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-stats-overview-80523.json");
+
+        Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(LocalDateTime.now(), 80523, summaryFile, indexDataFile, statsOverviewFile);
+        assertThat(playerOptional).isPresent();
+
+        PlayerJsonData player = playerOptional.get();
+        assertThat(player.summary.getBlocked()).isZero(); // user is not blocked
+
+        GetStatsOverviewGameType vocabularyWithEmptyType = player.statsOverview.getGametypes().get("voc-106275");
+
+        GetStatsOverviewGameTypeAssert
+            .assertThat(vocabularyWithEmptyType)
+            .hasId(106275)
+            .hasType(null) // null type, goddamn
+            .hasSymbols(3)
+            .hasRows(1)
+            .hasNumRaces(1)
+        ;
+
+        GetStatsOverviewGameTypeInfo marathonStatsInfo = vocabularyWithEmptyType.getInfo();
+        GetStatsOverviewGameTypeInfoAssert
+            .assertThat(marathonStatsInfo)
+            .hasId(12852030)
+            .hasUserId(80523)
+            .hasMode(VocabularyMode.NORMAL)
+            .hasTexttype(106275)
+            .hasNumRaces(1)
+            .hasAvgSpeed(285D)
+            .hasBestSpeed(285)
+            .hasAvgError(1.96078)
+            .hasHaul(64)
+            .hasQual(0)
+            .hasDirty(0)
+            .hasUpdated("2015-05-28 20:28:07")
         ;
     }
 }

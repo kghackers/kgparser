@@ -508,7 +508,10 @@ public class PlayerJsonParser {
         // type
         NonStandardVocabularyType type = vocabularyStats.getType();
         if (type == null) {
-            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but type is not present.", statsOverviewFilePath, vocabularyCode);
+            // get-stats-overview-80523.json, voc-107263, type: "" (deleted vocabulary of player fischca)
+            logger.warn("Stats overview file {}: Vocabulary {} is non-standard, but type is not present.", statsOverviewFilePath, vocabularyCode);
+
+//            throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but type is not present.", statsOverviewFilePath, vocabularyCode);
         }
 
         // symbols
