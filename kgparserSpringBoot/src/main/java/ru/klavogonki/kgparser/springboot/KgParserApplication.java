@@ -68,6 +68,8 @@ public class KgParserApplication implements CommandLineRunner {
 		SpringApplication.run(KgParserApplication.class, args);
 	}
 
+	private List<PlayerEntity> playersBatch = new ArrayList<>(); // todo: find a nicer solution
+
 	@Override
 	public void run(final String... args) {
 		// todo: parse context from args of from json file given by args
@@ -121,6 +123,10 @@ public class KgParserApplication implements CommandLineRunner {
 		config.log();
 
 		PlayerJsonParser.handlePlayers(config, this::handlePlayer);
+
+		if (!playersBatch.isEmpty()) { // save remainder from batch size
+			handlePlayersBatch(true);
+		}
 	}
 
 	private void handlePlayer(int playerId, Optional<PlayerJsonData> jsonDataOptional) {
@@ -152,7 +158,7 @@ public class KgParserApplication implements CommandLineRunner {
 			player.setPlayerId(playerId);
 		}
 
-		savePlayerToDatabase(player);
+//		savePlayerToDatabase(player);
 
 		GetStatsOverviewResponse statsOverview = jsonData.statsOverview;
 		Map<String, GetStatsOverviewGameType> gameTypes = statsOverview.getGametypes();
@@ -166,7 +172,33 @@ public class KgParserApplication implements CommandLineRunner {
 			allPlayerStats.add(stats);
 		}
 
-		saveStatsToDatabase(player, allPlayerStats);
+
+		player.setStats(allPlayerStats);
+
+		playersBatch.add(player);
+		handlePlayersBatch(false);
+//		savePlayerToDatabase(player); // cascade save player with its stats
+
+//		saveStatsToDatabase(player, allPlayerStats);
+	}
+
+	private void handlePlayersBatch(boolean force) {
+		int size = playersBatch.size();
+		if ((size == 1000) || force) { // force for last execution
+			logger.info("!!! Batch size is {}. Saving {} players to the database...", size, size);
+
+			playerRepository.saveAll(playersBatch);
+
+			// todo: time measure for saving 1000 players?
+			logger.info("!!! {} players saved to the database.", size);
+
+			playersBatch.clear();
+			logger.info("Batch cleared from {} to {} players", size, playersBatch.size());
+
+		}
+		else {
+			logger.info("Batch size is {}. Do not save it yet.", size);
+		}
 	}
 
 	private void savePlayerToDatabase(PlayerEntity player) {

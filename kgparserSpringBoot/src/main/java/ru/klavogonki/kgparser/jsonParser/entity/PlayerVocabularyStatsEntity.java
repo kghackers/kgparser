@@ -9,9 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -20,7 +22,9 @@ import java.time.LocalDateTime;
 @Table(name = "Player_Vocabulary_Stats")
 public class PlayerVocabularyStatsEntity {
     @Id
-    @GeneratedValue
+//    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pvs_SEQ")
+    @SequenceGenerator(name = "pvs_SEQ", sequenceName = "pvs_SEQ", allocationSize = 1000)
     private Long dbId;
 
     private LocalDateTime importDate; // when PlayerDataDownloader has been executed
