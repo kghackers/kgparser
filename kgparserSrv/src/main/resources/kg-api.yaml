@@ -119,8 +119,22 @@ paths:
 
   /profile/get-summary:
     get:
-      summary:
+      summary: Получает базовые данные (саммари) игрока
       description:
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/PlayerId'
+          description: playerId
+      responses:
+        200:
+          description: Данные о сводке игрока либо ошибка, если игрок не найден или его профиль скрыт
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSummaryResponse'
 
   /profile/get-index-data:
     get:
@@ -141,67 +155,80 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetIndexDataResponse'
 
-
-  /profile/get-journal:
-    get:
-      summary:
-      description:
-
-  /profile/get-achieves:
-    get:
-      summary:
-      description:
-
-  /profile/get-cars-list:
-    get:
-      summary:
-      description:
-
-  /profile/get-friends:
-    get:
-      summary:
-      description:
+#  /profile/get-journal:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-achieves:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-cars-list:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-friends:
+#    get:
+#      summary:
+#      description:
 
   /profile/get-stats-overview:
     get:
-      summary:
+      summary: Данные о статистике игрока для раздела «Статистика» профиля игрока
       description:
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            $ref: '#/components/schemas/PlayerId'
+          description: playerId
+      responses:
+        200:
+          description: Данные о статистика игрока либо ошибка, если игрок не найден, его профиль скрыт или его статистика скрыта
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStatsOverviewResponse'
 
-  /profile/get-stats-details-data:
-    get:
-      summary:
-      description:
-
-  /profile/get-stats-details:
-    get:
-      summary:
-      description:
+#  /profile/get-stats-details-data:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-stats-details:
+#    get:
+#      summary:
+#      description:
 
   ##################### PROFILE - PRIVATE ONLY #####################
-  /profile/get-private-prefs:
-    get:
-      summary:
-      description:
-
-  /profile/get-messages-contacts:
-    get:
-      summary:
-      description:
-
-  /profile/get-ignore-list:
-    get:
-      summary:
-      description:
-
-  /profile/select-car:
-    post:
-      summary:
-      description:
-
-  /profile/view-car:
-    post:
-      summary:
-      description:
+#  /profile/get-private-prefs:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-messages-contacts:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/get-ignore-list:
+#    get:
+#      summary:
+#      description:
+#
+#  /profile/select-car:
+#    post:
+#      summary:
+#      description:
+#
+#  /profile/view-car:
+#    post:
+#      summary:
+#      description:
 
 #  /users:
 #    get:
@@ -223,10 +250,11 @@ components:
     Error:
       description: Ответ на любой запрос в случае ошибки
       type: object
+      required:
+        - err
       properties:
         err:
           description: Описание ошибки
-          required: true
           type: string
           # todo: is "examples" supported? See https://swagger.io/docs/specification/adding-examples/
           # see https://www.viralpatel.net/openapi-multiple-examples/
@@ -243,16 +271,152 @@ components:
       type: object
       properties:
         sec:
-          type: integer # todo: long format?
-          example: 1297852113 # 16.02.2011 @ 10:28am (UTC)
+          type: integer
+          format: int64
+          example:
+            - 1297852113 # 16.02.2011 @ 10:28am (UTC)
+            - '-62169993079' # some incorrect time
         usec:
-          type: integer # todo: long format?
+          type: integer
+          format: int64
           example: 0
+
+    RankLevel:
+      description: 'Числовой код ранга: 1 - Новичок, 2 - Любитель, .., 9 - Экстракибер'
+      type: integer
+      minimum: 1
+      maximum: 9
+      example: 7
 
     PlayerId:
       description: Идентификатор игрока
       type: integer
       example: 242585
+
+    Login:
+      description: Логин aka ник игрока. Длина от 0 до 15 символов, но есть 5 игроков с никами длиной от 16 до 21.
+      type: string
+      minLength: 0 # there exist users with "" login
+      maxLength: 21 # при регистрации ограничение на 15, но в базе есть 5 ников с длинами от 16 до 21
+
+    GetSummaryResponse:
+      oneOf:
+        - $ref: '#/components/schemas/Error'
+        - $ref: '#/components/schemas/GetSummarySuccess'
+
+    GetSummarySuccess:
+      description: Успешный ответ на запрос /get-summary
+      type: object
+      required:
+        - user
+        - is_online
+        - car
+        - level
+        - title
+        - blocked
+      properties:
+        user:
+          $ref: '#/components/schemas/GetSummaryUser'
+        is_online:
+          description: Находится ли игрок на сайте
+          type: boolean
+          example: true
+        car:
+          $ref: '#/components/schemas/Car'
+        level:
+          $ref: '#/components/schemas/RankLevel'
+        title:
+          description: Название ранга по-русски. Для Клавомехаников перегружено в «Клавомеханик».
+          type: string
+          example:
+            - Супермен
+            - Клавомеханик # перегружает название ранга для Клавомехаников
+        blocked:
+          description: 'Заблокирован ли игрок: 0 - не заблокирован, > 0 - заблокирован' # todo: точный список причин блокировок
+          type: integer
+          minimum: 0
+          example: 0
+
+    GetSummaryUser:
+      type: object
+      required:
+        - _id
+        - avatar
+        - id
+        - login
+        - migrate_book_done
+        - migrate_done
+        - public_prefs
+      properties:
+        # todo: this generates id fields and fails on duplicate getter as a result
+        # see https://github.com/OpenAPITools/openapi-generator/issues/8291
+#        _id:
+#          description: Видимо, идентификатор в базе данных
+#          type: object # todo: fill the schema
+        avatar: # todo: wtf it this? Дата смены аватара?
+          $ref: '#/components/schemas/Microtime'
+        id:
+          $ref: '#/components/schemas/PlayerId'
+        login:
+          $ref: '#/components/schemas/Login'
+        migrate_book_done:
+          description: 'Выполнена ли миграция книг. todo: из старого аккаунта? уточнить'
+          type: boolean
+          example: true
+        migrate_done:
+          description: 'Выполнена ли миграция пользователя. todo: из старого аккаунта? уточнить'
+          type: boolean
+          example: true
+        public_prefs:
+          type: object # todo: fill the schema
+
+    Car:
+      type: object
+      required:
+        - car
+        - color
+        - tuning
+      properties:
+        car:
+          description: Идентификатор машины
+          type: integer
+          minimum: 1
+          maximum: 1024
+          example: 15
+
+        color:
+          description: Цвет машины в Hex-формате, как для CSS
+          type: string
+          # todo: regex format
+          example: #BF1300
+
+        tuning:
+          # todo: oneOf only works with "type: object" in both types, at least with jaxrs-spec/jackson generator
+          type: object
+#          $ref: '#/components/schemas/CarTuning'
+
+    CarTuning:
+      oneOf:
+        - $ref: '#/components/schemas/EmptyCarTuning' # only works if $ref is object
+        - $ref: '#/components/schemas/NonEmptyCarTuning' # only works if $ref is object
+
+    EmptyCarTuning:
+      description: Пустой тюнинг. Представлен не мэпом, а пустым массивом. Ужасный дизайн API!
+      type: array
+      items:
+        type: integer
+
+    NonEmptyCarTuning:
+      description: Непустой тюнинг
+      type: object
+      additionalProperties: # generated as String key, all ok
+        $ref: '#/components/schemas/CarTuningElement'
+
+    CarTuningElement:
+      description: Тюнинг машины # todo: how does this work
+      type: integer
+      minimum: 0
+      example: 3
 
     # see https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/
     # see https://github.com/OAI/OpenAPI-Specification/issues/1758
@@ -264,7 +428,6 @@ components:
     GetIndexDataSuccess:
       description: Успешный ответ на запрос /get-index-data
       type: object
-      # todo: descriptions for all properties
       properties:
         ok:
           type: integer
@@ -272,49 +435,64 @@ components:
           $ref: '#/components/schemas/Bio'
         stats:
           $ref: '#/components/schemas/GetIndexDataStats'
+        achieves:
+          $ref: '#/components/schemas/GetIndexDataAchieves'
 
     GetIndexDataStats:
       description: Данные раздела «Досье» страницы «Сводка»
       type: object
-      # todo: > 0, >=0 restrictions
       properties:
         registered:
 #          description: Дата и время регистрации # todo: description no allowed with $ref, see https://github.com/OAI/OpenAPI-Specification/issues/1514, see https://github.com/TOMP-WG/TOMP-API/issues/275
           $ref: '#/components/schemas/Microtime'
+
         achieves_cnt:
           description: Число достижений
           type: integer
+          minimum: 0
           example: 225
+
         total_num_races:
           description: Общий пробег (по всем режимам)
           type: integer
+          minimum: 0
           example: 60633
+
         best_speed:
           description: Рекорд в «Обычном». <b>Can be null if player has no races in normal!</b>
           type: integer
+          minimum: 0
           example: 626
+
         rating_level:
           description: Рейтинговый уровень. Новые игроки получают уровень 1.
           type: integer
+          minimum: 1
           example: 32
+
         friends_cnt:
           description: Число друзей
           type: integer
+          minimum: 0
           example: 102
+
         vocs_cnt:
           description: Число используемых словарей
           type: integer
+          minimum: 0
           example: 110
+
         cars_cnt:
           description: Машин в гараже
           type: integer
+          minimum: 1
           example: 33
 
     GetIndexDataAchieves:
       description: Пять ачивок, вынесенных пользователем в раздел «Сводка»
       type: object
       # todo: fill properties
-      properties:
+#      properties:
 
     Bio:
       description: Данные биографии из раздела «Сводка»
@@ -325,11 +503,218 @@ components:
         old_text:
           description: Старая разметка биографии (видимо, при импорте из старого профиля)
           type: string
+        old_text_removed:
+          description: Удалённая старая разметка биографии?
+          type: string
         text:
           description: Биография (текущая). Содержит Markdown разметку
           type: string
         user_id:
           $ref: '#/components/schemas/PlayerId'
+        edited_date:
+          $ref: '#/components/schemas/Microtime'
+
+    GetStatsOverviewResponse:
+      oneOf:
+        - $ref: '#/components/schemas/Error'
+        - $ref: '#/components/schemas/GetStatsOverviewSuccess'
+
+    GetStatsOverviewSuccess:
+      description: Успешный ответ на запрос /get-stats-overview
+      type: object
+      properties:
+        ok:
+          type: integer
+        gametypes: # Все словари игрока
+          $ref: '#/components/schemas/GetStatsOverviewGameTypes'
+        recent_gametypes: # Коды недавно используемых словарей
+          description: Коды недавно использованных игроком словарей aka режимов
+          type: array
+          items:
+            $ref: '#/components/schemas/VocabularyCode'
+
+    # map of string key to object
+    # todo: is it possible to use key type as oneOf(StandardVocabulary, string)?
+    # https://swagger.io/docs/specification/data-models/dictionaries/
+    # see https://stackoverflow.com/a/36711449/8534088
+
+    GetStatsOverviewGameTypes:
+      description: Статистика игрока по всем словарям
+      type: object
+      additionalProperties: # generated as String key, all ok
+        $ref: '#/components/schemas/GetStatsOverviewGameType'
+#        type: string # key
+#        example: normal
+#        properties:
+#          name:
+#            type: string
+#            example: Обычный
+#            required: true
+
+    GetStatsOverviewGameType:
+      description: Статистика игрока по одному словарю
+      type: object
+
+      required:
+        - name
+        - num_races
+#        - id # present for non-standard dictionaries only
+#        - type # present for non-standard dictionaries only
+#        - symbols # present for non-standard dictionaries only
+#        - rows # present for non-standard dictionaries only
+#        - book_done # present for book dictionaries only
+      properties:
+        id:
+          description: Числовой идентификатор словаря, только для нестандартных словарей.
+          type: integer
+          minimum: 1
+
+        name:
+          description: Название словаря
+          type: string
+          example: Обычный
+
+        num_races:
+          description: Пробег игрока по словарю
+          type: integer
+          minimum: 0 # for a brand new player without races, there will be normal with num_races: 0
+          example: 29455
+
+        # ! только для нестандартных словарей, поэтому required: false
+        # todo: мб извлечь тип для нестандартного словаря в отдельный тип и сделать oneOf, и в типе будет required: true для всех свойств
+        type:
+          $ref: '#/components/schemas/NonStandardVocabularyType'
+#          example: phrases
+#          description: # will be taken from $ref
+
+        symbols:
+          description: Число символов суммарно в словаре.
+            <ul>
+              <li>В UI показывается для книг.</li>
+              <li>Для словарей типа «Слова» — включая пробелы.</li>
+              <li>Для словарей типа «Генератор» — включая пробелы.</li>
+              <li>Для словарей типа «URL» — 0.</li>
+            </ul>
+          type: integer
+          minimum: 0
+          example: 347
+
+        rows:
+          description: Количество пунктов в «Содержании» словаря.
+            <ul>
+              <li>Для словарей типа «Книга» — количество отрывков.</li>
+              <li>Для словарей типа «Фразы» — количество фраз.</li>
+              <li>Для словарей типа «Слова» — количество слов.</li>
+              <li>Для словарей типа «Генератор» — количество слов.</li>
+              <li>Для словарей типа «Тексты» — количество текстов.</li>
+              <li>Для словарей типа «URL» — 0.</li>
+            </ul>
+          type: integer
+          minimum: 0
+          example: 70
+
+        book_done:
+          description: Только для словарей-книг. Пройдена ли книга.
+          type: boolean
+          example: true
+
+        info:
+          $ref: '#/components/schemas/GetStatsOverviewGameTypeInfo'
+
+    GetStatsOverviewGameTypeInfo:
+      type: object
+
+      required:
+        - id
+        - user_id
+        - mode
+        - texttype
+        - num_races
+#        - avg_speed # can be null for 0 races in normal, e.g. player 7553
+#        - best_speed # can be null for 0 races in normal
+#        - avg_error # can be nul for 0 races in normal, e.g. players 142478, 141327, 109842
+        - best_speed
+        - haul
+        - qual
+        - dirty
+#        - updated # can be null for brand new players
+
+      properties:
+        id:
+          description: Идентификатор??
+          type: integer
+          minimum: 1
+          example: 1829549
+
+        user_id:
+          $ref: '#/components/schemas/PlayerId'
+
+        mode:
+          $ref: '#/components/schemas/VocabularyMode'
+
+        texttype:
+          description:
+            <ul>
+              <li>Для нестандартных словарей - идентификатор словаря</li>
+              <li>Для normal, noerror, spring, marathon — 0</li>
+              <li>Для abra — -1</li>
+              <li>Для digits — -2</li>
+              <li>Для referats — -3</li>
+              <li>Для chars — -4</li>
+            </ul>
+          type: integer
+          minimum: -4
+          example: -4
+
+        num_races:
+          description: Пробег игрока по словарю
+          type: integer
+          minimum: 0
+          example: 29445
+
+        avg_speed:
+          description: Средняя скорость игрока по словарю, знаков в минуту
+          type: number
+          format: double
+          minimum: 0
+          example: 453.123
+
+        best_speed:
+          description: Рекорд игрока по словарю. Может быть <code>null</code> (в частности, если нет рекорда в обычном).
+          type: integer
+          minimum: 0
+          example: 626
+
+        avg_error:
+          description: Процент ошибок. В процентах.
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100 # todo: can percentage be more than 100%?
+          example: 2.33079
+
+        haul:
+          description: Общее затраченное время по словарю
+          type: integer
+          minimum: 0
+          example: 1027636 # 1027636 sec = 11 days 21:27:16. = 285h 27m 16sec
+
+        qual:
+          type: integer
+          minimum: 0
+          example: 531
+
+        dirty:
+          description: 'TODO: what is this? Наверное, флаг синхронизации реплик БД'
+          type: integer
+          minimum: 0
+          example: 0
+
+        updated:
+          description: Последняя дата апдейта данных игрока по словарю. Может быть <code>null</code> (в частности, если нет рекорда в обычном).
+          type: string
+          # todo: define a pattern, I guess the standard "format: date-time" will not work
+          example: '2020-12-27 02:02:24'
 
     # todo: most probably we should extend this (or probably use a string type instead) since requests also take gametype=voc-123
     # this is to document values for standard build-in dictionaries
@@ -359,3 +744,18 @@ components:
         - url # URL
         - book # Книга
         - generator # Генератор
+
+    VocabularyCode:
+      type: string
+      # todo: oneOf only works with "type: object" in both types, at least with jaxrs-spec/jackson generator
+#      oneOf:
+#        - $ref: '#/components/schemas/StandardVocabulary'
+#        - type: string # todo: does this work or we need do define schema for string?
+
+    VocabularyMode:
+      type: string
+      enum:
+        - normal # Обычный, Буквы, Абракадабра, Яндекс.Рефераты, Цифры, нестандартные словари
+        - noerror # Безошибочный
+        - sprint # Спринт
+        - marathon # Марафон

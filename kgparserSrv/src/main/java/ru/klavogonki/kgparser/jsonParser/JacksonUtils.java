@@ -2,6 +2,7 @@ package ru.klavogonki.kgparser.jsonParser;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,8 +53,9 @@ public class JacksonUtils {
     }
 
     private static ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
-        return mapper;
+        return new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false) // because of _id / id clash in /get-summary response, see https://github.com/OpenAPITools/openapi-generator/issues/8291
+            .configure(JsonParser.Feature.ALLOW_COMMENTS, true)
+            .configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true); // to not fail on "type": 0 in "voc-107263" in get-stats-overview-80523.json. See https://stackoverflow.com/a/51407361/8534088
     }
 }

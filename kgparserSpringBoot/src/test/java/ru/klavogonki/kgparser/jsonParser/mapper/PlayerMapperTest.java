@@ -6,11 +6,16 @@ import org.mapstruct.factory.Mappers;
 import ru.klavogonki.kgparser.Car;
 import ru.klavogonki.kgparser.PlayerJsonData;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.jsonParser.ApiErrors;
 import ru.klavogonki.kgparser.jsonParser.Assertions;
-import ru.klavogonki.kgparser.jsonParser.PlayerIndexData;
-import ru.klavogonki.kgparser.jsonParser.PlayerSummary;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.openapi.model.Bio;
+import ru.klavogonki.openapi.model.GetIndexDataResponse;
+import ru.klavogonki.openapi.model.GetIndexDataStats;
+import ru.klavogonki.openapi.model.GetSummaryResponse;
+import ru.klavogonki.openapi.model.GetSummaryUser;
+import ru.klavogonki.openapi.model.Microtime;
 
 import java.time.LocalDateTime;
 
@@ -20,41 +25,46 @@ class PlayerMapperTest {
     @Test
     @DisplayName("Test a user with maximum possible filled fields")
     void testUserWithMaximumData() {
-        PlayerSummary summary = new PlayerSummary();
+        // summary
+        GetSummaryUser user = new GetSummaryUser()
+            .id(242585)
+            .login("nosferatum");
 
-        summary.level = Rank.getLevel(Rank.superman).intValue();
-        summary.title = Rank.getDisplayName(Rank.superman);
-        summary.blocked = 0;
+        ru.klavogonki.openapi.model.Car car = new ru.klavogonki.openapi.model.Car()
+            .car(Car.F1.id)
+            .color("#BF1300");
 
-        summary.user = new PlayerSummary.User();
-        summary.user.id = 242585;
-        summary.user.login = "nosferatum";
+        GetSummaryResponse summary = new GetSummaryResponse()
+            .level(Rank.getLevel(Rank.superman).intValue())
+            .title(Rank.getDisplayName(Rank.superman))
+            .blocked(0)
+            .user(user)
+            .car(car);
 
-        summary.car = new PlayerSummary.Car();
-        summary.car.car = Car.F1.id;
-        summary.car.color = "#BF1300";
+        // index-data
+        Bio bio = new Bio()
+            .userId(242585);
 
-        PlayerIndexData indexData = new PlayerIndexData();
-        indexData.ok = PlayerIndexData.OK_CORRECT_VALUE; // FGJ
+        Microtime registered = new Microtime()
+            .sec(1297852113L)
+            .usec(0L);
 
-        indexData.bio = new PlayerIndexData.Bio();
-        indexData.bio.userId = 242585;
+        GetIndexDataStats stats = new GetIndexDataStats()
+            .registered(registered)
+            .achievesCnt(225)
+            .totalNumRaces(60633)
+            .bestSpeed(626)
+            .ratingLevel(32)
+            .friendsCnt(102)
+            .vocsCnt(109)
+            .carsCnt(33);
 
-        indexData.stats = new PlayerIndexData.Stats();
+        GetIndexDataResponse indexData = new GetIndexDataResponse()
+            .ok(ApiErrors.OK_CORRECT_VALUE) // FGJ
+            .bio(bio)
+            .stats(stats);
 
-        indexData.stats.registered = new PlayerIndexData.Registered();
-        indexData.stats.registered.sec = 1297852113L;
-        indexData.stats.registered.usec = 0L;
-
-        indexData.stats.achievementsCount = 225;
-        indexData.stats.totalRacesCount = 60633;
-        indexData.stats.bestSpeed = 626;
-        indexData.stats.ratingLevel = 32;
-        indexData.stats.friendsCount = 102;
-        indexData.stats.vocabulariesCount = 109;
-        indexData.stats.carsCount = 33;
-
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null); // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -63,66 +73,71 @@ class PlayerMapperTest {
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(jsonData.importDate)
-            .hasGetSummaryError(summary.err)
-            .hasGetIndexDataError(indexData.err)
-            .hasPlayerId(summary.user.id)
-            .hasLogin(summary.user.login)
-            .hasRankLevel(summary.level)
-            .hasTitle(summary.title)
-            .hasBlocked(summary.blocked)
+            .hasGetSummaryError(summary.getErr())
+            .hasGetIndexDataError(indexData.getErr())
+            .hasPlayerId(user.getId())
+            .hasLogin(user.getLogin())
+            .hasRankLevel(summary.getLevel())
+            .hasTitle(summary.getTitle())
+            .hasBlocked(summary.getBlocked())
             .hasRegistered(DateUtils.convertUserRegisteredTime(indexData))
-            .hasAchievementsCount(indexData.stats.achievementsCount)
-            .hasTotalRacesCount(indexData.stats.totalRacesCount)
-            .hasBestSpeed(indexData.stats.bestSpeed)
-            .hasRatingLevel(indexData.stats.ratingLevel)
-            .hasFriendsCount(indexData.stats.friendsCount)
-            .hasVocabulariesCount(indexData.stats.vocabulariesCount)
-            .hasCarsCount(indexData.stats.carsCount)
+            .hasAchievementsCount(stats.getAchievesCnt())
+            .hasTotalRacesCount(stats.getTotalNumRaces())
+            .hasBestSpeed(stats.getBestSpeed())
+            .hasRatingLevel(stats.getRatingLevel())
+            .hasFriendsCount(stats.getFriendsCnt())
+            .hasVocabulariesCount(stats.getVocsCnt())
+            .hasCarsCount(stats.getCarsCnt())
         ;
 
         Assertions.assertThat(player.getCar())
-            .hasId(summary.car.car)
-            .hasColor(summary.car.color);
+            .hasId(car.getCar())
+            .hasColor(car.getColor());
     }
 
     @Test
     @DisplayName("Test a new registered user - minimum possible data")
     void testJustRegisteredUser() {
-        PlayerSummary summary = new PlayerSummary();
+        // summary
+        GetSummaryUser user = new GetSummaryUser()
+            .id(624511)
+            .login("nosferatum0");
 
-        summary.level = Rank.getLevel(Rank.novice).intValue();
-        summary.title = Rank.getDisplayName(Rank.novice);
-        summary.blocked = 0;
+        ru.klavogonki.openapi.model.Car car = new ru.klavogonki.openapi.model.Car()
+            .car(Car.ZAZ_965.id)
+            .color("#777777");
 
-        summary.user = new PlayerSummary.User();
-        summary.user.id = 624511;
-        summary.user.login = "nosferatum0";
+        GetSummaryResponse summary = new GetSummaryResponse()
+            .level(Rank.getLevel(Rank.novice).intValue())
+            .title(Rank.getDisplayName(Rank.novice))
+            .blocked(0)
+            .user(user)
+            .car(car);
 
-        summary.car = new PlayerSummary.Car();
-        summary.car.car = Car.ZAZ_965.id;
-        summary.car.color = "#777777";
+        // index-data
+        Bio bio = new Bio()
+            .userId(624511);
 
-        PlayerIndexData indexData = new PlayerIndexData();
-        indexData.ok = PlayerIndexData.OK_CORRECT_VALUE; // FGJ
+        Microtime registered = new Microtime()
+            .sec(1607554944L)
+            .usec(0L);
 
-        indexData.bio = new PlayerIndexData.Bio();
-        indexData.bio.userId = 624511;
+        GetIndexDataStats stats = new GetIndexDataStats()
+            .registered(registered)
+            .achievesCnt(0)
+            .totalNumRaces(0)
+            .bestSpeed(null)
+            .ratingLevel(1)
+            .friendsCnt(0)
+            .vocsCnt(0)
+            .carsCnt(1);
 
-        indexData.stats = new PlayerIndexData.Stats();
+        GetIndexDataResponse indexData = new GetIndexDataResponse()
+            .ok(ApiErrors.OK_CORRECT_VALUE) // FGJ
+            .bio(bio)
+            .stats(stats);
 
-        indexData.stats.registered = new PlayerIndexData.Registered();
-        indexData.stats.registered.sec = 1607554944L;
-        indexData.stats.registered.usec = 0L;
-
-        indexData.stats.achievementsCount = 0;
-        indexData.stats.totalRacesCount = 0;
-        indexData.stats.bestSpeed = null;
-        indexData.stats.ratingLevel = 1;
-        indexData.stats.friendsCount = 0;
-        indexData.stats.vocabulariesCount = 0;
-        indexData.stats.carsCount = 1;
-
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null);  // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -131,50 +146,53 @@ class PlayerMapperTest {
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(jsonData.importDate)
-            .hasGetSummaryError(summary.err)
-            .hasGetIndexDataError(indexData.err)
-            .hasPlayerId(summary.user.id)
-            .hasLogin(summary.user.login)
-            .hasRankLevel(summary.level)
-            .hasTitle(summary.title)
-            .hasBlocked(summary.blocked)
+            .hasGetSummaryError(summary.getErr())
+            .hasGetIndexDataError(indexData.getErr())
+            .hasPlayerId(user.getId())
+            .hasLogin(user.getLogin())
+            .hasRankLevel(summary.getLevel())
+            .hasTitle(summary.getTitle())
+            .hasBlocked(summary.getBlocked())
             .hasRegistered(DateUtils.convertUserRegisteredTime(indexData))
-            .hasAchievementsCount(indexData.stats.achievementsCount)
-            .hasTotalRacesCount(indexData.stats.totalRacesCount)
+            .hasAchievementsCount(stats.getAchievesCnt())
+            .hasTotalRacesCount(stats.getTotalNumRaces())
             .hasBestSpeed(null)
-            .hasRatingLevel(indexData.stats.ratingLevel)
-            .hasFriendsCount(indexData.stats.friendsCount)
-            .hasVocabulariesCount(indexData.stats.vocabulariesCount)
-            .hasCarsCount(indexData.stats.carsCount)
+            .hasRatingLevel(stats.getRatingLevel())
+            .hasFriendsCount(stats.getFriendsCnt())
+            .hasVocabulariesCount(stats.getVocsCnt())
+            .hasCarsCount(stats.getCarsCnt())
         ;
 
         Assertions.assertThat(player.getCar())
-            .hasId(summary.car.car)
-            .hasColor(summary.car.color);
+            .hasId(car.getCar())
+            .hasColor(car.getColor());
     }
 
     @Test
     @DisplayName("Test a user for which /get-summary works but /get-index-data returns an error")
     void testUserWithoutIndexData() {
-        PlayerSummary summary = new PlayerSummary();
+        // summary
+        GetSummaryUser user = new GetSummaryUser()
+            .id(21)
+            .login("Artch");
 
-        summary.level = Rank.getLevel(Rank.superman).intValue();
-        summary.title = Rank.KLAVO_MECHANIC_TITLE;
-        summary.blocked = 0;
+        ru.klavogonki.openapi.model.Car car = new ru.klavogonki.openapi.model.Car()
+            .car(Car.AUDI_TT.id)
+            .color("#893425");
 
-        summary.user = new PlayerSummary.User();
-        summary.user.id = 21;
-        summary.user.login = "Artch";
+        GetSummaryResponse summary = new GetSummaryResponse()
+            .level(Rank.getLevel(Rank.superman).intValue())
+            .title(Rank.KLAVO_MECHANIC_TITLE)
+            .blocked(0)
+            .user(user)
+            .car(car);
 
-        summary.car = new PlayerSummary.Car();
-        summary.car.car = Car.AUDI_TT.id;
-        summary.car.color = "#893425";
+        // index-data
+        GetIndexDataResponse indexData = new GetIndexDataResponse()
+            .err(ApiErrors.HIDDEN_PROFILE_USER_ERROR)
+            .ok(null); // FGJ
 
-        PlayerIndexData indexData = new PlayerIndexData();
-        indexData.err = PlayerSummary.HIDDEN_PROFILE_USER_ERROR;
-        indexData.ok = null; // FGJ
-
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null); // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -183,13 +201,13 @@ class PlayerMapperTest {
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(jsonData.importDate)
-            .hasGetSummaryError(summary.err)
-            .hasGetIndexDataError(indexData.err)
-            .hasPlayerId(summary.user.id)
-            .hasLogin(summary.user.login)
-            .hasRankLevel(summary.level)
-            .hasTitle(summary.title)
-            .hasBlocked(summary.blocked)
+            .hasGetSummaryError(summary.getErr())
+            .hasGetIndexDataError(indexData.getErr())
+            .hasPlayerId(user.getId())
+            .hasLogin(user.getLogin())
+            .hasRankLevel(summary.getLevel())
+            .hasTitle(summary.getTitle())
+            .hasBlocked(summary.getBlocked())
             .hasRegistered(null)
             .hasAchievementsCount(null)
             .hasTotalRacesCount(null)
@@ -201,21 +219,23 @@ class PlayerMapperTest {
         ;
 
         Assertions.assertThat(player.getCar())
-            .hasId(summary.car.car)
-            .hasColor(summary.car.color);
+            .hasId(car.getCar())
+            .hasColor(car.getColor());
     }
 
     @Test
     @DisplayName("Test a non-existing user for which both /get-summary and /get-index-data returns return \"invalid user id\" error")
     void testNonExistingUser() {
-        PlayerSummary summary = new PlayerSummary();
-        summary.err = PlayerSummary.INVALID_USER_ID_ERROR;
+        // summary
+        GetSummaryResponse summary = new GetSummaryResponse()
+            .err(ApiErrors.INVALID_USER_ID_ERROR);
 
-        PlayerIndexData indexData = new PlayerIndexData();
-        indexData.err = PlayerSummary.INVALID_USER_ID_ERROR;
-        indexData.ok = null; // FGJ
+        // index-data
+        GetIndexDataResponse indexData = new GetIndexDataResponse()
+            .err(ApiErrors.INVALID_USER_ID_ERROR)
+            .ok(null); // FGJ
 
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData);
+        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null);  // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -224,8 +244,8 @@ class PlayerMapperTest {
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(jsonData.importDate)
-            .hasGetSummaryError(summary.err)
-            .hasGetIndexDataError(indexData.err)
+            .hasGetSummaryError(summary.getErr())
+            .hasGetIndexDataError(indexData.getErr())
             .hasPlayerId(null)
             .hasLogin(null)
             .hasRankLevel(null)

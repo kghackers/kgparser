@@ -2,7 +2,8 @@ package ru.klavogonki.kgparser.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.klavogonki.kgparser.jsonParser.PlayerIndexData;
+import ru.klavogonki.openapi.model.GetIndexDataResponse;
+import ru.klavogonki.openapi.model.Microtime;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -14,30 +15,35 @@ import java.util.Objects;
 public class DateUtils {
     private static final Logger logger = LogManager.getLogger(DateUtils.class);
 
-    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH-mm-ss";
-    private static final String DATE_TIME_FORMAT_FOR_UI = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH-mm-ss";
+    public static final String DATE_TIME_FORMAT_FOR_UI = "yyyy-MM-dd HH:mm:ss";
 
     private static ZoneId getMoscowZoneId() {
         return ZoneId.of("Europe/Moscow");
     }
 
-    public static LocalDateTime convertUserRegisteredTime(final PlayerIndexData data) {
-        if ((data == null) || (data.stats == null)) { // error in /get-index-data
+    public static LocalDateTime convertUserRegisteredTime(final GetIndexDataResponse data) {
+        if ((data == null) || (data.getStats() == null)) { // error in /get-index-data
             return null;
         }
 
-        return convertUserRegisteredTime(data.stats.registered); // we assume it is not null
+        Microtime registered = data.getStats().getRegistered();
+        return convertUserRegisteredTime(registered); // we assume it is not null
     }
 
-    public static LocalDateTime convertUserRegisteredTime(final PlayerIndexData.Registered registered) {
+    public static LocalDateTime convertUserRegisteredTime(final Microtime registered) {
         if (registered == null) {
             return null;
         }
 
+        return convertUserRegisteredTime(registered.getSec(), registered.getUsec());
+    }
+
+    public static LocalDateTime convertUserRegisteredTime(final Long sec, final Long usec) {
         // probably use ZoneOffset/ZoneId for Moscow time or use just localDate
         ZoneId moscowZoneId = getMoscowZoneId();
 
-        Instant instant = Instant.ofEpochSecond(registered.sec, registered.usec);
+        Instant instant = Instant.ofEpochSecond(sec, usec);
 //        LocalDateTime localDateTimeUtc = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
 //        ZonedDateTime zonedDateTimeUtc = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
 

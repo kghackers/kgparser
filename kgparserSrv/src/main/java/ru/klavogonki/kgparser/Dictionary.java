@@ -7,13 +7,12 @@ package ru.klavogonki.kgparser;
 
 import ru.klavogonki.kgparser.http.UrlConstructor;
 import su.opencode.kefir.srv.json.Json;
-import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.StringUtils;
 
 /**
  * Словарь.
  */
-public class Dictionary extends JsonObject
+public class Dictionary // extends JsonObject // this leads to javadoc generation failure if we use this class in kgparserSpringBoot module
 {
 	public String getCode() {
 		return code;
@@ -89,6 +88,11 @@ public class Dictionary extends JsonObject
 		return getDictionaryPageUrl(this.code);
 	}
 
+	@Json(exclude = true)
+	public static boolean isValid(String code) {
+		return code.startsWith(NON_STANDARD_DICTIONARY_ID_PREFIX) || StandardDictionary.isValidStandardDictionaryCode(code);
+	}
+
 	/**
 	 * @param code строковый код словаря (gametype в ajax-api)
 	 * @return <code>true</code> &mdash; если словарь с указанным кодом является {@linkplain StandardDictionary стандартным};
@@ -97,7 +101,15 @@ public class Dictionary extends JsonObject
 	 */
 	@Json(exclude = true)
 	public static boolean isStandard(String code) {
-		return !code.startsWith(NON_STANDARD_DICTIONARY_ID_PREFIX);
+		if (code.startsWith(NON_STANDARD_DICTIONARY_ID_PREFIX)) {
+			return false;
+		}
+
+		if (StandardDictionary.isValidStandardDictionaryCode(code)) {
+			return true;
+		}
+
+		throw new IllegalArgumentException(String.format("Incorrect dictionary code: \"%s\".", code));
 	}
 
 	/**
@@ -106,8 +118,9 @@ public class Dictionary extends JsonObject
 	 */
 	@Json(exclude = true)
 	public static int getDictionaryId(String code) {
-		if ( isStandard(code) )
+		if ( isStandard(code) ) {
 			throw new IllegalArgumentException("Dictionary with code = \"" + code + "\" is standard. Cannot get dictionary id from it."); // todo: use concat
+		}
 
 		String codeStr = code.substring( NON_STANDARD_DICTIONARY_ID_PREFIX.length() );
 		return Integer.parseInt(codeStr);
@@ -120,6 +133,16 @@ public class Dictionary extends JsonObject
 	@Json(exclude = true)
 	public static String getDictionaryCode(int dictionaryId) {
 		return StringUtils.concat( NON_STANDARD_DICTIONARY_ID_PREFIX, Integer.toString(dictionaryId) );
+	}
+
+	@Json(exclude = true)
+	public static int getTextType(String code) {
+		if (!isStandard(code)) {
+			return getDictionaryId(code);
+		}
+
+		StandardDictionary standardDictionary = StandardDictionary.valueOf(code);
+		return StandardDictionary.getTextType(standardDictionary);
 	}
 
 	/**

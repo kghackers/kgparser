@@ -15,43 +15,42 @@ public enum StandardDictionary
 	/**
 	 * Обычный.
 	 */
-	  normal
+	normal,
 
 	/**
 	 * Безошибочный.
 	 */
-	, noerror
+	noerror,
 
 	/**
 	 * Буквы.
 	 */
-	, chars
+	chars,
 
 	/**
 	 * Марафон.
 	 */
-	, marathon
+	marathon,
 
 	/**
 	 * Абракадабра.
 	 */
-	, abra
+	abra,
 
 	/**
 	 * Яндекс.Рефераты.
 	 */
-	, referats
+	referats,
 
 	/**
 	 * Цифры.
 	 */
-	, digits
+	digits,
 
 	/**
 	 * Спринт.
 	 */
-	, sprint
-
+	sprint,
 	;
 
 	/**
@@ -114,6 +113,41 @@ public enum StandardDictionary
 
 			default:
 				throw new IllegalArgumentException("Unknown standard dictionary: " + dictionary); // todo: use concat
+		}
+	}
+
+	public static int getTextType(StandardDictionary dictionary) { // for non-standards it, will be dictionaryId
+		switch (dictionary) {
+			case normal:
+			case noerror:
+			case sprint:
+			case marathon:
+				return 0;
+
+			case abra:
+				return -1;
+
+			case digits:
+				return -2;
+
+			case referats:
+				return -3;
+
+			case chars:
+				return -4;
+
+			default:
+				throw new IllegalArgumentException("Unknown standard dictionary: " + dictionary); // todo: use concat
+		}
+	}
+
+	public static boolean isValidStandardDictionaryCode(String code) {
+		try {
+			StandardDictionary.valueOf(code);
+			return true;
+		}
+		catch (IllegalArgumentException e) {
+			return false;
 		}
 	}
 }
