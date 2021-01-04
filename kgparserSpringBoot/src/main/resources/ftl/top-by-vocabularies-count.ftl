@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Топ по числу используемых словарей</title>
-    <link rel="stylesheet" type="text/css" href="./${links.statsCss}">
-    <link rel="shortcut icon" href="img/favicon/favicon.ico"/>
+    <#include "./styles.ftl">
 </head>
 <body>
 <#include "./header.ftl">

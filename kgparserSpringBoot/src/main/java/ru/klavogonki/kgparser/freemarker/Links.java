@@ -46,8 +46,9 @@ public class Links {
 
     private String playersByRank = PageUrls.PLAYER_BY_RANK;
 
-    // css files
+    // css files and images
     private String statsCss = PageUrls.STATS_CSS;
+    private String faviconIco = PageUrls.FAVICON_ICO;
 
     // js files
     private String chartJs = PageUrls.CHART_JS;

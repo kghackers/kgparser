@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Статистика по клавогонщикам</title>
-    <link rel="stylesheet" type="text/css" href="./css/stats.css">
-    <link rel="shortcut icon" href="img/favicon/favicon.ico"/>
+    <#include "./styles.ftl">
 </head>
 <body>
 <#include "./header.ftl">

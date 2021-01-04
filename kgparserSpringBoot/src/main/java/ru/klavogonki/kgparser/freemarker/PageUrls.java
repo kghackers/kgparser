@@ -47,8 +47,9 @@ public class PageUrls {
     public static final String TOP_BY_CARS_COUNT_XLSX = "xlsx/stat-top-by-cars-count.xlsx";
     public static final String TOP_BY_CARS_COUNT_ZIP = "xlsx/stat-top-by-cars-count.zip";
 
-    // css files
-    public static final String STATS_CSS = "css/stats.css";
+    // css files and images
+    public static final String STATS_CSS = "/css/stats.css";
+    public static final String FAVICON_ICO = "/img/favicon/favicon.ico";
 
     // js files
     // Chart.js
