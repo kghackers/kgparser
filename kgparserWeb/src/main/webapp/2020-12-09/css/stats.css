@@ -1,0 +1,173 @@
+body { /* as on https://klavogonki.ru/ */
+    font-family: tahoma, sans-serif;
+    font-size: 10pt;
+    color: #222222;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: lightgray;
+    padding: 5px 10px;
+}
+
+td.header-right {
+    padding-left: 10px;
+}
+
+main {
+    padding: 0 20px;
+    margin: 0;
+}
+
+h2 {
+    color: #dd6600;
+    font-weight: normal;
+}
+
+a:link, a:visited {
+    color: #0288d1;
+}
+
+a:hover {
+    color: #d32f2f;
+}
+
+/* rank colors, apply to any elements */
+/* see ru.klavogonki.kgparser.Rank#getColor */
+.novice { color: #8D8D8D }
+.amateur { color: #4F9A97 }
+.cabman { color:  #187818 }
+.pro { color: #8C8100 }
+.racer { color: #BA5800 }
+.maniac { color: #BC0143 }
+.superman { color: #5E0B9E }
+.cyberracer { color: #00037C }
+.extracyber { color: #061956 }
+
+div.section {
+    margin: 20px 0;
+}
+
+div.paging {
+    text-align: center;
+    font-size: 12pt;
+    padding: 5px 0;
+}
+
+div.hidden {
+    display: none;
+}
+
+a.excel {
+    margin-left: 2em;
+    font-size: 12pt;
+}
+
+img.excel {
+    width: 30px;
+    height: 30px;
+    margin-bottom: -7px;
+    margin-right: 0.5em;
+}
+
+/* see https://stackoverflow.com/a/53559396/8534088 */
+table.data {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0 auto 0 auto;
+}
+
+table.data-left { /* for main page, tables should be left, not centered */
+    margin: 0 !important;
+}
+
+table.data th {
+    position: sticky;
+    top: 0;
+    text-align: center;
+    padding: 5px;
+
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+
+    background-color: #e0e0e0;
+    font-weight: normal;
+}
+
+table.data-no-header tr:first-child td { /* for tables with no header, provide a top-border in the first row */
+    border-top: 1px solid gray;
+}
+
+/* for border-collapse: separate, apply left border only for the leftmost cells */
+table.data th:first-child {
+    border-left: 1px solid gray;
+}
+
+table.data td:first-child {
+    border-left: 1px solid gray;
+}
+
+table.data td {
+    padding: 5px;
+
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+}
+
+table.data tr.selected {
+    background-color: lightyellow !important;
+}
+
+table.data tr:nth-child(even) {
+    background-color: #eeeeee;
+    /*color: lightgray;*/
+}
+
+.right {
+    text-align: right;
+}
+
+.left {
+    text-align: left !important;
+}
+
+.center {
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+canvas.chart-left {
+    /* height: 400px; */
+    /*width: 80vw;*/
+    height: 325px;
+    margin-right: -75px;
+}
+
+canvas.chart-right {
+    /* height: 400px; */
+    /*width: 80vw;*/
+    height: 325px;
+    margin-right: -50px;
+}
+
+.flexWrap {
+    display: flex;
+    align-items: center;
+}
+
+.search-button {
+    color: #ffffff;
+    background-color: #3276b1;
+    border-color: #3276b1;
+    border-style: solid; /* no freaking ugly shade on buttons! */
+    padding: 5px 10px;
+}
+
+input { /* Remove annoying border around inputs in Chrome */
+    outline: none;
+}

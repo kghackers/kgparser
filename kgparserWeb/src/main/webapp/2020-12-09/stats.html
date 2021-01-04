@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика по клавогонщикам</title>
+    <link rel="stylesheet" type="text/css" href="./css/stats.css">
+    <link rel="shortcut icon" href="./img/favicon/favicon.ico"/>
+</head>
+<body>
+<header>
+    <table> 
+        <tr>
+            <td>
+                <a href="./stats.html">На главную</a>
+                | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
+                | <a href="https://klavogonki.ru/forum/software/59/">Тема на форуме</a>
+                | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
+                <br/>
+                <a href="./stat-top-by-total-races.html">Топ по общему пробегу</a>
+                | <a href="./stat-top-by-best-speed-page-1.html">Топ по рекорду в &laquo;Обычном&raquo;</a>
+                | <a href="./stat-top-by-best-speed.html">Топ-500 в &laquo;Обычном&raquo;</a> 
+                | <a href="./stat-top-by-rating-level.html">Топ по уровню</a>
+                | <a href="./stat-top-by-friends-count.html">Топ по числу друзей</a>
+                | <a href="./stat-top-by-achievements-count.html">Топ по числу достижений</a>
+                | <a href="./stat-top-by-vocabularies-count.html">Топ по числу используемых словарей</a>
+                | <a href="./stat-top-by-cars-count.html">Топ по числу машин в гараже</a>
+                | <a href="./stat-players-by-rank.html">Игроки по рангам</a>
+            </td>
+            <td class="header-right">
+                <form action="https://www.paypal.com/donate" method="post" target="_top">
+                    <input type="hidden" name="hosted_button_id" value="WZ2BM3QJYGQTW"/>
+                    <input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0"
+                           name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button"/>
+                    <img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+</header>
+<main>
+    <div class="section">
+        Экспорт шёл с 2020-12-08 02:39:07 по 2020-12-09 16:28:01, время на сервере UTC.
+    </div>
+
+    <div class="section">
+        Выполняемые запросы (на примере пользователя <a href="https://klavogonki.ru/u/#/242585/">242585</a>):
+        <ul>
+            <li><a href="http://klavogonki.ru/api/profile/get-summary?id=242585">http://klavogonki.ru/api/profile/get-summary?id=242585</a></li>
+            <li><a href="http://klavogonki.ru/api/profile/get-index-data?userId=242585">http://klavogonki.ru/api/profile/get-index-data?userId=242585</a></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        Выполнялись запросы по userId от 1 до 625000.
+    </div>
+
+    <div class="section">
+        <table class="data data-left data-no-header">
+            <tr>
+                <td>Первый валидный id</td>
+                <td><a href="https://klavogonki.ru/u/#/21/">21</a></td>
+            </tr>
+            <tr>
+                <td>Последний валидный id</td>
+                <td><a href="https://klavogonki.ru/u/#/624450/">624450</a></td>
+            </tr>
+            <tr>
+                <td>Несуществующие пользователи (<code>"err": "invalid user id")</code></td>
+                <td>46442</td>
+            </tr>
+            <tr>
+                <td>Заблокированные пользователи (<code>blocked > 0</code>)</td>
+                <td>49127</td>
+            </tr>
+            <tr>
+                <td>Действующие пользователи, у которых падает <code>/get-index-data</code></td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td>Действующие пользователи с 0 пробега по всем режимам (<code>total_races_count = 0</code>)</td>
+                <td>170621</td>
+            </tr>
+            <tr>
+                <td>Действующие пользователи с хотя бы одним текстом пробега</td>
+                <td><strong>358804</strong></td>
+            </tr>
+            <tr>
+                <td>Всего пользователей в базе</td>
+                <td>625000</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Действующие пользователи, у которых падает <code>/get-index-data</code></h2>
+        <table class="data data-left data-no-header">
+                <tr>
+                    <td>
+                                Явно ошибка в базе, что-то с достижениями
+                    </td>
+                    <td><code>"err": "mongo refs joining failed: invalid key users.achieves.achieve_id=599bd392df4e4d963a8b4570"</code></td>
+                    <td>
+                            <a href="https://klavogonki.ru/u/#/498727/">Obroten54</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                                Ошибка в базе? <code>/get-summary</code> такой ошибки не выдаёт
+                    </td>
+                    <td><code>"err": "invalid user id"</code></td>
+                    <td>
+                            <a href="https://klavogonki.ru/u/#/161997/">ign66</a>, 
+                            <a href="https://klavogonki.ru/u/#/166851/">errato</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                                Пользователи со скрытым профилем
+                    </td>
+                    <td><code>"err": "hidden profile"</code></td>
+                    <td>
+                            <a href="https://klavogonki.ru/u/#/21/">Artch</a>, 
+                            <a href="https://klavogonki.ru/u/#/216308/">norkas</a>, 
+                            <a href="https://klavogonki.ru/u/#/324864/">Клавобот</a>
+                    </td>
+                </tr>
+        </table>
+    </div>
+
+    <div class="section" id="section-players_by_rank">
+        <h2>Действующие игроки по рангам</h2>
+
+        <div id="playersByRank-switcher-wrapper" class="paging left">
+            <span id="playersByRank-switcher-container"></span>&nbsp;&nbsp;&nbsp;<a href="stat-players-by-rank.html">Страница с выбором диапазона</a>
+        </div>
+
+        <div id="playersByRank-single-chart-wrapper" class="flexWrap">
+            <canvas id="playersByRank-single-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-single-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-single-table-container"></div>
+        </div>
+
+        <div id="playersByRank-combined-charts-wrapper">
+            <div id="playersByRank-1-race-wrapper" class="flexWrap">
+                <canvas id="playersByRank-1-race-barChart-canvas" class="chart-left"></canvas>
+                <canvas id="playersByRank-1-race-doughnutChart-canvas" class="chart-right"></canvas>
+
+                <div id="playersByRank-1-race-table-container"></div>
+            </div>
+
+            <div id="playersByRank-10-races-wrapper" class="flexWrap">
+                <canvas id="playersByRank-10-races-barChart-canvas" class="chart-left"></canvas>
+                <canvas id="playersByRank-10-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+                <div id="playersByRank-10-races-table-container"></div>
+            </div>
+
+            <div id="playersByRank-100-races-wrapper" class="flexWrap">
+                <canvas id="playersByRank-100-races-barChart-canvas" class="chart-left"></canvas>
+                <canvas id="playersByRank-100-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+                <div id="playersByRank-100-races-table-container"></div>
+            </div>
+
+            <div id="playersByRank-1000-races-wrapper" class="flexWrap">
+                <canvas id="playersByRank-1000-races-barChart-canvas" class="chart-left"></canvas>
+                <canvas id="playersByRank-1000-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+                <div id="playersByRank-1000-races-table-container"></div>
+            </div>
+
+            <div id="playersByRank-10000-races-wrapper" class="flexWrap">
+                <canvas id="playersByRank-10000-races-barChart-canvas" class="chart-left"></canvas>
+                <canvas id="playersByRank-10000-races-doughnutChart-canvas" class="chart-right"></canvas>
+
+                <div id="playersByRank-10000-races-table-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Агрегированные данные по всем игрокам</h2>
+        <ul>
+            <li>Всего текстов набрано всеми игроками: 127 122 127</li>
+            <li>Всего машин у всех игроков: 598 128</li>
+        </ul>
+    </div>
+
+
+    <div class="section">
+        <h2>Рекорды (только топ-1)</h2>
+        <table class="data data-left data-no-header">
+            <tr>
+                <td>Наибольший рекорд в &laquo;Обычном&raquo;</td>
+                    <td class="extracyber">
+                        <span class="login">ant1k</span>
+                        <a href="https://klavogonki.ru/u/#/146269/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">1070</td>
+                <td><a href="./stat-top-by-best-speed-page-1.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Наибольший общий пробег</td>
+                    <td class="superman">
+                        <span class="login">Kenichi</span>
+                        <a href="https://klavogonki.ru/u/#/211962/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">294760</td>
+                <td><a href="./stat-top-by-total-races.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Наибольший рейтинговый уровень</td>
+                    <td class="cyberracer">
+                        <span class="login">un4given</span>
+                        <a href="https://klavogonki.ru/u/#/111001/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">116</td>
+                <td><a href="./stat-top-by-rating-level.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Больше всего достижений</td>
+                    <td class="pro">
+                        <span class="login">f0rtuna</span>
+                        <a href="https://klavogonki.ru/u/#/408656/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">2305</td>
+                <td><a href="./stat-top-by-achievements-count.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Больше всего машин в гараже</td>
+                    <td class="superman">
+                        <span class="login">pashkhan</span>
+                        <a href="https://klavogonki.ru/u/#/155280/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">45</td>
+                <td><a href="./stat-top-by-cars-count.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Больше всего друзей</td>
+                    <td class="maniac">
+                        <span class="login">oligarh83</span>
+                        <a href="https://klavogonki.ru/u/#/152219/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">3753</td>
+                <td><a href="./stat-top-by-friends-count.html">Топ</a></td>
+            </tr>
+
+            <tr>
+                <td>Больше всего используемых словарей</td>
+                    <td class="maniac">
+                        <span class="login">Novatin</span>
+                        <a href="https://klavogonki.ru/u/#/492643/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                <td class="right">2250</td>
+                <td><a href="./stat-top-by-vocabularies-count.html">Топ</a></td>
+            </tr>
+        </table>
+    </div>
+</main>
+
+<!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous"></script>
+<script src="./js/players-by-rank-chart.js"></script>
+<script>
+    window.addEventListener('load', function () {
+        const playersByRankWithAtLeast1Race = [{"rankLevel":1,"rankName":"novice","rankDisplayName":"Новичок","playersCount":78118},{"rankLevel":2,"rankName":"amateur","rankDisplayName":"Любитель","playersCount":106686},{"rankLevel":3,"rankName":"cabman","rankDisplayName":"Таксист","playersCount":98285},{"rankLevel":4,"rankName":"pro","rankDisplayName":"Профи","playersCount":50124},{"rankLevel":5,"rankName":"racer","rankDisplayName":"Гонщик","playersCount":19690},{"rankLevel":6,"rankName":"maniac","rankDisplayName":"Маньяк","playersCount":4153},{"rankLevel":7,"rankName":"superman","rankDisplayName":"Супермен","playersCount":1298},{"rankLevel":8,"rankName":"cyberracer","rankDisplayName":"Кибергонщик","playersCount":363},{"rankLevel":9,"rankName":"extracyber","rankDisplayName":"Экстракибер","playersCount":87}];
+        const playersByRankWithAtLeast10Races = [{"rankLevel":1,"rankName":"novice","rankDisplayName":"Новичок","playersCount":19283},{"rankLevel":2,"rankName":"amateur","rankDisplayName":"Любитель","playersCount":46547},{"rankLevel":3,"rankName":"cabman","rankDisplayName":"Таксист","playersCount":66119},{"rankLevel":4,"rankName":"pro","rankDisplayName":"Профи","playersCount":41841},{"rankLevel":5,"rankName":"racer","rankDisplayName":"Гонщик","playersCount":17990},{"rankLevel":6,"rankName":"maniac","rankDisplayName":"Маньяк","playersCount":4046},{"rankLevel":7,"rankName":"superman","rankDisplayName":"Супермен","playersCount":1268},{"rankLevel":8,"rankName":"cyberracer","rankDisplayName":"Кибергонщик","playersCount":359},{"rankLevel":9,"rankName":"extracyber","rankDisplayName":"Экстракибер","playersCount":86}];
+        const playersByRankWithAtLeast100Races = [{"rankLevel":1,"rankName":"novice","rankDisplayName":"Новичок","playersCount":3549},{"rankLevel":2,"rankName":"amateur","rankDisplayName":"Любитель","playersCount":7481},{"rankLevel":3,"rankName":"cabman","rankDisplayName":"Таксист","playersCount":17835},{"rankLevel":4,"rankName":"pro","rankDisplayName":"Профи","playersCount":18271},{"rankLevel":5,"rankName":"racer","rankDisplayName":"Гонщик","playersCount":11129},{"rankLevel":6,"rankName":"maniac","rankDisplayName":"Маньяк","playersCount":3238},{"rankLevel":7,"rankName":"superman","rankDisplayName":"Супермен","playersCount":1090},{"rankLevel":8,"rankName":"cyberracer","rankDisplayName":"Кибергонщик","playersCount":323},{"rankLevel":9,"rankName":"extracyber","rankDisplayName":"Экстракибер","playersCount":83}];
+        const playersByRankWithAtLeast1000Races = [{"rankLevel":1,"rankName":"novice","rankDisplayName":"Новичок","playersCount":401},{"rankLevel":2,"rankName":"amateur","rankDisplayName":"Любитель","playersCount":670},{"rankLevel":3,"rankName":"cabman","rankDisplayName":"Таксист","playersCount":2731},{"rankLevel":4,"rankName":"pro","rankDisplayName":"Профи","playersCount":5008},{"rankLevel":5,"rankName":"racer","rankDisplayName":"Гонщик","playersCount":4486},{"rankLevel":6,"rankName":"maniac","rankDisplayName":"Маньяк","playersCount":1886},{"rankLevel":7,"rankName":"superman","rankDisplayName":"Супермен","playersCount":727},{"rankLevel":8,"rankName":"cyberracer","rankDisplayName":"Кибергонщик","playersCount":242},{"rankLevel":9,"rankName":"extracyber","rankDisplayName":"Экстракибер","playersCount":71}];
+        const playersByRankWithAtLeast10000Races = [{"rankLevel":1,"rankName":"novice","rankDisplayName":"Новичок","playersCount":18},{"rankLevel":2,"rankName":"amateur","rankDisplayName":"Любитель","playersCount":13},{"rankLevel":3,"rankName":"cabman","rankDisplayName":"Таксист","playersCount":64},{"rankLevel":4,"rankName":"pro","rankDisplayName":"Профи","playersCount":351},{"rankLevel":5,"rankName":"racer","rankDisplayName":"Гонщик","playersCount":742},{"rankLevel":6,"rankName":"maniac","rankDisplayName":"Маньяк","playersCount":630},{"rankLevel":7,"rankName":"superman","rankDisplayName":"Супермен","playersCount":325},{"rankLevel":8,"rankName":"cyberracer","rankDisplayName":"Кибергонщик","playersCount":126},{"rankLevel":9,"rankName":"extracyber","rankDisplayName":"Экстракибер","playersCount":44}];
+
+        const singleChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast1Race, // by default, show players with at least 1 race
+            label: 'Действующие игроки по рангам (общий пробег 1+)'
+        });
+        singleChart.append('playersByRank-single-barChart-canvas', 'playersByRank-single-doughnutChart-canvas', 'playersByRank-single-table-container');
+
+        // charts to display them all together
+        const playersByRankWithAtLeast1RaceChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast1Race,
+            label: 'Действующие игроки по рангам (общий пробег 1+)'
+        });
+        playersByRankWithAtLeast1RaceChart.append('playersByRank-1-race-barChart-canvas', 'playersByRank-1-race-doughnutChart-canvas', 'playersByRank-1-race-table-container');
+
+        const playersByRankWithAtLeast10RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast10Races,
+            label: 'Действующие игроки по рангам (общий пробег 10+)'
+        });
+        playersByRankWithAtLeast10RacesChart.append('playersByRank-10-races-barChart-canvas', 'playersByRank-10-races-doughnutChart-canvas', 'playersByRank-10-races-table-container');
+
+        const playersByRankWithAtLeast100RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast100Races,
+            label: 'Действующие игроки по рангам (общий пробег 100+)'
+        });
+        playersByRankWithAtLeast100RacesChart.append('playersByRank-100-races-barChart-canvas', 'playersByRank-100-races-doughnutChart-canvas', 'playersByRank-100-races-table-container');
+
+        const playersByRankWithAtLeast1000RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast1000Races,
+            label: 'Действующие игроки по рангам (общий пробег 1000+)'
+        });
+        playersByRankWithAtLeast1000RacesChart.append('playersByRank-1000-races-barChart-canvas', 'playersByRank-1000-races-doughnutChart-canvas', 'playersByRank-1000-races-table-container');
+
+        const playersByRankWithAtLeast10000RacesChart = new PlayersByRankChart({
+            data: playersByRankWithAtLeast10000Races,
+            label: 'Действующие игроки по рангам (общий пробег 10000+)'
+        });
+        playersByRankWithAtLeast10000RacesChart.append('playersByRank-10000-races-barChart-canvas', 'playersByRank-10000-races-doughnutChart-canvas', 'playersByRank-10000-races-table-container');
+
+        const chartSwitcher = new PlayersByRankChartSwitcher({
+            currentChart: 1,
+
+            singleChart: singleChart,
+            singleChartContainerId: `playersByRank-single-chart-wrapper`,
+
+            combinedCharts: [
+                playersByRankWithAtLeast1RaceChart,
+                playersByRankWithAtLeast10RacesChart,
+                playersByRankWithAtLeast100RacesChart,
+                playersByRankWithAtLeast1000RacesChart,
+                playersByRankWithAtLeast10000RacesChart
+            ],
+            combinedChartsContainerId: `playersByRank-combined-charts-wrapper`,
+
+            containers: [
+                {
+                    minTotalRacesCount: 1,
+                    data: playersByRankWithAtLeast1Race,
+                    label: 'Действующие игроки по рангам (общий пробег 1+)'
+                },
+                {
+                    minTotalRacesCount: 10,
+                    data: playersByRankWithAtLeast10Races,
+                    label: 'Действующие игроки по рангам (общий пробег 10+)'
+                },
+                {
+                    minTotalRacesCount: 100,
+                    data: playersByRankWithAtLeast100Races,
+                    label: 'Действующие игроки по рангам (общий пробег 100+)'
+                },
+                {
+                    minTotalRacesCount: 1000,
+                    data: playersByRankWithAtLeast1000Races,
+                    label: 'Действующие игроки по рангам (общий пробег 1000+)'
+                },
+                {
+                    minTotalRacesCount: 10000,
+                    data: playersByRankWithAtLeast10000Races,
+                    label: 'Действующие игроки по рангам (общий пробег 10000+)'
+                }
+            ]
+        });
+
+        chartSwitcher.append('playersByRank-switcher-container');
+
+        // we must hide it after appending the charts, else it becomes ugly
+        // todo: to avoid the height jump, we can append the layout of the combined wrapper dynamically (only when showing it for the first time). Not worth it for now.
+        chartSwitcher.hideContainer('playersByRank-combined-charts-wrapper');
+    });
+</script>
+
+</body>
+</html>
