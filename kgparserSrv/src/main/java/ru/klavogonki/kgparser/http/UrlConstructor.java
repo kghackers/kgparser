@@ -17,7 +17,7 @@ public class UrlConstructor
 	public static final String DOMAIN_NAME_HTTPS = "https://klavogonki.ru";
 
 	public static String getLink(String relativeUrl, Object... relativeUrlArguments) {
-		return DOMAIN_NAME + String.format(relativeUrl, relativeUrlArguments);
+		return DOMAIN_NAME_HTTPS + String.format(relativeUrl, relativeUrlArguments);
 	}
 
 	public static String getLinkHttps(String relativeUrl, Object... relativeUrlArguments) {

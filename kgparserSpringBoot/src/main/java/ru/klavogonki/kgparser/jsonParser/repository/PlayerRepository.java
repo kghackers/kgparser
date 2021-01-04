@@ -8,6 +8,7 @@ import ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @see <a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.core-concepts">Spring JPA core concepts</a>
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public interface PlayerRepository extends CrudRepository<PlayerEntity, Long> {
 
-    List<PlayerEntity> findByPlayerId(int playerId);
+    Optional<PlayerEntity> findByPlayerId(int playerId);
 
 //    List<PlayerEntity> findByTotalRacesCountGreaterThanEqualAndBlockedEqualsOrderByBestSpeedDesc(int totalRacesCount, int blocked);
     List<PlayerEntity> findByTotalRacesCountGreaterThanEqualAndBlockedEqualsOrderByBestSpeedDescTotalRacesCountDesc(int totalRacesCount, int blocked);

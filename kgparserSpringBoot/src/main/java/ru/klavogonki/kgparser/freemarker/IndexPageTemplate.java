@@ -22,6 +22,7 @@ public class IndexPageTemplate extends FreemarkerTemplate {
     private static final String EXAMPLE_PLAYER_PROFILE_LINK_KEY = "examplePlayerProfileLink";
     private static final String EXAMPLE_PLAYER_GET_SUMMARY_URL_KEY = "examplePlayerGetSummaryUrl";
     private static final String EXAMPLE_PLAYER_GET_INDEX_DATA_URL_KEY = "examplePlayerGetIndexDataUrl";
+    private static final String EXAMPLE_PLAYER_GET_STATS_OVERVIEW_URL_KEY = "examplePlayerGetStatsOverviewUrl";
 
     // global players metrics
     private static final String MIN_EXISTING_PLAYER_ID_KEY = "minExistingPlayerId";
@@ -56,6 +57,7 @@ public class IndexPageTemplate extends FreemarkerTemplate {
     private static final String TOP_1_PLAYER_BY_FRIENDS_COUNT_KEY = "top1PlayerByFriendsCount";
     private static final String TOP_1_PLAYER_BY_VOCABULARIES_COUNT_KEY = "top1PlayerByVocabulariesCount";
     private static final String TOP_1_PLAYER_BY_CARS_COUNT_KEY = "top1PlayerByCarsCount";
+    private static final String TOP_1_PLAYER_BY_RATING_EXPERIENCE_IN_ONE_MONTH_KEY = "top1PlayerByRatingExperienceInOneMonth";
 
     @Override
     public String getTemplatePath() {
@@ -133,6 +135,15 @@ public class IndexPageTemplate extends FreemarkerTemplate {
 
     public String getExamplePlayerGetIndexDataUrl() {
         return (String) templateData.get(EXAMPLE_PLAYER_GET_INDEX_DATA_URL_KEY);
+    }
+
+    public IndexPageTemplate examplePlayerGetStatsOverviewUrl(String examplePlayerGetStatsOverviewUrl) {
+        templateData.put(EXAMPLE_PLAYER_GET_STATS_OVERVIEW_URL_KEY, examplePlayerGetStatsOverviewUrl);
+        return this;
+    }
+
+    public String getExamplePlayerGetStatsOverviewUrl() {
+        return (String) templateData.get(EXAMPLE_PLAYER_GET_STATS_OVERVIEW_URL_KEY);
     }
 
     public IndexPageTemplate minExistingPlayerId(int minExistingPlayerId) {
@@ -358,6 +369,15 @@ public class IndexPageTemplate extends FreemarkerTemplate {
 
     public PlayerEntity getTop1PlayerByCarsCount() {
         return (PlayerEntity) templateData.get(TOP_1_PLAYER_BY_CARS_COUNT_KEY);
+    }
+
+    public IndexPageTemplate top1PlayerByRatingExperienceInOneMonth(PlayerEntity top1PlayerByRatingExperienceInOneMonth) {
+        templateData.put(TOP_1_PLAYER_BY_RATING_EXPERIENCE_IN_ONE_MONTH_KEY, top1PlayerByRatingExperienceInOneMonth);
+        return this;
+    }
+
+    public PlayerEntity getTop1PlayerByRatingExperienceInOneMonth() {
+        return (PlayerEntity) templateData.get(TOP_1_PLAYER_BY_RATING_EXPERIENCE_IN_ONE_MONTH_KEY);
     }
 
     @Override

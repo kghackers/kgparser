@@ -75,10 +75,20 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: parse context from args of from json file given by args
 		ExportContext context = new ExportContext();
 		context.webRootDir = "C:/java/kgparser/kgparserWeb/src/main/webapp/";
+
+		// data load from 2020-12-28
+		context.minPlayerId = 1;
+		context.maxPlayerId = 628000;
+		context.dataDownloadStartDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 00:28:13");
+		context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 01:44:43");
+
+/*
+		// data load from 2020-12-09
 		context.minPlayerId = 1;
 		context.maxPlayerId = 625000;
 		context.dataDownloadStartDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-08 02:39:07");
 		context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-09 16:28:01");
+*/
 
 		// todo: select mode (what to do) by arguments
 		// todo: add an option to skip Excel import
@@ -87,6 +97,7 @@ public class KgParserApplication implements CommandLineRunner {
 		if (true) {
 			return;
 		}
+*/
 
 		playersByRankExporter.export(context);
 		if (true) {
@@ -107,7 +118,6 @@ public class KgParserApplication implements CommandLineRunner {
 		if (true) {
 			return;
 		}
-*/
 
 
 		// todo: pass a path to a json file with config instead

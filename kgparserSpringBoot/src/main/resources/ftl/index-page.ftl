@@ -18,6 +18,7 @@
         <ul>
             <li><a href="${examplePlayerGetSummaryUrl}">${examplePlayerGetSummaryUrl}</a></li>
             <li><a href="${examplePlayerGetIndexDataUrl}">${examplePlayerGetIndexDataUrl}</a></li>
+            <li><a href="${examplePlayerGetStatsOverviewUrl}">${examplePlayerGetStatsOverviewUrl}</a></li>
         </ul>
     </div>
 
@@ -205,6 +206,15 @@
                 <@ptd.playerTd player=top1PlayerByVocabulariesCount/>
                 <td class="right">${top1PlayerByVocabulariesCount.vocabulariesCount}</td>
                 <td><a href="./${links.topByVocabulariesCount}">Топ</a></td>
+            </tr>
+
+            <#-- hardcoded record -->
+            <#-- see https://klavogonki.ru/forum/software/59/page6/#post116 -->
+            <tr>
+                <td>Наибольшее число рейтингового опыта за месяц</td>
+                <@ptd.playerTd player=top1PlayerByRatingExperienceInOneMonth/>
+                <td class="right">334117</td>
+                <td><a href="https://klavogonki.ru/top/rating/archive-202012">Ссылка</a></td>
             </tr>
         </table>
     </div>

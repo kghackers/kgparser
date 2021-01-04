@@ -16,6 +16,8 @@
                 | <a href="./${links.topByVocabulariesCount}">Топ по числу используемых словарей</a>
                 | <a href="./${links.topByCarsCount}">Топ по числу машин в гараже</a>
                 | <a href="./${links.playersByRank}">Игроки по рангам</a>
+                <br/>
+                <a href="./2020-12-09/stats.html">Статистика от 02.09.2012</a>
             </td>
             <td class="header-right">
                 <form action="https://www.paypal.com/donate" method="post" target="_top">

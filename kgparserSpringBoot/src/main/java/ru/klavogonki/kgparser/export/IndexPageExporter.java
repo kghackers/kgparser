@@ -22,6 +22,8 @@ public class IndexPageExporter implements DataExporter {
 
     private static final int EXAMPLE_PLAYER_ID = 242585; // nosferatum :)
 
+    private static final int TOP_1_BY_RATING_EXPERIENCE_IN_ONE_MONTH_PLAYER_ID = 379843; // iforrest, see https://klavogonki.ru/forum/software/59/page6/#post116
+
     @Autowired
     private PlayerRepository playerRepository;
 
@@ -109,6 +111,11 @@ public class IndexPageExporter implements DataExporter {
         PlayerEntity top1PlayerByCarsCount = playerRepository.findTopByOrderByCarsCountDesc();
         logger.debug("Top 1 player by cars count: {}", top1PlayerByCarsCount);
 
+        PlayerEntity top1PlayerByRatingExperienceInOneMonth = playerRepository.findByPlayerId(TOP_1_BY_RATING_EXPERIENCE_IN_ONE_MONTH_PLAYER_ID)
+            .orElseThrow(() -> new IllegalStateException(String.format("Player with playerId = %d is not found.", TOP_1_BY_RATING_EXPERIENCE_IN_ONE_MONTH_PLAYER_ID)));
+
+        logger.debug("Top 1 player by rating experience in one month: {}", top1PlayerByRatingExperienceInOneMonth);
+
         String indexPageFilePath = PageUrls.getIndexPageFilePath(context.webRootDir);
 
         new IndexPageTemplate()
@@ -122,6 +129,7 @@ public class IndexPageExporter implements DataExporter {
             .examplePlayerProfileLink(UrlConstructor.userProfileLink(EXAMPLE_PLAYER_ID))
             .examplePlayerGetSummaryUrl(UrlConstructor.getSummary(EXAMPLE_PLAYER_ID))
             .examplePlayerGetIndexDataUrl(UrlConstructor.getIndexData(EXAMPLE_PLAYER_ID))
+            .examplePlayerGetStatsOverviewUrl(UrlConstructor.getStatsOverview(EXAMPLE_PLAYER_ID))
 
             // global players metrics
             .minExistingPlayerId(minExistingPlayerId)
@@ -155,6 +163,7 @@ public class IndexPageExporter implements DataExporter {
             .top1PlayerByFriendsCount(top1PlayerByFriendsCount)
             .top1PlayerByVocabulariesCount(top1PlayerByVocabulariesCount)
             .top1PlayerByCarsCount(top1PlayerByCarsCount)
+            .top1PlayerByRatingExperienceInOneMonth(top1PlayerByRatingExperienceInOneMonth)
 
             .export(indexPageFilePath);
     }

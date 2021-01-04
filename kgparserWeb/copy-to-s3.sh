@@ -16,3 +16,4 @@ aws s3 cp ./src/main/webapp/ s3://$BUCKET_NAME --profile=$AWS_PROFILE --recursiv
 #aws s3 cp ./src/main/webapp/_vocabularies_by_total_races_count.html s3://$BUCKET_NAME --profile=$AWS_PROFILE
 #aws s3 cp ./src/main/webapp/_vocabularies_by_total_players_count.html s3://$BUCKET_NAME --profile=$AWS_PROFILE
 #aws s3 cp ./src/main/webapp/error.html s3://$BUCKET_NAME --profile=$AWS_PROFILE
+#aws s3 cp ./src/main/webapp/2012-12-09/stats.html s3://$BUCKET_NAME/2012-12-09/stats.html --profile=$AWS_PROFILE
