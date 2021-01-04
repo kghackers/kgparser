@@ -12,7 +12,7 @@
     <div class="section">
         <h2>
             Топ-${players?size} по числу достижений
-            <a class="excel" href="./${links.topByAchievementsCountZip}"><img src="img/excel.png" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (в архиве)</a>
+            <a class="excel" href="./${links.topByAchievementsCountZip}"><img src="${links.excelPng}" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (в архиве)</a>
         </h2>
     </div>
 

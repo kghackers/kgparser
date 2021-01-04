@@ -48,8 +48,10 @@ public class PageUrls {
     public static final String TOP_BY_CARS_COUNT_ZIP = "xlsx/stat-top-by-cars-count.zip";
 
     // css files and images
-    public static final String STATS_CSS = "/css/stats.css";
-    public static final String FAVICON_ICO = "/img/favicon/favicon.ico";
+    public static final String STATS_CSS = "./css/stats.css";
+    public static final String FAVICON_ICO = "./img/favicon/favicon.ico";
+    public static final String EXCEL_PNG = "./img/excel.png";
+    public static final String INFO_PNG = "./img/info.png";
 
     // js files
     // Chart.js
@@ -57,10 +59,10 @@ public class PageUrls {
     public static final String CHART_JS = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js";
     public static final String CHART_JS_INTEGRITY = "sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==";
 
-    public static final String PLAYERS_BY_RANK_CHART_JS = "js/players-by-rank-chart.js";
-    public static final String PLAYERS_BY_RANK_DATA_JS = "js/players-by-rank-data.js";
-    public static final String TOP_TABLE_JS = "js/stats-top-table.js";
-    public static final String TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS = "js/stat-top-by-best-speed-login-to-page.js";
+    public static final String PLAYERS_BY_RANK_CHART_JS = "./js/players-by-rank-chart.js";
+    public static final String PLAYERS_BY_RANK_DATA_JS = "./js/players-by-rank-data.js";
+    public static final String TOP_TABLE_JS = "./js/stats-top-table.js";
+    public static final String TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS = "./js/stat-top-by-best-speed-login-to-page.js";
 
     public static String getIndexPageFilePath(final String rootDir) {
         return rootDir + "/" + INDEX;

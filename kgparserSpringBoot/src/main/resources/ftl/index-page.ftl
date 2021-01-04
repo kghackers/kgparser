@@ -97,7 +97,7 @@
         <h2>Действующие игроки по рангам</h2>
 
         <div id="playersByRank-switcher-wrapper" class="paging left">
-            <span id="playersByRank-switcher-container"></span>&nbsp;&nbsp;&nbsp;<a href="./${links.playersByRank}">Страница с выбором диапазона</a>
+            <span id="playersByRank-switcher-container"></span>&nbsp;&nbsp;&nbsp;<a href="${links.playersByRank}">Страница с выбором диапазона</a>
         </div>
 
         <div id="playersByRank-single-chart-wrapper" class="flexWrap">
@@ -212,7 +212,7 @@
 
 <!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
 <script src="${links.chartJs}" integrity="${links.chartJsIntegrity}" crossorigin="anonymous"></script>
-<script src="./${links.playersByRankChartJs}"></script>
+<script src="${links.playersByRankChartJs}"></script>
 <script>
     window.addEventListener('load', function () {
         const playersByRankWithAtLeast1Race = ${playersByRankWithAtLeast1Race};

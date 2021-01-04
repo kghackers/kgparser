@@ -12,7 +12,7 @@
     <div class="section">
         <h2>
             Топ по лучшей скорости в &laquo;Обычном&raquo;
-            <a class="excel" href="./${links.topByBestSpeedAllPagesZip}"><img src="img/excel.png" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>
+            <a class="excel" href="./${links.topByBestSpeedAllPagesZip}"><img src="${links.excelPng}" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>
         </h2>
         Учтены игроки с минимальным общим пробегом: ${totalRacesCountMin}
     </div>
@@ -66,8 +66,8 @@
     <div class="paging" id="paging-bottom"></div>
 </main>
 
-<script src="./${links.topTableJs}"></script>
-<script src="./${links.topByBestSpeedLoginToPageJs}"></script>
+<script src="${links.topTableJs}"></script>
+<script src="${links.topByBestSpeedLoginToPageJs}"></script>
 
 <script>
     window.addEventListener('load', function() {

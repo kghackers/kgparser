@@ -37,8 +37,8 @@
 
 <!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
 <script src="${links.chartJs}" integrity="${links.chartJsIntegrity}" crossorigin="anonymous"></script>
-<script src="./${links.playersByRankChartJs}"></script>
-<script src="./${links.playersByRankDataJs}"></script>
+<script src="${links.playersByRankChartJs}"></script>
+<script src="${links.playersByRankDataJs}"></script>
 <script>
     const MIN_TOTAL_RACES_COUNT = ${minTotalRacesCount};
     const MAX_TOTAL_RACES_COUNT = ${maxTotalRacesCount};

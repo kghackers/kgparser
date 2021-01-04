@@ -49,6 +49,8 @@ public class Links {
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;
     private String faviconIco = PageUrls.FAVICON_ICO;
+    private String excelPng = PageUrls.EXCEL_PNG;
+    private String infoPng = PageUrls.INFO_PNG;
 
     // js files
     private String chartJs = PageUrls.CHART_JS;
