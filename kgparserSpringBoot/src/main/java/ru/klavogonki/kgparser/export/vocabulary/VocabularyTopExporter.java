@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
 import ru.klavogonki.kgparser.excel.VocabularyTopByBestSpeedExcelTemplate;
+import ru.klavogonki.kgparser.excel.VocabularyTopByRacesCountExcelTemplate;
 import ru.klavogonki.kgparser.export.DataExporter;
 import ru.klavogonki.kgparser.export.ExportContext;
 import ru.klavogonki.kgparser.export.ExporterUtils;
@@ -221,7 +222,7 @@ public interface VocabularyTopExporter extends DataExporter {
 
         exportTopByRacesCountLoginToPageJs(context, loginToPage);
 
-//        exportTopByRacesCountToExcel(context, dtos);
+        exportTopByRacesCountToExcel(context, dtos);
     }
 
 
@@ -249,13 +250,24 @@ public interface VocabularyTopExporter extends DataExporter {
             .export(loginToPageFilePath);
     }
 
-    private void exportTopByBestSpeedToExcel(final ExportContext context, final List<PlayerVocabularyDto> dtosByBestSpeed) {
+
+    private void exportTopByBestSpeedToExcel(final ExportContext context, final List<PlayerVocabularyDto> dtos) {
         // export all pages to Excel and Excel zip
         new VocabularyTopByBestSpeedExcelTemplate(topByBestSpeedExcelSheetName())
-            .players(dtosByBestSpeed)
+            .players(dtos)
             .export(
                 PageUrls.getPath(context, topByBestSpeedExcelFilePath()),
                 PageUrls.getPath(context, topByBestSpeedExcelZipFilePath())
+            );
+    }
+
+    private void exportTopByRacesCountToExcel(final ExportContext context, final List<PlayerVocabularyDto> dtos) {
+        // export all pages to Excel and Excel zip
+        new VocabularyTopByRacesCountExcelTemplate(topByRacesCountExcelSheetName())
+            .players(dtos)
+            .export(
+                PageUrls.getPath(context, topByRacesCountExcelFilePath()),
+                PageUrls.getPath(context, topByRacesCountExcelZipFilePath())
             );
     }
 }
