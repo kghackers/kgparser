@@ -18,6 +18,7 @@ public class ExampleTemplate extends FreemarkerTemplate {
     @Override
     public void export(final String filePath) {
         templateData.put("testInteger", 123456789);
+        templateData.put("testDouble", 222.265);
 
         PlayerEntity player = new PlayerEntity();
         player.setLogin("nosferatum");

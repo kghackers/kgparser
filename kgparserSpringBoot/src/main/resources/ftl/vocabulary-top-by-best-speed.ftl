@@ -57,8 +57,8 @@
                     <#--                    <td>${player.registered?string["yyyy-MM-dd HH:mm:ss"]}</td>-->
 <#--                    <td>${player.registered}</td>-->
 
-                    <td class="right">${player.averageSpeed}</td>
-                    <td class="right">${player.averageError}</td>
+                    <td class="right">${player.averageSpeed?string(",##0.00;; decimalSeparator=\",\"")}</td> <#-- 2 decimal, with rounding, comma as decimal separator -->
+                    <td class="right">${player.averageError?string(",##0.00;; decimalSeparator=\",\"")}</td> <#-- 2 decimal, with rounding, comma as decimal separator -->
                     <td class="right">${player.qual}</td>
                     <td class="right">${player.haul}</td>
                     <td class="right">${player.updated}</td>
