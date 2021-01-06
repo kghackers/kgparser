@@ -233,7 +233,7 @@ public class ExcelExporter {
 
                 column.formatCell(context);
 
-                logger.debug("Added player \"{}\" column {} header to row {}, column {}.", player.getLogin(), column.getColumnName(), rowNumber, columnNumber);
+                logger.debug("Added player \"{}\" column \"{}\" to row {}, column {}.", player.getLogin(), column.getColumnName(), rowNumber, columnNumber);
             }
 
             rowNumber++;
