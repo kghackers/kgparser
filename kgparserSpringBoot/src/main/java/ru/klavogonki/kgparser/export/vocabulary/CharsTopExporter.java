@@ -32,21 +32,35 @@ public class CharsTopExporter implements VocabularyTopExporter {
     public String topByBestSpeedPageTitle() {
         return "Топ по лучшей скорости в «Буквах»";
     }
-
     @Override
     public String topByBestSpeedHeader() {
         return "Топ по лучшей скорости в «Буквах»";
     }
-
     @Override
     public String topByBestSpeedAdditionalHeader() {
         return String.format("Учтены игроки с минимальным пробегом %d в «Буквах»", RACES_COUNT_MIN);
     }
-
     @Override
     public String topByBestSpeedExcelSheetName() {
 //        return "Топ по лучшей скорости в «Буквах»"; // 33 characters, too long
         return "Топ по скорости в «Буквах»";
+    }
+
+    @Override
+    public String topByRacesCountPageTitle() {
+        return "Топ по пробегу в «Буквах»";
+    }
+    @Override
+    public String topByRacesCountHeader() {
+        return "Топ по пробегу в «Буквах»";
+    }
+    @Override
+    public String topByRacesCountAdditionalHeader() {
+        return String.format("Учтены игроки с минимальным пробегом %d в «Буквах»", RACES_COUNT_MIN);
+    }
+    @Override
+    public String topByRacesCountExcelSheetName() {
+        return "Топ по пробегу в «Буквах»";
     }
 
     @Override
