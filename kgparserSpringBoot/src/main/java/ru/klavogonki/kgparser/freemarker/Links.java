@@ -1,6 +1,8 @@
 package ru.klavogonki.kgparser.freemarker;
 
 import lombok.Data;
+import ru.klavogonki.kgparser.export.ExporterUtils;
+import ru.klavogonki.kgparser.export.vocabulary.CharsTopExporter;
 
 /**
  * Object with page and files urls to pass to FreeMarker templates.
@@ -45,6 +47,9 @@ public class Links {
     private String topByCarsCountZip = PageUrls.TOP_BY_CARS_COUNT_ZIP;
 
     private String playersByRank = PageUrls.PLAYER_BY_RANK;
+
+    // vocabularies landing pages
+    private String charsTopBySpeedPage1 = new CharsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
 
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;
