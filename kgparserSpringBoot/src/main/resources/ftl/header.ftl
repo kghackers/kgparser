@@ -18,7 +18,7 @@
                 | <a href="./${links.playersByRank}">Игроки по рангам</a>
                 <br/>
                 <#-- todo: colors of standard vocabularies -->
-                <a href="./${links.charsTopBySpeedPage1}">Буквы</a>
+                <a href="./${links.charsTopBySpeedPage1}" class="chars">Буквы</a>
                 <br/>
                 <a href="./2020-12-09/stats.html">Статистика от 02.09.2012</a>
             </td>
