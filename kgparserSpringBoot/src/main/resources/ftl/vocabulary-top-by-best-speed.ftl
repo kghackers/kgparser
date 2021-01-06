@@ -12,8 +12,7 @@
     <div class="section">
         <h2>
             ${header}
-            <#-- todo: link to excel must be gotten from parameter -->
-            <a class="excel" href="./${links.topByBestSpeedAllPagesZip}"><img src="${links.excelPng}" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>
+            <a class="excel" href="${excelZipUrl}"><img src="${links.excelPng}" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>
         </h2>
         ${additionalHeader}
     </div>

@@ -140,6 +140,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .players(playersOnPage)
                 .loginToPageJsPath(topByBestSpeedLoginToPageFilePath()) // relative path
                 .pageUrlTemplate(topByBestSpeedPageFileTemplate()) // to fill paging links in js
+                .excelZipUrl(topByBestSpeedExcelZipFilePath())
                 .export(topBySpeedPageFilePath);
 
             getLogger().debug("Top by best speed: Exported page {}/{}.", pageNumber, totalPagesByBestSpeed);
