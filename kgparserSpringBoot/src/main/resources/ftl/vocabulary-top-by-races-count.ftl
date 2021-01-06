@@ -10,6 +10,11 @@
 <#include "./header.ftl">
 <main>
     <div class="section">
+        <a href="${topByBestSpeedUrl}">Топ по лучшей скорости</a>&nbsp;&nbsp;&nbsp;
+        <a href="${topByRacesCountUrl}">Топ по пробегу</a>&nbsp;&nbsp;&nbsp;
+        <a href="${topByHaulUrl}">Топ по времени</a>&nbsp;&nbsp;&nbsp;
+    </div>
+    <div class="section">
         <h2>
             ${header}
             <a class="excel" href="${excelZipUrl}"><img src="${links.excelPng}" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>

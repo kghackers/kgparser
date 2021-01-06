@@ -107,8 +107,11 @@ public interface VocabularyTopExporter extends DataExporter {
         return String.format("./xlsx/voc-%s-top-by-races-count.zip", getVocabularyCode());
     }
 
-    default String topByHaulFilePath(final int pageNumber) {
+    default String topByHaulPageFilePath(final int pageNumber) {
         return String.format("./voc-%s-top-by-haul-page-%d.html", getVocabularyCode(), pageNumber);
+    }
+    default String topByHaulPageFileTemplate() { // for js paging
+        return String.format("./voc-%s-top-by-haul-page-${%s}.html", getVocabularyCode(), PAGE_NUMBER_JS_TEMPLATE_VARIABLE);
     }
     default String topByHaulLoginToPageFilePath() {
         return String.format("./js/voc-%s-top-by-haul-login-to-page.js", getVocabularyCode());
@@ -167,6 +170,9 @@ public interface VocabularyTopExporter extends DataExporter {
                 .loginToPageJsPath(topByBestSpeedLoginToPageFilePath()) // relative path
                 .pageUrlTemplate(topByBestSpeedPageFileTemplate()) // to fill paging links in js
                 .excelZipUrl(topByBestSpeedExcelZipFilePath())
+                .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
+                .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
+                .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .export(pageFilePath);
 
             getLogger().debug("Top by best speed: Exported page {}/{}.", pageNumber, totalPages);
@@ -215,6 +221,9 @@ public interface VocabularyTopExporter extends DataExporter {
                 .loginToPageJsPath(topByRacesCountLoginToPageFilePath()) // relative path
                 .pageUrlTemplate(topByRacesCountPageFileTemplate()) // to fill paging links in js
                 .excelZipUrl(topByRacesCountExcelZipFilePath())
+                .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
+                .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
+                .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .export(pageFilePath);
 
             getLogger().debug("Top by races count: Exported page {}/{}.", pageNumber, totalPages);

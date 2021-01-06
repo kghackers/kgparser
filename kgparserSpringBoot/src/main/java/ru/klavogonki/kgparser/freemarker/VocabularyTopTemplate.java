@@ -16,6 +16,9 @@ public abstract class VocabularyTopTemplate extends FreemarkerTemplate {
     private static final String LOGIN_TO_PAGE_JS_PATH_KEY = "loginToPageJsPath";
     private static final String PAGE_URL_TEMPLATE_PATH_KEY = "pageUrlTemplate";
     private static final String EXCEL_ZIP_URL_KEY = "excelZipUrl";
+    private static final String TOP_BY_BEST_SPEED_URL = "topByBestSpeedUrl";
+    private static final String TOP_BY_RACES_COUNT_URL = "topByRacesCountUrl";
+    private static final String TOP_BY_HAUL_URL = "topByHaulUrl";
 
     public VocabularyTopTemplate pageTitle(String pageTitle) {
         templateData.put(PAGE_TITLE_KEY, pageTitle);
@@ -67,6 +70,21 @@ public abstract class VocabularyTopTemplate extends FreemarkerTemplate {
 
     public VocabularyTopTemplate excelZipUrl(String excelZipUrl) {
         templateData.put(EXCEL_ZIP_URL_KEY, excelZipUrl);
+        return this;
+    }
+
+    public VocabularyTopTemplate topByBestSpeedUrl(String topByBestSpeedUrl) {
+        templateData.put(TOP_BY_BEST_SPEED_URL, topByBestSpeedUrl);
+        return this;
+    }
+
+    public VocabularyTopTemplate topByRacesCountUrl(String topByRacesCountUrl) {
+        templateData.put(TOP_BY_RACES_COUNT_URL, topByRacesCountUrl);
+        return this;
+    }
+
+    public VocabularyTopTemplate topByHaulUrl(String topByHaulUrl) {
+        templateData.put(TOP_BY_HAUL_URL, topByHaulUrl);
         return this;
     }
 }
