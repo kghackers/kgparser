@@ -21,6 +21,7 @@ import java.util.function.Function;
 public interface PlayerVocabularyDtoMapper {
 
     // fields from PlayerEntity
+    @Mapping(source = "player.playerId", target = "playerId")
     @Mapping(source = "player.login", target = "login")
     @Mapping(source = "player.rankLevel", target = "rank")
     @Mapping(source = "player.blocked", target = "blocked")
@@ -30,12 +31,14 @@ public interface PlayerVocabularyDtoMapper {
 
     // fields from PlayerVocabularyStatsEntity
     @Mapping(source = "haul", target = "haul", qualifiedByName = "haulConverter")
+    @Mapping(source = "updated", target = "updatedDateTime")
+    @Mapping(source = "updated", target = "updated")
     PlayerVocabularyDto entityToDto(PlayerVocabularyStatsEntity entity);
 
     List<PlayerVocabularyDto> entitiesToDtos(List<PlayerVocabularyStatsEntity> entities, @Context Function<PlayerVocabularyDto, Integer> orderCriteriaGetter);
 
-    default String localDateTimeToString(LocalDateTime registered) {
-        return DateUtils.formatDateTimeForUi(registered);
+    default String localDateTimeToString(LocalDateTime localDateTime) {
+        return DateUtils.formatDateTimeForUi(localDateTime);
     }
 
     default Rank rankLevelToRank(Integer rankLevel) {

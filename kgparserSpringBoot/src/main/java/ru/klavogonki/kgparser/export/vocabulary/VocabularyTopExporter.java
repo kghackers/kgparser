@@ -3,6 +3,7 @@ package ru.klavogonki.kgparser.export.vocabulary;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
+import ru.klavogonki.kgparser.excel.VocabularyTopByBestSpeedExcelTemplate;
 import ru.klavogonki.kgparser.export.DataExporter;
 import ru.klavogonki.kgparser.export.ExportContext;
 import ru.klavogonki.kgparser.export.ExporterUtils;
@@ -43,8 +44,12 @@ public interface VocabularyTopExporter extends DataExporter {
         return "DEFAULT_TOP_BY_BEST_SPEED_PAGE_ADDITIONAL_HEADER";
     }
 
-    // todo: pageTitle, header, additional header for topByRacesCount
-    // todo: pageTitle, header, additional header for topByHaul
+    default String topByBestSpeedExcelSheetName() { // Excel sheet name, may be shorter as html header because of 31 chars limit
+        return "DEFAULT_TOP_BY_BEST_SPEED_EXCEL_SHEET_NAME";
+    }
+
+    // todo: pageTitle, header, additional header, excelSheetName for topByRacesCount
+    // todo: pageTitle, header, additional header, excelSheetName for topByHaul
 
     default List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed() {
         return Collections.emptyList();
@@ -156,7 +161,13 @@ public interface VocabularyTopExporter extends DataExporter {
             .loginToPageString(loginToPageString)
             .export(loginToPageFilePath);
 
-        // todo: export toExcel
+        // export all pages to Excel and Excel zip
+        new VocabularyTopByBestSpeedExcelTemplate(topByBestSpeedExcelSheetName())
+            .players(dtosByBestSpeed)
+            .export(
+                PageUrls.getPath(context, topByBestSpeedExcelFilePath()),
+                PageUrls.getPath(context, topByBestSpeedExcelZipFilePath())
+            );
 
         // todo: top by racesCount
         // todo: top by haul

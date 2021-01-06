@@ -4,7 +4,7 @@ import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 
 import java.util.function.Function;
 
-public class VocabulariesCountColumn implements IntegerColumn {
+public class VocabulariesCountColumn implements IntegerColumn<PlayerDto> {
 
     @Override
     public String getColumnName() {

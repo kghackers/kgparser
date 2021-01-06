@@ -1,25 +1,25 @@
 package ru.klavogonki.kgparser.excel.player;
 
 import ru.klavogonki.kgparser.excel.ExcelExportContext;
-import ru.klavogonki.kgparser.excel.data.OrderNumberExcelData;
+import ru.klavogonki.kgparser.jsonParser.dto.PlayerVocabularyDto;
 
 import java.util.function.Function;
 
-public class OrderNumberColumn<D extends OrderNumberExcelData> implements PlayerColumn<D, String> {
+public class HaulColumn implements PlayerColumn<PlayerVocabularyDto, String> { // todo: generalize type to interface with #getHaul when required
 
     @Override
     public String getColumnName() {
-        return "#";
+        return "Общее время";
     }
 
     @Override
     public int getColumnWidth() {
-        return 4000;
+        return 6000;
     }
 
     @Override
-    public Function<D, String> playerFieldGetter() {
-        return OrderNumberExcelData::getOrderNumber;
+    public Function<PlayerVocabularyDto, String> playerFieldGetter() {
+        return PlayerVocabularyDto::getHaul;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class OrderNumberColumn<D extends OrderNumberExcelData> implements Player
     }
 
     @Override
-    public void formatCell(final ExcelExportContext<D> context) {
+    public void formatCell(final ExcelExportContext<PlayerVocabularyDto> context) {
         context.setTextAlignRightStyle();
 
         PlayerColumn.super.setCellValue(context); // call default method of the given interface

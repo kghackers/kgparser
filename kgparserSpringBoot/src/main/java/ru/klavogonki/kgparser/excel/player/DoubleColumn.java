@@ -3,7 +3,7 @@ package ru.klavogonki.kgparser.excel.player;
 import ru.klavogonki.kgparser.excel.ExcelExportContext;
 import ru.klavogonki.kgparser.excel.data.ExcelExportContextData;
 
-public interface IntegerColumn<D extends ExcelExportContextData> extends PlayerColumn<D, Integer> {
+public interface DoubleColumn<D extends ExcelExportContextData> extends PlayerColumn<D, Double> {
 
     @Override
     default int getColumnWidth() {
@@ -12,25 +12,25 @@ public interface IntegerColumn<D extends ExcelExportContextData> extends PlayerC
 
     @Override
     default void setCellFormat(final ExcelExportContext<D> context) {
-        context.setIntegerStyle();
+        context.setDoubleStyle();
     }
 
     @Override
     default void formatCell(ExcelExportContext<D> context) {
-        Integer value = getValue(context.player);
+        Double value = getValue(context.player);
 
         if (value == null) {
             context.setTextAlignRightStyle(); // align right to be consistent with number values
             context.cell.setCellValue("—");
         }
         else {
-            context.setIntegerStyle();
+            context.setDoubleStyle();
             context.cell.setCellValue(value);
         }
     }
 
     @Override
-    default Class<Integer> fieldClass() {
-        return Integer.class;
+    default Class<Double> fieldClass() {
+        return Double.class;
     }
 }

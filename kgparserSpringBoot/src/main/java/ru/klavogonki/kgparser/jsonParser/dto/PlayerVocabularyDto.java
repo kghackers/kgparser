@@ -2,7 +2,11 @@ package ru.klavogonki.kgparser.jsonParser.dto;
 
 import lombok.Data;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.excel.data.ExcelExportContextData;
+import ru.klavogonki.kgparser.excel.data.OrderNumberExcelData;
 import ru.klavogonki.kgparser.freemarker.OrderUtils;
+
+import java.time.LocalDateTime;
 
 /**
  * Объект для строки игрока в топах по словарям.
@@ -11,7 +15,11 @@ import ru.klavogonki.kgparser.freemarker.OrderUtils;
  * @see ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity
  */
 @Data
-public class PlayerVocabularyDto implements OrderUtils.OrderNumberDto {
+public class PlayerVocabularyDto
+    implements OrderUtils.OrderNumberDto,
+    ExcelExportContextData,
+    OrderNumberExcelData
+{
 
     /**
      * Порядковый номер в таблице результатов.
@@ -55,6 +63,9 @@ public class PlayerVocabularyDto implements OrderUtils.OrderNumberDto {
     // string since Java8 Date/Time formatting does not work in Freemarker
     // see https://stackoverflow.com/questions/32063276/java-time-java-8-support-in-freemarker
     private String updated; // Время апдейта результата игроков по словарю. Московское время.
+
+    // exact value of PlayerVocabularyStatsEntity#updated, for Excel
+    private LocalDateTime updatedDateTime;
 
     private Boolean bookDone; // пройдена ли книга. Заполнено только для словарей-книг.
 }

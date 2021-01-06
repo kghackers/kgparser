@@ -3,12 +3,12 @@ package ru.klavogonki.kgparser.excel.player;
 import lombok.extern.log4j.Log4j2;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.excel.ExcelExportContext;
-import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
+import ru.klavogonki.kgparser.excel.data.ExcelExportContextData;
 
 import java.util.function.Function;
 
 @Log4j2
-public class LoginColumn implements PlayerColumn<String> {
+public class LoginColumn<D extends ExcelExportContextData> implements PlayerColumn<D, String> {
 
     @Override
     public String getColumnName() {
@@ -21,8 +21,8 @@ public class LoginColumn implements PlayerColumn<String> {
     }
 
     @Override
-    public Function<PlayerDto, String> playerFieldGetter() {
-        return PlayerDto::getLogin;
+    public Function<D, String> playerFieldGetter() {
+        return ExcelExportContextData::getLogin;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class LoginColumn implements PlayerColumn<String> {
     }
 
     @Override
-    public void formatCell(final ExcelExportContext context) {
+    public void formatCell(final ExcelExportContext<D> context) {
         Rank rank = context.player.getRank();
         if (rank == null) {
             logger.warn("Player with id = {}, login = \"{}\" has no rank. Cannot define text color for this player.", context.player.getPlayerId(), context.player.getLogin());

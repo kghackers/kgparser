@@ -2,13 +2,13 @@ package ru.klavogonki.kgparser.excel.player;
 
 import lombok.extern.log4j.Log4j2;
 import ru.klavogonki.kgparser.excel.ExcelExportContext;
+import ru.klavogonki.kgparser.excel.data.ExcelExportContextData;
 import ru.klavogonki.kgparser.http.UrlConstructor;
-import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 
 import java.util.function.Function;
 
 @Log4j2
-public class ProfileLinkColumn implements PlayerColumn<String> {
+public class ProfileLinkColumn<D extends ExcelExportContextData> implements PlayerColumn<D, String> {
 
     @Override
     public String getColumnName() {
@@ -21,8 +21,8 @@ public class ProfileLinkColumn implements PlayerColumn<String> {
     }
 
     @Override
-    public Function<PlayerDto, String> playerFieldGetter() {
-        return PlayerDto::getProfileLink;
+    public Function<D, String> playerFieldGetter() {
+        return ExcelExportContextData::getProfileLink;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ProfileLinkColumn implements PlayerColumn<String> {
     }
 
     @Override
-    public void formatCell(final ExcelExportContext context) {
+    public void formatCell(final ExcelExportContext<D> context) {
         Integer playerId = context.player.getPlayerId();
         if (playerId == null) {
             logger.warn("Player with id = {}, login = \"{}\" has no playerId. Cannot add a hyperlink to this player.", playerId, context.player.getLogin());

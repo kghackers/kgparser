@@ -4,7 +4,7 @@ import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 
 import java.util.function.Function;
 
-public class TotalRacesCountColumn implements IntegerColumn {
+public class TotalRacesCountColumn implements IntegerColumn<PlayerDto> {
 
     @Override
     public String getColumnName() {

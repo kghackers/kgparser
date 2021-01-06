@@ -44,6 +44,12 @@ public class CharsTopExporter implements VocabularyTopExporter {
     }
 
     @Override
+    public String topByBestSpeedExcelSheetName() {
+//        return "Топ по лучшей скорости в «Буквах»"; // 33 characters, too long
+        return "Топ по скорости в «Буквах»";
+    }
+
+    @Override
     public List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed() {
         List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanOrderByBestSpeedDesc(getVocabularyCode(), RACES_COUNT_MIN);
         logger.debug("Total players by best speed, min total races = {}: {}", RACES_COUNT_MIN, players.size());
