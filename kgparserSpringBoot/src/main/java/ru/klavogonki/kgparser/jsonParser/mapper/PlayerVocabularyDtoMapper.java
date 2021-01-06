@@ -1,0 +1,47 @@
+package ru.klavogonki.kgparser.jsonParser.mapper;
+
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Context;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.freemarker.OrderUtils;
+import ru.klavogonki.kgparser.jsonParser.dto.PlayerVocabularyDto;
+import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
+import ru.klavogonki.kgparser.util.DateUtils;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.function.Function;
+
+@Mapper
+public interface PlayerVocabularyDtoMapper {
+
+    // fields from PlayerEntity
+    @Mapping(source = "player.login", target = "login")
+    @Mapping(source = "player.rankLevel", target = "rank")
+    @Mapping(source = "player.blocked", target = "blocked")
+    @Mapping(source = "player.registered", target = "registered")
+    @Mapping(source = "player.ratingLevel", target = "ratingLevel")
+    @Mapping(source = "player.profileLink", target = "profileLink")
+
+    // fields from PlayerVocabularyStatsEntity
+    // todo: map haul to a formatted string
+    PlayerVocabularyDto entityToDto(PlayerVocabularyStatsEntity entity);
+
+    List<PlayerVocabularyDto> entitiesToDtos(List<PlayerVocabularyStatsEntity> entities, @Context Function<PlayerVocabularyDto, Integer> orderCriteriaGetter);
+
+    default String localDateTimeToString(LocalDateTime registered) {
+        return DateUtils.formatDateTimeForUi(registered);
+    }
+
+    default Rank rankLevelToRank(Integer rankLevel) {
+        return Rank.getRank(rankLevel);
+    }
+
+    @AfterMapping
+    default void fillOrderNumbers(List<PlayerVocabularyStatsEntity> source, @MappingTarget List<PlayerVocabularyDto> target, @Context Function<PlayerVocabularyDto, Integer> orderCriteriaGetter) {
+        OrderUtils.fillOrderNumbers(target, orderCriteriaGetter);
+    }
+}

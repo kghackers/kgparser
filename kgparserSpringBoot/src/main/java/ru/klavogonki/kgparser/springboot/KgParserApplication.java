@@ -17,6 +17,7 @@ import ru.klavogonki.kgparser.export.IndexPageExporter;
 import ru.klavogonki.kgparser.export.PlayersByRankExporter;
 import ru.klavogonki.kgparser.export.Top500PagesExporter;
 import ru.klavogonki.kgparser.export.TopBySpeedExporter;
+import ru.klavogonki.kgparser.export.vocabulary.CharsTopExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
@@ -58,6 +59,9 @@ public class KgParserApplication implements CommandLineRunner {
 	@Autowired
 	private PlayersByRankExporter playersByRankExporter;
 
+	@Autowired
+	private CharsTopExporter charsTopExporter;
+
 	// todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
 	private final PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -73,14 +77,14 @@ public class KgParserApplication implements CommandLineRunner {
 	@Override
 	public void run(final String... args) {
 		// todo: parse context from args of from json file given by args
-		// ExportContext context = new ExportContext();
-		// context.webRootDir = "C:/java/kgparser/kgparserWeb/src/main/webapp/";
+		ExportContext context = new ExportContext();
+		context.webRootDir = "C:/java/kgparser/kgparserWeb/src/main/webapp/";
 
 		// data load from 2020-12-28
-		// context.minPlayerId = 1;
-		// context.maxPlayerId = 628000;
-		// context.dataDownloadStartDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 00:28:13");
-		// context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 01:44:43");
+		context.minPlayerId = 1;
+		context.maxPlayerId = 628000;
+		context.dataDownloadStartDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 00:28:13");
+		context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 01:44:43");
 
 /*
 		// data load from 2020-12-09
@@ -93,31 +97,36 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: select mode (what to do) by arguments
 		// todo: add an option to skip Excel import
 
+		charsTopExporter.export(context);
+		if (true) {
+			return;
+		}
+
+		playersByRankExporter.export(context);
 /*
 		if (true) {
 			return;
 		}
 */
 
-		// playersByRankExporter.export(context);
-		// if (true) {
-		// 	return;
-		// }
+		top500PagesExporter.export(context);
+/*
+		if (true) {
+			return;
+		}
+*/
 
-		// top500PagesExporter.export(context);
-		// if (true) {
-		// 	return;
-		// }
+		indexPageExporter.export(context);
+/*
+		if (true) {
+			return;
+		}
+*/
 
-		// indexPageExporter.export(context);
-		// if (true) {
-		// 	return;
-		// }
-
-		// topBySpeedExporter.export(context);
-		// if (true) {
-		// 	return;
-		// }
+		topBySpeedExporter.export(context);
+		if (true) {
+			return;
+		}
 
 
 		// todo: pass a path to a json file with config instead

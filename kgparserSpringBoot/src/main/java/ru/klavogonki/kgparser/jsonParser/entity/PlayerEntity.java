@@ -1,6 +1,7 @@
 package ru.klavogonki.kgparser.jsonParser.entity;
 
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.http.UrlConstructor;
@@ -18,13 +19,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "Player")
-public class PlayerEntity {
+public class PlayerEntity implements Serializable {
 
     @Id
 //    @GeneratedValue
@@ -86,6 +88,7 @@ public class PlayerEntity {
 
     private Integer carsCount;
 
+    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "player_id") // do not create a join table! // todo: it's hard for non-pk column, does not work easily. Investigate this
     List<PlayerVocabularyStatsEntity> stats;

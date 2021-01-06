@@ -2,11 +2,12 @@ package ru.klavogonki.kgparser.jsonParser.dto;
 
 import lombok.Data;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.freemarker.OrderUtils;
 
 import java.time.LocalDateTime;
 
 @Data
-public class PlayerDto { // object to use in Freemarker templates
+public class PlayerDto implements OrderUtils.OrderNumberDto { // object to use in Freemarker templates
 
     private String orderNumber; // to display in table
 
