@@ -5,7 +5,9 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.freemarker.HaulUtils;
 import ru.klavogonki.kgparser.freemarker.OrderUtils;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerVocabularyDto;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
@@ -27,7 +29,7 @@ public interface PlayerVocabularyDtoMapper {
     @Mapping(source = "player.profileLink", target = "profileLink")
 
     // fields from PlayerVocabularyStatsEntity
-    // todo: map haul to a formatted string
+    @Mapping(source = "haul", target = "haul", qualifiedByName = "haulConverter")
     PlayerVocabularyDto entityToDto(PlayerVocabularyStatsEntity entity);
 
     List<PlayerVocabularyDto> entitiesToDtos(List<PlayerVocabularyStatsEntity> entities, @Context Function<PlayerVocabularyDto, Integer> orderCriteriaGetter);
@@ -38,6 +40,11 @@ public interface PlayerVocabularyDtoMapper {
 
     default Rank rankLevelToRank(Integer rankLevel) {
         return Rank.getRank(rankLevel);
+    }
+
+    @Named("haulConverter")
+    default String haulConverter(Integer haul) {
+        return HaulUtils.format(haul);
     }
 
     @AfterMapping
