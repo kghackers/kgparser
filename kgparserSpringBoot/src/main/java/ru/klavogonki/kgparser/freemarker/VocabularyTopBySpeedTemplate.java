@@ -16,6 +16,7 @@ public class VocabularyTopBySpeedTemplate extends FreemarkerTemplate {
     private static final String PAGE_NUMBER_KEY = "pageNumber";
     private static final String PLAYERS_KEY = "players";
     private static final String LOGIN_TO_PAGE_JS_PATH_KEY = "loginToPageJsPath";
+    private static final String PAGE_URL_TEMPLATE_PATH_KEY = "pageUrlTemplate";
 
     @Override
     public String getTemplatePath() {
@@ -62,6 +63,11 @@ public class VocabularyTopBySpeedTemplate extends FreemarkerTemplate {
 
     public VocabularyTopBySpeedTemplate loginToPageJsPath(String loginToPageJsPath) {
         templateData.put(LOGIN_TO_PAGE_JS_PATH_KEY, loginToPageJsPath);
+        return this;
+    }
+
+    public VocabularyTopBySpeedTemplate pageUrlTemplate(String pageUrlTemplate) {
+        templateData.put(PAGE_URL_TEMPLATE_PATH_KEY, pageUrlTemplate);
         return this;
     }
 

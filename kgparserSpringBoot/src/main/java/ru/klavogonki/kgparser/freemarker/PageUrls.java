@@ -1,5 +1,7 @@
 package ru.klavogonki.kgparser.freemarker;
 
+import ru.klavogonki.kgparser.export.ExportContext;
+
 /**
  * Aggregates names/paths of all pages, so that we can pass them to FreeMarker templates
  * and change links in one place.
@@ -63,6 +65,24 @@ public class PageUrls {
     public static final String PLAYERS_BY_RANK_DATA_JS = "./js/players-by-rank-data.js";
     public static final String TOP_TABLE_JS = "./js/stats-top-table.js";
     public static final String TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS = "./js/stat-top-by-best-speed-login-to-page.js";
+
+    public static String getPath(final ExportContext context, final String relativePath) {
+        return getPath(context.webRootDir, relativePath);
+    }
+
+    public static String getPath(final String rootDir, final String relativePath) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(rootDir);
+
+        if (!relativePath.startsWith("/")) {
+            sb.append("/");
+        }
+
+        // todo: maybe remove "." from relativePath if every required
+        sb.append(relativePath);
+
+        return sb.toString();
+    }
 
     public static String getIndexPageFilePath(final String rootDir) {
         return rootDir + "/" + INDEX;

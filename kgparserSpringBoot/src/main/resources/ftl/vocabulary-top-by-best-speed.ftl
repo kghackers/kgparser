@@ -12,6 +12,7 @@
     <div class="section">
         <h2>
             ${header}
+            <#-- todo: link to excel must be gotten from parameter -->
             <a class="excel" href="./${links.topByBestSpeedAllPagesZip}"><img src="${links.excelPng}" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>
         </h2>
         ${additionalHeader}
@@ -34,6 +35,7 @@
                 <th>Рекорд</th> <#-- todo: maybe customize according to vocabulary name -->
                 <th>Пробег</th> <#-- todo: Пробег в словаре? -->
 <#--                <th>Зарегистрирован</th>-->
+
                 <th>Средняя</th>
                 <th>Ошибки</th>
                 <th>Квала</th>
@@ -83,6 +85,10 @@
         TopTable.highlightTableRow(login);
     });
 
+    function getPageUrl(pageNumber) {
+        return `${pageUrlTemplate}`;
+    }
+
     function appendPaging() {
         const paging = new Paging({
             totalPages: ${totalPages},
@@ -91,8 +97,9 @@
 
 <#noparse>
             getPagingLink: function(linkId, pageNumber) {
-                /* todo: must be passed from template as well! */
-                return `<a href="./stat-top-by-best-speed-page-${pageNumber}.html" id="${linkId}">${pageNumber}</a>${Paging.SPACE_SEPARATOR}`;
+                const pageUrl = getPageUrl(pageNumber);
+
+                return `<a href="${pageUrl}" id="${linkId}">${pageNumber}</a>${Paging.SPACE_SEPARATOR}`;
             }
         });
 
@@ -107,8 +114,9 @@
             searchMap: STATS_DATA.topBySpeedLoginToPage,
 
             handleSearch: function(login, pageNumber) {
-                /* todo: must be passed from template as well! */
-                const redirectUrl = `./stat-top-by-best-speed-page-${pageNumber}.html?${TopTable.LOGIN_PARAMETER}=${login}`;
+                const pageUrl = getPageUrl(pageNumber);
+
+                const redirectUrl = `${pageUrl}?${TopTable.LOGIN_PARAMETER}=${login}`;
                 // console.log(`redirectUrl: ${redirectUrl}`);
                 window.location.href = redirectUrl;
             }

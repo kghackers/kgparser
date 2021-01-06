@@ -6,7 +6,10 @@ import org.mapstruct.factory.Mappers;
 import ru.klavogonki.kgparser.export.DataExporter;
 import ru.klavogonki.kgparser.export.ExportContext;
 import ru.klavogonki.kgparser.export.ExporterUtils;
+import ru.klavogonki.kgparser.freemarker.PageUrls;
+import ru.klavogonki.kgparser.freemarker.VocabularyTopBySpeedLoginToPageTemplate;
 import ru.klavogonki.kgparser.freemarker.VocabularyTopBySpeedTemplate;
+import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerVocabularyDto;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerVocabularyDtoMapper;
@@ -17,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface VocabularyTopExporter extends DataExporter {
+
+    String PAGE_NUMBER_JS_TEMPLATE_VARIABLE = "pageNumber";
 
     String getVocabularyCode();
 
@@ -53,43 +58,46 @@ public interface VocabularyTopExporter extends DataExporter {
         return Collections.emptyList();
     }
 
-    default String topByBestSpeedPageFilePath(final String rootDir, final int pageNumber) {
-        return String.format("%s/voc-%s-top-by-best-speed-page-%d.html", rootDir, getVocabularyCode(), pageNumber);
+    default String topByBestSpeedPageFilePath(final int pageNumber) {
+        return String.format("./voc-%s-top-by-best-speed-page-%d.html", getVocabularyCode(), pageNumber);
     }
-    default String topByBestSpeedLoginToPageFilePath(final String rootDir) {
-        return String.format("%s/js/voc-%s-top-by-best-speed-login-to-page.js", rootDir, getVocabularyCode());
+    default String topByBestSpeedPageFileTemplate() { // for js paging
+        return String.format("./voc-%s-top-by-best-speed-page-${%s}.html", getVocabularyCode(), PAGE_NUMBER_JS_TEMPLATE_VARIABLE);
     }
-    default String topByBestSpeedExcelFilePath(final String rootDir) {
-        return String.format("%s/xlsx/voc-%s-top-by-best-speed.xlsx", rootDir, getVocabularyCode());
+    default String topByBestSpeedLoginToPageFilePath() {
+        return String.format("./js/voc-%s-top-by-best-speed-login-to-page.js", getVocabularyCode());
     }
-    default String topByBestSpeedExcelZipFilePath(final String rootDir) {
-        return String.format("%s/xlsx/voc-%s-top-by-best-speed.zip", rootDir, getVocabularyCode());
+    default String topByBestSpeedExcelFilePath() {
+        return String.format("./xlsx/voc-%s-top-by-best-speed.xlsx", getVocabularyCode());
     }
-
-    default String topByRacesCountFilePath(final String rootDir, final int pageNumber) {
-        return String.format("%s/voc-%s-top-by-races-count-page-%d.html", rootDir, getVocabularyCode(), pageNumber);
-    }
-    default String topByRacesCountLoginToPageFilePath(final String rootDir) {
-        return String.format("%s/js/voc-%s-top-by-races-count-login-to-page.js", rootDir, getVocabularyCode());
-    }
-    default String topByRacesCountExcelFilePath(final String rootDir) {
-        return String.format("%s/xlsx/voc-%s-top-by-races-count.xlsx", rootDir, getVocabularyCode());
-    }
-    default String topByRacesCountExcelZipFilePath(final String rootDir) {
-        return String.format("%s/xlsx/voc-%s-top-by-races-count.zip", rootDir, getVocabularyCode());
+    default String topByBestSpeedExcelZipFilePath() {
+        return String.format("./xlsx/voc-%s-top-by-best-speed.zip", getVocabularyCode());
     }
 
-    default String topByHaulFilePath(final String rootDir, final int pageNumber) {
-        return String.format("%s/voc-%s-top-by-haul-page-%d.html", rootDir, getVocabularyCode(), pageNumber);
+    default String topByRacesCountFilePath(final int pageNumber) {
+        return String.format("./voc-%s-top-by-races-count-page-%d.html", getVocabularyCode(), pageNumber);
     }
-    default String topByHaulLoginToPageFilePath(final String rootDir) {
-        return String.format("%s/js/voc-%s-top-by-haul-login-to-page.js", rootDir, getVocabularyCode());
+    default String topByRacesCountLoginToPageFilePath() {
+        return String.format("./js/voc-%s-top-by-races-count-login-to-page.js", getVocabularyCode());
     }
-    default String topByHaulExcelFilePath(final String rootDir) {
-        return String.format("%s/xlsx/voc-%s-top-by-haul.xlsx", rootDir, getVocabularyCode());
+    default String topByRacesCountExcelFilePath() {
+        return String.format("./xlsx/voc-%s-top-by-races-count.xlsx", getVocabularyCode());
     }
-    default String topByHaulExcelZipFilePath(final String rootDir) {
-        return String.format("%s/xlsx/voc-%s-top-by-haul.zip", rootDir, getVocabularyCode());
+    default String topByRacesCountExcelZipFilePath() {
+        return String.format("./xlsx/voc-%s-top-by-races-count.zip", getVocabularyCode());
+    }
+
+    default String topByHaulFilePath(final int pageNumber) {
+        return String.format("./voc-%s-top-by-haul-page-%d.html", getVocabularyCode(), pageNumber);
+    }
+    default String topByHaulLoginToPageFilePath() {
+        return String.format("./js/voc-%s-top-by-haul-login-to-page.js", getVocabularyCode());
+    }
+    default String topByHaulExcelFilePath() {
+        return String.format("./xlsx/voc-%s-top-by-haul.xlsx", getVocabularyCode());
+    }
+    default String topByHaulExcelZipFilePath() {
+        return String.format("./xlsx/voc-%s-top-by-haul.zip", getVocabularyCode());
     }
 
     @Override
@@ -105,7 +113,6 @@ public interface VocabularyTopExporter extends DataExporter {
         getLogger().debug("Top by best speed: total pages {}", totalPagesByBestSpeed);
 
         Map<String, Integer> loginToPageByBestSpeed = new HashMap<>();
-        String topByBestSpeedLoginToPageFilePath = topByBestSpeedLoginToPageFilePath(context.webRootDir);
 
         for (int pageNumber = ExporterUtils.FIRST_PAGE_NUMBER; pageNumber <= totalPagesByBestSpeed; pageNumber++) {
             List<PlayerVocabularyDto> playersOnPage = ExporterUtils.subList(dtosByBestSpeed, getPageSize(), pageNumber);
@@ -122,7 +129,7 @@ public interface VocabularyTopExporter extends DataExporter {
             });
 
             // export top by speed page to html
-            String topBySpeedPageFilePath = topByBestSpeedPageFilePath(context.webRootDir, pageNumber);
+            String topBySpeedPageFilePath = PageUrls.getPath(context, topByBestSpeedPageFilePath(pageNumber));
 
             new VocabularyTopBySpeedTemplate()
                 .pageTitle(topByBestSpeedPageTitle())
@@ -131,13 +138,22 @@ public interface VocabularyTopExporter extends DataExporter {
                 .totalPages(totalPagesByBestSpeed)
                 .pageNumber(pageNumber)
                 .players(playersOnPage)
-                .loginToPageJsPath(topByBestSpeedLoginToPageFilePath) // todo: should be changed to a relative path!
+                .loginToPageJsPath(topByBestSpeedLoginToPageFilePath()) // relative path
+                .pageUrlTemplate(topByBestSpeedPageFileTemplate()) // to fill paging links in js
                 .export(topBySpeedPageFilePath);
 
             getLogger().debug("Top by best speed: Exported page {}/{}.", pageNumber, totalPagesByBestSpeed);
         }
 
-        // todo: export loginToPage to JS
+        // export login -> page map to a js file
+        String loginToPageFilePath = PageUrls.getPath(context, topByBestSpeedLoginToPageFilePath());
+
+        String loginToPageString = JacksonUtils.serializeToString(loginToPageByBestSpeed);
+
+        new VocabularyTopBySpeedLoginToPageTemplate()
+            .loginToPage(loginToPageByBestSpeed)
+            .loginToPageString(loginToPageString)
+            .export(loginToPageFilePath);
 
         // todo: export toExcel
 
