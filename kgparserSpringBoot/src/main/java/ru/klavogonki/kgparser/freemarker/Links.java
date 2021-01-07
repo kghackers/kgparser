@@ -3,6 +3,7 @@ package ru.klavogonki.kgparser.freemarker;
 import lombok.Data;
 import ru.klavogonki.kgparser.export.ExporterUtils;
 import ru.klavogonki.kgparser.export.vocabulary.CharsTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.NoErrorTopExporter;
 
 /**
  * Object with page and files urls to pass to FreeMarker templates.
@@ -49,6 +50,7 @@ public class Links {
     private String playersByRank = PageUrls.PLAYER_BY_RANK;
 
     // vocabularies landing pages
+    private String noErrorTopBySpeedPage1 = new NoErrorTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String charsTopBySpeedPage1 = new CharsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
 
     // css files and images
