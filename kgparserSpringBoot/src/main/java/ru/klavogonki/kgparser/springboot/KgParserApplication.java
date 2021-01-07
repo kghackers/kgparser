@@ -102,14 +102,18 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: add an option to skip Excel import
 
 		noErrorTopExporter.export(context);
+/*
 		if (true) {
 			return;
 		}
+*/
 
 		charsTopExporter.export(context);
+/*
 		if (true) {
 			return;
 		}
+*/
 
 		playersByRankExporter.export(context);
 /*
