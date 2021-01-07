@@ -31,6 +31,7 @@ public interface PlayerVocabularyDtoMapper {
 
     // fields from PlayerVocabularyStatsEntity
     @Mapping(source = "haul", target = "haul", qualifiedByName = "haulConverter")
+    @Mapping(source = "haul", target = "haulInteger")
     @Mapping(source = "updated", target = "updatedDateTime")
     @Mapping(source = "updated", target = "updated")
     PlayerVocabularyDto entityToDto(PlayerVocabularyStatsEntity entity);

@@ -3,11 +3,11 @@ package ru.klavogonki.kgparser.freemarker;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class VocabularyTopBySpeedLoginToPageTemplate extends VocabularyTopLoginToPageTemplate {
+public class VocabularyTopByHaulLoginToPageTemplate extends VocabularyTopLoginToPageTemplate {
 
     @Override
     public String getTemplatePath() {
-        return "ftl/vocabulary-top-by-best-speed-login-to-page.ftl";
+        return "ftl/vocabulary-top-by-haul-login-to-page.ftl";
     }
 
     @Override
@@ -16,7 +16,7 @@ public class VocabularyTopBySpeedLoginToPageTemplate extends VocabularyTopLoginT
         super.export(filePath);
 
         logger.debug(
-            "Top by best speed: saved login -> page mapping to file {}. Total logins: {}",
+            "Top by haul: saved login -> page mapping to file {}. Total logins: {}",
             filePath,
             getLoginToPage().size()
         );

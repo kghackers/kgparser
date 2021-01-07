@@ -64,6 +64,23 @@ public class CharsTopExporter implements VocabularyTopExporter {
     }
 
     @Override
+    public String topByHaulPageTitle() {
+        return "Топ по времени в «Буквах»";
+    }
+    @Override
+    public String topByHaulHeader() {
+        return "Топ по времени в «Буквах»";
+    }
+    @Override
+    public String topByHaulAdditionalHeader() {
+        return String.format("Учтены игроки с минимальным пробегом %d в «Буквах»", RACES_COUNT_MIN);
+    }
+    @Override
+    public String topByHaulExcelSheetName() {
+        return "Топ по времени в «Буквах»";
+    }
+
+    @Override
     public List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed() {
         List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanOrderByBestSpeedDesc(getVocabularyCode(), RACES_COUNT_MIN);
         logger.debug("Total players by best speed, min total races = {}: {}", RACES_COUNT_MIN, players.size());
@@ -75,6 +92,14 @@ public class CharsTopExporter implements VocabularyTopExporter {
     public List<PlayerVocabularyStatsEntity> getPlayersByRacesCount() {
         List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanOrderByRacesCountDesc(getVocabularyCode(), RACES_COUNT_MIN);
         logger.debug("Total players by races count, min total races = {}: {}", RACES_COUNT_MIN, players.size());
+
+        return players;
+    }
+
+    @Override
+    public List<PlayerVocabularyStatsEntity> getPlayersByHaul() {
+        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanOrderByHaulDesc(getVocabularyCode(), RACES_COUNT_MIN);
+        logger.debug("Total players by haul, min total races = {}: {}", RACES_COUNT_MIN, players.size());
 
         return players;
     }

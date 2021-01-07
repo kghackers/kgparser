@@ -57,6 +57,8 @@ public class PlayerVocabularyDto
 
     private String haul; // время, проведённое игроком в словаре, в секундах. Отформатированное для показа в UI
 
+    private Integer haulInteger; // true haul, for order number
+
     private Integer qual; // на сколько пройдена квалификация по словарю. Рекорды в словаре засчитываются в пределах 1.2 * qual.
 
     // don't care about dirty

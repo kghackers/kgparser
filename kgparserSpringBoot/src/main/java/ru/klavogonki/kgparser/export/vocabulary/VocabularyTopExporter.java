@@ -4,11 +4,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
 import ru.klavogonki.kgparser.excel.VocabularyTopByBestSpeedExcelTemplate;
+import ru.klavogonki.kgparser.excel.VocabularyTopByHaulExcelTemplate;
 import ru.klavogonki.kgparser.excel.VocabularyTopByRacesCountExcelTemplate;
 import ru.klavogonki.kgparser.export.DataExporter;
 import ru.klavogonki.kgparser.export.ExportContext;
 import ru.klavogonki.kgparser.export.ExporterUtils;
 import ru.klavogonki.kgparser.freemarker.PageUrls;
+import ru.klavogonki.kgparser.freemarker.VocabularyTopByHaulLoginToPageTemplate;
+import ru.klavogonki.kgparser.freemarker.VocabularyTopByHaulTemplate;
 import ru.klavogonki.kgparser.freemarker.VocabularyTopByRacesCountLoginToPageTemplate;
 import ru.klavogonki.kgparser.freemarker.VocabularyTopByRacesCountTemplate;
 import ru.klavogonki.kgparser.freemarker.VocabularyTopBySpeedLoginToPageTemplate;
@@ -42,7 +45,7 @@ public interface VocabularyTopExporter extends DataExporter {
         return "DEFAULT_TOP_BY_BEST_SPEED_PAGE_HEADER";
     }
     default String topByBestSpeedAdditionalHeader() { // under <h2> in html
-        return "DEFAULT_TOP_BY_BEST_SPEED_PAGE_ADDITIONAL_HEADER";
+        return "DEFAULT_TOP_BY_BEST_SPEED_ADDITIONAL_HEADER";
     }
     default String topByBestSpeedExcelSheetName() { // Excel sheet name, may be shorter as html header because of 31 chars limit
         return "DEFAULT_TOP_BY_BEST_SPEED_EXCEL_SHEET_NAME";
@@ -55,13 +58,24 @@ public interface VocabularyTopExporter extends DataExporter {
         return "DEFAULT_TOP_BY_RACES_COUNT_PAGE_HEADER";
     }
     default String topByRacesCountAdditionalHeader() { // under <h2> in html
-        return "DEFAULT_TOP_BY_RACES_COUNT_PAGE_ADDITIONAL_HEADER";
+        return "DEFAULT_TOP_BY_RACES_COUNT_ADDITIONAL_HEADER";
     }
     default String topByRacesCountExcelSheetName() { // Excel sheet name, may be shorter as html header because of 31 chars limit
         return "DEFAULT_TOP_BY_RACES_COUNT_EXCEL_SHEET_NAME";
     }
 
-    // todo: pageTitle, header, additional header, excelSheetName for topByHaul
+    default String topByHaulPageTitle() { // <title> in html
+        return "DEFAULT_TOP_BY_HAUL_PAGE_TITLE";
+    }
+    default String topByHaulHeader() { // <h2> in html
+        return "DEFAULT_TOP_BY_HAUL_PAGE_HEADER";
+    }
+    default String topByHaulAdditionalHeader() { // under <h2> in html
+        return "DEFAULT_TOP_BY_HAUL_ADDITIONAL_HEADER";
+    }
+    default String topByHaulExcelSheetName() { // Excel sheet name, may be shorter as html header because of 31 chars limit
+        return "DEFAULT_TOP_BY_HAUL_EXCEL_SHEET_NAME";
+    }
 
     default List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed() {
         return Collections.emptyList();
@@ -129,7 +143,7 @@ public interface VocabularyTopExporter extends DataExporter {
 
         exportTopByBestSpeed(context, mapper);
         exportTopByRacesCount(context, mapper);
-        // todo: top by haul
+        exportTopByHaul(context, mapper);
     }
 
     private void exportTopByBestSpeed(final ExportContext context, final PlayerVocabularyDtoMapper mapper) {
@@ -157,7 +171,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 loginToPage.put(login.toLowerCase(), finalPageNumber); // save lower-case login to make search case-insensitive
             });
 
-            // export top by speed page to html
+            // export top by best speed page to html
             String pageFilePath = PageUrls.getPath(context, topByBestSpeedPageFilePath(pageNumber));
 
             new VocabularyTopBySpeedTemplate()
@@ -208,7 +222,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 loginToPage.put(login.toLowerCase(), finalPageNumber); // save lower-case login to make search case-insensitive
             });
 
-            // export top by speed page to html
+            // export top by races count page to html
             String pageFilePath = PageUrls.getPath(context, topByRacesCountPageFilePath(pageNumber));
 
             new VocabularyTopByRacesCountTemplate()
@@ -232,6 +246,57 @@ public interface VocabularyTopExporter extends DataExporter {
         exportTopByRacesCountLoginToPageJs(context, loginToPage);
 
         exportTopByRacesCountToExcel(context, dtos);
+    }
+
+    private void exportTopByHaul(final ExportContext context, final PlayerVocabularyDtoMapper mapper) {
+        List<PlayerVocabularyStatsEntity> players = getPlayersByHaul();
+        List<PlayerVocabularyDto> dtos = mapper.entitiesToDtos(players, PlayerVocabularyDto::getHaulInteger);
+
+        int totalPlayers = players.size();
+
+        int totalPages = ExporterUtils.getPagesCount(totalPlayers, getPageSize());
+        getLogger().debug("Top by haul: total pages {}", totalPages);
+
+        Map<String, Integer> loginToPage = new HashMap<>();
+
+        for (int pageNumber = ExporterUtils.FIRST_PAGE_NUMBER; pageNumber <= totalPages; pageNumber++) {
+            List<PlayerVocabularyDto> playersOnPage = ExporterUtils.subList(dtos, getPageSize(), pageNumber);
+
+            final int finalPageNumber = pageNumber; // to use in lambda, must be effectively final
+            playersOnPage.forEach(player -> {
+                String login = player.getLogin();
+                if (StringUtils.isBlank(login)) {
+                    getLogger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
+                    return;
+                }
+
+                loginToPage.put(login.toLowerCase(), finalPageNumber); // save lower-case login to make search case-insensitive
+            });
+
+            // export top by haul page to html
+            String pageFilePath = PageUrls.getPath(context, topByHaulPageFilePath(pageNumber));
+
+            new VocabularyTopByHaulTemplate()
+                .pageTitle(topByHaulPageTitle())
+                .header(topByHaulHeader())
+                .additionalHeader(topByHaulAdditionalHeader())
+                .totalPages(totalPages)
+                .pageNumber(pageNumber)
+                .players(playersOnPage)
+                .loginToPageJsPath(topByHaulLoginToPageFilePath()) // relative path
+                .pageUrlTemplate(topByHaulPageFileTemplate()) // to fill paging links in js
+                .excelZipUrl(topByHaulExcelZipFilePath())
+                .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
+                .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
+                .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
+                .export(pageFilePath);
+
+            getLogger().debug("Top by haul: Exported page {}/{}.", pageNumber, totalPages);
+        }
+
+        exportTopByHaulLoginToPageJs(context, loginToPage);
+
+        exportTopByHaulToExcel(context, dtos);
     }
 
 
@@ -259,6 +324,18 @@ public interface VocabularyTopExporter extends DataExporter {
             .export(loginToPageFilePath);
     }
 
+    private void exportTopByHaulLoginToPageJs(final ExportContext context, final Map<String, Integer> loginToPage) {
+        // export login -> page map to a js file
+        String loginToPageFilePath = PageUrls.getPath(context, topByHaulLoginToPageFilePath());
+
+        String loginToPageString = JacksonUtils.serializeToString(loginToPage);
+
+        new VocabularyTopByHaulLoginToPageTemplate()
+            .loginToPage(loginToPage)
+            .loginToPageString(loginToPageString)
+            .export(loginToPageFilePath);
+    }
+
 
     private void exportTopByBestSpeedToExcel(final ExportContext context, final List<PlayerVocabularyDto> dtos) {
         // export all pages to Excel and Excel zip
@@ -277,6 +354,16 @@ public interface VocabularyTopExporter extends DataExporter {
             .export(
                 PageUrls.getPath(context, topByRacesCountExcelFilePath()),
                 PageUrls.getPath(context, topByRacesCountExcelZipFilePath())
+            );
+    }
+
+    private void exportTopByHaulToExcel(final ExportContext context, final List<PlayerVocabularyDto> dtos) {
+        // export all pages to Excel and Excel zip
+        new VocabularyTopByHaulExcelTemplate(topByHaulExcelSheetName())
+            .players(dtos)
+            .export(
+                PageUrls.getPath(context, topByHaulExcelFilePath()),
+                PageUrls.getPath(context, topByHaulExcelZipFilePath())
             );
     }
 }
