@@ -52,7 +52,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify -Dmaven.javadoc.skip --no-transfer-progress sonar:sonar -Dsonar.projectKey=kghackers_kgparser -Dsonar.organization=kghackers -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.sources=src
+        run: mvn -B verify -Dmaven.javadoc.skip --no-transfer-progress sonar:sonar -Dsonar.projectKey=kghackers_kgparser -Dsonar.organization=kghackers -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.sources=src/main
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
