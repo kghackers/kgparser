@@ -17,7 +17,7 @@
     <div class="section">
         <h2>
             ${header}
-            <a class="excel" href="${excelZipUrl}"><img src="${links.excelPng}" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>
+            <a class="excel" href="${excelUrl}"><img src="${links.excelPng}" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>
         </h2>
         ${additionalHeader}
     </div>
@@ -48,7 +48,8 @@
                 <#-- todo: book done - only for book vocabularies -->
             </tr>
 
-            <#import "./player-td.ftl" as ptd>
+<#--            <#import "./player-td.ftl" as ptd>--> <#-- link to player profile -->
+            <#import "./player-td-vocabulary-stats-link.ftl" as ptd> <#-- link to player stats in the vocaulary -->
 
             <#list players as player>
                 <tr>

@@ -9,6 +9,7 @@ import org.mapstruct.Named;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.freemarker.HaulUtils;
 import ru.klavogonki.kgparser.freemarker.OrderUtils;
+import ru.klavogonki.kgparser.http.UrlConstructor;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerVocabularyDto;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.kgparser.util.DateUtils;
@@ -28,6 +29,8 @@ public interface PlayerVocabularyDtoMapper {
     @Mapping(source = "player.registered", target = "registered")
     @Mapping(source = "player.ratingLevel", target = "ratingLevel")
     @Mapping(source = "player.profileLink", target = "profileLink")
+    @Mapping(source = "entity", target = "vocabularyStatsLink", qualifiedByName = "vocabularyStatsLinkConverter")
+    @Mapping(source = "entity", target = "vocabularyStatsLinkWithoutHash", qualifiedByName = "vocabularyStatsLinkWithoutHashConverter")
 
     // fields from PlayerVocabularyStatsEntity
     @Mapping(source = "haul", target = "haul", qualifiedByName = "haulConverter")
@@ -49,6 +52,16 @@ public interface PlayerVocabularyDtoMapper {
     @Named("haulConverter")
     default String haulConverter(Integer haul) {
         return HaulUtils.format(haul);
+    }
+
+    @Named("vocabularyStatsLinkConverter")
+    default String vocabularyStatsLinkConverter(PlayerVocabularyStatsEntity entity) {
+        return UrlConstructor.userStatsByVocabulary(entity.getPlayer().getPlayerId(), entity.getVocabularyCode());
+    }
+
+    @Named("vocabularyStatsLinkWithoutHashConverter")
+    default String vocabularyStatsLinkWithoutHashConverter(PlayerVocabularyStatsEntity entity) {
+        return UrlConstructor.userStatsByVocabularyWithoutHash(entity.getPlayer().getPlayerId(), entity.getVocabularyCode());
     }
 
     @AfterMapping

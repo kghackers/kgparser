@@ -6,10 +6,10 @@ import ru.klavogonki.kgparser.excel.player.HaulColumn;
 import ru.klavogonki.kgparser.excel.player.LoginColumn;
 import ru.klavogonki.kgparser.excel.player.OrderNumberColumn;
 import ru.klavogonki.kgparser.excel.player.PlayerColumn;
-import ru.klavogonki.kgparser.excel.player.ProfileLinkColumn;
 import ru.klavogonki.kgparser.excel.player.VocabularyBestSpeedColumn;
 import ru.klavogonki.kgparser.excel.player.VocabularyQualColumn;
 import ru.klavogonki.kgparser.excel.player.VocabularyRacesCountColumn;
+import ru.klavogonki.kgparser.excel.player.VocabularyStatsLinkColumn;
 import ru.klavogonki.kgparser.excel.player.VocabularyUpdatedColumn;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerVocabularyDto;
 
@@ -33,7 +33,7 @@ public class VocabularyTopByRacesCountExcelTemplate extends ExcelTemplate<Player
         return List.of(
             new OrderNumberColumn<>(),
             new LoginColumn<>(),
-            new ProfileLinkColumn<>(),
+            new VocabularyStatsLinkColumn(),
             new VocabularyRacesCountColumn(),
             new VocabularyBestSpeedColumn(),
             new AverageSpeedColumn(),

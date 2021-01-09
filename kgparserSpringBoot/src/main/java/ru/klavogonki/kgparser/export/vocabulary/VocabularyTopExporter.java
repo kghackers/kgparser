@@ -183,6 +183,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .players(playersOnPage)
                 .loginToPageJsPath(topByBestSpeedLoginToPageFilePath()) // relative path
                 .pageUrlTemplate(topByBestSpeedPageFileTemplate()) // to fill paging links in js
+                .excelUrl(topByBestSpeedExcelFilePath())
                 .excelZipUrl(topByBestSpeedExcelZipFilePath())
                 .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
@@ -234,6 +235,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .players(playersOnPage)
                 .loginToPageJsPath(topByRacesCountLoginToPageFilePath()) // relative path
                 .pageUrlTemplate(topByRacesCountPageFileTemplate()) // to fill paging links in js
+                .excelUrl(topByRacesCountExcelFilePath())
                 .excelZipUrl(topByRacesCountExcelZipFilePath())
                 .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
@@ -285,6 +287,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .players(playersOnPage)
                 .loginToPageJsPath(topByHaulLoginToPageFilePath()) // relative path
                 .pageUrlTemplate(topByHaulPageFileTemplate()) // to fill paging links in js
+                .excelUrl(topByHaulExcelFilePath())
                 .excelZipUrl(topByHaulExcelZipFilePath())
                 .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))

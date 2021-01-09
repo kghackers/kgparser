@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.StandardDictionary;
 import ru.klavogonki.kgparser.excel.data.ExcelExportContextData;
 import ru.klavogonki.kgparser.excel.player.AchievementsCountColumn;
 import ru.klavogonki.kgparser.excel.player.BestSpeedColumn;
@@ -62,6 +63,7 @@ public class ExcelExporter {
         player1.setQual(546);
         player1.setHaul("44 ч. 27 мин. 1 сек.");
         player1.setUpdatedDateTime(DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-27 16:04:01"));
+        player1.setVocabularyStatsLinkWithoutHash(UrlConstructor.userStatsByVocabularyWithoutHash(player1.getPlayerId(), StandardDictionary.chars.name()));
 
         List<PlayerVocabularyDto> players = List.of(
             player1

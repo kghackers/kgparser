@@ -44,6 +44,9 @@ public class PlayerVocabularyDto
 
     private String profileLink;
 
+    private String vocabularyStatsLink;
+
+    private String vocabularyStatsLinkWithoutHash;
 
     // данные игрока по конкретному словарю, PlayerVocabularyStatsEntity
 
