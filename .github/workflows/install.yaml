@@ -52,7 +52,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify -Dmaven.javadoc.skip --no-transfer-progress sonar:sonar -Dsonar.projectKey=kghackers_kgparser -Dsonar.organization=kghackers -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.projectBaseDir=./ -Dsonar.exclusions=kgparserSpringBoot/**,kgparserSrv/**,kgparserWeb/** -Dsonar.modules=kgparserSpringBoot,kgparserSrv,kgparserWeb -DkgparserSpringBoot.sonar.projectName=kgparser-springboot -DkgparserSpringBoot.sonar.projectBaseDir=./kgparserSpringBoot -DkgparserSpringBoot.sonar.sources=src/main -DkgparserSrv.sonar.projectName=kgparser-srv -DkgparserSrv.sonar.projectBaseDir=./kgparserSrv -DkgparserSrv.sonar.sources=src/main -DkgparserWeb.sonar.projectName=kgparser-web -DkgparserWeb.sonar.projectBaseDir=./kgparserWeb -DkgparserWeb.sonar.sources=src/main/java,src/main/webapp  -Dsonar.log.level=DEBUG
+        run: |
+          mvn -B verify -Dmaven.javadoc.skip --no-transfer-progress sonar:sonar \
+          -Dsonar.projectKey=kghackers_kgparser \
+          -Dsonar.organization=kghackers -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=$SONAR_TOKEN
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
