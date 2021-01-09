@@ -128,4 +128,12 @@ public class UrlConstructor
 	public static String getStatsDetail(int playerId, String dictionaryCode) {
 		return getLink("/api/profile/get-stats-details?userId=%d&gametype=%s", playerId, dictionaryCode);
 	}
+	
+	public static String getOldUserDictionaryStatistics(int playerId, String dictionaryCode) {
+		return getLink("/profile/%d/stats/?gametype=%s", playerId, dictionaryCode);
+	}
+	
+	public static String getUserIdByLogin(String playerLogin) {
+		return getLink(".fetchuser?login=%s", playerLogin);
+	}
 }
