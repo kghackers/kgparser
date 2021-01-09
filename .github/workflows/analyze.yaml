@@ -81,6 +81,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+    # exclude html directory from java analysis
+    - name: Remove HTML directory
+      run: rm -rf html
 
     # Download and Install specific JDK version
     - name: Set up JDK 1.11
