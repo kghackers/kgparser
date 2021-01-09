@@ -31,11 +31,15 @@ public interface VocabularyTopExporter extends DataExporter {
 
     String PAGE_NUMBER_JS_TEMPLATE_VARIABLE = "pageNumber";
 
-    String getVocabularyCode();
+    boolean isStandard();
 
-    Logger getLogger();
+    String vocabularyCode();
 
-    default int getPageSize() {
+    int minRacesCount();
+
+    Logger logger();
+
+    default int pageSize() {
         return 100;
     }
 
@@ -91,51 +95,51 @@ public interface VocabularyTopExporter extends DataExporter {
     }
 
     default String topByBestSpeedPageFilePath(final int pageNumber) {
-        return String.format("./voc-%s-top-by-best-speed-page-%d.html", getVocabularyCode(), pageNumber);
+        return String.format("./voc-%s-top-by-best-speed-page-%d.html", vocabularyCode(), pageNumber);
     }
     default String topByBestSpeedPageFileTemplate() { // for js paging
-        return String.format("./voc-%s-top-by-best-speed-page-${%s}.html", getVocabularyCode(), PAGE_NUMBER_JS_TEMPLATE_VARIABLE);
+        return String.format("./voc-%s-top-by-best-speed-page-${%s}.html", vocabularyCode(), PAGE_NUMBER_JS_TEMPLATE_VARIABLE);
     }
     default String topByBestSpeedLoginToPageFilePath() {
-        return String.format("./js/voc-%s-top-by-best-speed-login-to-page.js", getVocabularyCode());
+        return String.format("./js/voc-%s-top-by-best-speed-login-to-page.js", vocabularyCode());
     }
     default String topByBestSpeedExcelFilePath() {
-        return String.format("./xlsx/voc-%s-top-by-best-speed.xlsx", getVocabularyCode());
+        return String.format("./xlsx/voc-%s-top-by-best-speed.xlsx", vocabularyCode());
     }
     default String topByBestSpeedExcelZipFilePath() {
-        return String.format("./xlsx/voc-%s-top-by-best-speed.zip", getVocabularyCode());
+        return String.format("./xlsx/voc-%s-top-by-best-speed.zip", vocabularyCode());
     }
 
     default String topByRacesCountPageFilePath(final int pageNumber) {
-        return String.format("./voc-%s-top-by-races-count-page-%d.html", getVocabularyCode(), pageNumber);
+        return String.format("./voc-%s-top-by-races-count-page-%d.html", vocabularyCode(), pageNumber);
     }
     default String topByRacesCountPageFileTemplate() { // for js paging
-        return String.format("./voc-%s-top-by-races-count-page-${%s}.html", getVocabularyCode(), PAGE_NUMBER_JS_TEMPLATE_VARIABLE);
+        return String.format("./voc-%s-top-by-races-count-page-${%s}.html", vocabularyCode(), PAGE_NUMBER_JS_TEMPLATE_VARIABLE);
     }
     default String topByRacesCountLoginToPageFilePath() {
-        return String.format("./js/voc-%s-top-by-races-count-login-to-page.js", getVocabularyCode());
+        return String.format("./js/voc-%s-top-by-races-count-login-to-page.js", vocabularyCode());
     }
     default String topByRacesCountExcelFilePath() {
-        return String.format("./xlsx/voc-%s-top-by-races-count.xlsx", getVocabularyCode());
+        return String.format("./xlsx/voc-%s-top-by-races-count.xlsx", vocabularyCode());
     }
     default String topByRacesCountExcelZipFilePath() {
-        return String.format("./xlsx/voc-%s-top-by-races-count.zip", getVocabularyCode());
+        return String.format("./xlsx/voc-%s-top-by-races-count.zip", vocabularyCode());
     }
 
     default String topByHaulPageFilePath(final int pageNumber) {
-        return String.format("./voc-%s-top-by-haul-page-%d.html", getVocabularyCode(), pageNumber);
+        return String.format("./voc-%s-top-by-haul-page-%d.html", vocabularyCode(), pageNumber);
     }
     default String topByHaulPageFileTemplate() { // for js paging
-        return String.format("./voc-%s-top-by-haul-page-${%s}.html", getVocabularyCode(), PAGE_NUMBER_JS_TEMPLATE_VARIABLE);
+        return String.format("./voc-%s-top-by-haul-page-${%s}.html", vocabularyCode(), PAGE_NUMBER_JS_TEMPLATE_VARIABLE);
     }
     default String topByHaulLoginToPageFilePath() {
-        return String.format("./js/voc-%s-top-by-haul-login-to-page.js", getVocabularyCode());
+        return String.format("./js/voc-%s-top-by-haul-login-to-page.js", vocabularyCode());
     }
     default String topByHaulExcelFilePath() {
-        return String.format("./xlsx/voc-%s-top-by-haul.xlsx", getVocabularyCode());
+        return String.format("./xlsx/voc-%s-top-by-haul.xlsx", vocabularyCode());
     }
     default String topByHaulExcelZipFilePath() {
-        return String.format("./xlsx/voc-%s-top-by-haul.zip", getVocabularyCode());
+        return String.format("./xlsx/voc-%s-top-by-haul.zip", vocabularyCode());
     }
 
     @Override
@@ -161,19 +165,19 @@ public interface VocabularyTopExporter extends DataExporter {
 
         int totalPlayers = players.size();
 
-        int totalPages = ExporterUtils.getPagesCount(totalPlayers, getPageSize());
-        getLogger().debug("Top by best speed: total pages {}", totalPages);
+        int totalPages = ExporterUtils.getPagesCount(totalPlayers, pageSize());
+        logger().debug("Top by best speed: total pages {}", totalPages);
 
         Map<String, Integer> loginToPage = new HashMap<>();
 
         for (int pageNumber = ExporterUtils.FIRST_PAGE_NUMBER; pageNumber <= totalPages; pageNumber++) {
-            List<PlayerVocabularyDto> playersOnPage = ExporterUtils.subList(dtos, getPageSize(), pageNumber);
+            List<PlayerVocabularyDto> playersOnPage = ExporterUtils.subList(dtos, pageSize(), pageNumber);
 
             final int finalPageNumber = pageNumber; // to use in lambda, must be effectively final
             playersOnPage.forEach(player -> {
                 String login = player.getLogin();
                 if (StringUtils.isBlank(login)) {
-                    getLogger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
+                    logger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
                     return;
                 }
 
@@ -199,7 +203,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .export(pageFilePath);
 
-            getLogger().debug("Top by best speed: Exported page {}/{}.", pageNumber, totalPages);
+            logger().debug("Top by best speed: Exported page {}/{}.", pageNumber, totalPages);
         }
 
         exportTopByBestSpeedLoginToPageJs(context, loginToPage);
@@ -213,19 +217,19 @@ public interface VocabularyTopExporter extends DataExporter {
 
         int totalPlayers = players.size();
 
-        int totalPages = ExporterUtils.getPagesCount(totalPlayers, getPageSize());
-        getLogger().debug("Top by races count: total pages {}", totalPages);
+        int totalPages = ExporterUtils.getPagesCount(totalPlayers, pageSize());
+        logger().debug("Top by races count: total pages {}", totalPages);
 
         Map<String, Integer> loginToPage = new HashMap<>();
 
         for (int pageNumber = ExporterUtils.FIRST_PAGE_NUMBER; pageNumber <= totalPages; pageNumber++) {
-            List<PlayerVocabularyDto> playersOnPage = ExporterUtils.subList(dtos, getPageSize(), pageNumber);
+            List<PlayerVocabularyDto> playersOnPage = ExporterUtils.subList(dtos, pageSize(), pageNumber);
 
             final int finalPageNumber = pageNumber; // to use in lambda, must be effectively final
             playersOnPage.forEach(player -> {
                 String login = player.getLogin();
                 if (StringUtils.isBlank(login)) {
-                    getLogger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
+                    logger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
                     return;
                 }
 
@@ -251,7 +255,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .export(pageFilePath);
 
-            getLogger().debug("Top by races count: Exported page {}/{}.", pageNumber, totalPages);
+            logger().debug("Top by races count: Exported page {}/{}.", pageNumber, totalPages);
         }
 
         exportTopByRacesCountLoginToPageJs(context, loginToPage);
@@ -265,19 +269,19 @@ public interface VocabularyTopExporter extends DataExporter {
 
         int totalPlayers = players.size();
 
-        int totalPages = ExporterUtils.getPagesCount(totalPlayers, getPageSize());
-        getLogger().debug("Top by haul: total pages {}", totalPages);
+        int totalPages = ExporterUtils.getPagesCount(totalPlayers, pageSize());
+        logger().debug("Top by haul: total pages {}", totalPages);
 
         Map<String, Integer> loginToPage = new HashMap<>();
 
         for (int pageNumber = ExporterUtils.FIRST_PAGE_NUMBER; pageNumber <= totalPages; pageNumber++) {
-            List<PlayerVocabularyDto> playersOnPage = ExporterUtils.subList(dtos, getPageSize(), pageNumber);
+            List<PlayerVocabularyDto> playersOnPage = ExporterUtils.subList(dtos, pageSize(), pageNumber);
 
             final int finalPageNumber = pageNumber; // to use in lambda, must be effectively final
             playersOnPage.forEach(player -> {
                 String login = player.getLogin();
                 if (StringUtils.isBlank(login)) {
-                    getLogger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
+                    logger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
                     return;
                 }
 
@@ -303,7 +307,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .export(pageFilePath);
 
-            getLogger().debug("Top by haul: Exported page {}/{}.", pageNumber, totalPages);
+            logger().debug("Top by haul: Exported page {}/{}.", pageNumber, totalPages);
         }
 
         exportTopByHaulLoginToPageJs(context, loginToPage);

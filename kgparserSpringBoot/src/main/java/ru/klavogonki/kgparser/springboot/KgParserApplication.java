@@ -17,9 +17,10 @@ import ru.klavogonki.kgparser.export.IndexPageExporter;
 import ru.klavogonki.kgparser.export.PlayersByRankExporter;
 import ru.klavogonki.kgparser.export.Top500PagesExporter;
 import ru.klavogonki.kgparser.export.TopBySpeedExporter;
-import ru.klavogonki.kgparser.export.vocabulary.CharsTopExporter;
-import ru.klavogonki.kgparser.export.vocabulary.NoErrorTopExporter;
-import ru.klavogonki.kgparser.export.vocabulary.NormalTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.AbraTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.CharsTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.NoErrorTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.NormalTopExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
@@ -65,6 +66,9 @@ public class KgParserApplication implements CommandLineRunner {
 	private NormalTopExporter normalTopExporter;
 
 	@Autowired
+	private AbraTopExporter abraTopExporter;
+
+	@Autowired
 	private NoErrorTopExporter noErrorTopExporter;
 
 	@Autowired
@@ -105,6 +109,12 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: select mode (what to do) by arguments
 		// todo: add an option to skip Excel import
 
+		// standard dictionaries exporters
+		abraTopExporter.export(context);
+		if (true) {
+			return;
+		}
+
 		normalTopExporter.export(context);
 		if (true) {
 			return;
@@ -116,12 +126,11 @@ public class KgParserApplication implements CommandLineRunner {
 		}
 
 		charsTopExporter.export(context);
-/*
 		if (true) {
 			return;
 		}
-*/
 
+		// global tops exporters
 		playersByRankExporter.export(context);
 /*
 		if (true) {
@@ -148,7 +157,7 @@ public class KgParserApplication implements CommandLineRunner {
 			return;
 		}
 
-
+		// export from json files with API call results to the database
 		// todo: pass a path to a json file with config instead
 
 		if (args.length != REQUIRED_ARGUMENTS_COUNT) {

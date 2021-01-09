@@ -158,6 +158,14 @@ public class ExcelExporter {
         export(filePath, sheetName, players, columns);
     }
 
+    public static boolean isValidSheetName(String sheetName) {
+        if (StringUtils.isBlank(sheetName)) {
+            return false;
+        }
+
+        return sheetName.length() <= MAX_SHEET_NAME_LENGTH;
+    }
+
     public static void validateSheetName(String sheetName) {
         if (StringUtils.isBlank(sheetName)) {
             throw new IllegalArgumentException("Excel sheet name cannot be null or empty.");

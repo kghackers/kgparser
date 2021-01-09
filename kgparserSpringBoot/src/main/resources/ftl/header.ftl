@@ -18,6 +18,7 @@
                 | <a href="./${links.playersByRank}">Игроки по рангам</a>
                 <br/>
                 <a href="./${links.normalTopBySpeedPage1}" class="normal">Обычный</a>
+                | <a href="./${links.abraTopBySpeedPage1}" class="abra">Абракадабра</a>
                 | <a href="./${links.noErrorTopBySpeedPage1}" class="noerror">Безошибочный</a>
                 | <a href="./${links.charsTopBySpeedPage1}" class="chars">Буквы</a>
                 <br/>
