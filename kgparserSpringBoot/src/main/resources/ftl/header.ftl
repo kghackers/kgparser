@@ -23,6 +23,7 @@
                 | <a href="./${links.noErrorTopBySpeedPage1}" class="noerror">Безошибочный</a>
                 | <a href="./${links.marathonTopBySpeedPage1}" class="marathon">Марафон</a>
                 | <a href="./${links.charsTopBySpeedPage1}" class="chars">Буквы</a>
+                | <a href="./${links.digitsTopBySpeedPage1}" class="digits">Цифры</a>
                 <br/>
                 <a href="./2020-12-09/stats.html">Статистика от 02.09.2012</a>
             </td>

@@ -4,6 +4,7 @@ import lombok.Data;
 import ru.klavogonki.kgparser.export.ExporterUtils;
 import ru.klavogonki.kgparser.export.vocabulary.standard.AbraTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.CharsTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.DigitsTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.MarathonTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.NoErrorTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.NormalTopExporter;
@@ -60,6 +61,7 @@ public class Links {
     private String noErrorTopBySpeedPage1 = new NoErrorTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String marathonTopBySpeedPage1 = new MarathonTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String charsTopBySpeedPage1 = new CharsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+    private String digitsTopBySpeedPage1 = new DigitsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
 
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;
