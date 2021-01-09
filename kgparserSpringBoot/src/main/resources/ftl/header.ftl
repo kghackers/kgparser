@@ -35,6 +35,7 @@
                            name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button"/>
                     <img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1"/>
                 </form>
+                Или на карту Тинькофф&nbsp;&mdash; 5536&nbsp;9139&nbsp;2010&nbsp;2668
             </td>
         </tr>
     </table>
