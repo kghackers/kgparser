@@ -21,6 +21,7 @@ import ru.klavogonki.kgparser.export.vocabulary.standard.AbraTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.CharsTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.NoErrorTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.NormalTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.ReferatsTopExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
@@ -69,6 +70,9 @@ public class KgParserApplication implements CommandLineRunner {
 	private AbraTopExporter abraTopExporter;
 
 	@Autowired
+	private ReferatsTopExporter referatsTopExporter;
+
+	@Autowired
 	private NoErrorTopExporter noErrorTopExporter;
 
 	@Autowired
@@ -110,6 +114,11 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: add an option to skip Excel import
 
 		// standard dictionaries exporters
+		referatsTopExporter.export(context);
+		if (true) {
+			return;
+		}
+
 		abraTopExporter.export(context);
 		if (true) {
 			return;
