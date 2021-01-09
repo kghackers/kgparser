@@ -1,10 +1,12 @@
-name: Analyze KG Parser Code 
+# This workflow containts jobs for analyzing code
+name: Code Analysis
 
 on: [push, pull_request]
 
+# All jobs are run in parallel
 jobs:
   sonarcloud:
-    name: Analyze with SonarCloud
+    name: SonarCloud Analyze
     runs-on: ubuntu-latest
     # for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
     steps:
@@ -52,6 +54,7 @@ jobs:
           token: ${{ secrets.TGBOT_TOKEN }}
           status: ${{ job.status }}
   
+  # CodeQL analyzes JS code in repository
   codeql_js:
     name: CodeQL Analyze JS
     runs-on: ubuntu-latest
@@ -70,7 +73,7 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
 
-
+  # CodeQL analyzes Java code in repository
   codeql_java:
     name: CodeQL Analyze Java
     runs-on: ubuntu-latest
@@ -79,12 +82,29 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    # Download and Install specific JDK version
+    - name: Set up JDK 1.11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.11
+         # for act caching download https://static.azul.com/zulu/bin/zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
+         # to root workdir an uncomment
+         # jdkFile: zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
+
+    # Load packages from cache if present
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
         languages: java
         queries: security-and-quality
-
+    # Automatically builds project with maven 
     - name: Autobuild
       uses: github/codeql-action/autobuild@v1
 
