@@ -9,6 +9,7 @@ import ru.klavogonki.kgparser.export.vocabulary.standard.MarathonTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.NoErrorTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.NormalTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.ReferatsTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.SprintTopExporter;
 
 /**
  * Object with page and files urls to pass to FreeMarker templates.
@@ -62,6 +63,7 @@ public class Links {
     private String marathonTopBySpeedPage1 = new MarathonTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String charsTopBySpeedPage1 = new CharsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String digitsTopBySpeedPage1 = new DigitsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+    private String sprintTopBySpeedPage1 = new SprintTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
 
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;
