@@ -95,6 +95,8 @@ public class ExcelExportContext<D extends ExcelExportContextData> {
     }
 
     public void setIntegerHyperlink(String url, Integer text) { // Integer since we use playerId
+        ExcelExporter.validateHyperlink(url);
+
         setLinkIntegerStyle(); // in this method we know text is Integer, therefore set it explicitly
 
         XSSFCreationHelper creationHelper = workbook.getCreationHelper();

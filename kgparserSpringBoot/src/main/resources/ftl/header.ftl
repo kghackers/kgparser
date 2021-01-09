@@ -17,7 +17,8 @@
                 | <a href="./${links.topByCarsCount}">Топ по числу машин в гараже</a>
                 | <a href="./${links.playersByRank}">Игроки по рангам</a>
                 <br/>
-                <a href="./${links.noErrorTopBySpeedPage1}" class="noerror">Безошибочный</a>
+                <a href="./${links.normalTopBySpeedPage1}" class="normal">Обычный</a>
+                | <a href="./${links.noErrorTopBySpeedPage1}" class="noerror">Безошибочный</a>
                 | <a href="./${links.charsTopBySpeedPage1}" class="chars">Буквы</a>
                 <br/>
                 <a href="./2020-12-09/stats.html">Статистика от 02.09.2012</a>

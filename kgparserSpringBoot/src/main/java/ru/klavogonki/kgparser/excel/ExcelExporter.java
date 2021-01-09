@@ -1,6 +1,7 @@
 package ru.klavogonki.kgparser.excel;
 
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -35,6 +36,8 @@ import java.util.List;
 @Log4j2
 public class ExcelExporter {
 
+    public static final int MAX_SHEET_NAME_LENGTH = 31; // for freaking Windows Excel
+    public static final String FORBIDDEN_EXCEL_LINK_CHARACTER = "#"; // for freaking Windows Excel
     private static final int HEADER_ROW = 0;
     private static final String BORDER_COLOR = "#808080";
     private static final String HEADER_BACKGROUND_COLOR = "#E0E0E0";
@@ -155,6 +158,36 @@ public class ExcelExporter {
         export(filePath, sheetName, players, columns);
     }
 
+    public static void validateSheetName(String sheetName) {
+        if (StringUtils.isBlank(sheetName)) {
+            throw new IllegalArgumentException("Excel sheet name cannot be null or empty.");
+        }
+
+        if (sheetName.length() > MAX_SHEET_NAME_LENGTH) {
+            throw new IllegalArgumentException(String.format(
+                "Excel sheet name cannot be longer than %d characters (Windows Excel will cut it). Sheet name \"%s\" is %d characters long.",
+                MAX_SHEET_NAME_LENGTH,
+                sheetName,
+                sheetName.length()
+            ));
+        }
+    }
+
+    public static void validateHyperlink(String hyperlink) {
+        if (StringUtils.isBlank(hyperlink)) {
+            throw new IllegalArgumentException("Excel hyperlink cannot be null or empty.");
+        }
+
+        if (hyperlink.contains(FORBIDDEN_EXCEL_LINK_CHARACTER)) {
+            throw new IllegalArgumentException(String.format(
+                "Excel hyperlink cannot contain %s character (Windows Excel will not handle it). Hyperlink \"%s\" contains %s character.",
+                FORBIDDEN_EXCEL_LINK_CHARACTER,
+                hyperlink,
+                FORBIDDEN_EXCEL_LINK_CHARACTER
+            ));
+        }
+    }
+
     public static <D extends ExcelExportContextData> void export(
         String filePath,
         String sheetName,
@@ -167,6 +200,7 @@ public class ExcelExporter {
 
         ExcelExportContext<D> context = ExcelExportContext.initContext(workbook, config);
 
+        ExcelExporter.validateSheetName(sheetName);
         Sheet sheet = context.workbook.createSheet(sheetName);
 
         setColumnWidths(columns, sheet);

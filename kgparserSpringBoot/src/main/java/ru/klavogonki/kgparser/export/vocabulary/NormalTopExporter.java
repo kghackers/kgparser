@@ -12,15 +12,15 @@ import java.util.List;
 
 @Log4j2
 @Component
-public class CharsTopExporter implements VocabularyTopExporter {
-    private static final int RACES_COUNT_MIN = 100;
+public class NormalTopExporter implements VocabularyTopExporter {
+    private static final int RACES_COUNT_MIN = 1000; // todo: maybe increase, 9265 players >= 1000
 
     @Autowired
     private PlayerVocabularyStatsRepository repository;
 
     @Override
     public String getVocabularyCode() {
-        return StandardDictionary.chars.name();
+        return StandardDictionary.normal.name();
     }
 
     @Override
@@ -30,54 +30,54 @@ public class CharsTopExporter implements VocabularyTopExporter {
 
     @Override
     public String topByBestSpeedPageTitle() {
-        return "Топ по лучшей скорости в «Буквах»";
+        return "Топ по лучшей скорости в «Обычном»";
     }
     @Override
     public String topByBestSpeedHeader() {
-        return "Топ по лучшей скорости в «Буквах»";
+        return "Топ по лучшей скорости в «Обычном»";
     }
     @Override
     public String topByBestSpeedAdditionalHeader() {
-        return String.format("Учтены игроки с минимальным пробегом %d в «Буквах»", RACES_COUNT_MIN);
+        return String.format("Учтены игроки с минимальным пробегом %d в «Обычном»", RACES_COUNT_MIN);
     }
     @Override
     public String topByBestSpeedExcelSheetName() {
-//        return "Топ по лучшей скорости в «Буквах»"; // 33 characters, too long
-        return "Топ по рекорду в «Буквах»";
+//        return "Топ по лучшей скорости в «Обычном»"; // 34 characters, too long
+        return "Топ по рекорду в «Обычном»";
     }
 
     @Override
     public String topByRacesCountPageTitle() {
-        return "Топ по пробегу в «Буквах»";
+        return "Топ по пробегу в «Обычном»";
     }
     @Override
     public String topByRacesCountHeader() {
-        return "Топ по пробегу в «Буквах»";
+        return "Топ по пробегу в «Обычном»";
     }
     @Override
     public String topByRacesCountAdditionalHeader() {
-        return String.format("Учтены игроки с минимальным пробегом %d в «Буквах»", RACES_COUNT_MIN);
+        return String.format("Учтены игроки с минимальным пробегом %d в «Обычном»", RACES_COUNT_MIN);
     }
     @Override
     public String topByRacesCountExcelSheetName() {
-        return "Топ по пробегу в «Буквах»";
+        return "Топ по пробегу в «Обычном»";
     }
 
     @Override
     public String topByHaulPageTitle() {
-        return "Топ по времени в «Буквах»";
+        return "Топ по времени в «Обычном»";
     }
     @Override
     public String topByHaulHeader() {
-        return "Топ по времени в «Буквах»";
+        return "Топ по времени в «Обычном»";
     }
     @Override
     public String topByHaulAdditionalHeader() {
-        return String.format("Учтены игроки с минимальным пробегом %d в «Буквах»", RACES_COUNT_MIN);
+        return String.format("Учтены игроки с минимальным пробегом %d в «Обычном»", RACES_COUNT_MIN);
     }
     @Override
     public String topByHaulExcelSheetName() {
-        return "Топ по времени в «Буквах»";
+        return "Топ по времени в «Обычном»";
     }
 
     @Override

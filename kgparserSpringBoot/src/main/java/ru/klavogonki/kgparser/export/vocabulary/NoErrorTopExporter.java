@@ -43,7 +43,7 @@ public class NoErrorTopExporter implements VocabularyTopExporter {
     @Override
     public String topByBestSpeedExcelSheetName() {
 //        return "Топ по лучшей скорости в «Безошибочном»"; // 34 characters, too long
-        return "Топ по скорости в «БО»";
+        return "Топ по рекорду в «БО»";
     }
 
     @Override
@@ -82,7 +82,7 @@ public class NoErrorTopExporter implements VocabularyTopExporter {
 
     @Override
     public List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed() {
-        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanOrderByBestSpeedDesc(getVocabularyCode(), RACES_COUNT_MIN);
+        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualOrderByBestSpeedDesc(getVocabularyCode(), RACES_COUNT_MIN);
         logger.debug("Total players by best speed, min total races = {}: {}", RACES_COUNT_MIN, players.size());
 
         return players;
@@ -90,7 +90,7 @@ public class NoErrorTopExporter implements VocabularyTopExporter {
 
     @Override
     public List<PlayerVocabularyStatsEntity> getPlayersByRacesCount() {
-        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanOrderByRacesCountDesc(getVocabularyCode(), RACES_COUNT_MIN);
+        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualOrderByRacesCountDesc(getVocabularyCode(), RACES_COUNT_MIN);
         logger.debug("Total players by races count, min total races = {}: {}", RACES_COUNT_MIN, players.size());
 
         return players;
@@ -98,7 +98,7 @@ public class NoErrorTopExporter implements VocabularyTopExporter {
 
     @Override
     public List<PlayerVocabularyStatsEntity> getPlayersByHaul() {
-        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanOrderByHaulDesc(getVocabularyCode(), RACES_COUNT_MIN);
+        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualOrderByHaulDesc(getVocabularyCode(), RACES_COUNT_MIN);
         logger.debug("Total players by haul, min total races = {}: {}", RACES_COUNT_MIN, players.size());
 
         return players;

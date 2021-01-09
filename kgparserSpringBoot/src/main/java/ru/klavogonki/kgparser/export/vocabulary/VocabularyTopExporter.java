@@ -3,6 +3,7 @@ package ru.klavogonki.kgparser.export.vocabulary;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
+import ru.klavogonki.kgparser.excel.ExcelExporter;
 import ru.klavogonki.kgparser.excel.VocabularyTopByBestSpeedExcelTemplate;
 import ru.klavogonki.kgparser.excel.VocabularyTopByHaulExcelTemplate;
 import ru.klavogonki.kgparser.excel.VocabularyTopByRacesCountExcelTemplate;
@@ -139,11 +140,19 @@ public interface VocabularyTopExporter extends DataExporter {
 
     @Override
     default void export(ExportContext context) {
+        validate();
+
         PlayerVocabularyDtoMapper mapper = Mappers.getMapper(PlayerVocabularyDtoMapper.class);
 
         exportTopByBestSpeed(context, mapper);
         exportTopByRacesCount(context, mapper);
         exportTopByHaul(context, mapper);
+    }
+
+    private void validate() { // fail fast, not in ExcelExporter
+        ExcelExporter.validateSheetName(topByBestSpeedExcelSheetName());
+        ExcelExporter.validateSheetName(topByRacesCountExcelSheetName());
+        ExcelExporter.validateSheetName(topByHaulExcelSheetName());
     }
 
     private void exportTopByBestSpeed(final ExportContext context, final PlayerVocabularyDtoMapper mapper) {

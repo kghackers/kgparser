@@ -19,6 +19,7 @@ import ru.klavogonki.kgparser.export.Top500PagesExporter;
 import ru.klavogonki.kgparser.export.TopBySpeedExporter;
 import ru.klavogonki.kgparser.export.vocabulary.CharsTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.NoErrorTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.NormalTopExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
@@ -61,6 +62,9 @@ public class KgParserApplication implements CommandLineRunner {
 	private PlayersByRankExporter playersByRankExporter;
 
 	@Autowired
+	private NormalTopExporter normalTopExporter;
+
+	@Autowired
 	private NoErrorTopExporter noErrorTopExporter;
 
 	@Autowired
@@ -101,12 +105,15 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: select mode (what to do) by arguments
 		// todo: add an option to skip Excel import
 
-		noErrorTopExporter.export(context);
-/*
+		normalTopExporter.export(context);
 		if (true) {
 			return;
 		}
-*/
+
+		noErrorTopExporter.export(context);
+		if (true) {
+			return;
+		}
 
 		charsTopExporter.export(context);
 /*
