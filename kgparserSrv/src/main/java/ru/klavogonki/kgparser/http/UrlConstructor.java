@@ -1,6 +1,7 @@
 package ru.klavogonki.kgparser.http;
 
 import ru.klavogonki.kgparser.Car;
+import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.Player;
 
 /**
@@ -95,6 +96,26 @@ public class UrlConstructor
 		return getLink("/u/#/%d/stats/", playerId);
 	}
 
+	/**
+	 * Статистика по словарю
+	 * @param playerId id игрока
+	 * @param vocabularyCode {@link Dictionary#getCode код словаря}
+	 * @return ссылка на статистику игрока по словарю
+	 */
+	public static String userStatsByVocabulary(final int playerId, final String vocabularyCode) {
+		return getLink("/u/#/%s/stats/%s/", playerId, vocabularyCode);
+	}
+
+	/**
+	 * Статистика по словарю
+	 * @param playerId id игрока
+	 * @param vocabularyCode {@link Dictionary#getCode код словаря}
+	 * @return ссылка на статистику игрока по словарю без символа {@code #}. Ссылки с {@code #} не открываются из Excel.
+	 */
+	public static String userStatsByVocabularyWithoutHash(final int playerId, final String vocabularyCode) {
+		return getLink("/profile/%s/stats/?gametype=%s", playerId, vocabularyCode);
+	}
+
 	// dictionaries
 	/**
 	 * @param dictionaryId идентификатор нестандартного словаря.
@@ -128,11 +149,12 @@ public class UrlConstructor
 	public static String getStatsDetail(int playerId, String dictionaryCode) {
 		return getLink("/api/profile/get-stats-details?userId=%d&gametype=%s", playerId, dictionaryCode);
 	}
-	
-	public static String getOldUserDictionaryStatistics(int playerId, String dictionaryCode) {
-		return getLink("/profile/%d/stats/?gametype=%s", playerId, dictionaryCode);
-	}
-	
+
+	/**
+	 * @param playerLogin логин игрока
+	 * @return json вида {@code {"id":242585}} для корректного логина
+	 * либо {@code {"id":false}} для некорректного логина
+	 */
 	public static String getUserIdByLogin(String playerLogin) {
 		return getLink(".fetchuser?login=%s", playerLogin);
 	}
