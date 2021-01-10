@@ -33,6 +33,8 @@
                 | <a href="./${links.oneHundredRussianTopBySpeedPage1}">Соточка</a>
                 | <a href="./${links.digitsOneHundredTopBySpeedPage1}">Цифросоточка</a>
                 | <a href="./${links.trainingIndexFingersTopBySpeedPage1}">Тренируем указательные</a>
+                <#-- todo: add some dictionary for middle fingers. Probably https://klavogonki.ru/vocs/5029/ :( -->
+                | <a href="./${links.ringFingersTopBySpeedPage1}">Безымянные</a>
                 <br/>
                 <a href="./2020-12-09/stats.html">Статистика от 02.09.2012</a>
             </td>
