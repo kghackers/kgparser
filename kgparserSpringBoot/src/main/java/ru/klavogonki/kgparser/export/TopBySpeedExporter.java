@@ -36,7 +36,7 @@ public class TopBySpeedExporter implements DataExporter {
         // todo: this will require changes to order number fill: ability to pass the start number. Therefore too complex (since same value can split over multiple pages)
         List<PlayerEntity> players = playerRepository.findByTotalRacesCountGreaterThanEqualAndBlockedEqualsOrderByBestSpeedDescTotalRacesCountDesc(
             TOTAL_RACES_COUNT_MIN,
-            0
+            PlayerEntity.NOT_BLOCKED
         );
 
         List<PlayerDto> dtos = mapper.playerEntitiesToPlayerDtos(players, PlayerDto::getBestSpeed);

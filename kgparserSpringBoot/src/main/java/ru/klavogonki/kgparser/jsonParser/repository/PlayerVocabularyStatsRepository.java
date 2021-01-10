@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface PlayerVocabularyStatsRepository extends CrudRepository<PlayerVocabularyStatsEntity, Long> {
 
-    List<PlayerVocabularyStatsEntity> findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualOrderByBestSpeedDesc(String vocabularyCode, int racesCount);
+    List<PlayerVocabularyStatsEntity> findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByBestSpeedDesc(String vocabularyCode, int racesCount, int blocked);
 
-    List<PlayerVocabularyStatsEntity> findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualOrderByRacesCountDesc(String vocabularyCode, int racesCount);
+    List<PlayerVocabularyStatsEntity> findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByRacesCountDesc(String vocabularyCode, int racesCount, int blocked);
 
-    List<PlayerVocabularyStatsEntity> findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualOrderByHaulDesc(String vocabularyCode, int racesCount);
+    List<PlayerVocabularyStatsEntity> findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByHaulDesc(String vocabularyCode, int racesCount, int blocked);
 }

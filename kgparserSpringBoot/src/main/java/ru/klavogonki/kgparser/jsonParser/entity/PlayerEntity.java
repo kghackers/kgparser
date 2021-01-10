@@ -28,6 +28,8 @@ import java.util.List;
 @Table(name = "Player")
 public class PlayerEntity implements Serializable {
 
+    public static final int NOT_BLOCKED = 0;
+
     @Id
 //    @GeneratedValue
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pl_SEQ")

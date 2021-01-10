@@ -17,6 +17,7 @@ import ru.klavogonki.kgparser.export.IndexPageExporter;
 import ru.klavogonki.kgparser.export.PlayersByRankExporter;
 import ru.klavogonki.kgparser.export.Top500PagesExporter;
 import ru.klavogonki.kgparser.export.TopBySpeedExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.NormalInEnglishTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.AbraTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.CharsTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.DigitsTopExporter;
@@ -51,6 +52,7 @@ public class KgParserApplication implements CommandLineRunner {
 	@Autowired
 	private PlayerRepository playerRepository;
 
+	// aggregate tops
 	@Autowired
 	private PlayerVocabularyStatsRepository playerVocabularyStatsRepository;
 
@@ -66,6 +68,7 @@ public class KgParserApplication implements CommandLineRunner {
 	@Autowired
 	private PlayersByRankExporter playersByRankExporter;
 
+	// standard vocabularies
 	@Autowired
 	private NormalTopExporter normalTopExporter;
 
@@ -89,6 +92,10 @@ public class KgParserApplication implements CommandLineRunner {
 
 	@Autowired
 	private SprintTopExporter sprintTopExporter;
+
+	// non-standard vocabularies
+	@Autowired
+	private NormalInEnglishTopExporter normalInEnglishTopExporter;
 
 	// todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
 	private final PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
@@ -125,7 +132,13 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: select mode (what to do) by arguments
 		// todo: add an option to skip Excel import
 
-		// standard dictionaries exporters
+		// non-standard vocabularies exporters
+		normalInEnglishTopExporter.export(context);
+		if (true) {
+			return;
+		}
+
+		// standard vocabularies exporters
 		sprintTopExporter.export(context);
 		if (true) {
 			return;

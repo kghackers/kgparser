@@ -26,6 +26,9 @@
                 | <a href="./${links.digitsTopBySpeedPage1}" class="digits">Цифры</a>
                 | <a href="./${links.sprintTopBySpeedPage1}" class="sprint">Спринт</a>
                 <br/>
+                <a href="./${links.normalInEnglishTopBySpeedPage1}">Обычный in English</a>
+
+                <br/>
                 <a href="./2020-12-09/stats.html">Статистика от 02.09.2012</a>
             </td>
             <td class="header-right">

@@ -2,6 +2,7 @@ package ru.klavogonki.kgparser.freemarker;
 
 import lombok.Data;
 import ru.klavogonki.kgparser.export.ExporterUtils;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.NormalInEnglishTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.AbraTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.CharsTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.DigitsTopExporter;
@@ -56,6 +57,7 @@ public class Links {
     private String playersByRank = PageUrls.PLAYER_BY_RANK;
 
     // vocabularies landing pages
+    // standard vocabularies
     private String normalTopBySpeedPage1 = new NormalTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String abraTopBySpeedPage1 = new AbraTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String referatsTopBySpeedPage1 = new ReferatsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
@@ -64,6 +66,9 @@ public class Links {
     private String charsTopBySpeedPage1 = new CharsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String digitsTopBySpeedPage1 = new DigitsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String sprintTopBySpeedPage1 = new SprintTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+
+    // non-standard vocabularies
+    private String normalInEnglishTopBySpeedPage1 = new NormalInEnglishTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
 
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;

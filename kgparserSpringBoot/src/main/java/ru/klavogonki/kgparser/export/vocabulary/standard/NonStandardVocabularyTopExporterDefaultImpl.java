@@ -3,14 +3,16 @@ package ru.klavogonki.kgparser.export.vocabulary.standard;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.NonStandardVocabularyTopExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerVocabularyStatsRepository;
 
 import java.util.List;
 
+// todo: same implementation as StandardVocabularyTopExporterDefaultImpl
 @Component
-public abstract class StandardVocabularyTopExporterDefaultImpl implements StandardVocabularyTopExporter {
+public abstract class NonStandardVocabularyTopExporterDefaultImpl implements NonStandardVocabularyTopExporter {
 
     @Autowired
     protected PlayerVocabularyStatsRepository repository;
