@@ -1,0 +1,68 @@
+# This workflow containts jobs for downloading player data
+name: Player Data Downloader 
+on:
+  workflow_dispatch:
+    inputs:
+      first_id:
+        description: 'First Player ID'
+        required: false
+        default: 30000
+      last_id:
+        description: 'Last Player ID'
+        required: false
+        default: 30100
+      threads:
+        description: 'Number of Execution Threads'
+        required: false 
+        default: 10
+
+jobs:
+  download:
+    name: Download Player Data
+    runs-on: ubuntu-latest
+    # for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
+    steps:
+      # Clone repository with all branches and tags into github virtual machine 
+      - uses: actions/checkout@v2
+       
+      # Download and Install specific JDK version
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+         # for act caching download https://static.azul.com/zulu/bin/zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
+         # to root workdir an uncomment
+         # jdkFile: zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
+
+      # Load packages from cache if present
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      
+      # Build project, run tests and send to SonarCloud for analysis
+      - name: Install KG Parser
+        run: mvn install -Dmaven.javadoc.skip -Dmaven.test.skip=true 
+      
+      # Run Player Data Downloader with inputs provided from dispatch if present
+      # or run with defaults and save into data directory
+      - name: Download Data
+        run: java -Dlog4j.configurationFile=log4j2.xml -cp kgparserSrv/target/kgparser-srv-1.0.jar ru.klavogonki.kgparser.PlayerDataDownloader data ${{ github.event.inputs.first_id }} ${{ github.event.inputs.last_id }} ${{ github.event.inputs.threads }}
+
+      # Archive all downloaded .json files 
+      - name: Archive Data
+        run: tar cvzf "$(ls data).tar.gz" data/*
+
+      # Configure AWS CLI with credentials from repository secrets
+      - name: Configure AWS credentials from Test account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+      
+      # Upload Archived Data into Bucket
+      - name: Copy Archived Data to S3
+        run: aws s3 cp "$(ls data).tar.gz" s3://dievri-kgparser
