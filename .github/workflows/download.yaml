@@ -90,3 +90,30 @@ jobs:
       # Upload Archived Data into Bucket
       - name: Copy Archived Data to S3
         run: aws s3 cp "$(ls data).tar.gz" s3://dievri-kgparser
+
+      # Process downloaded files
+      - name: Prepare MySQL database
+        run: |
+              sudo systemctl start mysql
+              sudo mysql -uroot -proot -e "create database actions;"
+      
+      - name: Parse Json Files
+        run: java -jar kgparserSpringBoot/target/kgparser-springboot-1.0.jar "data" ${{ github.event.inputs.first_id }} ${{ github.event.inputs.last_id }} 1 "$(ls data)"
+
+      - name: Create Database Dump
+        run: sudo mysqldump -uroot -proot actions > "$(ls data).sql"
+
+      - name: Upload DB Dump to s3
+        run: aws s3 cp "$(ls data).sql" s3://dievri-kgparser
+
+      - name: Telegram Message Notify
+        uses: appleboy/telegram-action@v0.1.0
+        with:
+          format: html
+          to: ${{ secrets.TGBOT_CHAT }}
+          token: ${{ secrets.TGBOT_TOKEN }}
+          message: |
+            <strong>GitHub Player Data Downloader (Manual Dispatch)</strong>
+            <pre><code>
+              archive with json files and database dump uploaded to s3
+            </code></pre>
