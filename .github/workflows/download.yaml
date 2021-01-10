@@ -46,10 +46,34 @@ jobs:
       - name: Install KG Parser
         run: mvn install -Dmaven.javadoc.skip -Dmaven.test.skip=true 
       
+      # Set srating time to variable  
+      - run: echo "::set-output name=start::$(date)"
+        id: start_time
       # Run Player Data Downloader with inputs provided from dispatch if present
       # or run with defaults and save into data directory
       - name: Download Data
         run: java -Dlog4j.configurationFile=log4j2.xml -cp kgparserSrv/target/kgparser-srv-1.0.jar ru.klavogonki.kgparser.PlayerDataDownloader data ${{ github.event.inputs.first_id }} ${{ github.event.inputs.last_id }} ${{ github.event.inputs.threads }}
+      
+      - run: echo "::set-output name=end::$(date)"
+        id: end_time
+
+      - name: Telegram Message Notify
+        uses: appleboy/telegram-action@v0.1.0
+        with:
+          format: html
+          to: ${{ secrets.TGBOT_CHAT }}
+          token: ${{ secrets.TGBOT_TOKEN }}
+          message: |
+            <strong>GitHub Player Data Downloader (Manual Dispatch)</strong>
+            <pre><code>
+              Input Data:
+                    First Player ID:  ${{ github.event.inputs.first_id }}  
+                     Last Player ID:  ${{ github.event.inputs.last_id }}
+                  Execution Threads:  ${{ github.event.inputs.threads }}
+              Time:   
+               Start: ${{steps.start_time.outputs.start}} 
+                 End: ${{steps.end_time.outputs.end}} 
+            </code></pre>
 
       # Archive all downloaded .json files 
       - name: Archive Data
