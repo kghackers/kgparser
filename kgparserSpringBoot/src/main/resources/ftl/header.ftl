@@ -27,7 +27,7 @@
                 | <a href="./${links.sprintTopBySpeedPage1}" class="sprint">Спринт</a>
                 <br/>
                 <a href="./${links.normalInEnglishTopBySpeedPage1}">Обычный in English</a>
-
+                | <a href="./${links.miniMarathonTopBySpeedPage1}">Мини-марафон, 800 знаков</a>
                 <br/>
                 <a href="./2020-12-09/stats.html">Статистика от 02.09.2012</a>
             </td>
