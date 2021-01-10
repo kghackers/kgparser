@@ -20,6 +20,7 @@ import ru.klavogonki.kgparser.export.TopBySpeedExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.FrequencyVocabularyTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.MiniMarathonTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.NormalInEnglishTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.ShortTextsTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.AbraTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.CharsTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.standard.DigitsTopExporter;
@@ -103,6 +104,9 @@ public class KgParserApplication implements CommandLineRunner {
 	private MiniMarathonTopExporter miniMarathonTopExporter;
 
 	@Autowired
+	private ShortTextsTopExporter shortTextsTopExporter;
+
+	@Autowired
 	private FrequencyVocabularyTopExporter frequencyVocabularyTopExporter;
 
 	// todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
@@ -141,6 +145,11 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: add an option to skip Excel import
 
 		// non-standard vocabularies exporters
+		shortTextsTopExporter.export(context);
+		if (true) {
+			return;
+		}
+
 		frequencyVocabularyTopExporter.export(context);
 		if (true) {
 			return;
