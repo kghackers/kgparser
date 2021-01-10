@@ -35,6 +35,7 @@
                 | <a href="./${links.trainingIndexFingersTopBySpeedPage1}">Тренируем указательные</a>
                 <#-- todo: add some dictionary for middle fingers. Probably https://klavogonki.ru/vocs/5029/ :( -->
                 | <a href="./${links.ringFingersTopBySpeedPage1}">Безымянные</a>
+                | <a href="./${links.pinkiesPlusTopBySpeedPage1}">Мизинцы+</a>
                 <br/>
                 <a href="./2020-12-09/stats.html">Статистика от 02.09.2012</a>
             </td>

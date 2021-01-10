@@ -7,6 +7,7 @@ import ru.klavogonki.kgparser.export.vocabulary.non_standard.FrequencyVocabulary
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.MiniMarathonTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.NormalInEnglishTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.OneHundredRussianTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.PinkiesPlusTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.RingFingersTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.ShortTextsTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.TrainingIndexFingersTopExporter;
@@ -83,6 +84,7 @@ public class Links {
     private String digitsOneHundredTopBySpeedPage1 = new DigitsOneHundredTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String trainingIndexFingersTopBySpeedPage1 = new TrainingIndexFingersTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String ringFingersTopBySpeedPage1 = new RingFingersTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+    private String pinkiesPlusTopBySpeedPage1 = new PinkiesPlusTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
 
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;
