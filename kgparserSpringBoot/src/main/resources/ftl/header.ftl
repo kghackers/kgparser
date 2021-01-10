@@ -37,7 +37,7 @@
                 | <a href="./${links.ringFingersTopBySpeedPage1}">Безымянные</a>
                 | <a href="./${links.pinkiesPlusTopBySpeedPage1}">Мизинцы+</a>
                 <br/>
-                <a href="./2020-12-09/stats.html">Статистика от 02.09.2012</a>
+                <a href="./2020-12-09/stats.html">Статистика от 09.12.2020</a>
             </td>
             <td class="header-right">
                 <form action="https://www.paypal.com/donate" method="post" target="_top">
