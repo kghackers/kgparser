@@ -17,6 +17,7 @@ import ru.klavogonki.kgparser.export.IndexPageExporter;
 import ru.klavogonki.kgparser.export.PlayersByRankExporter;
 import ru.klavogonki.kgparser.export.Top500PagesExporter;
 import ru.klavogonki.kgparser.export.TopBySpeedExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.DigitsOneHundredTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.FrequencyVocabularyTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.MiniMarathonTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.NormalInEnglishTopExporter;
@@ -113,6 +114,9 @@ public class KgParserApplication implements CommandLineRunner {
 	@Autowired
 	private OneHundredRussianTopExporter oneHundredRussianTopExporter;
 
+	@Autowired
+	private DigitsOneHundredTopExporter digitsOneHundredTopExporter;
+
 	// todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
 	private final PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -149,6 +153,11 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: add an option to skip Excel import
 
 		// non-standard vocabularies exporters
+		digitsOneHundredTopExporter.export(context);
+		if (true) {
+			return;
+		}
+
 		oneHundredRussianTopExporter.export(context);
 		if (true) {
 			return;

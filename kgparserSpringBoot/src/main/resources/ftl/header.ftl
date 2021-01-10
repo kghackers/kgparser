@@ -31,6 +31,7 @@
                 | <a href="./${links.shortTextsTopBySpeedPage1}">Короткие тексты</a>
                 | <a href="./${links.frequencyVocabularyTopBySpeedPage1}">Частотный словарь</a>
                 | <a href="./${links.oneHundredRussianTopBySpeedPage1}">Соточка</a>
+                | <a href="./${links.digitsOneHundredTopBySpeedPage1}">Цифросоточка</a>
                 <br/>
                 <a href="./2020-12-09/stats.html">Статистика от 02.09.2012</a>
             </td>

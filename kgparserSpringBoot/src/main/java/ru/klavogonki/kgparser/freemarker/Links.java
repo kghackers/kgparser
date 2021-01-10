@@ -2,6 +2,7 @@ package ru.klavogonki.kgparser.freemarker;
 
 import lombok.Data;
 import ru.klavogonki.kgparser.export.ExporterUtils;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.DigitsOneHundredTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.FrequencyVocabularyTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.MiniMarathonTopExporter;
 import ru.klavogonki.kgparser.export.vocabulary.non_standard.NormalInEnglishTopExporter;
@@ -77,6 +78,7 @@ public class Links {
     private String shortTextsTopBySpeedPage1 = new ShortTextsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String frequencyVocabularyTopBySpeedPage1 = new FrequencyVocabularyTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
     private String oneHundredRussianTopBySpeedPage1 = new OneHundredRussianTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+    private String digitsOneHundredTopBySpeedPage1 = new DigitsOneHundredTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
 
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;
