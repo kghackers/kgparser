@@ -164,117 +164,118 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: select mode (what to do) by arguments
 		// todo: add an option to skip Excel import
 
+		boolean exitAfterPageGeneration = false;
+		boolean executeDatabaseJsonImport = false;
+
 		// non-standard vocabularies exporters
 		pinkiesPlusTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		ringFingersTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		trainingIndexFingersTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		digitsOneHundredTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		oneHundredRussianTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		shortTextsTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		frequencyVocabularyTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		miniMarathonTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		normalInEnglishTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		// standard vocabularies exporters
 		sprintTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		digitsTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		marathonTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		referatsTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		abraTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		normalTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		noErrorTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		charsTopExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
 
 		// global tops exporters
 		playersByRankExporter.export(context);
-/*
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
-*/
 
 		top500PagesExporter.export(context);
-/*
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
-*/
 
 		indexPageExporter.export(context);
-/*
-		if (true) {
+		if (exitAfterPageGeneration) {
 			return;
 		}
-*/
 
 		topBySpeedExporter.export(context);
-		if (true) {
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		if (!executeDatabaseJsonImport) {
 			return;
 		}
 
