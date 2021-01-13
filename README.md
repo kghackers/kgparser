@@ -4,7 +4,6 @@
 * Мой профиль на Клавогонках — [nosferatum](https://klavogonki.ru/u/#/242585/)
 * [Telegram канал](https://t.me/joinchat/N3tfQFVvmbH21ipSy9yKcA) с нотификациями о событиях в этом GitHub-проекте 
 
-## Test
 # How to execute `PlayerDataDownloader`
 Execution with overriding the `log4j2.xml` configuration file:
 
