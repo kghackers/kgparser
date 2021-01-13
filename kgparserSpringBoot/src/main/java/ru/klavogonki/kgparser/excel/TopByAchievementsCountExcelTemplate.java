@@ -12,10 +12,11 @@ import ru.klavogonki.kgparser.excel.player.RatingLevelColumn;
 import ru.klavogonki.kgparser.excel.player.RegisteredColumn;
 import ru.klavogonki.kgparser.excel.player.TotalRacesCountColumn;
 import ru.klavogonki.kgparser.excel.player.VocabulariesCountColumn;
+import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 
 import java.util.List;
 
-public class TopByAchievementsCountExcelTemplate extends ExcelTemplate {
+public class TopByAchievementsCountExcelTemplate extends ExcelTemplate<PlayerDto> {
 
     @Override
     public String getSheetName() {
@@ -23,11 +24,11 @@ public class TopByAchievementsCountExcelTemplate extends ExcelTemplate {
     }
 
     @Override
-    public List<? extends PlayerColumn<?>> getColumns() {
+    public List<? extends PlayerColumn<PlayerDto, ?>> getColumns() {
         return List.of(
-            new OrderNumberColumn(),
-            new LoginColumn(),
-            new ProfileLinkColumn(),
+            new OrderNumberColumn<>(),
+            new LoginColumn<>(),
+            new ProfileLinkColumn<>(),
             new AchievementsCountColumn(),
             new BestSpeedColumn(),
             new TotalRacesCountColumn(),

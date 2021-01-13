@@ -1,8 +1,9 @@
 package ru.klavogonki.kgparser.excel.player;
 
 import ru.klavogonki.kgparser.excel.ExcelExportContext;
+import ru.klavogonki.kgparser.excel.data.ExcelExportContextData;
 
-public interface IntegerColumn extends PlayerColumn<Integer> {
+public interface IntegerColumn<D extends ExcelExportContextData> extends PlayerColumn<D, Integer> {
 
     @Override
     default int getColumnWidth() {
@@ -10,12 +11,12 @@ public interface IntegerColumn extends PlayerColumn<Integer> {
     }
 
     @Override
-    default void setCellFormat(final ExcelExportContext context) {
+    default void setCellFormat(final ExcelExportContext<D> context) {
         context.setIntegerStyle();
     }
 
     @Override
-    default void formatCell(ExcelExportContext context) {
+    default void formatCell(ExcelExportContext<D> context) {
         Integer value = getValue(context.player);
 
         if (value == null) {

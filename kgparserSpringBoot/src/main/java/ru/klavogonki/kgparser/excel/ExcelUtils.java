@@ -79,6 +79,16 @@ public final class ExcelUtils {
         style.setDataFormat(dataFormat.getFormat("0")); // no decimals. Works, with rounding
     }
 
+    public static void setDoubleFormat(final CellStyle style, final DataFormat dataFormat) {
+//        style.setDataFormat(dataFormat.getFormat("0.00")); // Works, with rounding
+
+        // Does not work. Comma as decimal separator, see https://stackoverflow.com/a/14881269/8534088
+        style.setDataFormat(dataFormat.getFormat("#,##0.00")); // Works, with rounding. Decimal separator does not work.
+
+        // todo: still can't set "," as separator, probably hack with JVM locale
+        // see https://stackoverflow.com/questions/7819423/change-decimal-and-thousands-separators-in-excel-using-apache-poi
+    }
+
     public static void setTextFormat(Cell cell, DataFormat dataFormat) {
         setTextFormat(cell.getCellStyle(), dataFormat);
     }

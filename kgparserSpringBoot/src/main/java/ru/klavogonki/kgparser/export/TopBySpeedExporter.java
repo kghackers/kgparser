@@ -36,7 +36,7 @@ public class TopBySpeedExporter implements DataExporter {
         // todo: this will require changes to order number fill: ability to pass the start number. Therefore too complex (since same value can split over multiple pages)
         List<PlayerEntity> players = playerRepository.findByTotalRacesCountGreaterThanEqualAndBlockedEqualsOrderByBestSpeedDescTotalRacesCountDesc(
             TOTAL_RACES_COUNT_MIN,
-            0
+            PlayerEntity.NOT_BLOCKED
         );
 
         List<PlayerDto> dtos = mapper.playerEntitiesToPlayerDtos(players, PlayerDto::getBestSpeed);
@@ -44,16 +44,13 @@ public class TopBySpeedExporter implements DataExporter {
         int totalPlayers = players.size();
         logger.debug("Total players: {}", totalPlayers);
 
-        int totalPages = getPagesCount(totalPlayers, PAGE_SIZE);
+        int totalPages = ExporterUtils.getPagesCount(totalPlayers, PAGE_SIZE);
         logger.debug("Total records: {}. Page size: {}. Total pages: {}", totalPlayers, PAGE_SIZE, totalPages);
 
         Map<String, Integer> loginToPage = new HashMap<>();
 
-        for (int pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-            int fromIndex = (pageNumber - 1) * PAGE_SIZE;
-            int toIndex = Math.min(fromIndex + PAGE_SIZE, totalPlayers);
-
-            List<PlayerDto> playersOnPage = dtos.subList(fromIndex, toIndex);
+        for (int pageNumber = ExporterUtils.FIRST_PAGE_NUMBER; pageNumber <= totalPages; pageNumber++) {
+            List<PlayerDto> playersOnPage = ExporterUtils.subList(dtos, PAGE_SIZE, pageNumber);
 
             final int finalPageNumber = pageNumber; // to use in lambda, must be effectively final
             playersOnPage.forEach(player -> {
@@ -79,6 +76,12 @@ public class TopBySpeedExporter implements DataExporter {
             logger.debug("Exported page {}/{}.", pageNumber, totalPages);
         }
 
+        exportLoginToPageMapToJs(context, loginToPage);
+
+        exportAllPagesToExcel(context, dtos);
+    }
+
+    public void exportLoginToPageMapToJs(final ExportContext context, final Map<String, Integer> loginToPage) {
         // export login -> page map to a js file
         String loginToPageFilePath = PageUrls.getTopBySpeedLoginToPageFilePath(context.webRootDir);
 
@@ -88,7 +91,9 @@ public class TopBySpeedExporter implements DataExporter {
             .loginToPage(loginToPage)
             .loginToPageString(loginToPageString)
             .export(loginToPageFilePath);
+    }
 
+    public void exportAllPagesToExcel(final ExportContext context, final List<PlayerDto> dtos) {
         // export all pages to one Excel
         new TopByBestSpeedPageExcelTemplate()
             .players(dtos)
@@ -96,9 +101,5 @@ public class TopBySpeedExporter implements DataExporter {
                 PageUrls.getTopBySpeedAllPagesExcelFilePath(context.webRootDir),
                 PageUrls.getTopBySpeedAllPagesExcelZipFilePath(context.webRootDir)
             );
-    }
-
-    private int getPagesCount(int totalRecords, int pageSize) {
-        return ((totalRecords % pageSize) == 0) ? (totalRecords / pageSize) : ((totalRecords / pageSize) + 1);
     }
 }

@@ -1,11 +1,14 @@
 package ru.klavogonki.kgparser.excel;
 
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.kgparser.StandardDictionary;
+import ru.klavogonki.kgparser.excel.data.ExcelExportContextData;
 import ru.klavogonki.kgparser.excel.player.AchievementsCountColumn;
 import ru.klavogonki.kgparser.excel.player.BestSpeedColumn;
 import ru.klavogonki.kgparser.excel.player.CarsCountColumn;
@@ -20,6 +23,7 @@ import ru.klavogonki.kgparser.excel.player.TotalRacesCountColumn;
 import ru.klavogonki.kgparser.excel.player.VocabulariesCountColumn;
 import ru.klavogonki.kgparser.http.UrlConstructor;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
+import ru.klavogonki.kgparser.jsonParser.dto.PlayerVocabularyDto;
 import ru.klavogonki.kgparser.util.DateUtils;
 
 import java.util.List;
@@ -32,6 +36,8 @@ import java.util.List;
 @Log4j2
 public class ExcelExporter {
 
+    public static final int MAX_SHEET_NAME_LENGTH = 31; // for freaking Windows Excel
+    public static final String FORBIDDEN_EXCEL_LINK_CHARACTER = "#"; // for freaking Windows Excel
     private static final int HEADER_ROW = 0;
     private static final String BORDER_COLOR = "#808080";
     private static final String HEADER_BACKGROUND_COLOR = "#E0E0E0";
@@ -39,8 +45,39 @@ public class ExcelExporter {
     private static final String ODD_ROW_BACKGROUND_COLOR = "#EEEEEE";
 
     public static void main(String[] args) {
-        String filePath = "C:/java/kg/xls/export-top-by-total-races-count.xlsx";
-        testExportTotalRacesCountTop(filePath);
+//        String filePath = "C:/java/kg/xls/export-top-by-total-races-count.xlsx";
+//        testExportTotalRacesCountTop(filePath);
+
+        String topBySpeedXlsx = "C:/java/kg/xls/export-top-by-speed.xlsx";
+        String topBySpeedZip = "C:/java/kg/xls/export-top-by-speed.zip";
+        testExportTopByVocabularySpeed(topBySpeedXlsx, topBySpeedZip);
+    }
+
+    public static void testExportTopByVocabularySpeed(String filePath, String zipFilePath) {
+        PlayerVocabularyDto player1 = new PlayerVocabularyDto();
+        player1.setOrderNumber("1");
+        player1.setPlayerId(169106);
+        player1.setLogin("170000");
+        player1.setRank(Rank.extracyber);
+        player1.setBestSpeed(652);
+        player1.setRacesCount(6703);
+        player1.setAverageSpeed(525.438);
+        player1.setAverageError(2.0761);
+        player1.setQual(546);
+        player1.setHaul("44 ч. 27 мин. 1 сек.");
+        player1.setUpdatedDateTime(DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-27 16:04:01"));
+        player1.setVocabularyStatsLinkWithoutHash(UrlConstructor.userStatsByVocabularyWithoutHash(player1.getPlayerId(), StandardDictionary.chars.name()));
+
+        List<PlayerVocabularyDto> players = List.of(
+            player1
+        );
+
+        new VocabularyTopByBestSpeedExcelTemplate("Топ по скорости в «Буквах»")
+            .players(players)
+            .export(
+                filePath,
+                zipFilePath
+            );
     }
 
     public static void testExportTotalRacesCountTop(String filePath) {
@@ -104,10 +141,10 @@ public class ExcelExporter {
 
     public static void exportTotalRacesCountTop(String filePath, String sheetName, List<PlayerDto> players) {
         // same as TopByTotalRacesCountExcelTemplate
-        List<? extends PlayerColumn<?>> columns = List.of(
-            new OrderNumberColumn(),
-            new LoginColumn(),
-            new ProfileLinkColumn(),
+        List<? extends PlayerColumn<PlayerDto, ?>> columns = List.of(
+            new OrderNumberColumn<>(),
+            new LoginColumn<>(),
+            new ProfileLinkColumn<>(),
             new TotalRacesCountColumn(),
             new BestSpeedColumn(),
             new RegisteredColumn(),
@@ -121,18 +158,57 @@ public class ExcelExporter {
         export(filePath, sheetName, players, columns);
     }
 
-    public static void export(
+    public static boolean isValidSheetName(String sheetName) {
+        if (StringUtils.isBlank(sheetName)) {
+            return false;
+        }
+
+        return sheetName.length() <= MAX_SHEET_NAME_LENGTH;
+    }
+
+    public static void validateSheetName(String sheetName) {
+        if (StringUtils.isBlank(sheetName)) {
+            throw new IllegalArgumentException("Excel sheet name cannot be null or empty.");
+        }
+
+        if (sheetName.length() > MAX_SHEET_NAME_LENGTH) {
+            throw new IllegalArgumentException(String.format(
+                "Excel sheet name cannot be longer than %d characters (Windows Excel will cut it). Sheet name \"%s\" is %d characters long.",
+                MAX_SHEET_NAME_LENGTH,
+                sheetName,
+                sheetName.length()
+            ));
+        }
+    }
+
+    public static void validateHyperlink(String hyperlink) {
+        if (StringUtils.isBlank(hyperlink)) {
+            throw new IllegalArgumentException("Excel hyperlink cannot be null or empty.");
+        }
+
+        if (hyperlink.contains(FORBIDDEN_EXCEL_LINK_CHARACTER)) {
+            throw new IllegalArgumentException(String.format(
+                "Excel hyperlink cannot contain %s character (Windows Excel will not handle it). Hyperlink \"%s\" contains %s character.",
+                FORBIDDEN_EXCEL_LINK_CHARACTER,
+                hyperlink,
+                FORBIDDEN_EXCEL_LINK_CHARACTER
+            ));
+        }
+    }
+
+    public static <D extends ExcelExportContextData> void export(
         String filePath,
         String sheetName,
-        List<PlayerDto> players,
-        List<? extends PlayerColumn<?>> columns
+        List<D> players,
+        List<? extends PlayerColumn<D, ?>> columns
     ) {
         XSSFWorkbook workbook = new XSSFWorkbook();
 
         ExcelStylesMap.Config config = createStylesMapConfig(workbook);
 
-        ExcelExportContext context = ExcelExportContext.initContext(workbook, config);
+        ExcelExportContext<D> context = ExcelExportContext.initContext(workbook, config);
 
+        ExcelExporter.validateSheetName(sheetName);
         Sheet sheet = context.workbook.createSheet(sheetName);
 
         setColumnWidths(columns, sheet);
@@ -155,20 +231,20 @@ public class ExcelExporter {
         return config;
     }
 
-    private static void setColumnWidths(final List<? extends PlayerColumn<?>> columns, final Sheet sheet) {
+    private static void setColumnWidths(final List<? extends PlayerColumn<?, ?>> columns, final Sheet sheet) {
         for (int columnNumber = 0; columnNumber < columns.size(); columnNumber++) {
-            final PlayerColumn<?> column = columns.get(columnNumber);
+            final PlayerColumn<?, ?> column = columns.get(columnNumber);
             sheet.setColumnWidth(columnNumber, column.getColumnWidth());
         }
     }
 
-    private static void addHeaderRow(final List<? extends PlayerColumn<?>> columns, final ExcelExportContext context, final Sheet sheet) {
+    private static void addHeaderRow(final List<? extends PlayerColumn<?, ?>> columns, final ExcelExportContext context, final Sheet sheet) {
         // header row
         Row headerRow = sheet.createRow(HEADER_ROW);
 
         // add all columns from the header row
         for (int columnNumber = 0; columnNumber < columns.size(); columnNumber++) {
-            final PlayerColumn<?> column = columns.get(columnNumber);
+            final PlayerColumn<?, ?> column = columns.get(columnNumber);
             String headerText = column.getColumnName();
 
             Cell headerCell = headerRow.createCell(columnNumber);
@@ -179,19 +255,19 @@ public class ExcelExporter {
         }
     }
 
-    private static void addPlayerRows(
-        final List<PlayerDto> players,
-        final List<? extends PlayerColumn<?>> columns,
-        final ExcelExportContext context,
+    private static <D extends ExcelExportContextData> void addPlayerRows(
+        final List<D> players,
+        final List<? extends PlayerColumn<D, ?>> columns,
+        final ExcelExportContext<D> context,
         final Sheet sheet
     ) {
         int rowNumber = HEADER_ROW + 1;
 
-        for (PlayerDto player : players) {
+        for (D player : players) {
             Row playerRow = sheet.createRow(rowNumber);
 
             for (int columnNumber = 0; columnNumber < columns.size(); columnNumber++) {
-                final PlayerColumn<?> column = columns.get(columnNumber);
+                final PlayerColumn<D, ?> column = columns.get(columnNumber);
 
                 Cell cell = playerRow.createCell(columnNumber);
 
@@ -201,7 +277,7 @@ public class ExcelExporter {
 
                 column.formatCell(context);
 
-                logger.debug("Added player \"{}\" column {} header to row {}, column {}.", player.getLogin(), column.getColumnName(), rowNumber, columnNumber);
+                logger.debug("Added player \"{}\" column \"{}\" to row {}, column {}.", player.getLogin(), column.getColumnName(), rowNumber, columnNumber);
             }
 
             rowNumber++;

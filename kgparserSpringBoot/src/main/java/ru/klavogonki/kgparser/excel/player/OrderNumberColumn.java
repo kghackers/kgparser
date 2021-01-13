@@ -1,11 +1,11 @@
 package ru.klavogonki.kgparser.excel.player;
 
 import ru.klavogonki.kgparser.excel.ExcelExportContext;
-import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
+import ru.klavogonki.kgparser.excel.data.OrderNumberExcelData;
 
 import java.util.function.Function;
 
-public class OrderNumberColumn implements PlayerColumn<String> {
+public class OrderNumberColumn<D extends OrderNumberExcelData> implements PlayerColumn<D, String> {
 
     @Override
     public String getColumnName() {
@@ -18,8 +18,8 @@ public class OrderNumberColumn implements PlayerColumn<String> {
     }
 
     @Override
-    public Function<PlayerDto, String> playerFieldGetter() {
-        return PlayerDto::getOrderNumber;
+    public Function<D, String> playerFieldGetter() {
+        return OrderNumberExcelData::getOrderNumber;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class OrderNumberColumn implements PlayerColumn<String> {
     }
 
     @Override
-    public void formatCell(final ExcelExportContext context) {
+    public void formatCell(final ExcelExportContext<D> context) {
         context.setTextAlignRightStyle();
 
         PlayerColumn.super.setCellValue(context); // call default method of the given interface

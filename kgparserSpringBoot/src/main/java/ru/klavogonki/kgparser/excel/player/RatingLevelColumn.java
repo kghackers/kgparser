@@ -4,7 +4,7 @@ import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 
 import java.util.function.Function;
 
-public class RatingLevelColumn implements IntegerColumn {
+public class RatingLevelColumn implements IntegerColumn<PlayerDto> {
 
     @Override
     public String getColumnName() {

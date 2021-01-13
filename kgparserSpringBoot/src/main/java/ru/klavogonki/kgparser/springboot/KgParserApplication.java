@@ -17,6 +17,23 @@ import ru.klavogonki.kgparser.export.IndexPageExporter;
 import ru.klavogonki.kgparser.export.PlayersByRankExporter;
 import ru.klavogonki.kgparser.export.Top500PagesExporter;
 import ru.klavogonki.kgparser.export.TopBySpeedExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.DigitsOneHundredTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.FrequencyVocabularyTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.MiniMarathonTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.NormalInEnglishTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.OneHundredRussianTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.PinkiesPlusTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.RingFingersTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.ShortTextsTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.non_standard.TrainingIndexFingersTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.AbraTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.CharsTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.DigitsTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.MarathonTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.NoErrorTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.NormalTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.ReferatsTopExporter;
+import ru.klavogonki.kgparser.export.vocabulary.standard.SprintTopExporter;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
@@ -43,6 +60,7 @@ public class KgParserApplication implements CommandLineRunner {
 	@Autowired
 	private PlayerRepository playerRepository;
 
+	// aggregate tops
 	@Autowired
 	private PlayerVocabularyStatsRepository playerVocabularyStatsRepository;
 
@@ -57,6 +75,59 @@ public class KgParserApplication implements CommandLineRunner {
 
 	@Autowired
 	private PlayersByRankExporter playersByRankExporter;
+
+	// standard vocabularies
+	@Autowired
+	private NormalTopExporter normalTopExporter;
+
+	@Autowired
+	private AbraTopExporter abraTopExporter;
+
+	@Autowired
+	private ReferatsTopExporter referatsTopExporter;
+
+	@Autowired
+	private NoErrorTopExporter noErrorTopExporter;
+
+	@Autowired
+	private MarathonTopExporter marathonTopExporter;
+
+	@Autowired
+	private CharsTopExporter charsTopExporter;
+
+	@Autowired
+	private DigitsTopExporter digitsTopExporter;
+
+	@Autowired
+	private SprintTopExporter sprintTopExporter;
+
+	// non-standard vocabularies
+	@Autowired
+	private NormalInEnglishTopExporter normalInEnglishTopExporter;
+
+	@Autowired
+	private MiniMarathonTopExporter miniMarathonTopExporter;
+
+	@Autowired
+	private ShortTextsTopExporter shortTextsTopExporter;
+
+	@Autowired
+	private FrequencyVocabularyTopExporter frequencyVocabularyTopExporter;
+
+	@Autowired
+	private OneHundredRussianTopExporter oneHundredRussianTopExporter;
+
+	@Autowired
+	private DigitsOneHundredTopExporter digitsOneHundredTopExporter;
+
+	@Autowired
+	private TrainingIndexFingersTopExporter trainingIndexFingersTopExporter;
+
+	@Autowired
+	private RingFingersTopExporter ringFingersTopExporter;
+
+	@Autowired
+	private PinkiesPlusTopExporter pinkiesPlusTopExporter;
 
 	// todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
 	private final PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
@@ -73,14 +144,14 @@ public class KgParserApplication implements CommandLineRunner {
 	@Override
 	public void run(final String... args) {
 		// todo: parse context from args of from json file given by args
-		// ExportContext context = new ExportContext();
-		// context.webRootDir = "C:/java/kgparser/kgparserWeb/src/main/webapp/";
+		ExportContext context = new ExportContext();
+		context.webRootDir = "C:/java/kgparser/kgparserWeb/src/main/webapp/";
 
 		// data load from 2020-12-28
-		// context.minPlayerId = 1;
-		// context.maxPlayerId = 628000;
-		// context.dataDownloadStartDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 00:28:13");
-		// context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 01:44:43");
+		context.minPlayerId = 1;
+		context.maxPlayerId = 628000;
+		context.dataDownloadStartDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 00:28:13");
+		context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 01:44:43");
 
 /*
 		// data load from 2020-12-09
@@ -93,33 +164,122 @@ public class KgParserApplication implements CommandLineRunner {
 		// todo: select mode (what to do) by arguments
 		// todo: add an option to skip Excel import
 
-/*
-		if (true) {
+		boolean exitAfterPageGeneration = false;
+		boolean executeDatabaseJsonImport = false;
+
+		// non-standard vocabularies exporters
+		pinkiesPlusTopExporter.export(context);
+		if (exitAfterPageGeneration) {
 			return;
 		}
-*/
 
-		// playersByRankExporter.export(context);
-		// if (true) {
-		// 	return;
-		// }
+		ringFingersTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
 
-		// top500PagesExporter.export(context);
-		// if (true) {
-		// 	return;
-		// }
+		trainingIndexFingersTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
 
-		// indexPageExporter.export(context);
-		// if (true) {
-		// 	return;
-		// }
+		digitsOneHundredTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
 
-		// topBySpeedExporter.export(context);
-		// if (true) {
-		// 	return;
-		// }
+		oneHundredRussianTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
 
+		shortTextsTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
 
+		frequencyVocabularyTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		miniMarathonTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		normalInEnglishTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		// standard vocabularies exporters
+		sprintTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		digitsTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		marathonTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		referatsTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		abraTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		normalTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		noErrorTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		charsTopExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		// global tops exporters
+		playersByRankExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		top500PagesExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		indexPageExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		topBySpeedExporter.export(context);
+		if (exitAfterPageGeneration) {
+			return;
+		}
+
+		if (!executeDatabaseJsonImport) {
+			return;
+		}
+
+		// export from json files with API call results to the database
 		// todo: pass a path to a json file with config instead
 
 		if (args.length != REQUIRED_ARGUMENTS_COUNT) {

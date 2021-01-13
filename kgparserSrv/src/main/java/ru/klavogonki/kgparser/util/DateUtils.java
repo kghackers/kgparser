@@ -67,7 +67,9 @@ public class DateUtils {
     }
 
     public static String formatDateTimeForUi(LocalDateTime localDateTime) {
-        Objects.requireNonNull(localDateTime);
+        if (localDateTime == null) { // https://klavogonki.ru/u/#/166851/stats/ - has statistics, but /get-index-data returns error
+            return "—";
+        }
 
         // convert LocalDateTime -> ZonedDateTime
         ZoneId moscowZoneId = getMoscowZoneId();

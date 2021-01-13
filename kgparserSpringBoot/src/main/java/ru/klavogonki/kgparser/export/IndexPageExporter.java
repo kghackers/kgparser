@@ -52,11 +52,11 @@ public class IndexPageExporter implements DataExporter {
 
         logger.debug("Players with error on /get-index-data grouped by error: {}", playersWithIndexDataErrorGroupedByError);
 
-        Integer actualPlayersWithoutRacesCount = playerRepository.countByGetSummaryErrorIsNullAndGetIndexDataErrorIsNullAndBlockedEqualsAndTotalRacesCountEquals(0, 0);
+        Integer actualPlayersWithoutRacesCount = playerRepository.countByGetSummaryErrorIsNullAndGetIndexDataErrorIsNullAndBlockedEqualsAndTotalRacesCountEquals(PlayerEntity.NOT_BLOCKED, 0);
         logger.debug("Actual players with no total races: {}", actualPlayersWithoutRacesCount);
 
         int minTotalRacesCount = 1;
-        Integer actualPlayersWithAtLeast1RaceCount = playerRepository.countByGetSummaryErrorIsNullAndGetIndexDataErrorIsNullAndBlockedEqualsAndTotalRacesCountIsGreaterThanEqual(0, minTotalRacesCount);
+        Integer actualPlayersWithAtLeast1RaceCount = playerRepository.countByGetSummaryErrorIsNullAndGetIndexDataErrorIsNullAndBlockedEqualsAndTotalRacesCountIsGreaterThanEqual(PlayerEntity.NOT_BLOCKED, minTotalRacesCount);
         logger.debug("Actual players with at least {} total races count: {}", minTotalRacesCount, actualPlayersWithAtLeast1RaceCount);
 
         long totalUsersInDatabase = playerRepository.count();

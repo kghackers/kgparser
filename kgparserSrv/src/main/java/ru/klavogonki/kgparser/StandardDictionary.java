@@ -97,6 +97,27 @@ public enum StandardDictionary
 
 	/**
 	 * @param dictionary стандартный словарь
+	 * @return русское название словаря для отображения, в предложном падеже
+	 */
+	public static String getDisplayNameInPrepositionalCase(StandardDictionary dictionary) {
+		switch (dictionary)
+		{
+			case normal: return "Обычном";
+			case noerror: return "Безошибочном";
+			case chars: return "Буквах";
+			case marathon: return "Марафоне";
+			case abra: return "Абракадабре";
+			case referats: return "Яндекс.Рефератах";
+			case digits: return "Цифрах";
+			case sprint: return "Спринте";
+
+			default:
+				throw new IllegalArgumentException("Unknown standard dictionary: " + dictionary); // todo: use concat
+		}
+	}
+
+	/**
+	 * @param dictionary стандартный словарь
 	 * @return страница стандартного слоаря в <a href="http://klavogonki.ru/wiki/">википедии клавогонок</a>.
 	 */
 	public static String getDictionaryPageUrl(StandardDictionary dictionary) {

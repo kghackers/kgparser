@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Топ по пробегу в «Частотном словаре»</title>
+    <link rel="stylesheet" type="text/css" href="./css/stats.css">
+    <link rel="shortcut icon" href="./img/favicon/favicon.ico"/>
+</head>
+<body>
+<header>
+    <table> 
+        <tr>
+            <td class="header-left">
+                <a href="./stats.html">На главную</a>
+                | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser&nbsp;on&nbsp;GitHub</a>
+                | <a href="https://klavogonki.ru/forum/software/59/">Тема&nbsp;на&nbsp;форуме</a>
+                | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
+                <div class="header-vertical-space"></div>
+                <a href="./stat-top-by-total-races.html">Топ&nbsp;по&nbsp;общему&nbsp;пробегу</a>
+                | <a href="./stat-top-by-best-speed-page-1.html">Топ по рекорду в &laquo;Обычном&raquo;</a>
+                | <a href="./stat-top-by-best-speed.html">Топ-500&nbsp;в&nbsp;&laquo;Обычном&raquo;</a> 
+                | <a href="./stat-top-by-rating-level.html">Топ&nbsp;по&nbsp;уровню</a>
+                | <a href="./stat-top-by-friends-count.html">Топ&nbsp;по&nbsp;числу&nbsp;друзей</a>
+                | <a href="./stat-top-by-achievements-count.html">Топ&nbsp;по&nbsp;числу&nbsp;достижений</a>
+                <div class="header-vertical-space"></div>
+                <a href="./stat-top-by-vocabularies-count.html">Топ&nbsp;по&nbsp;числу&nbsp;используемых&nbsp;словарей</a>
+                | <a href="./stat-top-by-cars-count.html">Топ&nbsp;по&nbsp;числу&nbsp;машин&nbsp;в&nbsp;гараже</a>
+                | <a href="./stat-players-by-rank.html">Игроки&nbsp;по&nbsp;рангам</a>
+                <div class="header-vertical-space"></div>
+                <a href="././voc-normal-top-by-best-speed-page-1.html" class="normal">Обычный</a>
+                | <a href="././voc-abra-top-by-best-speed-page-1.html" class="abra">Абракадабра</a>
+                | <a href="././voc-referats-top-by-best-speed-page-1.html" class="referats">Яндекс.Рефераты</a>
+                | <a href="././voc-noerror-top-by-best-speed-page-1.html" class="noerror">Безошибочный</a>
+                | <a href="././voc-marathon-top-by-best-speed-page-1.html" class="marathon">Марафон</a>
+                | <a href="././voc-chars-top-by-best-speed-page-1.html" class="chars">Буквы</a>
+                | <a href="././voc-digits-top-by-best-speed-page-1.html" class="digits">Цифры</a>
+                | <a href="././voc-sprint-top-by-best-speed-page-1.html" class="sprint">Спринт</a>
+                <div class="header-vertical-space"></div>
+                <a href="././voc-5539-top-by-best-speed-page-1.html">Обычный&nbsp;in&nbsp;English</a>
+                | <a href="././voc-6018-top-by-best-speed-page-1.html">Мини-марафон,&nbsp;800&nbsp;знаков</a>
+                | <a href="././voc-1789-top-by-best-speed-page-1.html">Короткие&nbsp;тексты</a>
+                | <a href="././voc-192-top-by-best-speed-page-1.html">Частотный&nbsp;словарь</a>
+                | <a href="././voc-25856-top-by-best-speed-page-1.html">Соточка</a>
+                | <a href="././voc-62238-top-by-best-speed-page-1.html">Цифросоточка</a>
+                | <a href="././voc-226-top-by-best-speed-page-1.html">Тренируем&nbsp;указательные</a>
+                | <a href="././voc-8223-top-by-best-speed-page-1.html">Безымянные</a>
+                | <a href="././voc-3714-top-by-best-speed-page-1.html">Мизинцы+</a>
+                <div class="header-vertical-space"></div>
+                <a href="./2020-12-09/stats.html">Статистика&nbsp;от&nbsp;09.12.2020</a>
+            </td>
+            <td class="header-right" style="width: 300px;">
+                <form method="POST" action="https://yoomoney.ru/quickpay/confirm.xml" style="padding: 5px 0 0 0; width: 350px;">
+                    <img src="./img/iomoney_logo_white.png" width="100" height="22" alt="ЮMoney"/>
+                    <div class="header-vertical-space"></div>
+                    <input type="hidden" name="receiver" value="4100116361083369">
+                    <input type="hidden" name="formcomment" value="Добровольный донат за Клавостатистику (1)">
+                    <input type="hidden" name="short-dest" value="Добровольный донат за Клавостатистику (2)">
+                    <input type="hidden" name="label" value="$order_id">
+                    <input type="hidden" name="quickpay-form" value="donate">
+                    <input type="hidden" name="targets" value="Донат хорошим людям за Клавостат!">
+                    <input type="text" name="sum" value="200" data-type="number" required pattern="[0-9]+">&nbsp;руб.
+                    <div class="header-vertical-space"></div>
+                    <input type="text" name="comment" style="width: 220px;" value="Донат за Клавостат :)" maxlength="200">
+                    <input type="hidden" name="need-fio" value="false">
+                    <input type="hidden" name="need-email" value="false">
+                    <input type="hidden" name="need-phone" value="false">
+                    <input type="hidden" name="need-address" value="false">
+                    <div class="header-vertical-space"></div>
+                    <label><input type="radio" name="paymentType" value="PC">ЮMoney</label>
+                    <label><input type="radio" name="paymentType" value="AC" checked>Картой</label>
+                    <input type="submit" value="Перевести">
+                </form>
+            </td>
+            <td class="header-right" style="width: 100px;">
+                <form action="https://www.paypal.com/donate" method="post" target="_top">
+                    <input type="hidden" name="hosted_button_id" value="WZ2BM3QJYGQTW"/>
+                    <input type="image" src="./img/paypal-logo-small.webp" border="0"
+                           name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button"/>
+                    <img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1"/>
+                </form>
+                <div class="header-vertical-space"></div>
+                <div class="header-vertical-space"></div>
+                Или на карту Тинькофф&nbsp;&mdash; 5536&nbsp;9139&nbsp;2010&nbsp;2668
+            <td>
+        </tr>
+    </table>
+</header>
+<main>
+    <div class="section">
+        <a href="./voc-192-top-by-best-speed-page-1.html">Топ по лучшей скорости</a>&nbsp;&nbsp;&nbsp;
+        <a href="./voc-192-top-by-races-count-page-1.html">Топ по пробегу</a>&nbsp;&nbsp;&nbsp;
+        <a href="./voc-192-top-by-haul-page-1.html">Топ по времени</a>&nbsp;&nbsp;&nbsp;
+    </div>
+    <div class="section">
+        <h2>
+            Топ по пробегу в «Частотном словаре»
+            <a class="excel" href="./xlsx/voc-192-top-by-races-count.xlsx"><img src="./img/excel.png" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>
+        </h2>
+        Учтены игроки с минимальным пробегом 200 в «Частотном словаре»
+    </div>
+
+    <div>
+        <label for="player-search-input">Найти игрока по логину (полный логин):</label>&nbsp;
+        <input id="player-search-input" autofocus/>
+        <button id="search-button" class="search-button">Искать</button>
+    </div>
+    <div class="paging" id="paging-top"></div>
+
+    <div class="section" id="table-container">
+
+        <table class="data">
+            <tr>
+                <th>#</th>
+                <th>Логин</th>
+                <th>Пробег</th> 
+                <th>Рекорд</th> 
+                <th>Средняя</th>
+                <th>Ошибки, %</th>
+                <th>Квала</th>
+                <th>Общее время</th> 
+                <th>Обновлено</th>             </tr>
+
+
+                <tr>
+                    <td class="right">1597–1601</td>
+                    <td class="racer">
+                        <span class="login">unname</span>
+                        <a href="https://klavogonki.ru/u/#/121247/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">367</td>
+                    <td class="right">510</td> 
+                    <td class="right">445,68</td> 
+                    <td class="right">0,98</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 34 мин. 37 сек.</td>
+                    <td class="right">2010-10-12 16:43:13</td>
+                </tr>
+                <tr>
+                    <td class="right">1602–1608</td>
+                    <td class="maniac">
+                        <span class="login">TwinDenis</span>
+                        <a href="https://klavogonki.ru/u/#/531524/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">366</td>
+                    <td class="right">551</td> 
+                    <td class="right">471,95</td> 
+                    <td class="right">1,07</td> 
+                    <td class="right">467</td>
+                    <td class="right">4 ч. 3 мин. 59 сек.</td>
+                    <td class="right">2020-06-18 18:22:46</td>
+                </tr>
+                <tr>
+                    <td class="right">1602–1608</td>
+                    <td class="cabman">
+                        <span class="login">Юля1</span>
+                        <a href="https://klavogonki.ru/u/#/345170/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">366</td>
+                    <td class="right">243</td> 
+                    <td class="right">203,15</td> 
+                    <td class="right">2,60</td> 
+                    <td class="right">0</td>
+                    <td class="right">11 ч. 2 мин. 22 сек.</td>
+                    <td class="right">2013-11-14 23:23:02</td>
+                </tr>
+                <tr>
+                    <td class="right">1602–1608</td>
+                    <td class="pro">
+                        <span class="login">vasyura</span>
+                        <a href="https://klavogonki.ru/u/#/266843/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">366</td>
+                    <td class="right">402</td> 
+                    <td class="right">351,56</td> 
+                    <td class="right">2,24</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 56 мин. 22 сек.</td>
+                    <td class="right">2014-08-07 18:41:29</td>
+                </tr>
+                <tr>
+                    <td class="right">1602–1608</td>
+                    <td class="pro">
+                        <span class="login">tinatos</span>
+                        <a href="https://klavogonki.ru/u/#/262389/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">366</td>
+                    <td class="right">437</td> 
+                    <td class="right">335,79</td> 
+                    <td class="right">2,10</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 53 мин. 58 сек.</td>
+                    <td class="right">2015-06-03 23:06:09</td>
+                </tr>
+                <tr>
+                    <td class="right">1602–1608</td>
+                    <td class="racer">
+                        <span class="login">Generals</span>
+                        <a href="https://klavogonki.ru/u/#/205622/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">366</td>
+                    <td class="right">460</td> 
+                    <td class="right">398,42</td> 
+                    <td class="right">1,05</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 4 мин. 41 сек.</td>
+                    <td class="right">2016-10-26 13:55:49</td>
+                </tr>
+                <tr>
+                    <td class="right">1602–1608</td>
+                    <td class="maniac">
+                        <span class="login">mxx</span>
+                        <a href="https://klavogonki.ru/u/#/185348/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">366</td>
+                    <td class="right">638</td> 
+                    <td class="right">539,05</td> 
+                    <td class="right">1,22</td> 
+                    <td class="right">0</td>
+                    <td class="right">3 ч. 42 мин. 58 сек.</td>
+                    <td class="right">2012-10-14 06:09:30</td>
+                </tr>
+                <tr>
+                    <td class="right">1602–1608</td>
+                    <td class="amateur">
+                        <span class="login">gyseni4ka</span>
+                        <a href="https://klavogonki.ru/u/#/116322/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">366</td>
+                    <td class="right">229</td> 
+                    <td class="right">201,66</td> 
+                    <td class="right">1,08</td> 
+                    <td class="right">0</td>
+                    <td class="right">10 ч. 10 мин. 32 сек.</td>
+                    <td class="right">2009-07-21 14:59:01</td>
+                </tr>
+                <tr>
+                    <td class="right">1609–1613</td>
+                    <td class="racer">
+                        <span class="login">Dusk</span>
+                        <a href="https://klavogonki.ru/u/#/192208/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">365</td>
+                    <td class="right">477</td> 
+                    <td class="right">391,83</td> 
+                    <td class="right">2,52</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 26 мин. 59 сек.</td>
+                    <td class="right">2015-03-21 09:52:10</td>
+                </tr>
+                <tr>
+                    <td class="right">1609–1613</td>
+                    <td class="pro">
+                        <span class="login">XHidden</span>
+                        <a href="https://klavogonki.ru/u/#/183208/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">365</td>
+                    <td class="right">419</td> 
+                    <td class="right">347,32</td> 
+                    <td class="right">1,98</td> 
+                    <td class="right">0</td>
+                    <td class="right">6 ч. 22 мин. 37 сек.</td>
+                    <td class="right">2014-07-30 16:50:00</td>
+                </tr>
+                <tr>
+                    <td class="right">1609–1613</td>
+                    <td class="cyberracer">
+                        <span class="login">BigBoy</span>
+                        <a href="https://klavogonki.ru/u/#/171945/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">365</td>
+                    <td class="right">742</td> 
+                    <td class="right">632,75</td> 
+                    <td class="right">1,17</td> 
+                    <td class="right">0</td>
+                    <td class="right">3 ч. 11 мин. 38 сек.</td>
+                    <td class="right">2011-10-25 02:46:43</td>
+                </tr>
+                <tr>
+                    <td class="right">1609–1613</td>
+                    <td class="cyberracer">
+                        <span class="login">Wind_Of_Change</span>
+                        <a href="https://klavogonki.ru/u/#/80142/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">365</td>
+                    <td class="right">683</td> 
+                    <td class="right">580,98</td> 
+                    <td class="right">1,02</td> 
+                    <td class="right">550</td>
+                    <td class="right">3 ч. 40 мин. 23 сек.</td>
+                    <td class="right">2012-09-18 18:21:12</td>
+                </tr>
+                <tr>
+                    <td class="right">1609–1613</td>
+                    <td class="racer">
+                        <span class="login">perflatus</span>
+                        <a href="https://klavogonki.ru/u/#/76488/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">365</td>
+                    <td class="right">547</td> 
+                    <td class="right">419,08</td> 
+                    <td class="right">1,31</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 35 мин. 21 сек.</td>
+                    <td class="right">2009-06-25 01:58:32</td>
+                </tr>
+                <tr>
+                    <td class="right">1614–1615</td>
+                    <td class="racer">
+                        <span class="login">genie_1855</span>
+                        <a href="https://klavogonki.ru/u/#/398227/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">364</td>
+                    <td class="right">495</td> 
+                    <td class="right">424,36</td> 
+                    <td class="right">1,18</td> 
+                    <td class="right">412</td>
+                    <td class="right">4 ч. 31 мин. 20 сек.</td>
+                    <td class="right">2019-12-02 11:15:04</td>
+                </tr>
+                <tr>
+                    <td class="right">1614–1615</td>
+                    <td class="maniac">
+                        <span class="login">Missiego</span>
+                        <a href="https://klavogonki.ru/u/#/138927/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">364</td>
+                    <td class="right">554</td> 
+                    <td class="right">447,96</td> 
+                    <td class="right">1,32</td> 
+                    <td class="right">459</td>
+                    <td class="right">4 ч. 12 мин. 13 сек.</td>
+                    <td class="right">2020-12-07 10:04:39</td>
+                </tr>
+                <tr>
+                    <td class="right">1616–1619</td>
+                    <td class="amateur">
+                        <span class="login">Den76</span>
+                        <a href="https://klavogonki.ru/u/#/597115/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">362</td>
+                    <td class="right">257</td> 
+                    <td class="right">224,49</td> 
+                    <td class="right">1,95</td> 
+                    <td class="right">0</td>
+                    <td class="right">8 ч. 23 мин. 23 сек.</td>
+                    <td class="right">2020-11-08 11:39:26</td>
+                </tr>
+                <tr>
+                    <td class="right">1616–1619</td>
+                    <td class="cyberracer">
+                        <span class="login">liuluil</span>
+                        <a href="https://klavogonki.ru/u/#/595451/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">362</td>
+                    <td class="right">704</td> 
+                    <td class="right">588,36</td> 
+                    <td class="right">2,47</td> 
+                    <td class="right">604</td>
+                    <td class="right">3 ч. 27 мин. 22 сек.</td>
+                    <td class="right">2020-12-26 21:37:56</td>
+                </tr>
+                <tr>
+                    <td class="right">1616–1619</td>
+                    <td class="maniac">
+                        <span class="login">optozorax</span>
+                        <a href="https://klavogonki.ru/u/#/451401/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">362</td>
+                    <td class="right">573</td> 
+                    <td class="right">504,21</td> 
+                    <td class="right">1,81</td> 
+                    <td class="right">497</td>
+                    <td class="right">3 ч. 58 мин. 51 сек.</td>
+                    <td class="right">2018-02-16 21:24:46</td>
+                </tr>
+                <tr>
+                    <td class="right">1616–1619</td>
+                    <td class="racer">
+                        <span class="login">ленивец</span>
+                        <a href="https://klavogonki.ru/u/#/188410/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">362</td>
+                    <td class="right">586</td> 
+                    <td class="right">472,71</td> 
+                    <td class="right">1,44</td> 
+                    <td class="right">518</td>
+                    <td class="right">4 ч. 9 мин. 31 сек.</td>
+                    <td class="right">2019-09-11 23:22:02</td>
+                </tr>
+                <tr>
+                    <td class="right">1620–1627</td>
+                    <td class="cabman">
+                        <span class="login">Agen</span>
+                        <a href="https://klavogonki.ru/u/#/378977/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">361</td>
+                    <td class="right">316</td> 
+                    <td class="right">269,29</td> 
+                    <td class="right">2,20</td> 
+                    <td class="right">267</td>
+                    <td class="right">8 ч. 41 мин. 7 сек.</td>
+                    <td class="right">2020-07-10 13:27:15</td>
+                </tr>
+                <tr>
+                    <td class="right">1620–1627</td>
+                    <td class="pro">
+                        <span class="login">GlaVV</span>
+                        <a href="https://klavogonki.ru/u/#/357888/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">361</td>
+                    <td class="right">393</td> 
+                    <td class="right">338,51</td> 
+                    <td class="right">1,99</td> 
+                    <td class="right">0</td>
+                    <td class="right">7 ч. 4 мин. 36 сек.</td>
+                    <td class="right">2020-08-21 19:11:58</td>
+                </tr>
+                <tr>
+                    <td class="right">1620–1627</td>
+                    <td class="racer">
+                        <span class="login">Maionez</span>
+                        <a href="https://klavogonki.ru/u/#/300195/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">361</td>
+                    <td class="right">493</td> 
+                    <td class="right">430,74</td> 
+                    <td class="right">2,00</td> 
+                    <td class="right">425</td>
+                    <td class="right">4 ч. 34 мин. 43 сек.</td>
+                    <td class="right">2014-12-10 19:12:17</td>
+                </tr>
+                <tr>
+                    <td class="right">1620–1627</td>
+                    <td class="racer">
+                        <span class="login">_VIG_</span>
+                        <a href="https://klavogonki.ru/u/#/214531/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">361</td>
+                    <td class="right">444</td> 
+                    <td class="right">385,95</td> 
+                    <td class="right">1,09</td> 
+                    <td class="right">258</td>
+                    <td class="right">5 ч. 9 мин. 34 сек.</td>
+                    <td class="right">2017-03-01 23:25:21</td>
+                </tr>
+                <tr>
+                    <td class="right">1620–1627</td>
+                    <td class="pro">
+                        <span class="login">iamalexey</span>
+                        <a href="https://klavogonki.ru/u/#/169218/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">361</td>
+                    <td class="right">456</td> 
+                    <td class="right">394,23</td> 
+                    <td class="right">1,49</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 9 мин. 39 сек.</td>
+                    <td class="right">2010-08-25 20:25:54</td>
+                </tr>
+                <tr>
+                    <td class="right">1620–1627</td>
+                    <td class="pro">
+                        <span class="login">Скво</span>
+                        <a href="https://klavogonki.ru/u/#/110893/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">361</td>
+                    <td class="right">396</td> 
+                    <td class="right">321,99</td> 
+                    <td class="right">0,77</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 41 мин. 42 сек.</td>
+                    <td class="right">2016-10-31 14:29:19</td>
+                </tr>
+                <tr>
+                    <td class="right">1620–1627</td>
+                    <td class="pro">
+                        <span class="login">Maedhros</span>
+                        <a href="https://klavogonki.ru/u/#/51675/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">361</td>
+                    <td class="right">422</td> 
+                    <td class="right">329,28</td> 
+                    <td class="right">2,69</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 45 мин. 21 сек.</td>
+                    <td class="right">2020-11-25 21:49:05</td>
+                </tr>
+                <tr>
+                    <td class="right">1620–1627</td>
+                    <td class="pro">
+                        <span class="login">Hoboken</span>
+                        <a href="https://klavogonki.ru/u/#/47132/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">361</td>
+                    <td class="right">442</td> 
+                    <td class="right">374,42</td> 
+                    <td class="right">1,32</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 20 мин. 52 сек.</td>
+                    <td class="right">2012-10-23 15:56:33</td>
+                </tr>
+                <tr>
+                    <td class="right">1628–1632</td>
+                    <td class="cabman">
+                        <span class="login">hhsm</span>
+                        <a href="https://klavogonki.ru/u/#/521442/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">359</td>
+                    <td class="right">408</td> 
+                    <td class="right">325,86</td> 
+                    <td class="right">3,44</td> 
+                    <td class="right">0</td>
+                    <td class="right">6 ч. 13 мин. 33 сек.</td>
+                    <td class="right">2018-08-27 23:43:24</td>
+                </tr>
+                <tr>
+                    <td class="right">1628–1632</td>
+                    <td class="maniac">
+                        <span class="login">alpha_rhinock</span>
+                        <a href="https://klavogonki.ru/u/#/380533/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">359</td>
+                    <td class="right">568</td> 
+                    <td class="right">487,78</td> 
+                    <td class="right">1,06</td> 
+                    <td class="right">530</td>
+                    <td class="right">3 ч. 58 мин. 31 сек.</td>
+                    <td class="right">2019-08-12 19:44:57</td>
+                </tr>
+                <tr>
+                    <td class="right">1628–1632</td>
+                    <td class="racer">
+                        <span class="login">ЕвгенияСеверная</span>
+                        <a href="https://klavogonki.ru/u/#/357402/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">359</td>
+                    <td class="right">455</td> 
+                    <td class="right">370,99</td> 
+                    <td class="right">1,99</td> 
+                    <td class="right">0</td>
+                    <td class="right">7 ч. 10 мин. 51 сек.</td>
+                    <td class="right">2015-12-20 21:48:15</td>
+                </tr>
+                <tr>
+                    <td class="right">1628–1632</td>
+                    <td class="pro">
+                        <span class="login">trat</span>
+                        <a href="https://klavogonki.ru/u/#/257922/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">359</td>
+                    <td class="right">396</td> 
+                    <td class="right">319,14</td> 
+                    <td class="right">3,74</td> 
+                    <td class="right">0</td>
+                    <td class="right">6 ч. 27 мин. 6 сек.</td>
+                    <td class="right">2012-01-18 16:44:53</td>
+                </tr>
+                <tr>
+                    <td class="right">1628–1632</td>
+                    <td class="pro">
+                        <span class="login">Rina39</span>
+                        <a href="https://klavogonki.ru/u/#/256467/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">359</td>
+                    <td class="right">394</td> 
+                    <td class="right">339,61</td> 
+                    <td class="right">1,30</td> 
+                    <td class="right">0</td>
+                    <td class="right">6 ч. 0 мин. 21 сек.</td>
+                    <td class="right">2017-02-05 14:26:57</td>
+                </tr>
+                <tr>
+                    <td class="right">1633–1637</td>
+                    <td class="pro">
+                        <span class="login">kpn1748</span>
+                        <a href="https://klavogonki.ru/u/#/573330/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">358</td>
+                    <td class="right">497</td> 
+                    <td class="right">416,06</td> 
+                    <td class="right">1,17</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 46 мин. 26 сек.</td>
+                    <td class="right">2020-10-27 14:40:11</td>
+                </tr>
+                <tr>
+                    <td class="right">1633–1637</td>
+                    <td class="racer">
+                        <span class="login">linuxoid69</span>
+                        <a href="https://klavogonki.ru/u/#/336230/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">358</td>
+                    <td class="right">399</td> 
+                    <td class="right">330,81</td> 
+                    <td class="right">2,14</td> 
+                    <td class="right">0</td>
+                    <td class="right">6 ч. 28 мин. 0 сек.</td>
+                    <td class="right">2015-02-11 15:26:05</td>
+                </tr>
+                <tr>
+                    <td class="right">1633–1637</td>
+                    <td class="pro">
+                        <span class="login">vitazik</span>
+                        <a href="https://klavogonki.ru/u/#/302129/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">358</td>
+                    <td class="right">370</td> 
+                    <td class="right">315,50</td> 
+                    <td class="right">2,39</td> 
+                    <td class="right">286</td>
+                    <td class="right">6 ч. 10 мин. 31 сек.</td>
+                    <td class="right">2012-09-29 20:15:27</td>
+                </tr>
+                <tr>
+                    <td class="right">1633–1637</td>
+                    <td class="cabman">
+                        <span class="login">Foljpin</span>
+                        <a href="https://klavogonki.ru/u/#/263476/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">358</td>
+                    <td class="right">250</td> 
+                    <td class="right">213,35</td> 
+                    <td class="right">2,85</td> 
+                    <td class="right">0</td>
+                    <td class="right">9 ч. 42 мин. 51 сек.</td>
+                    <td class="right">2013-03-23 21:33:29</td>
+                </tr>
+                <tr>
+                    <td class="right">1633–1637</td>
+                    <td class="novice">
+                        <span class="login">lenokqw</span>
+                        <a href="https://klavogonki.ru/u/#/258011/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">358</td>
+                    <td class="right">225</td> 
+                    <td class="right">170,91</td> 
+                    <td class="right">2,60</td> 
+                    <td class="right">0</td>
+                    <td class="right">12 ч. 24 мин. 50 сек.</td>
+                    <td class="right">2012-06-03 21:15:25</td>
+                </tr>
+                <tr>
+                    <td class="right">1638–1642</td>
+                    <td class="pro">
+                        <span class="login">Dika-str</span>
+                        <a href="https://klavogonki.ru/u/#/560686/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">357</td>
+                    <td class="right">352</td> 
+                    <td class="right">259,01</td> 
+                    <td class="right">0,61</td> 
+                    <td class="right">307</td>
+                    <td class="right">8 ч. 4 мин. 12 сек.</td>
+                    <td class="right">2019-11-24 10:08:24</td>
+                </tr>
+                <tr>
+                    <td class="right">1638–1642</td>
+                    <td class="pro">
+                        <span class="login">max-alex61</span>
+                        <a href="https://klavogonki.ru/u/#/404169/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">357</td>
+                    <td class="right">395</td> 
+                    <td class="right">319,20</td> 
+                    <td class="right">2,12</td> 
+                    <td class="right">0</td>
+                    <td class="right">6 ч. 28 мин. 13 сек.</td>
+                    <td class="right">2020-03-15 11:57:32</td>
+                </tr>
+                <tr>
+                    <td class="right">1638–1642</td>
+                    <td class="maniac">
+                        <span class="login">sapelord</span>
+                        <a href="https://klavogonki.ru/u/#/274030/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">357</td>
+                    <td class="right">575</td> 
+                    <td class="right">461,26</td> 
+                    <td class="right">1,40</td> 
+                    <td class="right">481</td>
+                    <td class="right">4 ч. 31 мин. 43 сек.</td>
+                    <td class="right">2019-11-02 17:30:59</td>
+                </tr>
+                <tr>
+                    <td class="right">1638–1642</td>
+                    <td class="racer">
+                        <span class="login">ural1888</span>
+                        <a href="https://klavogonki.ru/u/#/249435/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">357</td>
+                    <td class="right">433</td> 
+                    <td class="right">386,66</td> 
+                    <td class="right">0,76</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 7 мин. 29 сек.</td>
+                    <td class="right">2016-08-01 20:18:17</td>
+                </tr>
+                <tr>
+                    <td class="right">1638–1642</td>
+                    <td class="racer">
+                        <span class="login">Impermeable</span>
+                        <a href="https://klavogonki.ru/u/#/168118/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">357</td>
+                    <td class="right">420</td> 
+                    <td class="right">365,70</td> 
+                    <td class="right">1,70</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 18 мин. 6 сек.</td>
+                    <td class="right">2011-09-10 23:05:48</td>
+                </tr>
+                <tr>
+                    <td class="right">1643</td>
+                    <td class="racer">
+                        <span class="login">just-cat</span>
+                        <a href="https://klavogonki.ru/u/#/284837/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">356</td>
+                    <td class="right">497</td> 
+                    <td class="right">382,38</td> 
+                    <td class="right">1,54</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 19 мин. 27 сек.</td>
+                    <td class="right">2017-11-12 19:57:00</td>
+                </tr>
+                <tr>
+                    <td class="right">1644–1645</td>
+                    <td class="maniac">
+                        <span class="login">prot64</span>
+                        <a href="https://klavogonki.ru/u/#/448362/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">355</td>
+                    <td class="right">534</td> 
+                    <td class="right">443,69</td> 
+                    <td class="right">1,98</td> 
+                    <td class="right">445</td>
+                    <td class="right">4 ч. 26 мин. 38 сек.</td>
+                    <td class="right">2020-01-19 17:29:47</td>
+                </tr>
+                <tr>
+                    <td class="right">1644–1645</td>
+                    <td class="pro">
+                        <span class="login">Mikhail343</span>
+                        <a href="https://klavogonki.ru/u/#/406296/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">355</td>
+                    <td class="right">399</td> 
+                    <td class="right">324,68</td> 
+                    <td class="right">2,61</td> 
+                    <td class="right">0</td>
+                    <td class="right">6 ч. 44 мин. 1 сек.</td>
+                    <td class="right">2020-03-15 14:08:34</td>
+                </tr>
+                <tr>
+                    <td class="right">1646</td>
+                    <td class="racer">
+                        <span class="login">inas-fid</span>
+                        <a href="https://klavogonki.ru/u/#/169923/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">354</td>
+                    <td class="right">471</td> 
+                    <td class="right">388,80</td> 
+                    <td class="right">1,93</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 4 мин. 25 сек.</td>
+                    <td class="right">2012-11-13 12:19:11</td>
+                </tr>
+                <tr>
+                    <td class="right">1647–1655</td>
+                    <td class="racer">
+                        <span class="login">Дирижабль</span>
+                        <a href="https://klavogonki.ru/u/#/534359/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">353</td>
+                    <td class="right">490</td> 
+                    <td class="right">426,29</td> 
+                    <td class="right">0,80</td> 
+                    <td class="right">425</td>
+                    <td class="right">4 ч. 10 мин. 59 сек.</td>
+                    <td class="right">2020-11-28 16:19:20</td>
+                </tr>
+                <tr>
+                    <td class="right">1647–1655</td>
+                    <td class="novice">
+                        <span class="login">amator_best</span>
+                        <a href="https://klavogonki.ru/u/#/443059/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">353</td>
+                    <td class="right">230</td> 
+                    <td class="right">186,23</td> 
+                    <td class="right">2,86</td> 
+                    <td class="right">0</td>
+                    <td class="right">12 ч. 1 мин. 39 сек.</td>
+                    <td class="right">2019-11-14 22:00:45</td>
+                </tr>
+                <tr>
+                    <td class="right">1647–1655</td>
+                    <td class="racer">
+                        <span class="login">diskorkl</span>
+                        <a href="https://klavogonki.ru/u/#/373232/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">353</td>
+                    <td class="right">496</td> 
+                    <td class="right">410,09</td> 
+                    <td class="right">2,83</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 18 мин. 35 сек.</td>
+                    <td class="right">2018-10-16 23:25:49</td>
+                </tr>
+                <tr>
+                    <td class="right">1647–1655</td>
+                    <td class="racer">
+                        <span class="login">tinto</span>
+                        <a href="https://klavogonki.ru/u/#/284875/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">353</td>
+                    <td class="right">418</td> 
+                    <td class="right">338,05</td> 
+                    <td class="right">1,27</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 44 мин. 59 сек.</td>
+                    <td class="right">2019-08-11 18:36:45</td>
+                </tr>
+                <tr>
+                    <td class="right">1647–1655</td>
+                    <td class="racer">
+                        <span class="login">-level-</span>
+                        <a href="https://klavogonki.ru/u/#/257587/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">353</td>
+                    <td class="right">455</td> 
+                    <td class="right">394,27</td> 
+                    <td class="right">1,71</td> 
+                    <td class="right">376</td>
+                    <td class="right">5 ч. 5 мин. 7 сек.</td>
+                    <td class="right">2017-08-29 07:51:33</td>
+                </tr>
+                <tr>
+                    <td class="right">1647–1655</td>
+                    <td class="racer">
+                        <span class="login">Wiiseacre</span>
+                        <a href="https://klavogonki.ru/u/#/168101/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">353</td>
+                    <td class="right">464</td> 
+                    <td class="right">406,04</td> 
+                    <td class="right">0,87</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 56 мин. 4 сек.</td>
+                    <td class="right">2020-09-28 01:11:30</td>
+                </tr>
+                <tr>
+                    <td class="right">1647–1655</td>
+                    <td class="racer">
+                        <span class="login">Vanches</span>
+                        <a href="https://klavogonki.ru/u/#/163137/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">353</td>
+                    <td class="right">525</td> 
+                    <td class="right">429,62</td> 
+                    <td class="right">1,89</td> 
+                    <td class="right">490</td>
+                    <td class="right">6 ч. 9 мин. 49 сек.</td>
+                    <td class="right">2018-09-16 10:44:33</td>
+                </tr>
+                <tr>
+                    <td class="right">1647–1655</td>
+                    <td class="pro">
+                        <span class="login">imps</span>
+                        <a href="https://klavogonki.ru/u/#/107504/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">353</td>
+                    <td class="right">459</td> 
+                    <td class="right">396,57</td> 
+                    <td class="right">2,91</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 49 мин. 55 сек.</td>
+                    <td class="right">2013-09-17 19:27:43</td>
+                </tr>
+                <tr>
+                    <td class="right">1647–1655</td>
+                    <td class="racer">
+                        <span class="login">azyl</span>
+                        <a href="https://klavogonki.ru/u/#/85549/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">353</td>
+                    <td class="right">424</td> 
+                    <td class="right">346,24</td> 
+                    <td class="right">1,58</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 34 мин. 3 сек.</td>
+                    <td class="right">2015-04-06 10:00:18</td>
+                </tr>
+                <tr>
+                    <td class="right">1656–1658</td>
+                    <td class="pro">
+                        <span class="login">Abaddonchik</span>
+                        <a href="https://klavogonki.ru/u/#/427637/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">352</td>
+                    <td class="right">429</td> 
+                    <td class="right">363,76</td> 
+                    <td class="right">2,14</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 28 мин. 27 сек.</td>
+                    <td class="right">2020-11-26 19:04:31</td>
+                </tr>
+                <tr>
+                    <td class="right">1656–1658</td>
+                    <td class="maniac">
+                        <span class="login">Kvanttt</span>
+                        <a href="https://klavogonki.ru/u/#/74427/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">352</td>
+                    <td class="right">597</td> 
+                    <td class="right">478,43</td> 
+                    <td class="right">0,92</td> 
+                    <td class="right">511</td>
+                    <td class="right">4 ч. 6 мин. 49 сек.</td>
+                    <td class="right">2020-10-22 20:51:34</td>
+                </tr>
+                <tr>
+                    <td class="right">1656–1658</td>
+                    <td class="racer">
+                        <span class="login">Ubuntu</span>
+                        <a href="https://klavogonki.ru/u/#/51472/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">352</td>
+                    <td class="right">553</td> 
+                    <td class="right">478,13</td> 
+                    <td class="right">1,31</td> 
+                    <td class="right">458</td>
+                    <td class="right">3 ч. 49 мин. 48 сек.</td>
+                    <td class="right">2012-06-11 02:00:08</td>
+                </tr>
+                <tr>
+                    <td class="right">1659–1665</td>
+                    <td class="amateur">
+                        <span class="login">Sun18</span>
+                        <a href="https://klavogonki.ru/u/#/444818/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">351</td>
+                    <td class="right">152</td> 
+                    <td class="right">124,42</td> 
+                    <td class="right">4,45</td> 
+                    <td class="right">0</td>
+                    <td class="right">16 ч. 1 мин. 12 сек.</td>
+                    <td class="right">2017-10-22 11:43:07</td>
+                </tr>
+                <tr>
+                    <td class="right">1659–1665</td>
+                    <td class="novice">
+                        <span class="login">Marik67</span>
+                        <a href="https://klavogonki.ru/u/#/428398/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">351</td>
+                    <td class="right">313</td> 
+                    <td class="right">255,25</td> 
+                    <td class="right">3,16</td> 
+                    <td class="right">0</td>
+                    <td class="right">8 ч. 27 мин. 50 сек.</td>
+                    <td class="right">2016-09-14 16:50:29</td>
+                </tr>
+                <tr>
+                    <td class="right">1659–1665</td>
+                    <td class="racer">
+                        <span class="login">Alber</span>
+                        <a href="https://klavogonki.ru/u/#/400463/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">351</td>
+                    <td class="right">376</td> 
+                    <td class="right">321,08</td> 
+                    <td class="right">1,00</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 51 мин. 6 сек.</td>
+                    <td class="right">2018-08-12 09:29:13</td>
+                </tr>
+                <tr>
+                    <td class="right">1659–1665</td>
+                    <td class="racer">
+                        <span class="login">SirenScream</span>
+                        <a href="https://klavogonki.ru/u/#/331923/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">351</td>
+                    <td class="right">540</td> 
+                    <td class="right">432,87</td> 
+                    <td class="right">1,61</td> 
+                    <td class="right">465</td>
+                    <td class="right">4 ч. 42 мин. 59 сек.</td>
+                    <td class="right">2020-05-04 22:08:19</td>
+                </tr>
+                <tr>
+                    <td class="right">1659–1665</td>
+                    <td class="pro">
+                        <span class="login">m19ix1ex</span>
+                        <a href="https://klavogonki.ru/u/#/200023/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">351</td>
+                    <td class="right">380</td> 
+                    <td class="right">331,61</td> 
+                    <td class="right">2,46</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 43 мин. 30 сек.</td>
+                    <td class="right">2015-02-03 10:36:42</td>
+                </tr>
+                <tr>
+                    <td class="right">1659–1665</td>
+                    <td class="maniac">
+                        <span class="login">HappyHardcore</span>
+                        <a href="https://klavogonki.ru/u/#/155858/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">351</td>
+                    <td class="right">512</td> 
+                    <td class="right">447,22</td> 
+                    <td class="right">1,27</td> 
+                    <td class="right">457</td>
+                    <td class="right">4 ч. 16 мин. 58 сек.</td>
+                    <td class="right">2019-05-12 13:33:00</td>
+                </tr>
+                <tr>
+                    <td class="right">1659–1665</td>
+                    <td class="pro">
+                        <span class="login">Egnot</span>
+                        <a href="https://klavogonki.ru/u/#/149714/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">351</td>
+                    <td class="right">430</td> 
+                    <td class="right">350,86</td> 
+                    <td class="right">2,74</td> 
+                    <td class="right">0</td>
+                    <td class="right">6 ч. 8 мин. 4 сек.</td>
+                    <td class="right">2012-07-18 21:13:52</td>
+                </tr>
+                <tr>
+                    <td class="right">1666–1670</td>
+                    <td class="maniac">
+                        <span class="login">molot-perm</span>
+                        <a href="https://klavogonki.ru/u/#/482198/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">350</td>
+                    <td class="right">548</td> 
+                    <td class="right">455,72</td> 
+                    <td class="right">1,37</td> 
+                    <td class="right">458</td>
+                    <td class="right">4 ч. 9 мин. 16 сек.</td>
+                    <td class="right">2019-08-11 10:13:19</td>
+                </tr>
+                <tr>
+                    <td class="right">1666–1670</td>
+                    <td class="maniac">
+                        <span class="login">HellBoy33</span>
+                        <a href="https://klavogonki.ru/u/#/481315/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">350</td>
+                    <td class="right">585</td> 
+                    <td class="right">473,59</td> 
+                    <td class="right">0,97</td> 
+                    <td class="right">541</td>
+                    <td class="right">3 ч. 51 мин. 39 сек.</td>
+                    <td class="right">2018-09-17 07:50:00</td>
+                </tr>
+                <tr>
+                    <td class="right">1666–1670</td>
+                    <td class="racer">
+                        <span class="login">__TEMA__</span>
+                        <a href="https://klavogonki.ru/u/#/234587/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">350</td>
+                    <td class="right">535</td> 
+                    <td class="right">452,80</td> 
+                    <td class="right">1,60</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 15 мин. 37 сек.</td>
+                    <td class="right">2012-04-18 18:36:19</td>
+                </tr>
+                <tr>
+                    <td class="right">1666–1670</td>
+                    <td class="racer">
+                        <span class="login">rootkid</span>
+                        <a href="https://klavogonki.ru/u/#/148435/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">350</td>
+                    <td class="right">520</td> 
+                    <td class="right">434,14</td> 
+                    <td class="right">1,96</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 44 мин. 49 сек.</td>
+                    <td class="right">2019-04-03 13:41:38</td>
+                </tr>
+                <tr>
+                    <td class="right">1666–1670</td>
+                    <td class="racer">
+                        <span class="login">St-Shurik</span>
+                        <a href="https://klavogonki.ru/u/#/109602/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">350</td>
+                    <td class="right">500</td> 
+                    <td class="right">433,26</td> 
+                    <td class="right">0,98</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 38 мин. 38 сек.</td>
+                    <td class="right">2010-05-12 15:37:13</td>
+                </tr>
+                <tr>
+                    <td class="right">1671–1677</td>
+                    <td class="pro">
+                        <span class="login">fdrv</span>
+                        <a href="https://klavogonki.ru/u/#/372558/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">349</td>
+                    <td class="right">515</td> 
+                    <td class="right">400,90</td> 
+                    <td class="right">2,34</td> 
+                    <td class="right">436</td>
+                    <td class="right">4 ч. 47 мин. 31 сек.</td>
+                    <td class="right">2017-02-11 03:46:58</td>
+                </tr>
+                <tr>
+                    <td class="right">1671–1677</td>
+                    <td class="racer">
+                        <span class="login">flyms</span>
+                        <a href="https://klavogonki.ru/u/#/224424/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">349</td>
+                    <td class="right">459</td> 
+                    <td class="right">390,31</td> 
+                    <td class="right">1,54</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 59 мин. 8 сек.</td>
+                    <td class="right">2014-02-07 13:00:17</td>
+                </tr>
+                <tr>
+                    <td class="right">1671–1677</td>
+                    <td class="maniac">
+                        <span class="login">Salamin</span>
+                        <a href="https://klavogonki.ru/u/#/214788/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">349</td>
+                    <td class="right">609</td> 
+                    <td class="right">479,76</td> 
+                    <td class="right">1,98</td> 
+                    <td class="right">546</td>
+                    <td class="right">4 ч. 6 мин. 10 сек.</td>
+                    <td class="right">2017-02-07 23:05:28</td>
+                </tr>
+                <tr>
+                    <td class="right">1671–1677</td>
+                    <td class="maniac">
+                        <span class="login">Festina_lente</span>
+                        <a href="https://klavogonki.ru/u/#/214429/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">349</td>
+                    <td class="right">539</td> 
+                    <td class="right">442,20</td> 
+                    <td class="right">1,35</td> 
+                    <td class="right">517</td>
+                    <td class="right">4 ч. 48 мин. 54 сек.</td>
+                    <td class="right">2015-09-27 17:56:25</td>
+                </tr>
+                <tr>
+                    <td class="right">1671–1677</td>
+                    <td class="maniac">
+                        <span class="login">ProGamer</span>
+                        <a href="https://klavogonki.ru/u/#/157460/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">349</td>
+                    <td class="right">589</td> 
+                    <td class="right">501,86</td> 
+                    <td class="right">0,96</td> 
+                    <td class="right">502</td>
+                    <td class="right">3 ч. 44 мин. 29 сек.</td>
+                    <td class="right">2020-10-15 16:27:57</td>
+                </tr>
+                <tr>
+                    <td class="right">1671–1677</td>
+                    <td class="racer">
+                        <span class="login">krossofka</span>
+                        <a href="https://klavogonki.ru/u/#/149157/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">349</td>
+                    <td class="right">452</td> 
+                    <td class="right">389,02</td> 
+                    <td class="right">0,88</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 59 мин. 3 сек.</td>
+                    <td class="right">2020-12-19 22:27:08</td>
+                </tr>
+                <tr>
+                    <td class="right">1671–1677</td>
+                    <td class="racer">
+                        <span class="login">Dominic</span>
+                        <a href="https://klavogonki.ru/u/#/122347/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">349</td>
+                    <td class="right">552</td> 
+                    <td class="right">473,19</td> 
+                    <td class="right">1,63</td> 
+                    <td class="right">468</td>
+                    <td class="right">4 ч. 36 мин. 33 сек.</td>
+                    <td class="right">2013-11-18 19:11:20</td>
+                </tr>
+                <tr>
+                    <td class="right">1678–1681</td>
+                    <td class="cyberracer">
+                        <span class="login">STerminator</span>
+                        <a href="https://klavogonki.ru/u/#/536408/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">348</td>
+                    <td class="right">841</td> 
+                    <td class="right">666,52</td> 
+                    <td class="right">1,85</td> 
+                    <td class="right">703</td>
+                    <td class="right">2 ч. 52 мин. 39 сек.</td>
+                    <td class="right">2020-05-21 15:43:30</td>
+                </tr>
+                <tr>
+                    <td class="right">1678–1681</td>
+                    <td class="amateur">
+                        <span class="login">Arsenlin</span>
+                        <a href="https://klavogonki.ru/u/#/366463/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">348</td>
+                    <td class="right">379</td> 
+                    <td class="right">183,81</td> 
+                    <td class="right">3,63</td> 
+                    <td class="right">0</td>
+                    <td class="right">10 ч. 20 мин. 1 сек.</td>
+                    <td class="right">2020-09-07 10:09:20</td>
+                </tr>
+                <tr>
+                    <td class="right">1678–1681</td>
+                    <td class="maniac">
+                        <span class="login">Ilya666</span>
+                        <a href="https://klavogonki.ru/u/#/312278/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">348</td>
+                    <td class="right">571</td> 
+                    <td class="right">493,68</td> 
+                    <td class="right">1,12</td> 
+                    <td class="right">497</td>
+                    <td class="right">4 ч. 14 мин. 20 сек.</td>
+                    <td class="right">2018-01-22 18:44:10</td>
+                </tr>
+                <tr>
+                    <td class="right">1678–1681</td>
+                    <td class="racer">
+                        <span class="login">Kronig</span>
+                        <a href="https://klavogonki.ru/u/#/306176/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">348</td>
+                    <td class="right">462</td> 
+                    <td class="right">384,99</td> 
+                    <td class="right">1,47</td> 
+                    <td class="right">343</td>
+                    <td class="right">4 ч. 43 мин. 58 сек.</td>
+                    <td class="right">2018-09-17 19:24:24</td>
+                </tr>
+                <tr>
+                    <td class="right">1682–1688</td>
+                    <td class="racer">
+                        <span class="login">Gamzelo</span>
+                        <a href="https://klavogonki.ru/u/#/536332/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">347</td>
+                    <td class="right">545</td> 
+                    <td class="right">471,25</td> 
+                    <td class="right">3,04</td> 
+                    <td class="right">455</td>
+                    <td class="right">4 ч. 8 мин. 47 сек.</td>
+                    <td class="right">2019-06-17 16:08:31</td>
+                </tr>
+                <tr>
+                    <td class="right">1682–1688</td>
+                    <td class="pro">
+                        <span class="login">Мамонтенок</span>
+                        <a href="https://klavogonki.ru/u/#/213877/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">347</td>
+                    <td class="right">343</td> 
+                    <td class="right">282,36</td> 
+                    <td class="right">1,87</td> 
+                    <td class="right">0</td>
+                    <td class="right">7 ч. 27 мин. 21 сек.</td>
+                    <td class="right">2010-12-21 14:18:45</td>
+                </tr>
+                <tr>
+                    <td class="right">1682–1688</td>
+                    <td class="pro">
+                        <span class="login">метро</span>
+                        <a href="https://klavogonki.ru/u/#/205899/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">347</td>
+                    <td class="right">401</td> 
+                    <td class="right">335,35</td> 
+                    <td class="right">1,96</td> 
+                    <td class="right">0</td>
+                    <td class="right">7 ч. 31 мин. 27 сек.</td>
+                    <td class="right">2018-01-28 18:57:53</td>
+                </tr>
+                <tr>
+                    <td class="right">1682–1688</td>
+                    <td class="pro">
+                        <span class="login">Vol4onok</span>
+                        <a href="https://klavogonki.ru/u/#/166709/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">347</td>
+                    <td class="right">387</td> 
+                    <td class="right">331,22</td> 
+                    <td class="right">2,20</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 57 мин. 40 сек.</td>
+                    <td class="right">2011-03-10 00:39:46</td>
+                </tr>
+                <tr>
+                    <td class="right">1682–1688</td>
+                    <td class="maniac">
+                        <span class="login">Silly_Sergio</span>
+                        <a href="https://klavogonki.ru/u/#/163151/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">347</td>
+                    <td class="right">589</td> 
+                    <td class="right">487,59</td> 
+                    <td class="right">1,31</td> 
+                    <td class="right">517</td>
+                    <td class="right">4 ч. 15 мин. 47 сек.</td>
+                    <td class="right">2015-08-17 21:49:11</td>
+                </tr>
+                <tr>
+                    <td class="right">1682–1688</td>
+                    <td class="cyberracer">
+                        <span class="login">LeBron</span>
+                        <a href="https://klavogonki.ru/u/#/63009/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">347</td>
+                    <td class="right">695</td> 
+                    <td class="right">577,79</td> 
+                    <td class="right">1,03</td> 
+                    <td class="right">585</td>
+                    <td class="right">4 ч. 6 мин. 19 сек.</td>
+                    <td class="right">2017-10-12 13:20:52</td>
+                </tr>
+                <tr>
+                    <td class="right">1682–1688</td>
+                    <td class="pro">
+                        <span class="login">dexterius</span>
+                        <a href="https://klavogonki.ru/u/#/60097/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">347</td>
+                    <td class="right">423</td> 
+                    <td class="right">372,89</td> 
+                    <td class="right">2,22</td> 
+                    <td class="right">0</td>
+                    <td class="right">4 ч. 54 мин. 2 сек.</td>
+                    <td class="right">2009-10-15 23:00:19</td>
+                </tr>
+                <tr>
+                    <td class="right">1689–1692</td>
+                    <td class="pro">
+                        <span class="login">NADY555</span>
+                        <a href="https://klavogonki.ru/u/#/410244/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">345</td>
+                    <td class="right">344</td> 
+                    <td class="right">304,37</td> 
+                    <td class="right">0,66</td> 
+                    <td class="right">255</td>
+                    <td class="right">7 ч. 57 мин. 3 сек.</td>
+                    <td class="right">2020-12-16 14:06:22</td>
+                </tr>
+                <tr>
+                    <td class="right">1689–1692</td>
+                    <td class="superman">
+                        <span class="login">Зебрович</span>
+                        <a href="https://klavogonki.ru/u/#/254950/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">345</td>
+                    <td class="right">741</td> 
+                    <td class="right">660,93</td> 
+                    <td class="right">0,50</td> 
+                    <td class="right">663</td>
+                    <td class="right">2 ч. 53 мин. 4 сек.</td>
+                    <td class="right">2013-08-07 00:56:16</td>
+                </tr>
+                <tr>
+                    <td class="right">1689–1692</td>
+                    <td class="racer">
+                        <span class="login">dymcheg</span>
+                        <a href="https://klavogonki.ru/u/#/187046/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">345</td>
+                    <td class="right">477</td> 
+                    <td class="right">391,49</td> 
+                    <td class="right">1,79</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 12 мин. 38 сек.</td>
+                    <td class="right">2014-01-17 22:34:26</td>
+                </tr>
+                <tr>
+                    <td class="right">1689–1692</td>
+                    <td class="superman">
+                        <span class="login">Exolon</span>
+                        <a href="https://klavogonki.ru/u/#/166626/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">345</td>
+                    <td class="right">631</td> 
+                    <td class="right">516,75</td> 
+                    <td class="right">1,44</td> 
+                    <td class="right">0</td>
+                    <td class="right">3 ч. 47 мин. 3 сек.</td>
+                    <td class="right">2012-01-27 18:49:10</td>
+                </tr>
+                <tr>
+                    <td class="right">1693–1694</td>
+                    <td class="racer">
+                        <span class="login">HardFaced</span>
+                        <a href="https://klavogonki.ru/u/#/170169/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">344</td>
+                    <td class="right">493</td> 
+                    <td class="right">416,10</td> 
+                    <td class="right">0,70</td> 
+                    <td class="right">0</td>
+                    <td class="right">5 ч. 9 мин. 39 сек.</td>
+                    <td class="right">2019-12-26 17:25:23</td>
+                </tr>
+                <tr>
+                    <td class="right">1693–1694</td>
+                    <td class="maniac">
+                        <span class="login">Nadiyscha</span>
+                        <a href="https://klavogonki.ru/u/#/83929/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">344</td>
+                    <td class="right">610</td> 
+                    <td class="right">520,48</td> 
+                    <td class="right">0,71</td> 
+                    <td class="right">519</td>
+                    <td class="right">3 ч. 19 мин. 48 сек.</td>
+                    <td class="right">2017-02-05 12:16:41</td>
+                </tr>
+                <tr>
+                    <td class="right">1695–1698</td>
+                    <td class="cabman">
+                        <span class="login">Zharkel</span>
+                        <a href="https://klavogonki.ru/u/#/472589/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">343</td>
+                    <td class="right">339</td> 
+                    <td class="right">273,91</td> 
+                    <td class="right">2,90</td> 
+                    <td class="right">288</td>
+                    <td class="right">7 ч. 10 мин. 47 сек.</td>
+                    <td class="right">2017-07-14 16:18:55</td>
+                </tr>
+                <tr>
+                    <td class="right">1695–1698</td>
+                    <td class="pro">
+                        <span class="login">genafdsa</span>
+                        <a href="https://klavogonki.ru/u/#/169932/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">343</td>
+                    <td class="right">371</td> 
+                    <td class="right">273,22</td> 
+                    <td class="right">2,20</td> 
+                    <td class="right">0</td>
+                    <td class="right">7 ч. 27 мин. 23 сек.</td>
+                    <td class="right">2018-05-05 21:45:47</td>
+                </tr>
+                <tr>
+                    <td class="right">1695–1698</td>
+                    <td class="superman">
+                        <span class="login">Администратор</span>
+                        <a href="https://klavogonki.ru/u/#/129363/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">343</td>
+                    <td class="right">668</td> 
+                    <td class="right">586,59</td> 
+                    <td class="right">0,80</td> 
+                    <td class="right">0</td>
+                    <td class="right">2 ч. 58 мин. 59 сек.</td>
+                    <td class="right">2009-11-01 10:30:48</td>
+                </tr>
+                <tr>
+                    <td class="right">1695–1698</td>
+                    <td class="racer">
+                        <span class="login">romashka77</span>
+                        <a href="https://klavogonki.ru/u/#/107204/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">343</td>
+                    <td class="right">461</td> 
+                    <td class="right">398,06</td> 
+                    <td class="right">0,44</td> 
+                    <td class="right">399</td>
+                    <td class="right">4 ч. 58 мин. 45 сек.</td>
+                    <td class="right">2012-09-19 22:36:39</td>
+                </tr>
+                <tr>
+                    <td class="right">1699–1702</td>
+                    <td class="racer">
+                        <span class="login">Катушка</span>
+                        <a href="https://klavogonki.ru/u/#/482392/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">342</td>
+                    <td class="right">493</td> 
+                    <td class="right">423,99</td> 
+                    <td class="right">1,55</td> 
+                    <td class="right">309</td>
+                    <td class="right">4 ч. 28 мин. 55 сек.</td>
+                    <td class="right">2020-03-15 19:08:59</td>
+                </tr>
+                <tr>
+                    <td class="right">1699–1702</td>
+                    <td class="superman">
+                        <span class="login">prz</span>
+                        <a href="https://klavogonki.ru/u/#/246246/stats/voc-192/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">342</td>
+                    <td class="right">650</td> 
+                    <td class="right">564,82</td> 
+                    <td class="right">0,95</td> 
+                    <td class="right">603</td>
+                    <td class="right">3 ч. 21 мин. 7 сек.</td>
+                    <td class="right">2013-09-24 01:32:22</td>
+                </tr>
+        </table>
+
+    </div>
+
+    <div class="paging" id="paging-bottom"></div>
+</main>
+
+<script src="./js/stats-top-table.js"></script>
+<script src="./js/voc-192-top-by-races-count-login-to-page.js"></script>
+
+<script>
+    window.addEventListener('load', function() {
+        const login = TopTable.getLoginFromQueryParameter();
+
+        appendPaging();
+        bindSearch(login);
+
+        TopTable.highlightTableRow(login);
+    });
+
+    function getPageUrl(pageNumber) {
+        return `./voc-192-top-by-races-count-page-${pageNumber}.html`;
+    }
+
+    function appendPaging() {
+        const paging = new Paging({
+            totalPages: 27,
+            currentPage: 17,
+            bindLinks: true,
+
+            getPagingLink: function(linkId, pageNumber) {
+                const pageUrl = getPageUrl(pageNumber);
+
+                return `<a href="${pageUrl}" id="${linkId}">${pageNumber}</a>${Paging.SPACE_SEPARATOR}`;
+            }
+        });
+
+        paging.append('paging-top');
+        paging.append('paging-bottom');
+    }
+
+    function bindSearch(login) {
+        const search = new PageSearch({
+            searchInputId: 'player-search-input',
+            searchButtonId: 'search-button',
+            searchMap: STATS_DATA.topByRacesCountLoginToPage,
+
+            handleSearch: function(login, pageNumber) {
+                const pageUrl = getPageUrl(pageNumber);
+
+                const redirectUrl = `${pageUrl}?${TopTable.LOGIN_PARAMETER}=${login}`;
+                // console.log(`redirectUrl: ${redirectUrl}`);
+                window.location.href = redirectUrl;
+            }
+        });
+
+        search.bind();
+
+        // fill input field with given login parameter
+        search.fillInput(login)
+    }
+</script>
+</body>
+</html>

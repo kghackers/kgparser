@@ -1,35 +1,35 @@
 package ru.klavogonki.kgparser.excel.player;
 
 import ru.klavogonki.kgparser.excel.ExcelExportContext;
-import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
+import ru.klavogonki.kgparser.excel.data.ExcelExportContextData;
 
 import java.util.function.Function;
 
-public interface PlayerColumn<T> {
+public interface PlayerColumn<D extends ExcelExportContextData, T> { // todo: rename to ExcelColumn?
 
     String getColumnName();
 
     int getColumnWidth(); // in Excel format for Sheet#setColumnWidth
 
-    Function<PlayerDto, T> playerFieldGetter();
+    Function<D, T> playerFieldGetter();
 
     Class<T> fieldClass();
 
-    default T getValue(PlayerDto player) {
+    default T getValue(D player) {
         return playerFieldGetter().apply(player);
     }
 
-    default void setCellFormat(ExcelExportContext context) {
+    default void setCellFormat(ExcelExportContext<D> context) {
         context.setTextAlignLeftStyle();
     }
 
-    default void formatCell(ExcelExportContext context) {
+    default void formatCell(ExcelExportContext<D> context) {
         setCellFormat(context);
 
         setCellValue(context);
     }
 
-    default void setCellValue(final ExcelExportContext context) {
+    default void setCellValue(final ExcelExportContext<D> context) {
         T value = getValue(context.player);
         String cellValue = (value == null) ? "—" : value.toString();
 

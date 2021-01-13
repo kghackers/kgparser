@@ -9,10 +9,10 @@ import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
 import org.apache.poi.xssf.usermodel.IndexedColorMap;
 import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
+import ru.klavogonki.kgparser.excel.data.ExcelExportContextData;
 
 @Log4j2
-public class ExcelExportContext {
+public class ExcelExportContext<D extends ExcelExportContextData> {
 
     public XSSFWorkbook workbook;
 
@@ -26,7 +26,7 @@ public class ExcelExportContext {
 
     public Cell cell;
 
-    public PlayerDto player; // todo: this may be <T> parameterizable in the future when we need to export other types
+    public D player;
 
     private ExcelExportContext() {
         // creation allowed only via #initContext()
@@ -65,6 +65,10 @@ public class ExcelExportContext {
         setStyle(isEvenRowNumber() ? ExcelStylesMap.Style.INTEGER_EVEN_ROW : ExcelStylesMap.Style.INTEGER_ODD_ROW);
     }
 
+    public void setDoubleStyle() {
+        setStyle(isEvenRowNumber() ? ExcelStylesMap.Style.DOUBLE_EVEN_ROW : ExcelStylesMap.Style.DOUBLE_ODD_ROW);
+    }
+
     public void setTextAlignLeftStyle() {
         setStyle(isEvenRowNumber() ? ExcelStylesMap.Style.TEXT_ALIGN_LEFT_EVEN_ROW : ExcelStylesMap.Style.TEXT_ALIGN_LEFT_ODD_ROW);
     }
@@ -91,6 +95,8 @@ public class ExcelExportContext {
     }
 
     public void setIntegerHyperlink(String url, Integer text) { // Integer since we use playerId
+        ExcelExporter.validateHyperlink(url);
+
         setLinkIntegerStyle(); // in this method we know text is Integer, therefore set it explicitly
 
         XSSFCreationHelper creationHelper = workbook.getCreationHelper();

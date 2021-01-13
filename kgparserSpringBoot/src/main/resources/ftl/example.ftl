@@ -1,4 +1,8 @@
 <#-- a template just to test the freemarker -->
+<#assign d = testDouble>
+<#--double format: ${d?string[",00;; decimalSeparator=\",\""]}-->
+double format: ${d?string(",##0.00;; decimalSeparator=\",\"")}
+
 Test integer: ${testInteger?string[",000;; groupingSeparator=\" \""]}
 
 <#assign x = testInteger>

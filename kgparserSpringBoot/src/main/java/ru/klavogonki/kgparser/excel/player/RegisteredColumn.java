@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.function.Function;
 
 @Log4j2
-public class RegisteredColumn implements PlayerColumn<LocalDateTime> {
+public class RegisteredColumn implements PlayerColumn<PlayerDto, LocalDateTime> {
 
     @Override
     public String getColumnName() {
@@ -31,11 +31,11 @@ public class RegisteredColumn implements PlayerColumn<LocalDateTime> {
     }
 
     @Override
-    public void formatCell(final ExcelExportContext context) {
+    public void formatCell(final ExcelExportContext<PlayerDto> context) {
         LocalDateTime registered = getValue(context.player);
 
         if (registered == null) {
-            logger.warn("Player with id = {}, login = \"{}\" has no registeredDateTime. Cannot add a registerd date field for this player  player.", context.player.getPlayerId(), context.player.getLogin());
+            logger.warn("Player with id = {}, login = \"{}\" has no registeredDateTime. Cannot add a registered date field for this player.", context.player.getPlayerId(), context.player.getLogin());
 
             context.setTextAlignRightStyle();
 
