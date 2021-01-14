@@ -1,0 +1,19 @@
+name: Deploy to Github Pages
+on: workflow_dispatch
+jobs:
+  deploy_gh-pages:
+    name: Deploy to Github Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1 
+        with:
+          persist-credentials: false
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          external_repository: kghackers/kghackers.github.io
+          publish_branch: main
+          publish_dir: ./kgparserWeb/src/main/webapp 
