@@ -1,5 +1,14 @@
+[![Chat on Telegram](https://img.shields.io/badge/Chat%20on-Telegram-brightgreen.svg?style=for-the-badge&logo=telegram)](https://t.me/joinchat/N3tfQFVvmbH21ipSy9yKcA)  [![GitHub issues](https://img.shields.io/github/issues/kghackers/kgparser?style=for-the-badge)](https://github.com/kghackers/kgparser/issues)
+[![Github PR](https://img.shields.io/github/issues-pr/kghackers/kgparser?style=for-the-badge)](https://github.com/kghackers/kgparser/pulls)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=kghackers_kgparser&metric=bugs)](https://sonarcloud.io/dashboard?id=kghackers_kgparser) 
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=kghackers_kgparser&metric=code_smells)](https://sonarcloud.io/dashboard?id=kghackers_kgparser)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=kghackers_kgparser&metric=coverage)](https://sonarcloud.io/dashboard?id=kghackers_kgparser)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=kghackers_kgparser&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=kghackers_kgparser)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kghackers_kgparser&metric=alert_status)](https://sonarcloud.io/dashboard?id=kghackers_kgparser)
+
 # Related resources
-* Проект задеплоен на http://kgparser-web.s3-website-us-east-1.amazonaws.com/
+* Проект задеплоен на https://klavostat.com
 * [Тема на форуме Клавогонок](https://klavogonki.ru/forum/software/59/)
 * Мой профиль на Клавогонках — [nosferatum](https://klavogonki.ru/u/#/242585/)
 * [Telegram канал](https://t.me/joinchat/N3tfQFVvmbH21ipSy9yKcA) с нотификациями о событиях в этом GitHub-проекте 
