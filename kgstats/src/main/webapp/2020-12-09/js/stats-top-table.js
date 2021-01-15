@@ -99,7 +99,7 @@ class TopTable {
 
         tableHtml += '<tr>';
         this.config.columns.forEach(column => {
-            tableHtml += '<th>';
+            tableHtml += '<th scope="col">';
             tableHtml += column.header;
             tableHtml += '</th>';
         });
