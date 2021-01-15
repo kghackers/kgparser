@@ -9,7 +9,7 @@ import ru.klavogonki.kgparser.export.ExportContext;
 public class PageUrls {
 
     // html files
-    public static final String INDEX = "stats.html";
+    public static final String INDEX = "index.html";
 
     public static final String TOP_BY_BEST_SPEED_PAGE_1 = getTopBySpeedPageFilePath("", 1);
     public static final String TOP_BY_BEST_SPEED = "stat-top-by-best-speed.html";

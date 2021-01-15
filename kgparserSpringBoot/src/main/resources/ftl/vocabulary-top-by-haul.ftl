@@ -34,17 +34,17 @@
         <#-- todo: must be changed according to PlayerVocabularyDto fields -->
         <table class="data">
             <tr>
-                <th>#</th>
-                <th>Логин</th>
-                <th>Общее время</th> <#-- todo: Общее время в словаре? -->
-                <th>Рекорд</th> <#-- todo: maybe customize according to vocabulary name -->
-                <th>Пробег</th> <#-- todo: Пробег в словаре? -->
-<#--                <th>Зарегистрирован</th>-->
+                <th scope="col">#</th>
+                <th scope="col">Логин</th>
+                <th scope="col">Общее время</th> <#-- todo: Общее время в словаре? -->
+                <th scope="col">Рекорд</th> <#-- todo: maybe customize according to vocabulary name -->
+                <th scope="col">Пробег</th> <#-- todo: Пробег в словаре? -->
+<#--                <th scope="col">Зарегистрирован</th>-->
 
-                <th>Средняя</th>
-                <th>Ошибки, %</th>
-                <th>Квала</th>
-                <th>Обновлено</th> <#-- todo: better naming? -->
+                <th scope="col">Средняя</th>
+                <th scope="col">Ошибки, %</th>
+                <th scope="col">Квала</th>
+                <th scope="col">Обновлено</th> <#-- todo: better naming? -->
                 <#-- todo: book done - only for book vocabularies -->
             </tr>
 
