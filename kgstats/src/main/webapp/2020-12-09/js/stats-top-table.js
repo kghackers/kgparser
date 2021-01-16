@@ -95,7 +95,7 @@ class TopTable {
     }
 
     append(containerId) {
-        let tableHtml = '<table class="data">';
+        let tableHtml = '<table class="data" aria-label="data-table">';
 
         tableHtml += '<tr>';
         this.config.columns.forEach(column => {
