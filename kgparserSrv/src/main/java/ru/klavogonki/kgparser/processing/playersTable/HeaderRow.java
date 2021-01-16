@@ -11,7 +11,6 @@ package ru.klavogonki.kgparser.processing.playersTable;
 
 import su.opencode.kefir.srv.json.JsonObject;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
