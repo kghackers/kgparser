@@ -1,6 +1,6 @@
 <#setting number_format="computer"> <#-- remove annoying commas in integers-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>${pageTitle}</title>
@@ -31,8 +31,7 @@
 
     <div class="section" id="table-container">
 
-        <#-- todo: must be changed according to PlayerVocabularyDto fields -->
-        <table class="data">
+        <table class="data" aria-label="${header}">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Логин</th>

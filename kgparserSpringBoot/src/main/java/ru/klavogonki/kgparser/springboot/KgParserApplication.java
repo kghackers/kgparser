@@ -60,10 +60,10 @@ public class KgParserApplication implements CommandLineRunner {
 	@Autowired
 	private PlayerRepository playerRepository;
 
-	// aggregate tops
 	@Autowired
 	private PlayerVocabularyStatsRepository playerVocabularyStatsRepository;
 
+	// aggregate tops
 	@Autowired
 	private IndexPageExporter indexPageExporter;
 

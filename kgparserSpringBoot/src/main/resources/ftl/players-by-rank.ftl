@@ -1,6 +1,6 @@
 <#setting number_format="computer"> <#-- remove annoying commas in integers-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Действующие игроки по рангам</title>

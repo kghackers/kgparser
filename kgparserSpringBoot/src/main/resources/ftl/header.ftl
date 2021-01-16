@@ -1,5 +1,5 @@
 <header>
-    <table> <#-- todo: some modern layout like flex, is non-trivial with two rows and spaces between them -->
+    <table role="presentation"> <#-- todo: some modern layout like flex, is non-trivial with two rows and spaces between them -->
         <tr>
             <td class="header-left">
                 <a href="./${links.index}">На главную</a>

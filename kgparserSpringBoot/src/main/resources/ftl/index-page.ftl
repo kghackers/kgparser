@@ -1,6 +1,6 @@
 <#setting number_format="computer"> <#-- remove annoying commas in integers-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Статистика по клавогонщикам</title>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="section">
-        <table class="data data-left data-no-header">
+        <table class="data data-left data-no-header" aria-label="Общие данные по игрокам">
             <tr>
                 <td>Первый валидный id</td>
                 <td><a href="${minExistingPlayerProfileLink}">${minExistingPlayerId}</a></td>
@@ -65,7 +65,7 @@
 
     <div class="section">
         <h2>Действующие пользователи, у которых падает <code>/get-index-data</code></h2>
-        <table class="data data-left data-no-header">
+        <table class="data data-left data-no-header" aria-label="Действующие пользователи, у которых падает /get-index-data">
             <#list playersWithIndexDataErrorGroupedByError as getIndexDataError, playersWithError>
                 <tr>
                     <td>
@@ -158,7 +158,7 @@
 
     <div class="section">
         <h2>Рекорды (только топ-1)</h2>
-        <table class="data data-left data-no-header">
+        <table class="data data-left data-no-header" aria-label="Рекорды (только топ-1)">
             <tr>
                 <td>Наибольший рекорд в &laquo;Обычном&raquo;</td>
                 <@ptd.playerTd player=top1PlayerByBestSpeed/>
