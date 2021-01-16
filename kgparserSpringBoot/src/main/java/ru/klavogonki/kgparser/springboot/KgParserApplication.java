@@ -145,7 +145,7 @@ public class KgParserApplication implements CommandLineRunner {
 	public void run(final String... args) {
 		// todo: parse context from args of from json file given by args
 		ExportContext context = new ExportContext();
-		context.webRootDir = "C:/java/kgparser/kgparserWeb/src/main/webapp/";
+		context.webRootDir = "C:/java/kgparser/kgstats/src/main/webapp/";
 
 		// data load from 2020-12-28
 		context.minPlayerId = 1;
