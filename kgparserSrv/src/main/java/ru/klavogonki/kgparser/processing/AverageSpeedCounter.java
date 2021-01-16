@@ -20,54 +20,57 @@ import java.util.Set;
  * $Revision$
  * $Date::                      $
  */
-public class AverageSpeedCounter
-{
-	public static void logCompetitionInfo(Competition competition) {
-		Set<Player> players = competition.getPlayers();
-		Set<Dictionary> dictionaries = competition.getDictionaries();
+public final class AverageSpeedCounter {
 
-		for (Player player : players)
-		{
-			logger.info("");
-			logger.info("=====================================================");
-			Double avgSpeed = getAvgSpeed(competition, player);
-			logger.info("Player {} (profileId = {}).", player.getName(), player.getProfileId());
-			logger.info(" Total average speed: {}", avgSpeed);
+    private AverageSpeedCounter() {
+    }
 
-			for (Dictionary dictionary : dictionaries)
-			{
-				Double avgDictionarySpeed = getAvgSpeed(competition, player, dictionary);
-				logger.info("Dictionary {} (code = {}). Dictionary average speed: {}.", dictionary.getName(), dictionary.getCode(), avgDictionarySpeed);
-			}
-		}
-	}
+    public static void logCompetitionInfo(Competition competition) {
+        Set<Player> players = competition.getPlayers();
+        Set<Dictionary> dictionaries = competition.getDictionaries();
 
-	public static Double getAvgSpeed(Competition competition, Player player) {
-		List<PlayerRoundResult> results = competition.getPlayerRoundResults(player);
-		if (ObjectUtils.empty(results) )
-			return null;
+        for (Player player : players) {
+            logger.info("");
+            logger.info("=====================================================");
+            Double avgSpeed = getAvgSpeed(competition, player);
+            logger.info("Player {} (profileId = {}).", player.getName(), player.getProfileId());
+            logger.info(" Total average speed: {}", avgSpeed);
 
-		return getAverageDouble(results);
-	}
-	public static Double getAvgSpeed(Competition competition, Player player, Dictionary dictionary) {
-		List<PlayerRoundResult> results = competition.getPlayerRoundResults(player, dictionary);
-		if (ObjectUtils.empty(results) )
-			return null;
+            for (Dictionary dictionary : dictionaries) {
+                Double avgDictionarySpeed = getAvgSpeed(competition, player, dictionary);
+                logger.info("Dictionary {} (code = {}). Dictionary average speed: {}.", dictionary.getName(), dictionary.getCode(), avgDictionarySpeed);
+            }
+        }
+    }
 
-		return getAverageDouble(results);
-	}
+    public static Double getAvgSpeed(Competition competition, Player player) {
+        List<PlayerRoundResult> results = competition.getPlayerRoundResults(player);
+        if (ObjectUtils.empty(results)) {
+            return null;
+        }
 
-	private static Double getAverageDouble(List<PlayerRoundResult> results) {
-		int[] speeds = new int[ results.size() ];
+        return getAverageDouble(results);
+    }
 
-		for (int i = 0, resultsSize = results.size(); i < resultsSize; i++)
-		{
-			PlayerRoundResult result = results.get(i);
-			speeds[i] = result.getSpeed();
-		}
+    public static Double getAvgSpeed(Competition competition, Player player, Dictionary dictionary) {
+        List<PlayerRoundResult> results = competition.getPlayerRoundResults(player, dictionary);
+        if (ObjectUtils.empty(results)) {
+            return null;
+        }
 
-		return CountUtils.getAverageDouble(speeds);
-	}
+        return getAverageDouble(results);
+    }
 
-	private static final Logger logger = LogManager.getLogger(AverageSpeedCounter.class);
+    private static Double getAverageDouble(List<PlayerRoundResult> results) {
+        int[] speeds = new int[results.size()];
+
+        for (int i = 0, resultsSize = results.size(); i < resultsSize; i++) {
+            PlayerRoundResult result = results.get(i);
+            speeds[i] = result.getSpeed();
+        }
+
+        return CountUtils.getAverageDouble(speeds);
+    }
+
+    private static final Logger logger = LogManager.getLogger(AverageSpeedCounter.class);
 }

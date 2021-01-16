@@ -10,7 +10,7 @@
 	<h2>Загрузка соревнования</h2>
 
 	<form action="<%=request.getContextPath()%>/competitionUpload" method="post" enctype="multipart/form-data">
-		<table>
+		<table aria-label="Загрузка соревнования">
 			<tbody>
 
 				<tr>

@@ -21,17 +21,20 @@ import java.util.SortedSet;
  * $Revision$
  * $Date::                      $
  */
-public class SpeedChartFiller
-{
-//	public static void main(String[] args) {
+public final class SpeedChartFiller {
+
+    private SpeedChartFiller() {
+    }
+
+    //	public static void main(String[] args) {
 //		fillData()
 //		logger.info( value.toJson() );
 //	}
 
-	public static HighChartValue fillData(Competition competition) {
-		List<String> categories = new ArrayList<>();
+    public static HighChartValue fillData(Competition competition) {
+        List<String> categories = new ArrayList<>();
 
-		Set<Player> players = competition.getPlayers();
+        Set<Player> players = competition.getPlayers();
 
 /*
 		for (Player player : players)
@@ -43,65 +46,65 @@ public class SpeedChartFiller
 		}
 */
 
-		// fill present ranks
-		logger.info("===========================================");
-		SortedSet<Rank> ranks = competition.getRanks();
-		logger.info("Present player ranks (normal ranks): {}", ranks.toString());
+        // fill present ranks
+        logger.info("===========================================");
+        SortedSet<Rank> ranks = competition.getRanks();
+        logger.info("Present player ranks (normal ranks): {}", ranks);
 
-		List<RankDto> ranksDto = new ArrayList<>();
-		for (Rank rank : ranks)
-			ranksDto.add( new RankDto(rank) );
+        List<RankDto> ranksDto = new ArrayList<>();
+        for (Rank rank : ranks) {
+            ranksDto.add(new RankDto(rank));
+        }
 
 
-		List<Round> rounds = competition.getRounds();
+        List<Round> rounds = competition.getRounds();
 
-		List<HighChartSeries> seriesList = new ArrayList<>();
+        List<HighChartSeries> seriesList = new ArrayList<>();
 
-		for (Round round : rounds)
-		{
-			categories.add( round.getNumber().toString() );
-		}
+        for (Round round : rounds) {
+            categories.add(round.getNumber().toString());
+        }
 
-		for (Player player : players)
-		{
-			if ( player.isGuest() )
-				continue; // do not add guests to the chart
-
+        for (Player player : players) {
+            if (player.isGuest()) {
+                continue; // do not add guests to the chart
+            }
 /*
 			if ( player.getName().equals("Juicee") ) // todo: remove this
 				continue; // remove cheater
 */
 
-			List<Integer> speeds = new ArrayList<>();
+            List<Integer> speeds = new ArrayList<>();
 
-			for (Round round : rounds)
-			{
-				PlayerRoundResult playerResult = round.getPlayerResult(player);
+            for (Round round : rounds) {
+                PlayerRoundResult playerResult = round.getPlayerResult(player);
 
-				if (playerResult == null)
-					speeds.add(null);
-				else
-					speeds.add(playerResult.getSpeed());
-			}
+                if (playerResult == null) {
+                    speeds.add(null);
+                }
+                else {
+                    speeds.add(playerResult.getSpeed());
+                }
+            }
 
-			HighChartSeries series = new HighChartSeries();
-			series.setName( player.getName() );
-			series.setRank(player.getRank().toString());
-			series.setRankDisplayName(Rank.getDisplayName(player.getRank()));
-			series.setColor( Rank.getColor( player.getRank()) );
-			series.setData(speeds);
-			seriesList.add(series);
-		}
+            HighChartSeries series = new HighChartSeries();
+            series.setName(player.getName());
+            series.setRank(player.getRank().toString());
+            series.setRankDisplayName(Rank.getDisplayName(player.getRank()));
+            series.setColor(Rank.getColor(player.getRank()));
+            series.setData(speeds);
+            seriesList.add(series);
+        }
 
-		seriesList.sort(new HighChartSeriesNameComparator()); // order players by name
+        seriesList.sort(new HighChartSeriesNameComparator()); // order players by name
 
-		HighChartValue value = new HighChartValue();
-		value.setCompetitionName( competition.getName() );
-		value.setCategories(categories);
-		value.setSeries(seriesList);
-		value.setRanks(ranksDto);
-		return value;
-	}
+        HighChartValue value = new HighChartValue();
+        value.setCompetitionName(competition.getName());
+        value.setCategories(categories);
+        value.setSeries(seriesList);
+        value.setRanks(ranksDto);
+        return value;
+    }
 
-	private static final Logger logger = LogManager.getLogger(SpeedChartFiller.class);
+    private static final Logger logger = LogManager.getLogger(SpeedChartFiller.class);
 }

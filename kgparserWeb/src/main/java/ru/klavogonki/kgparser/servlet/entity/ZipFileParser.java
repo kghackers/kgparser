@@ -19,32 +19,35 @@ import static su.opencode.kefir.util.StringUtils.concat;
  * $Revision$
  * $Date::                      $
  */
-public class ZipFileParser
-{
-	public static Competition parseZipFile(CompetitionEntity entity, String exportScriptVersion) {
-		StringBuilder sb = new StringBuilder();
-		String dirPath = getDirPath(sb);
-		logger.info("Directory path to extract zip file: \"{}\"", dirPath);
-		FileUtils.createDirs(dirPath);
-		logger.info("Directory \"{}\" created successfully.", dirPath);
+public class ZipFileParser {
+    public static final String ZIP_FILES_EXTRACT_DIR = "competitionZipFiles";
 
-		String filePath = concat(sb, dirPath, FileUtils.FILE_SEPARATOR, entity.getZipFileName());
-		logger.info("Zip file path: {}", filePath);
+    private static final Logger logger = LogManager.getLogger(ZipFileParser.class);
 
-		FileUtils.writeToFile(filePath, entity.getZipFileData());
-		logger.info("Zip file successfully written to path \"{}\".", filePath);
+    private ZipFileParser() {
+    }
 
-		String extractDirPath = concat(sb, dirPath, FileUtils.FILE_SEPARATOR, "extracted");
-		ZipUtils.unzip(filePath, extractDirPath);
-		logger.info("Zip file \"{}\" successfully extracted to path \"{}\".", filePath, extractDirPath);
+    public static Competition parseZipFile(CompetitionEntity entity, String exportScriptVersion) {
+        StringBuilder sb = new StringBuilder();
+        String dirPath = getDirPath(sb);
+        logger.info("Directory path to extract zip file: \"{}\"", dirPath);
+        FileUtils.createDirs(dirPath);
+        logger.info("Directory \"{}\" created successfully.", dirPath);
 
-		return VoidmainJsonParser.parseCompetition( entity.getName(), extractDirPath, exportScriptVersion );
-	}
-	private static String getDirPath(StringBuilder sb) {
-		return concat(sb, System.getProperty("jboss.server.home.dir"), FileUtils.FILE_SEPARATOR, ZIP_FILES_EXTRACT_DIR, FileUtils.FILE_SEPARATOR, "zip-", UUID.randomUUID() );
-	}
+        String filePath = concat(sb, dirPath, FileUtils.FILE_SEPARATOR, entity.getZipFileName());
+        logger.info("Zip file path: {}", filePath);
 
-	public static final String ZIP_FILES_EXTRACT_DIR = "competitionZipFiles";
+        FileUtils.writeToFile(filePath, entity.getZipFileData());
+        logger.info("Zip file successfully written to path \"{}\".", filePath);
 
-	private static final Logger logger = LogManager.getLogger(ZipFileParser.class);
+        String extractDirPath = concat(sb, dirPath, FileUtils.FILE_SEPARATOR, "extracted");
+        ZipUtils.unzip(filePath, extractDirPath);
+        logger.info("Zip file \"{}\" successfully extracted to path \"{}\".", filePath, extractDirPath);
+
+        return VoidmainJsonParser.parseCompetition(entity.getName(), extractDirPath, exportScriptVersion);
+    }
+
+    private static String getDirPath(StringBuilder sb) {
+        return concat(sb, System.getProperty("jboss.server.home.dir"), FileUtils.FILE_SEPARATOR, ZIP_FILES_EXTRACT_DIR, FileUtils.FILE_SEPARATOR, "zip-", UUID.randomUUID());
+    }
 }

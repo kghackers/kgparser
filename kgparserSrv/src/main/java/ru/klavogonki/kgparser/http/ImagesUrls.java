@@ -10,9 +10,11 @@ package ru.klavogonki.kgparser.http;
  * <br>
  * Класс, содержащий урлы картинок на клавогонках.
  */
-public class ImagesUrls
-{
-	public static final String FIRST_SMILEY_URL = UrlConstructor.DOMAIN_NAME + "/img/smilies/first.gif";
-	public static final String SECOND_SMILEY_URL = UrlConstructor.DOMAIN_NAME + "/img/smilies/second.gif";
-	public static final String THIRD_SMILEY_URL = UrlConstructor.DOMAIN_NAME + "/img/smilies/third.gif";
+public final class ImagesUrls {
+    public static final String FIRST_SMILEY_URL = UrlConstructor.DOMAIN_NAME + "/img/smilies/first.gif";
+    public static final String SECOND_SMILEY_URL = UrlConstructor.DOMAIN_NAME + "/img/smilies/second.gif";
+    public static final String THIRD_SMILEY_URL = UrlConstructor.DOMAIN_NAME + "/img/smilies/third.gif";
+
+    private ImagesUrls() {
+    }
 }

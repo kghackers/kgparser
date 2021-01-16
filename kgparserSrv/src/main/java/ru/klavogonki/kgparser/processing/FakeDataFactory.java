@@ -1,6 +1,11 @@
 package ru.klavogonki.kgparser.processing;
 
-import ru.klavogonki.kgparser.*;
+import ru.klavogonki.kgparser.Competition;
+import ru.klavogonki.kgparser.Dictionary;
+import ru.klavogonki.kgparser.Player;
+import ru.klavogonki.kgparser.PlayerRoundResult;
+import ru.klavogonki.kgparser.Round;
+import ru.klavogonki.kgparser.StandardDictionary;
 
 /**
  * Copyright 2014 LLC "Open Code"
@@ -10,9 +15,12 @@ import ru.klavogonki.kgparser.*;
  * $Revision$
  * $Date::                      $
  */
-public class FakeDataFactory
-{
-	public static Competition createCompetition() {
+public final class FakeDataFactory {
+
+    private FakeDataFactory() {
+    }
+
+    public static Competition createCompetition() {
 		Dictionary normal = getDictionary(StandardDictionary.normal);
 		Dictionary chars = getDictionary(StandardDictionary.chars);
 		Dictionary frequent = getDictionary(192, "Частотный");

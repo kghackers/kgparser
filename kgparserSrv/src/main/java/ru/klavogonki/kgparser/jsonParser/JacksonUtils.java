@@ -10,8 +10,11 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 
-public class JacksonUtils {
+public final class JacksonUtils {
     private static final Logger logger = LogManager.getLogger(JacksonUtils.class);
+
+    private JacksonUtils() {
+    }
 
     public static <T> T parse(File file, Class<T> clazz) {
         try {
