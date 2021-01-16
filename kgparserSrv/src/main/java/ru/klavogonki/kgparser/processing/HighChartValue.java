@@ -1,11 +1,9 @@
 package ru.klavogonki.kgparser.processing;
 
-import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.RankDto;
 import su.opencode.kefir.srv.json.JsonObject;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
