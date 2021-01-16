@@ -1,8 +1,3 @@
-/**
- * User: 1
- * Date: 13.01.2012
- * Time: 23:33:06
- */
 package ru.klavogonki.kgparser;
 
 import ru.klavogonki.kgparser.http.UrlConstructor;

@@ -1,8 +1,3 @@
-/**
- * User: 1
- * Date: 13.01.2012
- * Time: 23:38:54
- */
 package ru.klavogonki.kgparser;
 
 import java.util.ArrayList;

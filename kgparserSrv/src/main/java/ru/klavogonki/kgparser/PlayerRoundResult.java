@@ -1,8 +1,3 @@
-/**
- * User: 1
- * Date: 17.01.2012
- * Time: 22:25:37
- */
 package ru.klavogonki.kgparser;
 
 import su.opencode.kefir.srv.json.Json;

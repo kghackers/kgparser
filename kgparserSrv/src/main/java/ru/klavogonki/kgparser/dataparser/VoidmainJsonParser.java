@@ -200,8 +200,7 @@ public class VoidmainJsonParser {
 
 		logger.info("===========================================");
 		Map<String, List<Round>> roundsByDictionaries = competition.getRoundsByDictionariesMap();
-		for (String dictionaryCode : roundsByDictionaries.keySet()) {
-			List<Round> dictionaryRounds = roundsByDictionaries.get(dictionaryCode);
+		for (List<Round> dictionaryRounds : roundsByDictionaries.values()) {
 			Dictionary dictionary = dictionaryRounds.get(0).getDictionary();
 
 			logger.info(
@@ -214,7 +213,7 @@ public class VoidmainJsonParser {
 
 		logger.info("===========================================");
 		SortedSet<Rank> ranks = competition.getRanks();
-		logger.info("Present player dictionary ranks: {}", ranks.toString());
+		logger.info("Present player dictionary ranks: {}", ranks);
 
 		Set<Player> players = competition.getPlayers();
 		logger.info("");
@@ -257,7 +256,7 @@ public class VoidmainJsonParser {
 	}
 
 	/**
-	 * @param json JSON-данные, сохраненные версией 1.5 скрипта <a href="http://klavogonki.ru/u/#/364239/">voidmain</a>
+	 * @param json JSON-данные, сохраненные версией 1.5 скрипта <a href="https://klavogonki.ru/u/#/364239/">voidmain</a>
 	 * @return модель заезда на основе json-данных заезда
 	 */
 	public static Round parseRound15(String json) {

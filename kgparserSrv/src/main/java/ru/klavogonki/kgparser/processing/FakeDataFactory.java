@@ -26,28 +26,28 @@ public final class FakeDataFactory {
 		Dictionary frequent = getDictionary(192, "Частотный");
 
 		Player nosferatum = createPlayer(242585, "nosferatum");
-		Player ToNick = createPlayer(1210, "ToNick");
-		Player Elena = createPlayer(233067, "E_l_e_n_a");
+		Player toNick = createPlayer(1210, "ToNick");
+		Player elena = createPlayer(233067, "E_l_e_n_a");
 		Player alanen = createPlayer(139052, "alanen");
 
 		// todo: already set player results (speed etc.)
 		Round normalRound1 = createRound(normal);
 		normalRound1.addResult( new PlayerRoundResult(normalRound1, nosferatum) );
-		normalRound1.addResult( new PlayerRoundResult(normalRound1, ToNick) );
-		normalRound1.addResult( new PlayerRoundResult(normalRound1, Elena) );
+		normalRound1.addResult( new PlayerRoundResult(normalRound1, toNick) );
+		normalRound1.addResult( new PlayerRoundResult(normalRound1, elena) );
 
 		Round normalRound2 = createRound(normal);
 		normalRound2.addResult( new PlayerRoundResult(normalRound2, nosferatum) );
-		normalRound2.addResult( new PlayerRoundResult(normalRound2, ToNick) );
-//		normalRound2.addResult( new PlayerRoundResult(normalRound2, Elena) );
+		normalRound2.addResult( new PlayerRoundResult(normalRound2, toNick) );
+//		normalRound2.addResult( new PlayerRoundResult(normalRound2, elena) );
 
 		Round charsRound1 = createRound(chars);
 		charsRound1.addResult( new PlayerRoundResult(charsRound1, nosferatum) );
 
 		Round frequentRound1 = createRound(frequent);
 		frequentRound1.addResult( new PlayerRoundResult(frequentRound1, nosferatum) );
-		frequentRound1.addResult( new PlayerRoundResult(frequentRound1, ToNick) );
-		frequentRound1.addResult( new PlayerRoundResult(frequentRound1, Elena) );
+		frequentRound1.addResult( new PlayerRoundResult(frequentRound1, toNick) );
+		frequentRound1.addResult( new PlayerRoundResult(frequentRound1, elena) );
 		frequentRound1.addResult( new PlayerRoundResult(frequentRound1, alanen) );
 
 		Competition competition = new Competition();

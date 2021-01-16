@@ -1,8 +1,3 @@
-/**
- * User: 1
- * Date: 17.01.2012
- * Time: 22:05:59
- */
 package ru.klavogonki.kgparser;
 
 import static su.opencode.kefir.util.StringUtils.concat;
