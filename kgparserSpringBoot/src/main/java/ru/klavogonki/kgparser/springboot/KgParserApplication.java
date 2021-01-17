@@ -37,10 +37,10 @@ import ru.klavogonki.kgparser.jsonParser.mapper.PlayerMapper;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerVocabularyStatsMapper;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerRepository;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerVocabularyStatsRepository;
-import ru.klavogonki.kgparser.statistics.download.PlayerDataDownloader;
+import ru.klavogonki.kgparser.statistics.Config;
 import ru.klavogonki.kgparser.statistics.download.PlayerJsonData;
 import ru.klavogonki.kgparser.statistics.download.PlayerJsonParser;
-import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.kgparser.util.JacksonUtils;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
 import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 
@@ -55,7 +55,12 @@ import java.util.Optional;
 @EnableJpaRepositories("ru.klavogonki.kgparser")
 @Log4j2
 public class KgParserApplication implements CommandLineRunner {
-	public static final int REQUIRED_ARGUMENTS_COUNT = 5;
+	public static final int REQUIRED_ARGUMENTS_COUNT = 2;
+
+	public enum Mode {
+		IMPORT_JSON_TO_DATABASE,
+		GENERATE_STATISTICS_FROM_DATABASE
+	}
 
 	@Autowired
 	private PlayerRepository playerRepository;
@@ -143,8 +148,37 @@ public class KgParserApplication implements CommandLineRunner {
 
 	@Override
 	public void run(final String... args) {
-		// todo: parse context from args of from json file given by args
-		ExportContext context = new ExportContext();
+		if (args.length != REQUIRED_ARGUMENTS_COUNT) {
+			// todo: use logger instead of System.out??
+			System.out.printf("Usage: %s <mode> <inputConfigFilePath> %n", KgParserApplication.class.getSimpleName());
+			System.out.printf("Possible <mode> values: %s, %s %n", Mode.IMPORT_JSON_TO_DATABASE.name(), Mode.GENERATE_STATISTICS_FROM_DATABASE.name());
+			return;
+		}
+
+		String modeString = args[0];
+		String inputConfigFilePath = args[1];
+
+		Mode mode = Mode.valueOf(modeString);
+
+		Config config = JacksonUtils.parseConfig(inputConfigFilePath);
+
+		switch (mode) {
+			case IMPORT_JSON_TO_DATABASE:
+				importJsonToDatabase(config);
+				break;
+
+			case GENERATE_STATISTICS_FROM_DATABASE:
+				generateStatistics(config);
+				break;
+
+			default:
+				throw new IllegalArgumentException(String.format("Unknown mode value: %s", mode));
+		}
+	}
+
+	private void generateStatistics(final Config config) {
+		ExportContext context = new ExportContext(config);
+/*
 		context.webRootDir = "C:/java/kgparser/kgstats/src/main/webapp/";
 
 		// data load from 2020-12-28
@@ -152,6 +186,7 @@ public class KgParserApplication implements CommandLineRunner {
 		context.maxPlayerId = 628000;
 		context.dataDownloadStartDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 00:28:13");
 		context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-28 01:44:43");
+*/
 
 /*
 		// data load from 2020-12-09
@@ -278,20 +313,12 @@ public class KgParserApplication implements CommandLineRunner {
 		if (!executeDatabaseJsonImport) {
 			return;
 		}
+	}
+
+	private void importJsonToDatabase(final Config config) {
+		// todo: move all related logic to a separate Spring component
 
 		// export from json files with API call results to the database
-		// todo: pass a path to a json file with config instead
-
-		if (args.length != REQUIRED_ARGUMENTS_COUNT) {
-			// todo: use logger instead of System.out??
-			System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> <threadsCount> <yyyy-MM-dd HH-mm-ss> %n", KgParserApplication.class.getSimpleName());
-			return;
-		}
-
-		PlayerDataDownloader.Config config = PlayerDataDownloader.Config.parseFromArguments(args);
-		config.setStartDate(args[4]);
-		config.log();
-
 		PlayerJsonParser.handlePlayers(config, this::handlePlayer);
 
 		if (!playersBatch.isEmpty()) { // save remainder from batch size

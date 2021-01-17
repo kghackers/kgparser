@@ -3,7 +3,7 @@ package ru.klavogonki.kgparser.statistics.download.downloader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.kgparser.http.UrlConstructor;
-import ru.klavogonki.kgparser.statistics.download.PlayerDataDownloader;
+import ru.klavogonki.kgparser.statistics.Config;
 
 public class IndexDataDownloader implements DataDownloader {
     private static final Logger logger = LogManager.getLogger(IndexDataDownloader.class);
@@ -19,7 +19,7 @@ public class IndexDataDownloader implements DataDownloader {
     }
 
     @Override
-    public String getJsonFilePath(final PlayerDataDownloader.Config config, final int playerId) {
+    public String getJsonFilePath(final Config config, final int playerId) {
         return config.getPlayerIndexDataFilePath(playerId);
     }
 

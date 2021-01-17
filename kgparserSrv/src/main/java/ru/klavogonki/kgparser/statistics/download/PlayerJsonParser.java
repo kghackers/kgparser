@@ -8,6 +8,7 @@ import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.DictionaryMode;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.StandardDictionary;
+import ru.klavogonki.kgparser.statistics.Config;
 import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.kgparser.util.JacksonUtils;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
@@ -31,11 +32,12 @@ import java.util.function.BiConsumer;
 
 /**
  * Parses the json files saved by {@link PlayerDataDownloader}.
+ * Uses the output config file saved by {@link PlayerDataDownloader}.
  */
 public class PlayerJsonParser {
     private static final Logger logger = LogManager.getLogger(PlayerJsonParser.class);
 
-    public static final int REQUIRED_ARGUMENTS_COUNT = 4;
+    public static final int REQUIRED_ARGUMENTS_COUNT = 1;
 
     static class ParserException extends RuntimeException {
         public ParserException(final String message, final Object... messageArguments) {
@@ -52,17 +54,15 @@ public class PlayerJsonParser {
     }
 
     public static void main(String[] args) {
-        // todo: pass a path to a json file with config instead
-
         if (args.length != REQUIRED_ARGUMENTS_COUNT) {
             // todo: use logger instead of System.out??
-            System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> <yyyy-MM-dd HH-mm-ss> %n", PlayerJsonParser.class.getSimpleName());
+            System.out.printf("Usage: %s <inputConfigFilePath> %n", PlayerJsonParser.class.getSimpleName());
             return;
         }
 
-        PlayerDataDownloader.Config config = PlayerDataDownloader.Config.parseFromArguments(args);
-        config.setStartDate(args[3]);
-        config.log();
+        String inputConfigFilePath = args[0];
+        Config config = JacksonUtils.parseConfig(inputConfigFilePath); // it will throw on incorrect file path
+        // config.dataDownloadStartDate must be already set, as an output of PlayerDataDownloader
 
         List<PlayerJsonData> players = new ArrayList<>();
         List<Integer> nonExistingPlayerIds = new ArrayList<>();
@@ -72,7 +72,8 @@ public class PlayerJsonParser {
                 PlayerJsonData player = playerOptional.get();
                 players.add(player);
 
-                if (player.summary.getErr().equals(ApiErrors.INVALID_USER_ID_ERROR)) {
+                String summaryError = player.summary.getErr();
+                if (summaryError != null && summaryError.equals(ApiErrors.INVALID_USER_ID_ERROR)) {
                     nonExistingPlayerIds.add(playerId);
                 }
             }
@@ -84,7 +85,7 @@ public class PlayerJsonParser {
         handlePlayers(config, playerHandler);
 
         logger.info("=======================================================");
-        logger.info("Total player ids handled: {}", config.maxPlayerId - config.minPlayerId + 1);
+        logger.info("Total player ids handled: {}", config.getTotalPlayers());
         logger.info("Total existing players parsed: {}", players.size());
         logger.info("Total non existing players: {}", nonExistingPlayerIds.size());
 
@@ -93,19 +94,19 @@ public class PlayerJsonParser {
         // todo: should login be unique over all users?
     }
 
-    public static void handlePlayers(final PlayerDataDownloader.Config config, final BiConsumer<Integer, Optional<PlayerJsonData>> playerHandler) {
-        int totalPlayersToHandle = config.maxPlayerId - config.minPlayerId + 1;
+    public static void handlePlayers(final Config config, final BiConsumer<Integer, Optional<PlayerJsonData>> playerHandler) {
+        int totalPlayersToHandle = config.getTotalPlayers();
 
-        for (int playerId = config.minPlayerId; playerId <= config.maxPlayerId; playerId++) {
+        for (int playerId = config.getMinPlayerId(); playerId <= config.getMaxPlayerId(); playerId++) {
             logger.info("=======================================================");
-            int indexOfCurrentPlayer = playerId - config.minPlayerId + 1; // starting from 1
+            int indexOfCurrentPlayer = playerId - config.getMinPlayerId() + 1; // starting from 1
             logger.info("Handling player {} (player {} / {})...", playerId, indexOfCurrentPlayer, totalPlayersToHandle);
 
             File summaryFile = new File(config.getPlayerSummaryFilePath(playerId));
             File indexDataFile = new File(config.getPlayerIndexDataFilePath(playerId));
             File statsOverviewFile = new File(config.getStatsOverviewFilePath(playerId));
 
-            Optional<PlayerJsonData> playerOptional = readPlayerData(config.startDate, playerId, summaryFile, indexDataFile, statsOverviewFile);
+            Optional<PlayerJsonData> playerOptional = readPlayerData(config.getDataDownloadStartDate(), playerId, summaryFile, indexDataFile, statsOverviewFile);
 
             playerHandler.accept(playerId, playerOptional);
         }

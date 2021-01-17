@@ -1,6 +1,6 @@
 package ru.klavogonki.kgparser.statistics.download.downloader;
 
-import ru.klavogonki.kgparser.statistics.download.PlayerDataDownloader;
+import ru.klavogonki.kgparser.statistics.Config;
 
 import javax.ws.rs.HttpMethod;
 
@@ -10,7 +10,7 @@ public interface DataDownloader {
 
     String getUrl(int playerId);
 
-    String getJsonFilePath(PlayerDataDownloader.Config config, int playerId);
+    String getJsonFilePath(Config config, int playerId);
 
     void logDataWrittenToFile(int playerId, String jsonFilePath);
 

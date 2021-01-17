@@ -73,6 +73,7 @@ public final class JacksonUtils {
             File file = new File(filePath);
             FileUtils.writeStringToFile(file, serializedObject, StandardCharsets.UTF_8);
             logger.debug("Successfully serialized object of class {} to file {}.", object.getClass().getName(), filePath);
+            logger.debug("Serialized object: {}", serializedObject);
         }
         catch (IOException e) {
             String errorMessage = String.format("Error on writing object of class %s to file %s", object.getClass().getName(), filePath);

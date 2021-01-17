@@ -5,11 +5,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.klavogonki.kgparser.statistics.Config;
 import ru.klavogonki.kgparser.statistics.download.downloader.DataDownloader;
 import ru.klavogonki.kgparser.statistics.download.downloader.IndexDataDownloader;
 import ru.klavogonki.kgparser.statistics.download.downloader.StatsOverviewDownloader;
 import ru.klavogonki.kgparser.statistics.download.downloader.SummaryDownloader;
-import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.kgparser.util.JacksonUtils;
 
 import java.io.File;
@@ -31,66 +31,6 @@ public class PlayerDataDownloader {
 
     public static final int REQUIRED_ARGUMENTS_COUNT = 2; // input config file path, output config file path
 
-    @Deprecated(forRemoval = true) // todo: remove this, use ru.klavogonki.kgparser.statistics.Config instead
-    public static class Config {
-        public static final int REQUIRED_ARGUMENTS_COUNT = 4;
-
-        int threadsCount;
-        String rootDir;
-        int minPlayerId;
-        int maxPlayerId;
-        private String startDateString;
-        LocalDateTime startDate;
-
-        public void setStartDate(String startDate) {
-            this.startDateString = startDate;
-            this.startDate = DateUtils.parseLocalDateTime(startDateString);
-        }
-
-        public int getTotalPlayers() {
-            return maxPlayerId - minPlayerId + 1;
-        }
-
-        public String getPlayerSummaryFilePath(final int playerId) {
-            return getDataDirectory(playerId, "summary");
-        }
-
-        public String getPlayerIndexDataFilePath(final int playerId) {
-            return getDataDirectory(playerId, "index-data");
-        }
-
-        public String getStatsOverviewFilePath(final int playerId) {
-            return getDataDirectory(playerId, "stats-overview");
-        }
-
-        public String getDataDirectory(final int playerId, final String subdir) {
-            return rootDir + File.separator + startDateString + File.separator + subdir + File.separator + playerId + ".json";
-        }
-
-        public void log() {
-            logger.debug("============================================");
-            logger.debug("Config:");
-            logger.debug("  threadsCount: {}", threadsCount);
-            logger.debug("  rootDir: {}", rootDir);
-            logger.debug("  minPlayerId: {}", minPlayerId);
-            logger.debug("  maxPlayerId: {}", maxPlayerId);
-            logger.debug("  startDateString: {}", startDateString);
-            logger.debug("  startDate: {}", startDate);
-            logger.debug("============================================");
-        }
-
-        public static Config parseFromArguments(final String[] args) {
-            int index = 0;
-
-            Config config = new Config();
-            config.rootDir = args[index++];
-            config.minPlayerId = Integer.parseInt(args[index++]);
-            config.maxPlayerId = Integer.parseInt(args[index++]);
-            config.threadsCount = Integer.parseInt(args[index++]);
-            return config;
-        }
-    }
-
     public static void main(String[] args) {
         if (args.length != REQUIRED_ARGUMENTS_COUNT) {
             // todo: use logger instead of System.out??
@@ -102,43 +42,12 @@ public class PlayerDataDownloader {
         String outputConfigFilePath = args[1];
         // todo: validate that file paths are non-empty
 
-        ru.klavogonki.kgparser.statistics.Config config1 = JacksonUtils.parseConfig(inputConfigFilePath);
-
-        LocalDateTime startDate1 = LocalDateTime.now();
-        try {
-            Thread.sleep(1234L);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        LocalDateTime endDate1 = LocalDateTime.now();
-
-        config1.setDataDownloadStartDate(startDate1);
-        config1.setDataDownloadEndDate(endDate1);
-
-        JacksonUtils.serializeToFile(outputConfigFilePath, config1, true); // todo: maybe set prettyPrint to false
-
-        if (true) {
-            return;
-        }
-
-
-        // todo: pass a path to a json file with config instead
-
-        if (args.length != Config.REQUIRED_ARGUMENTS_COUNT) {
-            // todo: use logger instead of System.out??
-            System.out.printf("Usage: %s <rootJsonDir> <minPlayerId> <maxPlayerId> <threadsCount> %n", PlayerDataDownloader.class.getSimpleName());
-            return;
-        }
-
-        Config config = Config.parseFromArguments(args);
+        Config config = JacksonUtils.parseConfig(inputConfigFilePath);
 
         LocalDateTime startDate = LocalDateTime.now();
         logger.info("Download start date: {}", startDate);
 
-        config.setStartDate(DateUtils.formatDateTime(startDate));
-        config.log();
+        config.setDataDownloadStartDate(startDate);
 
         // parallel loading
         List<ImmutablePair<Integer, Integer>> threadChunks = split(config);
@@ -195,8 +104,12 @@ public class PlayerDataDownloader {
         logger.info("Download start date: {}", startDate);
         logger.info("Download end date: {}", endDate);
 
-        logger.info("Downloading data for players [{}; {}] (total {} players) took:", config.minPlayerId, config.maxPlayerId, config.getTotalPlayers());
+        logger.info("Downloading data for players [{}; {}] (total {} players) took:", config.getMinPlayerId(), config.getMaxPlayerId(), config.getTotalPlayers());
         logDateTimeDiff(startDate, endDate);
+
+        // save config with filled download dates to file
+        config.setDataDownloadEndDate(endDate);
+        JacksonUtils.serializeToFile(outputConfigFilePath, config, true); // todo: maybe set prettyPrint to false
     }
 
     public static String callableTask(final Config config, final Integer minPlayerId, final Integer maxPlayerId) throws IOException {
@@ -263,7 +176,11 @@ public class PlayerDataDownloader {
     }
 
     static List<ImmutablePair<Integer, Integer>> split(Config config) {
-        return split(config.threadsCount, config.minPlayerId, config.maxPlayerId);
+        return split(
+            config.getThreadsCount(),
+            config.getMinPlayerId(),
+            config.getMaxPlayerId()
+        );
     }
 
     // returns list of minPlayerId; maxPlayerId
