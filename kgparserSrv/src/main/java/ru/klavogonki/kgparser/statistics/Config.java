@@ -5,7 +5,7 @@ import lombok.Data;
 import ru.klavogonki.kgparser.util.DateUtils;
 
 import java.io.File;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 /**
  * Конфиг, настраивающий процесс загрузки данных игроков для статистики,
@@ -22,8 +22,8 @@ public class Config {
     private int maxPlayerId;
 
     // data filled by PlayerDataDownloader
-    private LocalDateTime dataDownloadStartDate;
-    private LocalDateTime dataDownloadEndDate;
+    private OffsetDateTime dataDownloadStartDate;
+    private OffsetDateTime dataDownloadEndDate;
 
     // data used for statistics pages generation
     // @see ExportContext

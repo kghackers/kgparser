@@ -95,6 +95,7 @@ public final class JacksonUtils {
             // serialize LocalDateTime not as object, but as date string
             .registerModule(new JavaTimeModule())
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+            .configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false) // do not lose timezone when de-serializing OffsetDateTime
 
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false) // because of _id / id clash in /get-summary response, see https://github.com/OpenAPITools/openapi-generator/issues/8291
             .configure(JsonParser.Feature.ALLOW_COMMENTS, true)

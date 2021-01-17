@@ -7,7 +7,9 @@ import ru.klavogonki.openapi.model.Microtime;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -62,11 +64,22 @@ public final class DateUtils {
         return localDateTimeMoscow;
     }
 
+    public static LocalDateTime convertToUtcLocalDateTime(final OffsetDateTime offsetDateTime) {
+        return offsetDateTime.atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
+    }
+
     public static String formatDateTime(LocalDateTime localDateTime) {
         Objects.requireNonNull(localDateTime);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
         return localDateTime.format(dateTimeFormatter);
+    }
+
+    public static String formatDateTime(OffsetDateTime offsetDateTime) {
+        Objects.requireNonNull(offsetDateTime);
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        return offsetDateTime.format(dateTimeFormatter);
     }
 
     public static String formatDateTimeForUi(LocalDateTime localDateTime) {

@@ -40,10 +40,12 @@ import ru.klavogonki.kgparser.jsonParser.repository.PlayerVocabularyStatsReposit
 import ru.klavogonki.kgparser.statistics.Config;
 import ru.klavogonki.kgparser.statistics.download.PlayerJsonData;
 import ru.klavogonki.kgparser.statistics.download.PlayerJsonParser;
+import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.kgparser.util.JacksonUtils;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
 import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -365,7 +367,9 @@ public class KgParserApplication implements CommandLineRunner {
 			String vocabularyCode = entry.getKey();
 			GetStatsOverviewGameType gameType = entry.getValue();
 
-			PlayerVocabularyStatsEntity stats = statsMapper.statsGameTypeToEntity(gameType, jsonData.importDate, statsOverview, vocabularyCode, player);
+			LocalDateTime importDateUtc = DateUtils.convertToUtcLocalDateTime(jsonData.importDate);
+
+			PlayerVocabularyStatsEntity stats = statsMapper.statsGameTypeToEntity(gameType, importDateUtc, statsOverview, vocabularyCode, player);
 			allPlayerStats.add(stats);
 		}
 

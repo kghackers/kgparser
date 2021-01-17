@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class PlayerDataDownloader {
 
         Config config = JacksonUtils.parseConfig(inputConfigFilePath);
 
-        LocalDateTime startDate = LocalDateTime.now();
+        OffsetDateTime startDate = OffsetDateTime.now();
         logger.info("Download start date: {}", startDate);
 
         config.setDataDownloadStartDate(startDate);
@@ -98,7 +98,7 @@ public class PlayerDataDownloader {
         }
 
         // log the results summary
-        LocalDateTime endDate = LocalDateTime.now();
+        OffsetDateTime endDate = OffsetDateTime.now();
 
         logger.info("Threads used: {}", threadsCount);
         logger.info("Download start date: {}", startDate);
@@ -116,7 +116,7 @@ public class PlayerDataDownloader {
         String threadName = String.format("players-from-%d-to-%d", minPlayerId, maxPlayerId);
         Thread.currentThread().setName(threadName);
 
-        LocalDateTime chunkStartDate = LocalDateTime.now();
+        OffsetDateTime chunkStartDate = OffsetDateTime.now();
         logger.info("Chunk download start date for players [{}; {}]: {}", minPlayerId, maxPlayerId, chunkStartDate);
 
         // for great thread-safety, create the downloader objects in each of the threads
@@ -130,7 +130,7 @@ public class PlayerDataDownloader {
             savePlayerDataToJsonFile(statsOverviewDownloader, config, playerId);
         }
 
-        LocalDateTime chunkEndDate = LocalDateTime.now();
+        OffsetDateTime chunkEndDate = OffsetDateTime.now();
         logger.info("Chunk download start date for players [{}; {}]: {}", minPlayerId, maxPlayerId, chunkStartDate);
         logger.info("Chunk download end date for players [{}; {}]: {}", minPlayerId, maxPlayerId, chunkEndDate);
 
@@ -140,7 +140,7 @@ public class PlayerDataDownloader {
         return String.format("Successfully downloaded player info for players from %d to %d", minPlayerId, maxPlayerId);
     }
 
-    public static void logDateTimeDiff(final LocalDateTime startDate, final LocalDateTime endDate) {
+    public static void logDateTimeDiff(final OffsetDateTime startDate, final OffsetDateTime endDate) {
         logger.info("Hours: {}", ChronoUnit.HOURS.between(startDate, endDate));
         logger.info("Minutes: {}", ChronoUnit.MINUTES.between(startDate, endDate));
         logger.info("Seconds: {}", ChronoUnit.SECONDS.between(startDate, endDate));

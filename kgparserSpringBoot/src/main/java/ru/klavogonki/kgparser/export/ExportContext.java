@@ -2,6 +2,7 @@ package ru.klavogonki.kgparser.export;
 
 import lombok.Data;
 import ru.klavogonki.kgparser.statistics.Config;
+import ru.klavogonki.kgparser.util.DateUtils;
 
 import java.time.LocalDateTime;
 
@@ -13,14 +14,14 @@ public class ExportContext {
         this.webRootDir = config.getStatisticsPagesRootDir();
         this.minPlayerId = config.getMinPlayerId();
         this.maxPlayerId = config.getMaxPlayerId();
-        this.dataDownloadStartDate = config.getDataDownloadStartDate();
-        this.dataDownloadEndDate = config.getDataDownloadEndDate();
+        this.dataDownloadStartDate = DateUtils.convertToUtcLocalDateTime(config.getDataDownloadStartDate()); // todo: think about UTC timeZone
+        this.dataDownloadEndDate = DateUtils.convertToUtcLocalDateTime(config.getDataDownloadEndDate()); // todo: think about UTC timeZone
     }
 
     public String webRootDir; // where to export web files
 
     public int minPlayerId;
     public int maxPlayerId;
-    public LocalDateTime dataDownloadStartDate;
-    public LocalDateTime dataDownloadEndDate;
+    public LocalDateTime dataDownloadStartDate; // todo: also change to OffsetDateTime
+    public LocalDateTime dataDownloadEndDate; // todo: also change to OffsetDateTime
 }

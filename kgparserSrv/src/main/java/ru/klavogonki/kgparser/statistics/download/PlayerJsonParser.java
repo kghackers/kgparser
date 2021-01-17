@@ -23,7 +23,7 @@ import ru.klavogonki.openapi.model.NonStandardVocabularyType;
 import ru.klavogonki.openapi.model.VocabularyMode;
 
 import java.io.File;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -113,7 +113,7 @@ public class PlayerJsonParser {
     }
 
     static Optional<PlayerJsonData> readPlayerData(
-        final LocalDateTime importDate,
+        final OffsetDateTime importDate,
         final int playerId,
         final File summaryFile,
         final File indexDataFile,

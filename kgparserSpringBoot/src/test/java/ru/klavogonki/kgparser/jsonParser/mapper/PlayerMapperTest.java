@@ -17,7 +17,7 @@ import ru.klavogonki.openapi.model.GetSummaryResponse;
 import ru.klavogonki.openapi.model.GetSummaryUser;
 import ru.klavogonki.openapi.model.Microtime;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 // todo: merge it with JacksonUtilsTest (problem with module/resource dependencies), so that user data can be read from json files
 class PlayerMapperTest {
@@ -64,7 +64,7 @@ class PlayerMapperTest {
             .bio(bio)
             .stats(stats);
 
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null); // todo: fill statsOverview?
+        PlayerJsonData jsonData = new PlayerJsonData(OffsetDateTime.now(), summary, indexData, null); // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -72,7 +72,7 @@ class PlayerMapperTest {
 
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
-            .hasImportDate(jsonData.importDate)
+            .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
             .hasGetSummaryError(summary.getErr())
             .hasGetIndexDataError(indexData.getErr())
             .hasPlayerId(user.getId())
@@ -137,7 +137,7 @@ class PlayerMapperTest {
             .bio(bio)
             .stats(stats);
 
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null);  // todo: fill statsOverview?
+        PlayerJsonData jsonData = new PlayerJsonData(OffsetDateTime.now(), summary, indexData, null);  // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -145,7 +145,7 @@ class PlayerMapperTest {
 
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
-            .hasImportDate(jsonData.importDate)
+            .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
             .hasGetSummaryError(summary.getErr())
             .hasGetIndexDataError(indexData.getErr())
             .hasPlayerId(user.getId())
@@ -192,7 +192,7 @@ class PlayerMapperTest {
             .err(ApiErrors.HIDDEN_PROFILE_USER_ERROR)
             .ok(null); // FGJ
 
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null); // todo: fill statsOverview?
+        PlayerJsonData jsonData = new PlayerJsonData(OffsetDateTime.now(), summary, indexData, null); // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -200,7 +200,7 @@ class PlayerMapperTest {
 
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
-            .hasImportDate(jsonData.importDate)
+            .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
             .hasGetSummaryError(summary.getErr())
             .hasGetIndexDataError(indexData.getErr())
             .hasPlayerId(user.getId())
@@ -235,7 +235,7 @@ class PlayerMapperTest {
             .err(ApiErrors.INVALID_USER_ID_ERROR)
             .ok(null); // FGJ
 
-        PlayerJsonData jsonData = new PlayerJsonData(LocalDateTime.now(), summary, indexData, null);  // todo: fill statsOverview?
+        PlayerJsonData jsonData = new PlayerJsonData(OffsetDateTime.now(), summary, indexData, null);  // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
@@ -243,7 +243,7 @@ class PlayerMapperTest {
 
         Assertions.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
-            .hasImportDate(jsonData.importDate)
+            .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
             .hasGetSummaryError(summary.getErr())
             .hasGetIndexDataError(indexData.getErr())
             .hasPlayerId(null)
