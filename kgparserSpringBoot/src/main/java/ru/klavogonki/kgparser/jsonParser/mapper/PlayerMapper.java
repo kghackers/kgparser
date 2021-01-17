@@ -2,8 +2,8 @@ package ru.klavogonki.kgparser.jsonParser.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.klavogonki.kgparser.PlayerJsonData;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
+import ru.klavogonki.kgparser.statistics.download.PlayerJsonData;
 import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.openapi.model.Microtime;
 

@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 import ru.klavogonki.kgparser.freemarker.IndexPageTemplate;
 import ru.klavogonki.kgparser.freemarker.PageUrls;
 import ru.klavogonki.kgparser.http.UrlConstructor;
-import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerRepository;
 import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.kgparser.util.JacksonUtils;
 
 import java.util.List;
 import java.util.Map;

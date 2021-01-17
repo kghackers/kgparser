@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser;
+package ru.klavogonki.kgparser.statistics.download;
 
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetStatsOverviewResponse;

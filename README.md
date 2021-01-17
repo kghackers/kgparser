@@ -19,7 +19,7 @@ Execution with overriding the `log4j2.xml` configuration file:
 
 For example, to load players with `playerId in [30000; 30100]` (total 101 players) in 10 threads, execute
 ```
-java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-srv-1.0.jar ru.klavogonki.kgparser.PlayerDataDownloader c:/java/kg 30000 30100 10
+java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-srv-1.0.jar ru.klavogonki.kgparser.statistics.download.PlayerDataDownloader c:/java/kg 30000 30100 10
 ```
 
 # Какие графики и таблицы можно сделать на текущих данных

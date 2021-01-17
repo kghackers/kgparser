@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import ru.klavogonki.kgparser.freemarker.PageUrls;
 import ru.klavogonki.kgparser.freemarker.PlayersByRankDataTemplate;
 import ru.klavogonki.kgparser.freemarker.PlayersByRankTemplate;
-import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerRankLevelAndTotalRacesCount;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerRepository;
+import ru.klavogonki.kgparser.util.JacksonUtils;
 
 import java.util.Comparator;
 import java.util.List;

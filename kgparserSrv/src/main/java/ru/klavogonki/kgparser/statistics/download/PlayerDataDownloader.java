@@ -1,14 +1,14 @@
-package ru.klavogonki.kgparser;
+package ru.klavogonki.kgparser.statistics.download;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.klavogonki.kgparser.download.DataDownloader;
-import ru.klavogonki.kgparser.download.IndexDataDownloader;
-import ru.klavogonki.kgparser.download.StatsOverviewDownloader;
-import ru.klavogonki.kgparser.download.SummaryDownloader;
+import ru.klavogonki.kgparser.statistics.download.downloader.DataDownloader;
+import ru.klavogonki.kgparser.statistics.download.downloader.IndexDataDownloader;
+import ru.klavogonki.kgparser.statistics.download.downloader.StatsOverviewDownloader;
+import ru.klavogonki.kgparser.statistics.download.downloader.SummaryDownloader;
 import ru.klavogonki.kgparser.util.DateUtils;
 
 import java.io.File;
@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class PlayerDataDownloader {
     private static final Logger logger = LogManager.getLogger(PlayerDataDownloader.class);
 
+    @Deprecated(forRemoval = true) // todo: remove this, use ru.klavogonki.kgparser.statistics.Config instead
     public static class Config {
         public static final int REQUIRED_ARGUMENTS_COUNT = 4;
 

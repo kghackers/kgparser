@@ -9,11 +9,11 @@ import ru.klavogonki.kgparser.excel.TopByBestSpeedPageExcelTemplate;
 import ru.klavogonki.kgparser.freemarker.LoginToPageTemplate;
 import ru.klavogonki.kgparser.freemarker.PageUrls;
 import ru.klavogonki.kgparser.freemarker.TopBySpeedPageTemplate;
-import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerDto;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerDtoMapper;
 import ru.klavogonki.kgparser.jsonParser.repository.PlayerRepository;
+import ru.klavogonki.kgparser.util.JacksonUtils;
 
 import java.util.HashMap;
 import java.util.List;

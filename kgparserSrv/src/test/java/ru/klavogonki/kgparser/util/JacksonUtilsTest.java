@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.jsonParser;
+package ru.klavogonki.kgparser.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import ru.klavogonki.kgparser.Car;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.StandardDictionary;
-import ru.klavogonki.kgparser.util.DateUtils;
-import ru.klavogonki.kgparser.util.TestUtils;
+import ru.klavogonki.kgparser.statistics.download.ApiErrors;
 import ru.klavogonki.openapi.model.Bio;
 import ru.klavogonki.openapi.model.BioAssert;
 import ru.klavogonki.openapi.model.CarAssert;

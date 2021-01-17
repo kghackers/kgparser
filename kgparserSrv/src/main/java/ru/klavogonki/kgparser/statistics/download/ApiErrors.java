@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.jsonParser;
+package ru.klavogonki.kgparser.statistics.download;
 
 public final class ApiErrors {
 

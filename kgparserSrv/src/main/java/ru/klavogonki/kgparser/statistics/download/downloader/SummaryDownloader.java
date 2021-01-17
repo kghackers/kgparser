@@ -1,9 +1,9 @@
-package ru.klavogonki.kgparser.download;
+package ru.klavogonki.kgparser.statistics.download.downloader;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.klavogonki.kgparser.PlayerDataDownloader;
 import ru.klavogonki.kgparser.http.UrlConstructor;
+import ru.klavogonki.kgparser.statistics.download.PlayerDataDownloader;
 
 public class SummaryDownloader implements DataDownloader {
     private static final Logger logger = LogManager.getLogger(SummaryDownloader.class);

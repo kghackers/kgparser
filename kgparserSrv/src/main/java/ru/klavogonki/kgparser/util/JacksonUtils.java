@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.jsonParser;
+package ru.klavogonki.kgparser.util;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.klavogonki.kgparser.statistics.Config;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +26,14 @@ public final class JacksonUtils {
             String errorMessage = String.format("Error on parsing file %s to class %s", file.getPath(), clazz.getName());
             throw handleError(e, errorMessage);
         }
+    }
+
+    public static Config parseConfig(String filePath) {
+        File file = new File(filePath);
+        Config config = parse(file, Config.class);
+        logger.debug("Successfully parsed config from file {}", filePath);
+        logger.debug("Config: {}", config);
+        return config;
     }
 
     public static void serialize(File file, Object object) {

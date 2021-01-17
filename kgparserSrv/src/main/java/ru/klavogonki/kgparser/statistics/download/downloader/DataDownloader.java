@@ -1,6 +1,6 @@
-package ru.klavogonki.kgparser.download;
+package ru.klavogonki.kgparser.statistics.download.downloader;
 
-import ru.klavogonki.kgparser.PlayerDataDownloader;
+import ru.klavogonki.kgparser.statistics.download.PlayerDataDownloader;
 
 import javax.ws.rs.HttpMethod;
 

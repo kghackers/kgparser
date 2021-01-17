@@ -17,10 +17,10 @@ import ru.klavogonki.kgparser.freemarker.VocabularyTopByRacesCountLoginToPageTem
 import ru.klavogonki.kgparser.freemarker.VocabularyTopByRacesCountTemplate;
 import ru.klavogonki.kgparser.freemarker.VocabularyTopBySpeedLoginToPageTemplate;
 import ru.klavogonki.kgparser.freemarker.VocabularyTopBySpeedTemplate;
-import ru.klavogonki.kgparser.jsonParser.JacksonUtils;
 import ru.klavogonki.kgparser.jsonParser.dto.PlayerVocabularyDto;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.kgparser.jsonParser.mapper.PlayerVocabularyDtoMapper;
+import ru.klavogonki.kgparser.util.JacksonUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
