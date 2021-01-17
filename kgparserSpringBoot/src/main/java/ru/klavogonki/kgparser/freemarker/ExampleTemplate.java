@@ -4,6 +4,9 @@ import lombok.extern.log4j.Log4j2;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.jsonParser.entity.PlayerEntity;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * Used to try out the FreeMarker features without waiting for getting the data from the database.
  */
@@ -26,6 +29,13 @@ public class ExampleTemplate extends FreemarkerTemplate {
         player.setRankLevel(Rank.getLevel(Rank.superman).intValue());
 
         templateData.put("testPlayer", player);
+
+        Map<String, String> map = new TreeMap<>();
+        map.put("key 1", "value 1");
+        map.put("key 2", "value 2");
+        map.put("key 3", "value 3");
+
+        templateData.put("testMap", map);
 
         String result = super.exportToString();
         logger.debug("result:\n{}", result);
