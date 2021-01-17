@@ -10,6 +10,7 @@ import ru.klavogonki.kgparser.statistics.download.downloader.IndexDataDownloader
 import ru.klavogonki.kgparser.statistics.download.downloader.StatsOverviewDownloader;
 import ru.klavogonki.kgparser.statistics.download.downloader.SummaryDownloader;
 import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.kgparser.util.JacksonUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 
 public class PlayerDataDownloader {
     private static final Logger logger = LogManager.getLogger(PlayerDataDownloader.class);
+
+    public static final int REQUIRED_ARGUMENTS_COUNT = 2; // input config file path, output config file path
 
     @Deprecated(forRemoval = true) // todo: remove this, use ru.klavogonki.kgparser.statistics.Config instead
     public static class Config {
@@ -89,6 +92,38 @@ public class PlayerDataDownloader {
     }
 
     public static void main(String[] args) {
+        if (args.length != REQUIRED_ARGUMENTS_COUNT) {
+            // todo: use logger instead of System.out??
+            System.out.printf("Usage: %s <inputConfigFilePath> <outputConfigFilePath> %n", PlayerDataDownloader.class.getSimpleName());
+            return;
+        }
+
+        String inputConfigFilePath = args[0];
+        String outputConfigFilePath = args[1];
+        // todo: validate that file paths are non-empty
+
+        ru.klavogonki.kgparser.statistics.Config config1 = JacksonUtils.parseConfig(inputConfigFilePath);
+
+        LocalDateTime startDate1 = LocalDateTime.now();
+        try {
+            Thread.sleep(1234L);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        LocalDateTime endDate1 = LocalDateTime.now();
+
+        config1.setDataDownloadStartDate(startDate1);
+        config1.setDataDownloadEndDate(endDate1);
+
+        JacksonUtils.serializeToFile(outputConfigFilePath, config1, true); // todo: maybe set prettyPrint to false
+
+        if (true) {
+            return;
+        }
+
+
         // todo: pass a path to a json file with config instead
 
         if (args.length != Config.REQUIRED_ARGUMENTS_COUNT) {

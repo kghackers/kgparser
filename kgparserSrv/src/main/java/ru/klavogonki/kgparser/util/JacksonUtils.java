@@ -4,12 +4,16 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.kgparser.statistics.Config;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public final class JacksonUtils {
     private static final Logger logger = LogManager.getLogger(JacksonUtils.class);
@@ -47,14 +51,31 @@ public final class JacksonUtils {
         }
     }
 
-
     public static String serializeToString(Object object) {
+        return serializeToString(object, false);
+    }
+
+    public static String serializeToString(Object object, boolean prettyPrint) {
         try {
-            ObjectMapper mapper = createObjectMapper();
+            ObjectMapper mapper = createObjectMapper(prettyPrint);
             return mapper.writeValueAsString(object);
         }
         catch (JsonProcessingException e) {
             String errorMessage = String.format("Error on writing object of class %s to String", object.getClass().getName());
+            throw handleError(e, errorMessage);
+        }
+    }
+
+    public static void serializeToFile(String filePath, Object object, boolean prettyPrint) {
+        try {
+            String serializedObject = serializeToString(object, prettyPrint);
+
+            File file = new File(filePath);
+            FileUtils.writeStringToFile(file, serializedObject, StandardCharsets.UTF_8);
+            logger.debug("Successfully serialized object of class {} to file {}.", object.getClass().getName(), filePath);
+        }
+        catch (IOException e) {
+            String errorMessage = String.format("Error on writing object of class %s to file %s", object.getClass().getName(), filePath);
             throw handleError(e, errorMessage);
         }
     }
@@ -65,9 +86,23 @@ public final class JacksonUtils {
     }
 
     private static ObjectMapper createObjectMapper() {
-        return new ObjectMapper()
+        return createObjectMapper(false);
+    }
+
+    private static ObjectMapper createObjectMapper(boolean prettyPrint) {
+        ObjectMapper mapper = new ObjectMapper()
+            // serialize LocalDateTime not as object, but as date string
+            .registerModule(new JavaTimeModule())
+            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false) // because of _id / id clash in /get-summary response, see https://github.com/OpenAPITools/openapi-generator/issues/8291
             .configure(JsonParser.Feature.ALLOW_COMMENTS, true)
             .configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true); // to not fail on "type": 0 in "voc-107263" in get-stats-overview-80523.json. See https://stackoverflow.com/a/51407361/8534088
+
+        if (prettyPrint) {
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        }
+
+        return mapper;
     }
 }
