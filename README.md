@@ -13,14 +13,75 @@
 * Мой профиль на Клавогонках — [nosferatum](https://klavogonki.ru/u/#/242585/)
 * [Telegram канал](https://t.me/joinchat/N3tfQFVvmbH21ipSy9yKcA) с нотификациями о событиях в этом GitHub-проекте 
 
-## Test
-# How to execute `PlayerDataDownloader`
-Execution with overriding the `log4j2.xml` configuration file:
+# Statistics generation import process
+Json config files are used to set and transfer configuration values for main import classes.
 
-For example, to load players with `playerId in [30000; 30100]` (total 101 players) in 10 threads, execute
+## How to execute `PlayerDataDownloader` to download data from Klavogonki to JSON files
+`PlayerDataDownloader` takes 2 arguments: `<inputConfigFilePath>` and `<outputConfigFilePath>`.
+I will add download start and end dates from `<inputConfigFilePath>` 
+and save the update json to `<outputConfigFilePath>`. 
+
+
+For example, to load players with `playerId in [30000; 30100]` (total 101 players) in 10 threads, set the input json file like this:
+```json
+{
+  "jsonFilesRootDir" : "D:/kg/json",
+  "threadsCount" : 10,
+  "minPlayerId" : 30000,
+  "maxPlayerId" : 30100,
+  "statisticsPagesRootDir" : "C:/java/kgparser/kgstats/src/main/webapp/",
+}
 ```
-java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-srv-1.0.jar ru.klavogonki.kgparser.statistics.download.PlayerDataDownloader c:/java/kg 30000 30100 10
+
+Execution with overriding the `log4j2.xml` configuration file:
 ```
+java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-srv-1.0.jar ru.klavogonki.kgparser.statistics.download.PlayerDataDownloader c:/java/config-input.json c:/java/config-output.json
+```
+
+Saved output config file will look like this:
+```json
+{
+  "jsonFilesRootDir" : "D:/kg/json",
+  "threadsCount" : 100,
+  "minPlayerId" : 30000,
+  "maxPlayerId" : 30100,
+  "dataDownloadStartDate" : "2021-01-17T21:39:19.0911347+01:00",
+  "dataDownloadEndDate" : "2021-01-17T21:39:30.0225525+01:00",
+  "statisticsPagesRootDir" : "C:/java/kgparser/kgstats/src/main/webapp/",
+  "totalPlayers" : 101,
+  "dataDownloadStartDateString" : "2021-01-17 21-39-19"
+}
+```
+
+## How to execute `KgParserApplication` to import json files save by `PlayerDataDownloader` to the database 
+Database must already exist before the execution.
+
+Pass the _output_ json config filed saved by `PlayerDataDownloader` as an `<inputConfigFilePath>` for `KgParserApplication`.
+
+This example passes the alternative Spring application properties file to be able to override the database name from the default `application.properties`. 
+
+`log4j2.xml` configures the logging.
+
+```
+java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-springboot-1.0.jar -Dspring.config.name=application.actions.properties -Dspring.config.location=kgparserSpringBoot/src/main/resources/ IMPORT_JSON_TO_DATABASE c:/java/config-output.json
+``` 
+
+## How to execute `KgParserApplication` to generate statistics files from the database 
+Database must already exist before the execution.
+
+Database must be filled with data on the previous step.
+
+Pass the _output_ json config filed saved by `PlayerDataDownloader` as an `<inputConfigFilePath>` for `KgParserApplication`.
+
+This example passes the alternative Spring application properties file to be able to override the database name from the default `application.properties`. 
+
+`log4j2.xml` configures the logging.
+
+```
+java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-springboot-1.0.jar -Dspring.config.name=application.actions.properties -Dspring.config.location=kgparserSpringBoot/src/main/resources/ GENERATE_STATISTICS_FROM_DATABASE c:/java/config-output.json
+```
+
+**TODO:** additional config to set up the generated pages can be added as one more command line argument. 
 
 # Какие графики и таблицы можно сделать на текущих данных
 * Количество игроков по рангам
