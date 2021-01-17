@@ -8,6 +8,7 @@ import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.openapi.model.Microtime;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Mapper
 public interface PlayerMapper {
@@ -43,5 +44,9 @@ public interface PlayerMapper {
 
     default LocalDateTime registeredToLocalDateTime(Microtime registered) {
         return DateUtils.convertUserRegisteredTime(registered);
+    }
+
+    default LocalDateTime offsetDateTimeToLocalDateTime(OffsetDateTime offsetDateTime) {
+        return DateUtils.convertToUtcLocalDateTime(offsetDateTime); // todo: think about using UTC time zone
     }
 }
