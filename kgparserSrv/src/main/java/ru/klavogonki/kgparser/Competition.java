@@ -1,8 +1,3 @@
-/**
- * User: 1
- * Date: 17.01.2012
- * Time: 22:44:20
- */
 package ru.klavogonki.kgparser;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +9,6 @@ import su.opencode.kefir.util.ObjectUtils;
 import su.opencode.kefir.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -66,7 +60,7 @@ public class Competition extends JsonObject
 	 * и устанавливает номера заездов (как по всему соревнованию, так и внутри словарей).
 	 */
 	public void orderRoundsByBeginTime() {
-		Collections.sort(rounds, new RoundBeginTimeComparator());
+		rounds.sort(new RoundBeginTimeComparator());
 
 		for (int i = 0, roundsSize = rounds.size(); i < roundsSize; i++)
 		{
@@ -75,12 +69,11 @@ public class Competition extends JsonObject
 		}
 
 		Map<String, List<Round>> map = getRoundsByDictionariesMap();
-		for (String dictionaryCode : map.keySet())
+		for (List<Round> dictionaryRounds : map.values())
 		{
-			List<Round> rounds = map.get(dictionaryCode);
-			for (int i = 0, roundsSize = rounds.size(); i < roundsSize; i++)
+			for (int i = 0, roundsSize = dictionaryRounds.size(); i < roundsSize; i++)
 			{
-				Round round = rounds.get(i);
+				Round round = dictionaryRounds.get(i);
 				round.setNumberInDictionary(i + Round.FIRST_ROUND_NUMBER);
 			}
 		}
@@ -169,7 +162,7 @@ public class Competition extends JsonObject
 	}
 
 	/**
-	 * Заполняет для всех игроков соревования
+	 * Заполняет для всех игроков соревнования
 	 * их ранги и их рекорды в обычном на текущий момент.
 	 */
 	@Json(exclude = true)
@@ -266,9 +259,12 @@ public class Competition extends JsonObject
 		}
 
 		Map<String, String> nonStandardDictionariesCodesToNames = HttpClientTest.getDictionariesNames(nonStandardDictionariesCodes);
-		for (String nonStandardDictionaryCode : nonStandardDictionariesCodesToNames.keySet())
-		{
-			codesToNames.put(nonStandardDictionaryCode, nonStandardDictionariesCodesToNames.get(nonStandardDictionaryCode));
+
+		for (Map.Entry<String, String> entry : nonStandardDictionariesCodesToNames.entrySet()) {
+			String nonStandardDictionaryCode = entry.getKey();
+			String names = entry.getValue();
+
+			codesToNames.put(nonStandardDictionaryCode, names);
 		}
 
 		// set dictionary name for each round's dictionary
@@ -289,9 +285,11 @@ public class Competition extends JsonObject
 			throw new IllegalArgumentException("dictionaryCode must not be null or empty");
 
 		// todo: think about iterating by rounds and use their dictionary instead of using this.getDictionaries
-		for (Dictionary dictionary : this.getDictionaries())
-			if ( dictionary.hasCode(dictionaryCode) )
+		for (Dictionary dictionary : this.getDictionaries()) {
+			if (dictionary.hasCode(dictionaryCode)) {
 				return true;
+			}
+		}
 
 		return false;
 	}

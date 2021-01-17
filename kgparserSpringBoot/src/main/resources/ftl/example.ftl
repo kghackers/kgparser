@@ -15,3 +15,16 @@ X second assign: ${x}
 <#-- see https://stackoverflow.com/a/46788690/8534088 -->
 <#import "./player-td.ftl" as ptd>
 <@ptd.playerTd player=testPlayer/>
+
+<#list testMap as key, value>
+    ==========================================
+    <#if key?is_first>
+        I am first!
+    <#else>
+        I am NOT first!
+    </#if>
+
+    Key: ${key}
+    Value: ${value}
+    ==========================================
+</#list>

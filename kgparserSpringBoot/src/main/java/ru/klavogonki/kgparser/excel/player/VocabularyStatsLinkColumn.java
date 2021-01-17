@@ -46,6 +46,5 @@ public class VocabularyStatsLinkColumn implements PlayerColumn<PlayerVocabularyD
     public void setEmptyCell(final ExcelExportContext<PlayerVocabularyDto> context) { // todo: make a common method, like in ExcelExportContext?
         context.setTextAlignRightStyle(); // since profileIds are numbers, align right // todo: think about this
         context.cell.setCellValue("—");
-        return;
     }
 }

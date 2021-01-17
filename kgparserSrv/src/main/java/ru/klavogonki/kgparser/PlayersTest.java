@@ -1,8 +1,3 @@
-/**
- * User: 1
- * Date: 17.01.2012
- * Time: 22:52:05
- */
 package ru.klavogonki.kgparser;
 
 import org.apache.logging.log4j.Level;

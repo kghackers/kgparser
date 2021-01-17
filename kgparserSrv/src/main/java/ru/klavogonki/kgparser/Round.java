@@ -1,8 +1,3 @@
-/**
- * User: 1
- * Date: 17.01.2012
- * Time: 22:23:35
- */
 package ru.klavogonki.kgparser;
 
 import org.apache.logging.log4j.LogManager;
@@ -173,15 +168,18 @@ public class Round extends JsonObject
 		{
 			Integer playerPlace = result.getPlace();
 			if (playerPlace == null)
-			{
+			{ // player place not set -> ignore this result
 				logger.info("PlayerRoundResult for player has no place set."); // todo: add player info
-				continue; // player place not set -> ignore this result
+				continue;
 			}
-			else if (minPlace == -1)
+
+			if (minPlace == -1)
 			{
 				minPlace = playerPlace;
+				continue;
 			}
-			else if (playerPlace < minPlace)
+
+			if (playerPlace < minPlace)
 			{
 				minPlace = playerPlace;
 			}
@@ -206,11 +204,14 @@ public class Round extends JsonObject
 				logger.info("PlayerRoundResult for player has no place set."); // todo: add player info
 				continue; // player place not set -> ignore this result
 			}
-			else if (maxPlace == -1)
+
+			if (maxPlace == -1)
 			{
 				maxPlace = playerPlace;
+				continue;
 			}
-			else if (playerPlace > maxPlace)
+
+			if (playerPlace > maxPlace)
 			{
 				maxPlace = playerPlace;
 			}

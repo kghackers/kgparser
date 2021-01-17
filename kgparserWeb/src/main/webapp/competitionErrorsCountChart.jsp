@@ -1,6 +1,6 @@
 <%@page language="java" pageEncoding="utf-8" contentType="text/html; charset=utf-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 	<title>Количество ошибок игроков по заездам</title>
 	<%@ include file="./headerInclude.jspf" %>

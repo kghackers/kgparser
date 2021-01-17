@@ -1,6 +1,6 @@
 package ru.klavogonki.kgparser.jsonParser;
 
-public class ApiErrors {
+public final class ApiErrors {
 
     public static final int OK_CORRECT_VALUE = 1; // "ok: 1" and present "err" are mutually-exclusive
 
@@ -15,4 +15,7 @@ public class ApiErrors {
 
     // happens in /get-stats-overview
     public static final String PERMISSION_BLOCKED_ERROR = "permission blocked";
+
+    private ApiErrors() {
+    }
 }

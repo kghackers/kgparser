@@ -1,8 +1,3 @@
-/**
- * User: 1
- * Date: 17.01.2012
- * Time: 22:24:23
- */
 package ru.klavogonki.kgparser;
 
 import ru.klavogonki.kgparser.http.UrlConstructor;
@@ -196,5 +191,5 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	/**
 	 * Цвет для отображения нестандартного словаря.
 	 */
-	public static String NON_STANDARD_DICTIONARY_COLOR = "#524CA7";
+	public static final String NON_STANDARD_DICTIONARY_COLOR = "#524CA7";
 }

@@ -1,6 +1,6 @@
 <#setting number_format="computer"> <#-- remove annoying commas in integers-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Статистика по клавогонщикам</title>
@@ -27,8 +27,16 @@
     </div>
 
     <div class="section">
-        <table class="data data-left data-no-header">
-            <tr>
+        <table class="data data-left data-no-header" aria-label="Общие данные по игрокам">
+            <tr class="hidden">
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            <tr class="hidden">
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            <tr class="border-top">
                 <td>Первый валидный id</td>
                 <td><a href="${minExistingPlayerProfileLink}">${minExistingPlayerId}</a></td>
             </tr>
@@ -65,9 +73,21 @@
 
     <div class="section">
         <h2>Действующие пользователи, у которых падает <code>/get-index-data</code></h2>
-        <table class="data data-left data-no-header">
+        <table class="data data-left data-no-header" aria-label="Действующие пользователи, у которых падает /get-index-data">
+            <tr class="hidden">
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            <tr class="hidden">
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
             <#list playersWithIndexDataErrorGroupedByError as getIndexDataError, playersWithError>
+                <#if getIndexDataError?is_first>
+                <tr class="border-top">
+                <#else>
                 <tr>
+                </#if>
                     <td>
                         <#switch getIndexDataError>
                             <#case "hidden profile">
@@ -158,8 +178,16 @@
 
     <div class="section">
         <h2>Рекорды (только топ-1)</h2>
-        <table class="data data-left data-no-header">
-            <tr>
+        <table class="data data-left data-no-header" aria-label="Рекорды (только топ-1)">
+            <tr class="hidden">
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            <tr class="hidden">
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            <tr class="border-top">
                 <td>Наибольший рекорд в &laquo;Обычном&raquo;</td>
                 <@ptd.playerTd player=top1PlayerByBestSpeed/>
                 <td class="right">${top1PlayerByBestSpeed.bestSpeed}</td>

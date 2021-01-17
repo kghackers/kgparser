@@ -1,6 +1,6 @@
 <%@page language="java" pageEncoding="utf-8" contentType="text/html; charset=utf-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 	<title>Загрузка файлов соревнования</title>
 	<%@ include file="./headerInclude.jspf" %>
@@ -10,7 +10,7 @@
 	<h2>Загрузка соревнования</h2>
 
 	<form action="<%=request.getContextPath()%>/competitionUpload" method="post" enctype="multipart/form-data">
-		<table>
+		<table aria-label="Загрузка соревнования">
 			<tbody>
 
 				<tr>

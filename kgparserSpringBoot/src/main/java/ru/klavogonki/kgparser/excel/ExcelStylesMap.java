@@ -9,7 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.excel.data.ExcelExportContextData;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,8 +21,8 @@ import java.util.Objects;
  */
 public class ExcelStylesMap {
 
-    private final Map<Style, XSSFCellStyle> styleMap = new HashMap<>();
-    private final Map<Rank, RankStyles> rankStyleMap = new HashMap<>();
+    private final Map<Style, XSSFCellStyle> styleMap = new EnumMap<>(Style.class);
+    private final Map<Rank, RankStyles> rankStyleMap = new EnumMap<>(Rank.class);
 
     public enum Style { // names of styles
         HEADER,
@@ -115,7 +115,7 @@ public class ExcelStylesMap {
         cell.setCellStyle(rankStyles.evenRowStyle);
     }
 
-    public void addHeaderStyle(ExcelExportContext context, String backgroundColorHex, String borderColorHex) {
+    public void addHeaderStyle(ExcelExportContext<?> context, String backgroundColorHex, String borderColorHex) {
         XSSFCellStyle headerStyle = ExcelUtils.createStyle(context.workbook, context.colorMap, backgroundColorHex, borderColorHex);
         ExcelUtils.setAlignCenter(headerStyle);
         ExcelUtils.setTextFormat(headerStyle, context.dataFormat);
@@ -123,7 +123,7 @@ public class ExcelStylesMap {
         addStyle(Style.HEADER, headerStyle);
     }
 
-    public void addIntegerEvenRowStyle(ExcelExportContext context, String evenRowBackgroundColorHex, String borderColorHex) {
+    public void addIntegerEvenRowStyle(ExcelExportContext<?> context, String evenRowBackgroundColorHex, String borderColorHex) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, evenRowBackgroundColorHex, borderColorHex);
 
         ExcelUtils.setIntegerFormat(style, context.dataFormat); // integer aligns right
@@ -131,7 +131,7 @@ public class ExcelStylesMap {
         addStyle(Style.INTEGER_EVEN_ROW, style);
     }
 
-    public void addIntegerOddRowStyle(ExcelExportContext context, String oddRowBackgroundColorHex, String borderColorHex) {
+    public void addIntegerOddRowStyle(ExcelExportContext<?> context, String oddRowBackgroundColorHex, String borderColorHex) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, oddRowBackgroundColorHex, borderColorHex);
 
         ExcelUtils.setIntegerFormat(style, context.dataFormat); // integer aligns right
@@ -139,7 +139,7 @@ public class ExcelStylesMap {
         addStyle(Style.INTEGER_ODD_ROW, style);
     }
 
-    public void addDoubleEvenRowStyle(ExcelExportContext context, String evenRowBackgroundColorHex, String borderColorHex) {
+    public void addDoubleEvenRowStyle(ExcelExportContext<?> context, String evenRowBackgroundColorHex, String borderColorHex) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, evenRowBackgroundColorHex, borderColorHex);
 
         ExcelUtils.setDoubleFormat(style, context.dataFormat); // double aligns right
@@ -147,7 +147,7 @@ public class ExcelStylesMap {
         addStyle(Style.DOUBLE_EVEN_ROW, style);
     }
 
-    public void addDoubleOddRowStyle(ExcelExportContext context, String oddRowBackgroundColorHex, String borderColorHex) {
+    public void addDoubleOddRowStyle(ExcelExportContext<?> context, String oddRowBackgroundColorHex, String borderColorHex) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, oddRowBackgroundColorHex, borderColorHex);
 
         ExcelUtils.setDoubleFormat(style, context.dataFormat); // double aligns right
@@ -155,7 +155,7 @@ public class ExcelStylesMap {
         addStyle(Style.DOUBLE_ODD_ROW, style);
     }
 
-    public void addTextAlignLeftEvenRowStyle(ExcelExportContext context, String evenRowBackgroundColorHex, String borderColorHex) {
+    public void addTextAlignLeftEvenRowStyle(ExcelExportContext<?> context, String evenRowBackgroundColorHex, String borderColorHex) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, evenRowBackgroundColorHex, borderColorHex);
 
         ExcelUtils.setTextFormat(style, context.dataFormat);
@@ -164,7 +164,7 @@ public class ExcelStylesMap {
         addStyle(Style.TEXT_ALIGN_LEFT_EVEN_ROW, style);
     }
 
-    public void addTextAlignLeftOddRowStyle(ExcelExportContext context, String oddRowBackgroundColorHex, String borderColorHex) {
+    public void addTextAlignLeftOddRowStyle(ExcelExportContext<?> context, String oddRowBackgroundColorHex, String borderColorHex) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, oddRowBackgroundColorHex, borderColorHex);
 
         ExcelUtils.setTextFormat(style, context.dataFormat);
@@ -173,7 +173,7 @@ public class ExcelStylesMap {
         addStyle(Style.TEXT_ALIGN_LEFT_ODD_ROW, style);
     }
 
-    public void addTextAlignRightEvenRowStyle(ExcelExportContext context, String evenRowBackgroundColorHex, String borderColorHex) {
+    public void addTextAlignRightEvenRowStyle(ExcelExportContext<?> context, String evenRowBackgroundColorHex, String borderColorHex) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, evenRowBackgroundColorHex, borderColorHex);
 
         ExcelUtils.setTextFormat(style, context.dataFormat);
@@ -182,7 +182,7 @@ public class ExcelStylesMap {
         addStyle(Style.TEXT_ALIGN_RIGHT_EVEN_ROW, style);
     }
 
-    public void addTextAlignRightOddRowStyle(ExcelExportContext context, String oddRowBackgroundColorHex, String borderColorHex) {
+    public void addTextAlignRightOddRowStyle(ExcelExportContext<?> context, String oddRowBackgroundColorHex, String borderColorHex) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, oddRowBackgroundColorHex, borderColorHex);
 
         ExcelUtils.setTextFormat(style, context.dataFormat);
@@ -191,7 +191,7 @@ public class ExcelStylesMap {
         addStyle(Style.TEXT_ALIGN_RIGHT_ODD_ROW, style);
     }
 
-    public void addDateTimeEvenRowStyle(ExcelExportContext context, String evenRowBackgroundColorHex, String borderColorHex) {
+    public void addDateTimeEvenRowStyle(ExcelExportContext<?> context, String evenRowBackgroundColorHex, String borderColorHex) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, evenRowBackgroundColorHex, borderColorHex);
 
         style.setDataFormat(context.dataFormat.getFormat("yyyy-MM-dd HH:mm:ss"));
@@ -199,7 +199,7 @@ public class ExcelStylesMap {
         addStyle(Style.DATE_TIME_EVEN_ROW, style);
     }
 
-    public void addDateTimeOddRowStyle(ExcelExportContext context, String oddRowBackgroundColorHex, String borderColorHex) {
+    public void addDateTimeOddRowStyle(ExcelExportContext<?> context, String oddRowBackgroundColorHex, String borderColorHex) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, oddRowBackgroundColorHex, borderColorHex);
 
         style.setDataFormat(context.dataFormat.getFormat("yyyy-MM-dd HH:mm:ss"));
@@ -207,7 +207,7 @@ public class ExcelStylesMap {
         addStyle(Style.DATE_TIME_ODD_ROW, style);
     }
 
-    public void addLinkIntegerEvenRowStyle(ExcelExportContext context, String evenRowBackgroundColorHex, String borderColorHex, Font linkFont) {
+    public void addLinkIntegerEvenRowStyle(ExcelExportContext<?> context, String evenRowBackgroundColorHex, String borderColorHex, Font linkFont) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, evenRowBackgroundColorHex, borderColorHex);
 
         style.setFont(linkFont);
@@ -216,7 +216,7 @@ public class ExcelStylesMap {
         addStyle(Style.LINK_INTEGER_EVEN_ROW, style);
     }
 
-    public void addLinkIntegerOddRowStyle(ExcelExportContext context, String oddRowBackgroundColorHex, String borderColorHex, Font linkFont) {
+    public void addLinkIntegerOddRowStyle(ExcelExportContext<?> context, String oddRowBackgroundColorHex, String borderColorHex, Font linkFont) {
         XSSFCellStyle style = ExcelUtils.createStyle(context.workbook, context.colorMap, oddRowBackgroundColorHex, borderColorHex);
 
         style.setFont(linkFont);
@@ -226,7 +226,7 @@ public class ExcelStylesMap {
     }
 
     public void addRankStyles(
-        ExcelExportContext context,
+        ExcelExportContext<?> context,
         String evenRowBackgroundColorHex,
         String oddRowBackgroundColorHex,
         String borderColorHex
@@ -251,10 +251,10 @@ public class ExcelStylesMap {
         }
     }
 
-    private static Map<Rank, XSSFFont> getRankToFontMap(ExcelExportContext context) {
+    private static Map<Rank, XSSFFont> getRankToFontMap(ExcelExportContext<?> context) {
         Map<Rank, XSSFColor> rankToColor = getRankToColorMap(context);
 
-        Map<Rank, XSSFFont> rankToFont = new HashMap<>();
+        Map<Rank, XSSFFont> rankToFont = new EnumMap<>(Rank.class);
 
         for (Rank rank : Rank.values()) {
             XSSFColor rankColor = rankToColor.get(rank);
@@ -271,10 +271,10 @@ public class ExcelStylesMap {
         return rankToFont;
     }
 
-    private static Map<Rank, XSSFColor> getRankToColorMap(ExcelExportContext context) {
+    private static Map<Rank, XSSFColor> getRankToColorMap(ExcelExportContext<?> context) {
         IndexedColorMap colorMap = context.colorMap;
 
-        Map<Rank, XSSFColor> rankToColor = new HashMap<>();
+        Map<Rank, XSSFColor> rankToColor = new EnumMap<>(Rank.class);
         for (Rank rank : Rank.values()) {
             XSSFColor rankColor = new XSSFColor(ExcelUtils.getRgb(rank), colorMap);
             rankToColor.put(rank, rankColor);

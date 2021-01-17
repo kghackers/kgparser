@@ -15,6 +15,7 @@ import su.opencode.kefir.web.InitiableAction;
 import su.opencode.kefir.web.JsonServlet;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static su.opencode.kefir.util.StringUtils.concat;
@@ -43,7 +44,7 @@ public class CompetitionUploadServlet extends JsonServlet
 				else
 				{
 					// todo: return error normally
-					response.getOutputStream().write( "Необходимо загрузить zip-файл".getBytes(StringUtils.CHARSET_UTF8) );
+					response.getOutputStream().write( "Необходимо загрузить zip-файл".getBytes(StandardCharsets.UTF_8) );
 					return;
 				}
 

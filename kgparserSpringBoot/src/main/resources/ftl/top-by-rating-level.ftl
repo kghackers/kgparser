@@ -1,6 +1,6 @@
 <#setting number_format="computer"> <#-- remove annoying commas in integers-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Топ по рейтинговому уровню</title>
@@ -18,7 +18,7 @@
 
     <div class="section" id="table-container">
 
-        <table class="data">
+        <table class="data" aria-label="Топ-${players?size} по рейтинговому уровню">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Логин</th>

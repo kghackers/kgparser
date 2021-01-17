@@ -6,7 +6,7 @@ import ru.klavogonki.kgparser.export.ExportContext;
  * Aggregates names/paths of all pages, so that we can pass them to FreeMarker templates
  * and change links in one place.
  */
-public class PageUrls {
+public final class PageUrls {
 
     // html files
     public static final String INDEX = "index.html";
@@ -65,6 +65,9 @@ public class PageUrls {
     public static final String PLAYERS_BY_RANK_DATA_JS = "./js/players-by-rank-data.js";
     public static final String TOP_TABLE_JS = "./js/stats-top-table.js";
     public static final String TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS = "./js/stat-top-by-best-speed-login-to-page.js";
+
+    private PageUrls() {
+    }
 
     public static String getPath(final ExportContext context, final String relativePath) {
         return getPath(context.webRootDir, relativePath);
