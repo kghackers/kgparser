@@ -144,8 +144,6 @@ class PlayerByRankFilter {
         // todo: extract "bind on Enter" to some common JS, use in both Filter and Search
         const inputSearch = function(event) {
             if (event.key === 'Enter') {
-                // console.log('Enter pressed in input field!');
-
                 // Cancel the default action, if needed
                 event.preventDefault();
 
@@ -267,18 +265,13 @@ class PlayerByRankFilter {
     }
 
     static groupByRank(players) {
-        const countByRank = players.reduce(function(result, player) {
+        return players.reduce(function (result, player) {
             const rank = player[PlayerByRankFilter.RANK_INDEX];
 
             const currentCount = result[rank] || 0;
             result[rank] = currentCount + 1;
             return result;
         }, {});
-
-        // console.log('countByRank:');
-        // console.log(countByRank);
-
-        return countByRank;
     }
 
     static convertToChartData(countsByRank) {

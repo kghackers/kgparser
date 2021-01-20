@@ -285,8 +285,6 @@ class PageSearch {
 
         input.addEventListener("keyup", function(event) {
             if (event.key === 'Enter') {
-                // console.log('Enter pressed in input field!');
-
                 // Cancel the default action, if needed
                 event.preventDefault();
 
