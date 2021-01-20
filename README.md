@@ -35,7 +35,7 @@ For example, to load players with `playerId in [30000; 30100]` (total 101 player
 
 Execution with overriding the `log4j2.xml` configuration file:
 ```
-java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-springboot-1.0.jar ru.klavogonki.statistics.download.PlayerDataDownloader c:/java/config-input.json c:/java/config-output.json
+java -Dlog4j.configurationFile=log4j2.xml -cp kgstats-srv-1.0.jar ru.klavogonki.statistics.download.PlayerDataDownloader c:/java/config-input.json c:/java/config-output.json
 ```
 
 Saved output config file will look like this:
@@ -63,8 +63,7 @@ This example passes the alternative Spring application properties file to be abl
 `log4j2.xml` configures the logging.
 
 ```
-java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-springboot-1.0.jar -Dspring.config.name=application.actions.properties -Dspring.config.location=kgparserSpringBoot/src/main/resources/ IMPORT_JSON_TO_DATABASE c:/java/config-output.json
-``` 
+java -Dlog4j.configurationFile=log4j2.xml -cp kgstats-srv-1.0.jar -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ IMPORT_JSON_TO_DATABASE c:/java/config-output.json ``` 
 
 ## How to execute `KgParserApplication` to generate statistics files from the database 
 Database must already exist before the execution.
@@ -78,7 +77,7 @@ This example passes the alternative Spring application properties file to be abl
 `log4j2.xml` configures the logging.
 
 ```
-java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-springboot-1.0.jar -Dspring.config.name=application.actions.properties -Dspring.config.location=kgparserSpringBoot/src/main/resources/ GENERATE_STATISTICS_FROM_DATABASE c:/java/config-output.json
+java -Dlog4j.configurationFile=log4j2.xml -cp kgstats-srv-1.0.jar -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ GENERATE_STATISTICS_FROM_DATABASE c:/java/config-output.json
 ```
 
 **TODO:** additional config to set up the generated pages can be added as one more command line argument. 
@@ -176,11 +175,11 @@ From root directory, run
 mvn install -DskipTests=true -Dmaven.javadoc.skip=true
 ```
 
-## Execute MapStruct generation in `kgparserSpringBoot` 
-From `kgparserSpringBoot` directory, run
+## Execute MapStruct generation in `kgstatsSrv` 
+From `kgstatsSrv` directory, run
 ```
 mvn compile
 ```
 
 :exclamation: Now after making changes in `kgparserSrv`, you have to `mvn install`
-this module before running MapStruct in `kgparserSpringBoot`.
+this module before running MapStruct in `kgstatsSrv`.

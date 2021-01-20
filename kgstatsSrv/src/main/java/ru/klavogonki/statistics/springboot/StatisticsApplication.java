@@ -9,6 +9,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
+import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
+import ru.klavogonki.statistics.Config;
+import ru.klavogonki.statistics.download.PlayerJsonData;
+import ru.klavogonki.statistics.download.PlayerJsonParser;
+import ru.klavogonki.statistics.entity.PlayerEntity;
+import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.statistics.export.ExportContext;
 import ru.klavogonki.statistics.export.IndexPageExporter;
 import ru.klavogonki.statistics.export.PlayersByRankExporter;
@@ -31,19 +38,12 @@ import ru.klavogonki.statistics.export.vocabulary.standard.NoErrorTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.NormalTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.ReferatsTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.SprintTopExporter;
-import ru.klavogonki.statistics.entity.PlayerEntity;
-import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.statistics.mapper.PlayerMapper;
 import ru.klavogonki.statistics.mapper.PlayerVocabularyStatsMapper;
 import ru.klavogonki.statistics.repository.PlayerRepository;
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository;
-import ru.klavogonki.statistics.Config;
-import ru.klavogonki.statistics.download.PlayerJsonData;
-import ru.klavogonki.statistics.download.PlayerJsonParser;
 import ru.klavogonki.statistics.util.DateUtils;
 import ru.klavogonki.statistics.util.JacksonUtils;
-import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
-import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,10 +53,10 @@ import java.util.Optional;
 
 @SpringBootApplication
 @EntityScan(basePackages= {"ru.klavogonki.statistics.entity"})
-@ComponentScan({"ru.klavogonki.kgparser"})
-@EnableJpaRepositories("ru.klavogonki.kgparser")
+@ComponentScan({"ru.klavogonki.statistics"})
+@EnableJpaRepositories("ru.klavogonki.statistics")
 @Log4j2
-public class KgParserApplication implements CommandLineRunner {
+public class StatisticsApplication implements CommandLineRunner {
 	public static final int REQUIRED_ARGUMENTS_COUNT = 2;
 
 	public enum Mode {
@@ -143,7 +143,7 @@ public class KgParserApplication implements CommandLineRunner {
 	private final PlayerVocabularyStatsMapper statsMapper = Mappers.getMapper(PlayerVocabularyStatsMapper.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(KgParserApplication.class, args);
+		SpringApplication.run(StatisticsApplication.class, args);
 	}
 
 	private List<PlayerEntity> playersBatch = new ArrayList<>(); // todo: find a nicer solution
@@ -152,7 +152,7 @@ public class KgParserApplication implements CommandLineRunner {
 	public void run(final String... args) {
 		if (args.length != REQUIRED_ARGUMENTS_COUNT) {
 			// todo: use logger instead of System.out??
-			System.out.printf("Usage: %s <mode> <inputConfigFilePath> %n", KgParserApplication.class.getSimpleName());
+			System.out.printf("Usage: %s <mode> <inputConfigFilePath> %n", StatisticsApplication.class.getSimpleName());
 			System.out.printf("Possible <mode> values: %s, %s %n", Mode.IMPORT_JSON_TO_DATABASE.name(), Mode.GENERATE_STATISTICS_FROM_DATABASE.name());
 			return;
 		}
