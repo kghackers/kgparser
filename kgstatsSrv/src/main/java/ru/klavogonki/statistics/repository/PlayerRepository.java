@@ -57,7 +57,7 @@ public interface PlayerRepository extends CrudRepository<PlayerEntity, Long> {
 
     @Query(value =
         "select" +
-        " new ru.klavogonki.kgparser.jsonParser.dto.PlayerRankLevelAndTotalRacesCount(" + // full class name required else ClassLoadingException will be thrown
+        " new ru.klavogonki.statistics.dto.PlayerRankLevelAndTotalRacesCount(" + // full class name required else ClassLoadingException will be thrown
         "   p.rankLevel as rankLevel," +
         "   p.totalRacesCount" + // count returns long
         " )" +
@@ -71,7 +71,7 @@ public interface PlayerRepository extends CrudRepository<PlayerEntity, Long> {
 
     @Query(value =
         "select" +
-        " new ru.klavogonki.kgparser.jsonParser.dto.PlayersByRankCount(" + // full class name required else ClassLoadingException will be thrown
+        " new ru.klavogonki.statistics.dto.PlayersByRankCount(" + // full class name required else ClassLoadingException will be thrown
         "   p.rankLevel as rankLevel," +
         "   count(p.playerId) as playersCount" + // count returns long
         " )" +
