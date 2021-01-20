@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.util;
+package ru.klavogonki.statistics.util;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.klavogonki.kgparser.statistics.Config;
+import ru.klavogonki.statistics.Config;
 
 import java.io.File;
 import java.io.IOException;

@@ -12,7 +12,7 @@ import ru.klavogonki.statistics.freemarker.OrderUtils;
 import ru.klavogonki.kgparser.http.UrlConstructor;
 import ru.klavogonki.statistics.dto.PlayerVocabularyDto;
 import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
-import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.statistics.util.DateUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;

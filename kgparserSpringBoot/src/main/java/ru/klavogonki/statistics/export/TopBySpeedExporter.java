@@ -13,7 +13,7 @@ import ru.klavogonki.statistics.dto.PlayerDto;
 import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.mapper.PlayerDtoMapper;
 import ru.klavogonki.statistics.repository.PlayerRepository;
-import ru.klavogonki.kgparser.util.JacksonUtils;
+import ru.klavogonki.statistics.util.JacksonUtils;
 
 import java.util.HashMap;
 import java.util.List;

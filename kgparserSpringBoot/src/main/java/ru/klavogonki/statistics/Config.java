@@ -1,8 +1,8 @@
-package ru.klavogonki.kgparser.statistics;
+package ru.klavogonki.statistics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.statistics.util.DateUtils;
 
 import java.io.File;
 import java.time.OffsetDateTime;

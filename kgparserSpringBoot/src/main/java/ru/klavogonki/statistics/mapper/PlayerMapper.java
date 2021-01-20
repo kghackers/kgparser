@@ -3,8 +3,8 @@ package ru.klavogonki.statistics.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.klavogonki.statistics.entity.PlayerEntity;
-import ru.klavogonki.kgparser.statistics.download.PlayerJsonData;
-import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.statistics.download.PlayerJsonData;
+import ru.klavogonki.statistics.util.DateUtils;
 import ru.klavogonki.openapi.model.Microtime;
 
 import java.time.LocalDateTime;

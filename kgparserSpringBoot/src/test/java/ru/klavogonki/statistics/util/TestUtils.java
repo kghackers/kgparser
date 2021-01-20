@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.util;
+package ru.klavogonki.statistics.util;
 
 import java.io.File;
 import java.net.URL;
@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestUtils {
 
     public static File readFromStatisticsDownload(String fileName) {
-        return TestUtils.readResourceFile("ru/klavogonki/kgparser/statistics/download/" + fileName);
+        return TestUtils.readResourceFile("ru/klavogonki/statistics/download/" + fileName);
     }
 
     public static File readResourceFile(final String resourceName) {

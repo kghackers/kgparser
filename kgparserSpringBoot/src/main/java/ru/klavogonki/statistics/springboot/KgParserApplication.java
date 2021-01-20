@@ -37,11 +37,11 @@ import ru.klavogonki.statistics.mapper.PlayerMapper;
 import ru.klavogonki.statistics.mapper.PlayerVocabularyStatsMapper;
 import ru.klavogonki.statistics.repository.PlayerRepository;
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository;
-import ru.klavogonki.kgparser.statistics.Config;
-import ru.klavogonki.kgparser.statistics.download.PlayerJsonData;
-import ru.klavogonki.kgparser.statistics.download.PlayerJsonParser;
-import ru.klavogonki.kgparser.util.DateUtils;
-import ru.klavogonki.kgparser.util.JacksonUtils;
+import ru.klavogonki.statistics.Config;
+import ru.klavogonki.statistics.download.PlayerJsonData;
+import ru.klavogonki.statistics.download.PlayerJsonParser;
+import ru.klavogonki.statistics.util.DateUtils;
+import ru.klavogonki.statistics.util.JacksonUtils;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
 import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 

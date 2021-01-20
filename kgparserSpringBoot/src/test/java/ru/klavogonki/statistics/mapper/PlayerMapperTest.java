@@ -5,17 +5,18 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import ru.klavogonki.kgparser.Car;
 import ru.klavogonki.kgparser.Rank;
-import ru.klavogonki.kgparser.jsonParser.Assertions;
-import ru.klavogonki.statistics.entity.PlayerEntity;
-import ru.klavogonki.kgparser.statistics.download.ApiErrors;
-import ru.klavogonki.kgparser.statistics.download.PlayerJsonData;
-import ru.klavogonki.kgparser.util.DateUtils;
 import ru.klavogonki.openapi.model.Bio;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetIndexDataStats;
 import ru.klavogonki.openapi.model.GetSummaryResponse;
 import ru.klavogonki.openapi.model.GetSummaryUser;
 import ru.klavogonki.openapi.model.Microtime;
+import ru.klavogonki.statistics.download.ApiErrors;
+import ru.klavogonki.statistics.download.PlayerJsonData;
+import ru.klavogonki.statistics.entity.CarEntityAssert;
+import ru.klavogonki.statistics.entity.PlayerEntity;
+import ru.klavogonki.statistics.entity.PlayerEntityAssert;
+import ru.klavogonki.statistics.util.DateUtils;
 
 import java.time.OffsetDateTime;
 
@@ -70,7 +71,7 @@ class PlayerMapperTest {
 
         PlayerEntity player = mapper.playerJsonDataToPlayerEntity(jsonData);
 
-        Assertions.assertThat(player)
+        PlayerEntityAssert.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
             .hasGetSummaryError(summary.getErr())
@@ -90,7 +91,7 @@ class PlayerMapperTest {
             .hasCarsCount(stats.getCarsCnt())
         ;
 
-        Assertions.assertThat(player.getCar())
+        CarEntityAssert.assertThat(player.getCar())
             .hasId(car.getCar())
             .hasColor(car.getColor());
     }
@@ -143,7 +144,7 @@ class PlayerMapperTest {
 
         PlayerEntity player = mapper.playerJsonDataToPlayerEntity(jsonData);
 
-        Assertions.assertThat(player)
+        PlayerEntityAssert.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
             .hasGetSummaryError(summary.getErr())
@@ -163,7 +164,7 @@ class PlayerMapperTest {
             .hasCarsCount(stats.getCarsCnt())
         ;
 
-        Assertions.assertThat(player.getCar())
+        CarEntityAssert.assertThat(player.getCar())
             .hasId(car.getCar())
             .hasColor(car.getColor());
     }
@@ -198,7 +199,7 @@ class PlayerMapperTest {
 
         PlayerEntity player = mapper.playerJsonDataToPlayerEntity(jsonData);
 
-        Assertions.assertThat(player)
+        PlayerEntityAssert.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
             .hasGetSummaryError(summary.getErr())
@@ -218,7 +219,7 @@ class PlayerMapperTest {
             .hasCarsCount(null)
         ;
 
-        Assertions.assertThat(player.getCar())
+        CarEntityAssert.assertThat(player.getCar())
             .hasId(car.getCar())
             .hasColor(car.getColor());
     }
@@ -241,7 +242,7 @@ class PlayerMapperTest {
 
         PlayerEntity player = mapper.playerJsonDataToPlayerEntity(jsonData);
 
-        Assertions.assertThat(player)
+        PlayerEntityAssert.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
             .hasGetSummaryError(summary.getErr())
@@ -261,7 +262,7 @@ class PlayerMapperTest {
             .hasCarsCount(null)
         ;
 
-        Assertions.assertThat(player.getCar())
+        CarEntityAssert.assertThat(player.getCar())
             .hasId(null)
             .hasColor(null);
     }

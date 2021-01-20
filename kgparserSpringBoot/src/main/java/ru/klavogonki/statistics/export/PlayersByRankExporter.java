@@ -8,7 +8,7 @@ import ru.klavogonki.statistics.freemarker.PlayersByRankDataTemplate;
 import ru.klavogonki.statistics.freemarker.PlayersByRankTemplate;
 import ru.klavogonki.statistics.dto.PlayerRankLevelAndTotalRacesCount;
 import ru.klavogonki.statistics.repository.PlayerRepository;
-import ru.klavogonki.kgparser.util.JacksonUtils;
+import ru.klavogonki.statistics.util.JacksonUtils;
 
 import java.util.Comparator;
 import java.util.List;

@@ -1,8 +1,8 @@
 package ru.klavogonki.statistics.export;
 
 import lombok.Data;
-import ru.klavogonki.kgparser.statistics.Config;
-import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.statistics.Config;
+import ru.klavogonki.statistics.util.DateUtils;
 
 import java.time.LocalDateTime;
 

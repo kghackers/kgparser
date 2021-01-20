@@ -35,7 +35,7 @@ For example, to load players with `playerId in [30000; 30100]` (total 101 player
 
 Execution with overriding the `log4j2.xml` configuration file:
 ```
-java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-srv-1.0.jar ru.klavogonki.kgparser.statistics.download.PlayerDataDownloader c:/java/config-input.json c:/java/config-output.json
+java -Dlog4j.configurationFile=log4j2.xml -cp kgparser-springboot-1.0.jar ru.klavogonki.statistics.download.PlayerDataDownloader c:/java/config-input.json c:/java/config-output.json
 ```
 
 Saved output config file will look like this:

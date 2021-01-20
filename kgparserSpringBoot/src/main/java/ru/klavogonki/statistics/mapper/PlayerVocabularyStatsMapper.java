@@ -11,7 +11,7 @@ import ru.klavogonki.kgparser.DictionaryMode;
 import ru.klavogonki.kgparser.NonStandardDictionaryType;
 import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
-import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.statistics.util.DateUtils;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
 import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 import ru.klavogonki.openapi.model.NonStandardVocabularyType;

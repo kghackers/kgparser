@@ -1,8 +1,8 @@
 package ru.klavogonki.statistics.freemarker;
 
 import org.junit.jupiter.api.Test;
-import ru.klavogonki.kgparser.jsonParser.Assertions;
 import ru.klavogonki.statistics.dto.PlayerDto;
+import ru.klavogonki.statistics.dto.PlayerDtoAssert;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,37 +25,37 @@ class OrderUtilsTest {
 
         OrderUtils.fillOrderNumbers(topByBestSpeed, PlayerDto::getBestSpeed);
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player1)
             .hasLogin("player 900 1")
             .hasBestSpeed(900)
             .hasOrderNumber(OrderUtils.formatRange(1, 3));
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player2)
             .hasLogin("player 900 2")
             .hasBestSpeed(900)
             .hasOrderNumber(OrderUtils.formatRange(1, 3));
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player3)
             .hasLogin("player 900 3")
             .hasBestSpeed(900)
             .hasOrderNumber(OrderUtils.formatRange(1, 3));
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player4)
             .hasLogin("player 850 1")
             .hasBestSpeed(850)
             .hasOrderNumber("4");
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player5)
             .hasLogin("player 800 1")
             .hasBestSpeed(800)
             .hasOrderNumber(OrderUtils.formatRange(5, 6));
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player6)
             .hasLogin("player 800 2")
             .hasBestSpeed(800)
@@ -70,7 +70,7 @@ class OrderUtilsTest {
 
         OrderUtils.fillOrderNumbers(topByBestSpeed, PlayerDto::getBestSpeed);
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player1)
             .hasLogin("player 900 1")
             .hasBestSpeed(900)
@@ -87,19 +87,19 @@ class OrderUtilsTest {
 
         OrderUtils.fillOrderNumbers(topByBestSpeed, PlayerDto::getBestSpeed);
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player1)
             .hasLogin("player 900 1")
             .hasBestSpeed(900)
             .hasOrderNumber(OrderUtils.formatRange(1, 3));
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player2)
             .hasLogin("player 900 2")
             .hasBestSpeed(900)
             .hasOrderNumber(OrderUtils.formatRange(1, 3));
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player3)
             .hasLogin("player 900 3")
             .hasBestSpeed(900)
@@ -120,37 +120,37 @@ class OrderUtilsTest {
 
         OrderUtils.fillOrderNumbers(topByBestSpeed, PlayerDto::getBestSpeed);
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player1)
             .hasLogin("player 900 1")
             .hasBestSpeed(900)
             .hasOrderNumber(OrderUtils.formatRange(1, 3));
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player2)
             .hasLogin("player 900 2")
             .hasBestSpeed(900)
             .hasOrderNumber(OrderUtils.formatRange(1, 3));
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player3)
             .hasLogin("player 900 3")
             .hasBestSpeed(900)
             .hasOrderNumber(OrderUtils.formatRange(1, 3));
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player4)
             .hasLogin("player 850 1")
             .hasBestSpeed(850)
             .hasOrderNumber("4");
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player5)
             .hasLogin("player null 1")
             .hasBestSpeed(null)
             .hasOrderNumber(OrderUtils.formatRange(5, 6));
 
-        Assertions
+        PlayerDtoAssert
             .assertThat(player6)
             .hasLogin("player null 2")
             .hasBestSpeed(null)

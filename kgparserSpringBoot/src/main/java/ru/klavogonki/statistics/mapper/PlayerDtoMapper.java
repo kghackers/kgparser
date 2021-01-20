@@ -9,7 +9,7 @@ import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.statistics.freemarker.OrderUtils;
 import ru.klavogonki.statistics.dto.PlayerDto;
 import ru.klavogonki.statistics.entity.PlayerEntity;
-import ru.klavogonki.kgparser.util.DateUtils;
+import ru.klavogonki.statistics.util.DateUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;

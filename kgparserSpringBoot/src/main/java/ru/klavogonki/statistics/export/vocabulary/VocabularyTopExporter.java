@@ -20,7 +20,7 @@ import ru.klavogonki.statistics.freemarker.VocabularyTopBySpeedTemplate;
 import ru.klavogonki.statistics.dto.PlayerVocabularyDto;
 import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.statistics.mapper.PlayerVocabularyDtoMapper;
-import ru.klavogonki.kgparser.util.JacksonUtils;
+import ru.klavogonki.statistics.util.JacksonUtils;
 
 import java.util.Collections;
 import java.util.HashMap;

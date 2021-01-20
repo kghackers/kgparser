@@ -1,16 +1,12 @@
-package ru.klavogonki.kgparser.statistics.download;
+package ru.klavogonki.statistics.download;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.klavogonki.kgparser.statistics.Config;
-import ru.klavogonki.kgparser.statistics.download.downloader.DataDownloader;
-import ru.klavogonki.kgparser.statistics.download.downloader.IndexDataDownloader;
-import ru.klavogonki.kgparser.statistics.download.downloader.StatsOverviewDownloader;
-import ru.klavogonki.kgparser.statistics.download.downloader.SummaryDownloader;
-import ru.klavogonki.kgparser.util.JacksonUtils;
+import ru.klavogonki.statistics.Config;
+import ru.klavogonki.statistics.util.JacksonUtils;
 
 import java.io.File;
 import java.io.IOException;

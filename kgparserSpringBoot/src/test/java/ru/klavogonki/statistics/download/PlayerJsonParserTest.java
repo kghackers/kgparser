@@ -1,9 +1,9 @@
-package ru.klavogonki.kgparser.statistics.download;
+package ru.klavogonki.statistics.download;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.klavogonki.kgparser.StandardDictionary;
-import ru.klavogonki.kgparser.util.TestUtils;
+import ru.klavogonki.statistics.util.TestUtils;
 import ru.klavogonki.openapi.model.Bio;
 import ru.klavogonki.openapi.model.BioAssert;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;

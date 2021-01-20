@@ -9,8 +9,8 @@ import ru.klavogonki.kgparser.http.UrlConstructor;
 import ru.klavogonki.statistics.dto.PlayersByRankCount;
 import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.repository.PlayerRepository;
-import ru.klavogonki.kgparser.util.DateUtils;
-import ru.klavogonki.kgparser.util.JacksonUtils;
+import ru.klavogonki.statistics.util.DateUtils;
+import ru.klavogonki.statistics.util.JacksonUtils;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.statistics.download;
+package ru.klavogonki.statistics.download;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.jupiter.api.Test;

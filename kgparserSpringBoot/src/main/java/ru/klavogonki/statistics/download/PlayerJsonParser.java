@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.statistics.download;
+package ru.klavogonki.statistics.download;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -8,9 +8,9 @@ import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.DictionaryMode;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.StandardDictionary;
-import ru.klavogonki.kgparser.statistics.Config;
-import ru.klavogonki.kgparser.util.DateUtils;
-import ru.klavogonki.kgparser.util.JacksonUtils;
+import ru.klavogonki.statistics.Config;
+import ru.klavogonki.statistics.util.DateUtils;
+import ru.klavogonki.statistics.util.JacksonUtils;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetIndexDataStats;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;

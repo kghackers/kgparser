@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.util;
+package ru.klavogonki.statistics.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
