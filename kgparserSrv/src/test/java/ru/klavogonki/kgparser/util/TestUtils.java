@@ -7,6 +7,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestUtils {
 
+    public static File readFromStatisticsDownload(String fileName) {
+        return TestUtils.readResourceFile("ru/klavogonki/kgparser/statistics/download/" + fileName);
+    }
+
     public static File readResourceFile(final String resourceName) {
         ClassLoader classLoader = TestUtils.class.getClassLoader();
         URL resource = classLoader.getResource(resourceName);

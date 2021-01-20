@@ -26,9 +26,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of a brand new user with minimum possible statistics must be successfully parsed")
     void testSuccessfulParseOfBrandNewUser() {
-        File summaryFile = readResourceFile("get-summary-624511.json");
-        File indexDataFile = readResourceFile("get-index-data-624511.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-624511.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-624511.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-624511.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-624511.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 624511, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -37,9 +37,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of a non-existing user must return an result with appropriate errors")
     void testNonExistingPlayerParse() {
-        File summaryFile = readResourceFile("get-summary-30001.json");
-        File indexDataFile = readResourceFile("get-index-data-30001.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-30001.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-30001.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-30001.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-30001.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 30001, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -52,9 +52,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of a user with a hidden profile must be successfully parsed")
     void testKlavoMechanicWithHiddenProfileParse() {
-        File summaryFile = readResourceFile("get-summary-21.json");
-        File indexDataFile = readResourceFile("get-index-data-21.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-21.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-21.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-21.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-21.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 21, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -66,9 +66,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of an existing user must be successfully parsed")
     void testExistingUserParse() {
-        File summaryFile = readResourceFile("get-summary-242585.json");
-        File indexDataFile = readResourceFile("get-index-data-242585.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-242585.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-242585.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-242585.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-242585.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 242585, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -77,9 +77,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of an existing user with personal car id must be successfully parsed")
     void testExistingUserWithPersonalCarIdParse() {
-        File summaryFile = readResourceFile("get-summary-922.json");
-        File indexDataFile = readResourceFile("get-index-data-922.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-922.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-922.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-922.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-922.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(),922, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -88,9 +88,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of an existing user with blank login must be successfully parsed")
     void testExistingUserWithBlankLoginParse() {
-        File summaryFile = readResourceFile("get-summary-109842.json");
-        File indexDataFile = readResourceFile("get-index-data-109842.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-109842.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-109842.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-109842.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-109842.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(),109842, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -99,9 +99,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of an existing blocked user with negative registered date must be successfully parsed")
     void testBlockedUserWithNegativeRegisteredDateParse() {
-        File summaryFile = readResourceFile("get-summary-141327.json");
-        File indexDataFile = readResourceFile("get-index-data-141327.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-141327.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-141327.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-141327.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-141327.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 141327, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -119,9 +119,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of an existing blocked user with blocked: 4 must be successfully parsed")
     void testBlockedUserWithBlocked4Parse() {
-        File summaryFile = readResourceFile("get-summary-142478.json");
-        File indexDataFile = readResourceFile("get-index-data-142478.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-142478.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-142478.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-142478.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-142478.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(),142478, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -133,9 +133,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of an existing user with successful /get-summary but failing /get-index-data must be successfully parsed")
     void testUserWithSuccessfulGetSummaryAndInvalidUserIdErrorInGetIndexData() {
-        File summaryFile = readResourceFile("get-summary-161997.json");
-        File indexDataFile = readResourceFile("get-index-data-161997.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-161997.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-161997.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-161997.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-161997.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(),161997, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -149,9 +149,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of an existing user with successful /get-summary but failing /get-index-data on a MongoDB error must be successfully parsed")
     void testUserWithSuccessfulGetSummaryAndMongoDbErrorInGetIndexData() {
-        File summaryFile = readResourceFile("get-summary-498727.json");
-        File indexDataFile = readResourceFile("get-index-data-498727.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-498727.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-498727.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-498727.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-498727.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 498727, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -165,9 +165,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Data of an existing user with indexData.bio.text == null must be successfully parsed")
     void testUserWithNullBioText() {
-        File summaryFile = readResourceFile("get-summary-368664.json");
-        File indexDataFile = readResourceFile("get-index-data-368664.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-368664.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-368664.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-368664.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-368664.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 368664, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -186,9 +186,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("User with 1 race in marathon, but avg_speed == null and avg_error == null")
     void testUserWith1MarathonRaceButWithNullAvgSpeedAndAvgError() {
-        File summaryFile = readResourceFile("get-summary-24646.json");
-        File indexDataFile = readResourceFile("get-index-data-24646.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-24646.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-24646.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-24646.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-24646.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 24646, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -220,9 +220,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("User with 1 race in book \"voc-11315\", but avg_speed == null, avg_error == null, best_speed == null")
     void testUserWith1BookRaceButWithNullAvgSpeedAndAvgErrorAndBestSpeed() {
-        File summaryFile = readResourceFile("get-summary-215941.json");
-        File indexDataFile = readResourceFile("get-index-data-215941.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-215941.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-215941.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-215941.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-215941.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 215941, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -261,9 +261,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Deleted Vocabulary with type: \"\"")
     void testVocabularyWithEmptyType() {
-        File summaryFile = readResourceFile("get-summary-80523.json");
-        File indexDataFile = readResourceFile("get-index-data-80523.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-80523.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-80523.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-80523.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-80523.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 80523, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -303,9 +303,9 @@ class PlayerJsonParserTest {
     @Test
     @DisplayName("Vocabulary with -56 symbols: \"voc-186079\"")
     void testVocabularyWithMinus56Symbols() {
-        File summaryFile = readResourceFile("get-summary-486990.json");
-        File indexDataFile = readResourceFile("get-index-data-486990.json");
-        File statsOverviewFile = readResourceFile("get-stats-overview-486990.json");
+        File summaryFile = TestUtils.readFromStatisticsDownload("get-summary-486990.json");
+        File indexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-486990.json");
+        File statsOverviewFile = TestUtils.readFromStatisticsDownload("get-stats-overview-486990.json");
 
         Optional<PlayerJsonData> playerOptional = PlayerJsonParser.readPlayerData(OffsetDateTime.now(), 486990, summaryFile, indexDataFile, statsOverviewFile);
         assertThat(playerOptional).isPresent();
@@ -341,9 +341,5 @@ class PlayerJsonParserTest {
             .hasDirty(0)
             .hasUpdated("2020-09-16 19:36:19")
         ;
-    }
-
-    private static File readResourceFile(String fileName) {
-        return TestUtils.readResourceFile("ru/klavogonki/kgparser/statistics/download/" + fileName);
     }
 }

@@ -55,7 +55,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing an existing user summary from a json file")
         void existingPlayer() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-242585.json");
+            File file = TestUtils.readFromStatisticsDownload("get-summary-242585.json");
 
             GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
             logPlayerSummary(summary);
@@ -100,7 +100,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing an existing user summary for a user with a personal car id from a json file")
         void playerWithPersonalCarId() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-922.json");
+            File file = TestUtils.readFromStatisticsDownload("get-summary-922.json");
 
             GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
             logPlayerSummary(summary);
@@ -143,7 +143,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing a brand new user summary from a json file")
         void brandNewPlayer() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-624511.json");
+            File file = TestUtils.readFromStatisticsDownload("get-summary-624511.json");
 
             GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
             logPlayerSummary(summary);
@@ -186,7 +186,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing a summary of a klavomechanic with a hidden profile from a json file")
         void klavoMechanicWithHiddenProfile() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-21.json");
+            File file = TestUtils.readFromStatisticsDownload("get-summary-21.json");
 
             GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
             logPlayerSummary(summary);
@@ -230,7 +230,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing a non-existing user summary from a json file")
         void invalidPlayer() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-summary-30001.json");
+            File file = TestUtils.readFromStatisticsDownload("get-summary-30001.json");
 
             GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
             logPlayerSummary(summary);
@@ -267,7 +267,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing an existing user index data from a json file")
         void existingPlayer() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-242585.json");
+            File file = TestUtils.readFromStatisticsDownload("get-index-data-242585.json");
 
             GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
             logPlayerIndexData(data);
@@ -314,7 +314,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing an existing user index data for a user with a personal car id from a json file")
         void playerWithPersonalCarId() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-922.json");
+            File file = TestUtils.readFromStatisticsDownload("get-index-data-922.json");
 
             GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
             logPlayerIndexData(data);
@@ -369,7 +369,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing a brand new user index data from a json file")
         void brandNewPlayer() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-624511.json");
+            File file = TestUtils.readFromStatisticsDownload("get-index-data-624511.json");
 
             GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
             logPlayerIndexData(data);
@@ -414,7 +414,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing index data of a klavomechanic with a hidden profile from a json file. Request returns a \"hidden profile\" error.")
         void klavoMechanicWithHiddenProfile() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-21.json");
+            File file = TestUtils.readFromStatisticsDownload("get-index-data-21.json");
 
             GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
             logPlayerIndexData(data);
@@ -436,7 +436,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing a non-existing user index data from a json file")
         void invalidPlayer() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-index-data-30001.json");
+            File file = TestUtils.readFromStatisticsDownload("get-index-data-30001.json");
 
             GetIndexDataResponse data = JacksonUtils.parse(file, GetIndexDataResponse.class);
             logPlayerIndexData(data);
@@ -467,7 +467,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing an existing user stats overview from a json file")
         void existingPlayer() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-stats-overview-242585.json");
+            File file = TestUtils.readFromStatisticsDownload("get-stats-overview-242585.json");
 
             GetStatsOverviewResponse stats = JacksonUtils.parse(file, GetStatsOverviewResponse.class);
             logPlayerStatsOverview(stats);
@@ -539,7 +539,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing a brand new user stats overview from a json file")
         void brandNewPlayer() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-stats-overview-624511.json");
+            File file = TestUtils.readFromStatisticsDownload("get-stats-overview-624511.json");
 
             GetStatsOverviewResponse stats = JacksonUtils.parse(file, GetStatsOverviewResponse.class);
             logPlayerStatsOverview(stats);
@@ -593,7 +593,7 @@ class JacksonUtilsTest {
         @Test
         @DisplayName("Test parsing stats overview for a player who is hidden or denied the access to his/her statistics")
         void permissionBlocked() {
-            File file = TestUtils.readResourceFile("ru/klavogonki/kgparser/jsonParser/get-stats-overview-21.json");
+            File file = TestUtils.readFromStatisticsDownload("get-stats-overview-21.json");
 
             GetStatsOverviewResponse stats = JacksonUtils.parse(file, GetStatsOverviewResponse.class);
             logPlayerStatsOverview(stats);
