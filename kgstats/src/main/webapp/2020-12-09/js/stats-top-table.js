@@ -186,11 +186,11 @@ class Paging {
     append(containerId) {
         let pagingHtml = '';
 
-        let firstPages = [1, 2, 3];
-        let currentPages = [this.config.currentPage - 2, this.config.currentPage - 1, this.config.currentPage, this.config.currentPage + 1, this.config.currentPage + 2];
-        let lastPages = [this.config.totalPages - 2, this.config.totalPages - 1, this.config.totalPages];
+        const firstPages = [1, 2, 3];
+        const currentPages = [this.config.currentPage - 2, this.config.currentPage - 1, this.config.currentPage, this.config.currentPage + 1, this.config.currentPage + 2];
+        const lastPages = [this.config.totalPages - 2, this.config.totalPages - 1, this.config.totalPages];
 
-        let addedPages = [];
+        const addedPages = [];
 
         firstPages.forEach(pageNumber => {
             if (pageNumber <= this.config.totalPages) {

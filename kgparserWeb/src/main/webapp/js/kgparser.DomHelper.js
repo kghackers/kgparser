@@ -168,7 +168,7 @@ const DomHelper = function () {
             }
 
             let className = '';
-            for (let item of classNames) {
+            for (const item of classNames) {
                 className += (item + CLASS_NAMES_SEPARATOR);
             }
 

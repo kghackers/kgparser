@@ -237,7 +237,7 @@ class PlayerByRankFilter {
             return;
         }
 
-        let filterFunction = this.getFilterFunction(minTotalRacesCount, maxTotalRacesCount);
+        const filterFunction = this.getFilterFunction(minTotalRacesCount, maxTotalRacesCount);
 
         return players.filter(player => {
             const totalRacesCount = player[PlayerByRankFilter.TOTAL_RACES_COUNT_INDEX];
@@ -284,7 +284,7 @@ class PlayerByRankFilter {
     static convertToChartData(countsByRank) {
         const chartData = [];
 
-        for (let [rankLevel, playersCount] of Object.entries(countsByRank)) {
+        for (const [rankLevel, playersCount] of Object.entries(countsByRank)) {
             chartData.push({
                 rankLevel: parseInt(rankLevel),
                 rankName: PlayersByRankChart.RANK_NAMES[rankLevel],
