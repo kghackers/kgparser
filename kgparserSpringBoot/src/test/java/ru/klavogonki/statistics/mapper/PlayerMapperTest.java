@@ -3,74 +3,48 @@ package ru.klavogonki.statistics.mapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import ru.klavogonki.kgparser.Car;
-import ru.klavogonki.kgparser.Rank;
-import ru.klavogonki.openapi.model.Bio;
+import ru.klavogonki.openapi.model.Car;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetIndexDataStats;
 import ru.klavogonki.openapi.model.GetSummaryResponse;
 import ru.klavogonki.openapi.model.GetSummaryUser;
-import ru.klavogonki.openapi.model.Microtime;
-import ru.klavogonki.statistics.download.ApiErrors;
 import ru.klavogonki.statistics.download.PlayerJsonData;
 import ru.klavogonki.statistics.entity.CarEntityAssert;
 import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.entity.PlayerEntityAssert;
 import ru.klavogonki.statistics.util.DateUtils;
+import ru.klavogonki.statistics.util.JacksonUtils;
+import ru.klavogonki.statistics.util.TestUtils;
 
+import java.io.File;
 import java.time.OffsetDateTime;
 
-// todo: merge it with JacksonUtilsTest (problem with module/resource dependencies), so that user data can be read from json files
 class PlayerMapperTest {
 
     @Test
     @DisplayName("Test a user with maximum possible filled fields")
     void testUserWithMaximumData() {
         // summary
-        GetSummaryUser user = new GetSummaryUser()
-            .id(242585)
-            .login("nosferatum");
+        File getSummaryFile = TestUtils.readFromStatisticsDownload("get-summary-242585.json");
+        GetSummaryResponse summary = JacksonUtils.parse(getSummaryFile, GetSummaryResponse.class);
 
-        ru.klavogonki.openapi.model.Car car = new ru.klavogonki.openapi.model.Car()
-            .car(Car.F1.id)
-            .color("#BF1300");
-
-        GetSummaryResponse summary = new GetSummaryResponse()
-            .level(Rank.getLevel(Rank.superman).intValue())
-            .title(Rank.getDisplayName(Rank.superman))
-            .blocked(0)
-            .user(user)
-            .car(car);
+        GetSummaryUser user = summary.getUser();
+        Car car = summary.getCar();
 
         // index-data
-        Bio bio = new Bio()
-            .userId(242585);
+        File getIndexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-242585.json");
+        GetIndexDataResponse indexData = JacksonUtils.parse(getIndexDataFile, GetIndexDataResponse.class);
 
-        Microtime registered = new Microtime()
-            .sec(1297852113L)
-            .usec(0L);
+        GetIndexDataStats stats = indexData.getStats();
 
-        GetIndexDataStats stats = new GetIndexDataStats()
-            .registered(registered)
-            .achievesCnt(225)
-            .totalNumRaces(60633)
-            .bestSpeed(626)
-            .ratingLevel(32)
-            .friendsCnt(102)
-            .vocsCnt(109)
-            .carsCnt(33);
-
-        GetIndexDataResponse indexData = new GetIndexDataResponse()
-            .ok(ApiErrors.OK_CORRECT_VALUE) // FGJ
-            .bio(bio)
-            .stats(stats);
-
+        // map
         PlayerJsonData jsonData = new PlayerJsonData(OffsetDateTime.now(), summary, indexData, null); // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
         PlayerEntity player = mapper.playerJsonDataToPlayerEntity(jsonData);
 
+        // assert
         PlayerEntityAssert.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
@@ -100,50 +74,26 @@ class PlayerMapperTest {
     @DisplayName("Test a new registered user - minimum possible data")
     void testJustRegisteredUser() {
         // summary
-        GetSummaryUser user = new GetSummaryUser()
-            .id(624511)
-            .login("nosferatum0");
+        File getSummaryFile = TestUtils.readFromStatisticsDownload("get-summary-624511.json");
+        GetSummaryResponse summary = JacksonUtils.parse(getSummaryFile, GetSummaryResponse.class);
 
-        ru.klavogonki.openapi.model.Car car = new ru.klavogonki.openapi.model.Car()
-            .car(Car.ZAZ_965.id)
-            .color("#777777");
-
-        GetSummaryResponse summary = new GetSummaryResponse()
-            .level(Rank.getLevel(Rank.novice).intValue())
-            .title(Rank.getDisplayName(Rank.novice))
-            .blocked(0)
-            .user(user)
-            .car(car);
+        GetSummaryUser user = summary.getUser();
+        Car car = summary.getCar();
 
         // index-data
-        Bio bio = new Bio()
-            .userId(624511);
+        File getIndexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-624511.json");
+        GetIndexDataResponse indexData = JacksonUtils.parse(getIndexDataFile, GetIndexDataResponse.class);
 
-        Microtime registered = new Microtime()
-            .sec(1607554944L)
-            .usec(0L);
+        GetIndexDataStats stats = indexData.getStats();
 
-        GetIndexDataStats stats = new GetIndexDataStats()
-            .registered(registered)
-            .achievesCnt(0)
-            .totalNumRaces(0)
-            .bestSpeed(null)
-            .ratingLevel(1)
-            .friendsCnt(0)
-            .vocsCnt(0)
-            .carsCnt(1);
-
-        GetIndexDataResponse indexData = new GetIndexDataResponse()
-            .ok(ApiErrors.OK_CORRECT_VALUE) // FGJ
-            .bio(bio)
-            .stats(stats);
-
+        // map
         PlayerJsonData jsonData = new PlayerJsonData(OffsetDateTime.now(), summary, indexData, null);  // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
         PlayerEntity player = mapper.playerJsonDataToPlayerEntity(jsonData);
 
+        // assert
         PlayerEntityAssert.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
@@ -173,32 +123,24 @@ class PlayerMapperTest {
     @DisplayName("Test a user for which /get-summary works but /get-index-data returns an error")
     void testUserWithoutIndexData() {
         // summary
-        GetSummaryUser user = new GetSummaryUser()
-            .id(21)
-            .login("Artch");
+        File getSummaryFile = TestUtils.readFromStatisticsDownload("get-summary-21.json");
+        GetSummaryResponse summary = JacksonUtils.parse(getSummaryFile, GetSummaryResponse.class);
 
-        ru.klavogonki.openapi.model.Car car = new ru.klavogonki.openapi.model.Car()
-            .car(Car.AUDI_TT.id)
-            .color("#893425");
-
-        GetSummaryResponse summary = new GetSummaryResponse()
-            .level(Rank.getLevel(Rank.superman).intValue())
-            .title(Rank.KLAVO_MECHANIC_TITLE)
-            .blocked(0)
-            .user(user)
-            .car(car);
+        GetSummaryUser user = summary.getUser();
+        Car car = summary.getCar();
 
         // index-data
-        GetIndexDataResponse indexData = new GetIndexDataResponse()
-            .err(ApiErrors.HIDDEN_PROFILE_USER_ERROR)
-            .ok(null); // FGJ
+        File getIndexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-21.json");
+        GetIndexDataResponse indexData = JacksonUtils.parse(getIndexDataFile, GetIndexDataResponse.class);
 
+        // map
         PlayerJsonData jsonData = new PlayerJsonData(OffsetDateTime.now(), summary, indexData, null); // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
         PlayerEntity player = mapper.playerJsonDataToPlayerEntity(jsonData);
 
+        // assert
         PlayerEntityAssert.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
@@ -228,20 +170,21 @@ class PlayerMapperTest {
     @DisplayName("Test a non-existing user for which both /get-summary and /get-index-data returns return \"invalid user id\" error")
     void testNonExistingUser() {
         // summary
-        GetSummaryResponse summary = new GetSummaryResponse()
-            .err(ApiErrors.INVALID_USER_ID_ERROR);
+        File getSummaryFile = TestUtils.readFromStatisticsDownload("get-summary-30001.json");
+        GetSummaryResponse summary = JacksonUtils.parse(getSummaryFile, GetSummaryResponse.class);
 
         // index-data
-        GetIndexDataResponse indexData = new GetIndexDataResponse()
-            .err(ApiErrors.INVALID_USER_ID_ERROR)
-            .ok(null); // FGJ
+        File getIndexDataFile = TestUtils.readFromStatisticsDownload("get-index-data-30001.json");
+        GetIndexDataResponse indexData = JacksonUtils.parse(getIndexDataFile, GetIndexDataResponse.class);
 
+        // map
         PlayerJsonData jsonData = new PlayerJsonData(OffsetDateTime.now(), summary, indexData, null);  // todo: fill statsOverview?
 
         PlayerMapper mapper = Mappers.getMapper(PlayerMapper.class);
 
         PlayerEntity player = mapper.playerJsonDataToPlayerEntity(jsonData);
 
+        // assert
         PlayerEntityAssert.assertThat(player)
             .hasDbId(null) // id not yet filled, entity not yet saved to the database
             .hasImportDate(DateUtils.convertToUtcLocalDateTime(jsonData.importDate))
