@@ -84,7 +84,7 @@ class TopTable {
             case 7: return 'superman';
             case 8: return 'cyberracer';
             case 9: return 'extracyber';
-            default: throw 'Unknown rankLevel: ' + rankLevel;
+            default: throw new Error(`Unknown rankLevel: ${rankLevel}`);
         }
     }
 
@@ -124,10 +124,7 @@ class TopTable {
     static getLoginFromQueryParameter() {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        const login = urlParams.get(TopTable.LOGIN_PARAMETER);
-        // console.log(`queryString: ${queryString}`);
-        // console.log(`login: ${login}`);
-        return login;
+        return urlParams.get(TopTable.LOGIN_PARAMETER);
     }
 
     // see https://stackoverflow.com/questions/3813294/how-to-get-element-by-innertext
@@ -139,13 +136,9 @@ class TopTable {
         const loginToFind = login.toLowerCase();
 
         const spanLoginNodes = document.querySelectorAll("span.login");
-        // console.log(`spanLoginNodes size: ${spanLoginNodes.length}`);
 
         for (const span of spanLoginNodes) {
             if (span.textContent.toLowerCase() === loginToFind) { // case-insensitive
-                // console.log(`login ${login} found!`);
-                // console.log(`text content: "${span.textContent}"`);
-
                 // todo: it is better to get nearest parent 'td' by xpath or findClosest* and check whether it exists
                 const parentTd = span.parentNode.parentNode;
 
@@ -223,6 +216,7 @@ class Paging {
             }
         });
 
+        // todo: think whether this deletion should be used
         // pagingHtml = pagingHtml.substring(0, pagingHtml.length - Paging.SPACE_SEPARATOR.length);
 
         document.getElementById(containerId).innerHTML = pagingHtml;

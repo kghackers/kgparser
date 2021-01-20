@@ -186,7 +186,6 @@ class PlayerByRankFilter {
             return;
         }
 
-        // console.log(`Performing search with ${minValueInt} <= totalRacesCount <= ${maxValueInt}`);
         this.updateChartData(this.config.data, minValueInt, maxValueInt);
     }
 
@@ -197,13 +196,9 @@ class PlayerByRankFilter {
 
     updateChartData(players, minTotalRacesCount, maxTotalRacesCount) {
         const playersWithGivenTotalRacesCount = this.filter(this.config.data, minTotalRacesCount, maxTotalRacesCount);
-        // console.log(`Players filtered by minRacesCount = ${minTotalRacesCount}, maxRacesCount = ${maxTotalRacesCount}:`);
-        // console.log(playersWithGivenTotalRacesCount);
 
         const countsByRank = PlayerByRankFilter.groupByRank(playersWithGivenTotalRacesCount);
         const chartData = PlayerByRankFilter.convertToChartData(countsByRank);
-        // console.log('converted to chart data format:')
-        // console.log(chartData);
 
         this.config.chart.update({
             data: chartData,
@@ -227,6 +222,8 @@ class PlayerByRankFilter {
         if (minTotalRacesCount && maxTotalRacesCount) {
             return `Действующие игроки по рангам (общий пробег ${minTotalRacesCount}–${maxTotalRacesCount})`;
         }
+
+        throw new Error(`Incorrect minTotalRacesCount = ${minTotalRacesCount} and maxTotalRacesCount = ${maxTotalRacesCount} combination.`);
     }
 
     filter(players, minTotalRacesCount, maxTotalRacesCount) {
@@ -261,7 +258,7 @@ class PlayerByRankFilter {
             return totalRacesCount => (minTotalRacesCount <= totalRacesCount) && (totalRacesCount <= maxTotalRacesCount);
         }
 
-        throw `Incorrect filter combination: minTotalRacesCount = ${minTotalRacesCount}, maxTotalRacesCount = ${maxTotalRacesCount}`;
+        throw new Error(`Incorrect filter combination: minTotalRacesCount = ${minTotalRacesCount}, maxTotalRacesCount = ${maxTotalRacesCount}`);
     }
 
     static groupByRank(players) {
@@ -354,8 +351,6 @@ class PlayersByRankChart {
     }
 
     update(config) {
-        // console.log('update started. Config:' + JSON.stringify(config));
-
         this.config = config;
         this.fillChartConfigs();
 
@@ -372,8 +367,6 @@ class PlayersByRankChart {
         this.doughnutChart.update();
 
         this.appendTable(this.tableContainerId);
-
-        // console.log('update executed. I am: ' + this.config.label);
     }
 
     fillChartConfigs() {
@@ -420,7 +413,9 @@ class PlayersByRankChart {
     getChartData(config) {
         const playersByRankChartLabels = config.data.map(playersByRankCount => playersByRankCount.rankDisplayName); // horizontal axes
         const playersByRankPlayersCount = config.data.map(playersByRankCount => playersByRankCount.playersCount); // data
-        const playersByRankBackgroundColors = config.data.map(playersByRankCount => PlayersByRankChart.RANK_COLORS[playersByRankCount.rankName]); // background colors according to ranks
+        const playersByRankBackgroundColors = config.data.map(playersByRankCount =>
+            PlayersByRankChart.RANK_COLORS[playersByRankCount.rankName]
+        ); // background colors according to ranks
 
         return {
             label: config.label,
