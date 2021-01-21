@@ -4,15 +4,17 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import ru.klavogonki.statistics.dto.PlayerDto;
+import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.excel.TopByBestSpeedPageExcelTemplate;
 import ru.klavogonki.statistics.freemarker.LoginToPageTemplate;
 import ru.klavogonki.statistics.freemarker.PageUrls;
 import ru.klavogonki.statistics.freemarker.TopBySpeedPageTemplate;
-import ru.klavogonki.statistics.dto.PlayerDto;
-import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.mapper.PlayerDtoMapper;
 import ru.klavogonki.statistics.repository.PlayerRepository;
+import ru.klavogonki.statistics.springboot.Profiles;
 import ru.klavogonki.statistics.util.JacksonUtils;
 
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import java.util.Map;
 
 @Log4j2
 @Component
+@Profile(Profiles.DATABASE)
 public class TopBySpeedExporter implements DataExporter {
     private static final int TOTAL_RACES_COUNT_MIN = 1000;
     private static final int PAGE_SIZE = 100;

@@ -2,14 +2,17 @@ package ru.klavogonki.statistics.export.vocabulary.standard;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository;
+import ru.klavogonki.statistics.springboot.Profiles;
 
 import java.util.List;
 
 @Component
+@Profile(Profiles.DATABASE)
 public abstract class StandardVocabularyTopExporterDefaultImpl implements StandardVocabularyTopExporter {
 
     @Autowired

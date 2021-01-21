@@ -21,9 +21,10 @@ import ru.klavogonki.statistics.export.vocabulary.standard.NoErrorTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.NormalTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.ReferatsTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.SprintTopExporter;
+import ru.klavogonki.statistics.springboot.Profiles;
 
 @Component
-@Profile("database")
+@Profile(Profiles.DATABASE)
 public class StatisticsGenerator {
 
     // aggregate tops

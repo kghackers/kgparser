@@ -2,6 +2,7 @@ package ru.klavogonki.statistics.export;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import ru.klavogonki.statistics.freemarker.IndexPageTemplate;
 import ru.klavogonki.statistics.freemarker.PageUrls;
@@ -9,6 +10,7 @@ import ru.klavogonki.kgparser.http.UrlConstructor;
 import ru.klavogonki.statistics.dto.PlayersByRankCount;
 import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.repository.PlayerRepository;
+import ru.klavogonki.statistics.springboot.Profiles;
 import ru.klavogonki.statistics.util.DateUtils;
 import ru.klavogonki.statistics.util.JacksonUtils;
 
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @Component
+@Profile(Profiles.DATABASE)
 public class IndexPageExporter implements DataExporter {
 
     private static final int EXAMPLE_PLAYER_ID = 242585; // nosferatum :)

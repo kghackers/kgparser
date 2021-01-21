@@ -3,7 +3,10 @@ package ru.klavogonki.statistics.export;
 import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import ru.klavogonki.statistics.dto.PlayerDto;
+import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.excel.TopByAchievementsCountExcelTemplate;
 import ru.klavogonki.statistics.excel.TopByBestSpeedExcelTemplate;
 import ru.klavogonki.statistics.excel.TopByCarsCountExcelTemplate;
@@ -19,15 +22,15 @@ import ru.klavogonki.statistics.freemarker.TopByFriendsCountTemplate;
 import ru.klavogonki.statistics.freemarker.TopByRatingLevelTemplate;
 import ru.klavogonki.statistics.freemarker.TopByTotalRacesCountTemplate;
 import ru.klavogonki.statistics.freemarker.TopByVocabulariesCountTemplate;
-import ru.klavogonki.statistics.dto.PlayerDto;
-import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.mapper.PlayerDtoMapper;
 import ru.klavogonki.statistics.repository.PlayerRepository;
+import ru.klavogonki.statistics.springboot.Profiles;
 
 import java.util.List;
 
 @Log4j2
 @Component
+@Profile(Profiles.DATABASE)
 public class Top500PagesExporter implements DataExporter {
 
     @Autowired
