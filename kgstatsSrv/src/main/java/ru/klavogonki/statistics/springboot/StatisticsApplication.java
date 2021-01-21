@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
 import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 import ru.klavogonki.statistics.Config;
+import ru.klavogonki.statistics.download.PlayerDataDownloader;
 import ru.klavogonki.statistics.download.PlayerJsonData;
 import ru.klavogonki.statistics.download.PlayerJsonParser;
 import ru.klavogonki.statistics.entity.PlayerEntity;
@@ -60,8 +61,16 @@ public class StatisticsApplication implements CommandLineRunner {
 	public static final int REQUIRED_ARGUMENTS_COUNT = 2;
 
 	public enum Mode {
-		IMPORT_JSON_TO_DATABASE,
-		GENERATE_STATISTICS_FROM_DATABASE
+		DOWNLOAD_PLAYER_DATA(3),
+		IMPORT_JSON_TO_DATABASE(2),
+		GENERATE_STATISTICS_FROM_DATABASE(2),
+		;
+
+		Mode(final int requiredArgumentsCount) {
+			this.requiredArgumentsCount = requiredArgumentsCount;
+		}
+
+		public final int requiredArgumentsCount; // including mode
 	}
 
 	@Autowired
@@ -150,32 +159,68 @@ public class StatisticsApplication implements CommandLineRunner {
 
 	@Override
 	public void run(final String... args) {
-		if (args.length != REQUIRED_ARGUMENTS_COUNT) {
-			// todo: use logger instead of System.out??
-			System.out.printf("Usage: %s <mode> <inputConfigFilePath> %n", StatisticsApplication.class.getSimpleName());
-			System.out.printf("Possible <mode> values: %s, %s %n", Mode.IMPORT_JSON_TO_DATABASE.name(), Mode.GENERATE_STATISTICS_FROM_DATABASE.name());
+		if (args.length == 0) {
+			System.out.printf("Usage must be one of the following: %n");
+			System.out.printf("%s %s <inputConfigFilePath> <outputConfigFilePath> %n", StatisticsApplication.class.getSimpleName(), Mode.DOWNLOAD_PLAYER_DATA.name());
+			System.out.printf("%s %s <inputConfigFilePath> %n", StatisticsApplication.class.getSimpleName(), Mode.IMPORT_JSON_TO_DATABASE.name());
+			System.out.printf("%s %s <inputConfigFilePath> %n", StatisticsApplication.class.getSimpleName(), Mode.GENERATE_STATISTICS_FROM_DATABASE.name());
+
 			return;
 		}
 
 		String modeString = args[0];
-		String inputConfigFilePath = args[1];
-
 		Mode mode = Mode.valueOf(modeString);
-
-		Config config = JacksonUtils.parseConfig(inputConfigFilePath);
+		// todo: nice handling of incorrect mode value
 
 		switch (mode) {
+			case DOWNLOAD_PLAYER_DATA:
+				handleDownloadPlayerData(args);
+				break;
+
 			case IMPORT_JSON_TO_DATABASE:
-				importJsonToDatabase(config);
+				handleImportJsonToDatabase(args);
 				break;
 
 			case GENERATE_STATISTICS_FROM_DATABASE:
-				generateStatistics(config);
+				handleGenerateStatistics(args);
 				break;
 
 			default:
 				throw new IllegalArgumentException(String.format("Unknown mode value: %s", mode));
 		}
+	}
+
+	private void handleDownloadPlayerData(final String[] args) {
+		if (args.length != Mode.DOWNLOAD_PLAYER_DATA.requiredArgumentsCount) {
+			System.out.printf("Usage: %s %s <inputConfigFilePath> <outputConfigFilePath> %n", StatisticsApplication.class.getSimpleName(), Mode.DOWNLOAD_PLAYER_DATA.name());
+			return;
+		}
+
+		String inputConfigFilePath = args[1];
+		String outputConfigFilePath = args[2];
+		String[] playerDataDownloaderArgs = {inputConfigFilePath, outputConfigFilePath};
+
+		PlayerDataDownloader.main(playerDataDownloaderArgs);
+	}
+
+	private void handleImportJsonToDatabase(final String[] args) {
+		if (args.length != Mode.IMPORT_JSON_TO_DATABASE.requiredArgumentsCount) {
+			System.out.printf("Usage: %s %s <inputConfigFilePath> %n", StatisticsApplication.class.getSimpleName(), Mode.IMPORT_JSON_TO_DATABASE.name());
+			return;
+		}
+
+		Config config = JacksonUtils.parseConfig(args[1]);
+		importJsonToDatabase(config);
+	}
+
+	private void handleGenerateStatistics(final String[] args) {
+		if (args.length != Mode.GENERATE_STATISTICS_FROM_DATABASE.requiredArgumentsCount) {
+			System.out.printf("Usage: %s %s <inputConfigFilePath> %n", StatisticsApplication.class.getSimpleName(), Mode.GENERATE_STATISTICS_FROM_DATABASE.name());
+			return;
+		}
+
+		Config config = JacksonUtils.parseConfig(args[1]);
+		generateStatistics(config);
 	}
 
 	private void generateStatistics(final Config config) {
