@@ -4,27 +4,18 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import ru.klavogonki.statistics.Config;
 import ru.klavogonki.statistics.download.PlayerDataDownloader;
 import ru.klavogonki.statistics.export.StatisticsGenerator;
 import ru.klavogonki.statistics.import_db.DatabaseImporter;
 import ru.klavogonki.statistics.util.JacksonUtils;
 
-@SpringBootApplication(exclude = {
-	DataSourceAutoConfiguration.class,
-	DataSourceTransactionManagerAutoConfiguration.class,
-	HibernateJpaAutoConfiguration.class
-})
-//@SpringBootApplication
 @EntityScan(basePackages= {"ru.klavogonki.statistics.entity"})
 @ComponentScan({"ru.klavogonki.statistics"})
-//@EnableJpaRepositories("ru.klavogonki.statistics")
+@Import(StatisticsApplicationConfiguration.class) // see https://stackoverflow.com/a/55591954/8534088
 @Log4j2
 public class StatisticsApplication implements CommandLineRunner {
 

@@ -116,7 +116,7 @@ public class StatisticsGenerator {
         // todo: select mode (what to do) by arguments
         // todo: add an option to skip Excel import
 
-        boolean exitAfterPageGeneration = true; // TODO: DO NOT COMMIT THIS!
+        boolean exitAfterPageGeneration = false;
 
         // non-standard vocabularies exporters
         pinkiesPlusTopExporter.export(context);
