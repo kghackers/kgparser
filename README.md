@@ -80,6 +80,8 @@ This example passes the alternative Spring application properties file to be abl
 
 `log4j2.xml` configures the logging.
 
+:exclamation: If you have encoding problems in logs and saved files on Windows, also set a `-Dfile.encoding=UTF8` option.
+
 ```
 java -Dlog4j.configurationFile=log4j2.xml -cp kgstats-srv-1.0.jar -Dspring.profiles.active=database -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ GENERATE_STATISTICS_FROM_DATABASE c:/java/config-output.json
 ```
