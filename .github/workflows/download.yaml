@@ -1,4 +1,4 @@
-# This workflow containts jobs for downloading player data
+# This workflow contains jobs for downloading player data
 name: Player Data Downloader
 on:
   workflow_dispatch:
@@ -52,7 +52,8 @@ jobs:
       # Run Player Data Downloader with inputs provided from dispatch if present
       # or run with defaults and save into data directory
       - name: Download Data
-        run: java -Dlog4j.configurationFile=log4j2.xml -cp kgparserSrv/target/kgparser-srv-1.0.jar ru.klavogonki.kgparser.PlayerDataDownloader data ${{ github.event.inputs.first_id }} ${{ github.event.inputs.last_id }} ${{ github.event.inputs.threads }}
+        # todo: pass paths to generated input file and output file
+        run: java -Dlog4j.configurationFile=log4j2.xml -jar kgstatsSrv/target/kgstats-srv-1.0.jar DOWNLOAD_PLAYER_DATA data ${{ github.event.inputs.first_id }} ${{ github.event.inputs.last_id }} ${{ github.event.inputs.threads }}
 
       - run: echo "::set-output name=end::$(date)"
         id: end_time
@@ -97,8 +98,9 @@ jobs:
               sudo systemctl start mysql
               sudo mysql -uroot -proot -e "create database actions;"
 
-      - name: Parse Json Files
-        run: java -jar kgstatsSrv/target/kgstats-srv-1.0.jar -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ "data" ${{ github.event.inputs.first_id }} ${{ github.event.inputs.last_id }} 1 "$(ls data)"
+      - name: Parse json files and import data to the database
+        # todo: pass path to input file, it must be the file saved as output file by DOWNLOAD_PLAYER_DATA execution
+        run: java -jar kgstatsSrv/target/kgstats-srv-1.0.jar -Dspring.profiles.active=database -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ IMPORT_JSON_TO_DATABASE "data" ${{ github.event.inputs.first_id }} ${{ github.event.inputs.last_id }} 1 "$(ls data)"
 
       - name: Create Database Dump
         run: sudo mysqldump -uroot -proot actions > "$(ls data).sql"
