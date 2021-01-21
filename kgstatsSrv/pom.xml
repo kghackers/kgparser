@@ -138,6 +138,15 @@
 						</goals>
 					</execution>
 				</executions>
+
+				<!--
+                    After removing @SpringBootApplication from StatisticsApplication,
+                    we have to explicitly set the main class
+                    to avoid "Unable to find a single main class from the following candidates" error.
+                -->
+				<configuration>
+					<mainClass>ru.klavogonki.statistics.springboot.StatisticsApplication</mainClass>
+				</configuration>
 			</plugin>
 
 			<!-- MapStruct and Lombok configuration -->
