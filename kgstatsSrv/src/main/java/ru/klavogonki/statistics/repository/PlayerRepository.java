@@ -103,23 +103,23 @@ public interface PlayerRepository extends CrudRepository<PlayerEntity, Long> {
 
     // todo: for dynamic limit in top use setMaxResults of a page requests
     PlayerEntity findTopByOrderByTotalRacesCountDesc();
-    List<PlayerEntity> findTop500ByOrderByTotalRacesCountDesc();
+    List<PlayerEntity> findTop500ByGetIndexDataErrorNullOrderByTotalRacesCountDesc();
 
     PlayerEntity findTopByOrderByBestSpeedDesc();
-    List<PlayerEntity> findTop500ByOrderByBestSpeedDesc();
+    List<PlayerEntity> findTop500ByGetIndexDataErrorNullOrderByBestSpeedDesc();
 
     PlayerEntity findTopByOrderByRatingLevelDesc();
-    List<PlayerEntity> findTop500ByOrderByRatingLevelDesc();
+    List<PlayerEntity> findTop500ByGetIndexDataErrorNullOrderByRatingLevelDesc();
 
     PlayerEntity findTopByOrderByAchievementsCountDesc();
-    List<PlayerEntity> findTop500ByOrderByAchievementsCountDesc();
+    List<PlayerEntity> findTop500ByGetIndexDataErrorNullOrderByAchievementsCountDesc();
 
     PlayerEntity findTopByOrderByFriendsCountDesc();
-    List<PlayerEntity> findTop500ByOrderByFriendsCountDesc();
+    List<PlayerEntity> findTop500ByGetIndexDataErrorNullOrderByFriendsCountDesc();
 
     PlayerEntity findTopByOrderByVocabulariesCountDesc();
-    List<PlayerEntity> findTop500ByOrderByVocabulariesCountDesc();
+    List<PlayerEntity> findTop500ByGetIndexDataErrorNullOrderByVocabulariesCountDesc();
 
     PlayerEntity findTopByOrderByCarsCountDesc();
-    List<PlayerEntity> findTop500ByOrderByCarsCountDesc();
+    List<PlayerEntity> findTop500ByGetIndexDataErrorNullOrderByCarsCountDesc();
 }

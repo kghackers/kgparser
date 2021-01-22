@@ -29,7 +29,7 @@ For example, to load players with `playerId in [30000; 30100]` (total 101 player
   "threadsCount" : 10,
   "minPlayerId" : 30000,
   "maxPlayerId" : 30100,
-  "statisticsPagesRootDir" : "C:/java/kgparser/kgstats/src/main/webapp/",
+  "statisticsPagesRootDir" : "C:/java/kgparser/kgstats/src/main/webapp/"
 }
 ```
 
