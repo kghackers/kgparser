@@ -29,13 +29,6 @@ jobs:
       GENERATE_STATISTICS_DIRECTORY: stats/
     steps:
       - run: sudo apt-get update && sudo apt-get install -y jq
-      - run: |
-          jq -n --arg jsonFilesRootDir "json" \
-            --arg threadsCount  "${{ github.event.inputs.threads }}"          \
-            --arg minPlayerId  "${{ github.event.inputs.first_id }}"            \
-            --arg maxPlayerId  "${{ github.event.inputs.last_id }}"           \
-            --arg statisticsPagesRootDir "kgparser/kgstatsWeb/src/main/webapp" \
-            '{ "jsonFilesRootDir": $jsonFilesRootDir, "threadsCount": $threadsCount, "minPlayerId": $minPlayerId, "maxPlayerId": $maxPlayerId, "statisticsPagesRootDir": $statisticsPagesRootDir }' > $INPUT_CONFIG_FILE_NAME
       # Clone repository with all branches and tags into github virtual machine
       - uses: actions/checkout@v2
 
@@ -59,7 +52,16 @@ jobs:
       # Build project, run tests and send to SonarCloud for analysis
       - name: Install KG Parser
         run: mvn install -Dmaven.javadoc.skip -Dmaven.test.skip=true
-
+      
+      - name: Generate Config File 
+        run: |
+          jq -n --arg jsonFilesRootDir "json" \
+            --arg threadsCount  "${{ github.event.inputs.threads }}"          \
+            --arg minPlayerId  "${{ github.event.inputs.first_id }}"            \
+            --arg maxPlayerId  "${{ github.event.inputs.last_id }}"           \
+            --arg statisticsPagesRootDir "kgparser/kgstatsWeb/src/main/webapp" \
+            '{ "jsonFilesRootDir": $jsonFilesRootDir, "threadsCount": $threadsCount, "minPlayerId": $minPlayerId, "maxPlayerId": $maxPlayerId, "statisticsPagesRootDir": $statisticsPagesRootDir }' > $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME
+     
       # Set start time to variable
       - run: echo "::set-output name=start::$(date)"
         id: start_time
