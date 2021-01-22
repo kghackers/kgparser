@@ -94,7 +94,7 @@ jobs:
 
       # Archive all downloaded .json files
       - name: Archive Data
-        run: tar cvzf "$(ls data).tar.gz" data/*
+        run: tar cvzf "$(ls json).tar.gz" json/*
 
       # Configure AWS CLI with credentials from repository secrets
       - name: Configure AWS credentials from Test account
@@ -106,7 +106,7 @@ jobs:
 
       # Upload Archived Data into Bucket
       - name: Copy Archived Data to S3
-        run: aws s3 cp "$(ls data).tar.gz" s3://dievri-kgparser
+        run: aws s3 cp "$(ls json).tar.gz" s3://dievri-kgparser
 
       # Process downloaded files
       - name: Prepare MySQL database
@@ -127,10 +127,10 @@ jobs:
             $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
 
       - name: Create Database Dump
-        run: sudo mysqldump -uroot -proot actions > "$(ls data).sql"
+        run: sudo mysqldump -uroot -proot actions > "$(ls json).sql"
 
       - name: Upload DB Dump to s3
-        run: aws s3 cp "$(ls data).sql" s3://dievri-kgparser
+        run: aws s3 cp "$(ls json).sql" s3://dievri-kgparser
 
       - name: Telegram Message Notify
         uses: appleboy/telegram-action@v0.1.0
