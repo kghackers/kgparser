@@ -1,5 +1,5 @@
-# This workflow contains jobs for downloading player data
 # for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
+# This workflow contains jobs for downloading player data
 name: Player Data Downloader
 on:
   workflow_dispatch:
@@ -28,6 +28,7 @@ jobs:
       OUTPUT_CONFIG_FILE_NAME: config-output.json
       GENERATE_STATISTICS_DIRECTORY: stats/
     steps:
+      # install jq (for generations config.json)
       - run: sudo apt-get update && sudo apt-get install -y jq
       # Clone repository with all branches and tags into github virtual machine
       - uses: actions/checkout@v2
@@ -53,27 +54,29 @@ jobs:
       - name: Install KG Parser
         run: mvn install -Dmaven.javadoc.skip -Dmaven.test.skip=true
       
+      # Generate config file using values provided from manual dispatch
       - name: Generate Config File 
         run: |
-          jq -n --arg jsonFilesRootDir "json" \
+          jq -n --arg jsonFilesRootDir "json"                                 \
             --arg threadsCount  "${{ github.event.inputs.threads }}"          \
-            --arg minPlayerId  "${{ github.event.inputs.first_id }}"            \
+            --arg minPlayerId  "${{ github.event.inputs.first_id }}"          \
             --arg maxPlayerId  "${{ github.event.inputs.last_id }}"           \
-            --arg statisticsPagesRootDir "kgparser/kgstatsWeb/src/main/webapp" \
+            --arg statisticsPagesRootDir "stats"                              \
             '{ "jsonFilesRootDir": $jsonFilesRootDir, "threadsCount": $threadsCount, "minPlayerId": $minPlayerId, "maxPlayerId": $maxPlayerId, "statisticsPagesRootDir": $statisticsPagesRootDir }' > $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME
      
       # Set start time to variable
       - run: echo "::set-output name=start::$(date)"
         id: start_time
-      # Run Player Data Downloader with inputs provided from dispatch if present
-      # or run with defaults and save into data directory
-      - name: Download Data
-        # todo: pass paths to generated input file and output file
+
+        # Download player data into "jsonFilesRootDir" from $INPUT_CONFIG_FILE_NAME
+      - name: Download Player Data 
         run: java -Dlog4j.configurationFile=log4j2.xml -jar $KGSTATS_JAR_FILE_PATH DOWNLOAD_PLAYER_DATA $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
 
+      # Set end time to variable
       - run: echo "::set-output name=end::$(date)"
         id: end_time
 
+      # Send message to the telegram group with start and end time of downloading json data 
       - name: Telegram Message Notify
         uses: appleboy/telegram-action@v0.1.0
         with:
@@ -108,22 +111,20 @@ jobs:
       - name: Copy Archived Data to S3
         run: aws s3 cp "$(ls json).tar.gz" s3://dievri-kgparser
 
-      # Process downloaded files
+      # Create mysql database to which json data will be parsed 
       - name: Prepare MySQL database
         run: |
               sudo systemctl start mysql
               sudo mysql -uroot -proot -e "create database actions;"
 
       - name: Parse json files and import data to the database
-        # todo: pass path to input file, it must be the file saved as output file by DOWNLOAD_PLAYER_DATA execution
         run: |
-            java \
-            -Dfile.encoding=UTF8 \
-            -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH \
-            -Dspring.profiles.active=database \
-            -Dspring.config.location=$SPRING_CONFIG_LOCATION \
-            -jar $KGSTATS_JAR_FILE_PATH \
-            IMPORT_JSON_TO_DATABASE \
+            java -Dfile.encoding=UTF8                         \
+            -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH    \
+            -Dspring.profiles.active=database                 \
+            -Dspring.config.location=$SPRING_CONFIG_LOCATION  \
+            -jar $KGSTATS_JAR_FILE_PATH                       \
+            IMPORT_JSON_TO_DATABASE                           \
             $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
 
       - name: Create Database Dump
@@ -131,7 +132,8 @@ jobs:
 
       - name: Upload DB Dump to s3
         run: aws s3 cp "$(ls json).sql" s3://dievri-kgparser
-
+     
+      # Send message into telegram that json files were parsed and DB dump was saved to S3
       - name: Telegram Message Notify
         uses: appleboy/telegram-action@v0.1.0
         with:
@@ -152,12 +154,16 @@ jobs:
 
       - name: generate static files 
         run: | 
-          java \
-          -Dfile.encoding=UTF8 \
-          -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH \
-          -Dspring.profiles.active=database \
-          -Dspring.config.location=$SPRING_CONFIG_LOCATION \
-          -jar $KGSTATS_JAR_FILE_PATH \
-          GENERATE_STATISTICS_FROM_DATABASE \
+          java -Dfile.encoding=UTF8                                 \
+          -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH            \
+          -Dspring.profiles.active=database                         \
+          -Dspring.config.location=$SPRING_CONFIG_LOCATION          \
+          -jar $KGSTATS_JAR_FILE_PATH                               \
+          GENERATE_STATISTICS_FROM_DATABASE                         \
           $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
   
+      - name: Archive Static Pages
+        run: tar cvzf "stats.tar.gz" stats/*
+      
+      - name: Copy Archived Static Pages to S3
+        run: aws s3 cp "stats.tar.gz" s3://dievri-kgparser
