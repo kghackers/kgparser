@@ -1,4 +1,5 @@
 # This workflow contains jobs for downloading player data
+# for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
 name: Player Data Downloader
 on:
   workflow_dispatch:
@@ -26,9 +27,8 @@ jobs:
       INPUT_CONFIG_FILE_NAME: config.json
       OUTPUT_CONFIG_FILE_NAME: config-output.json
       GENERATE_STATISTICS_DIRECTORY: stats/
-    # for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
     steps:
-      - run: apt-get update && apt-get install -y jq
+      - run: sudo apt-get update && sudo apt-get install -y jq
       - run: |
           jq -n --arg jsonFilesRootDir "json" \
             --arg threadsCount  ${{ github.event.inputs.threads }}            \
@@ -148,7 +148,7 @@ jobs:
           mkdir $GENERATE_STATISTICS_DIRECTORY
           mkdir $GENERATE_STATISTICS_DIRECTORY/js
           mkdir $GENERATE_STATISTICS_DIRECTORY/xlsx
-          
+
       - name: generate static files 
         run: | 
           java \
