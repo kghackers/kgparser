@@ -28,7 +28,7 @@ jobs:
       OUTPUT_CONFIG_FILE_NAME: config-output.json
       GENERATE_STATISTICS_DIRECTORY: stats/
     steps:
-      - run: apt-get update && apt-get install -y jq
+      - run: sudo apt-get update && sudo apt-get install -y jq
       - run: |
           jq -n --arg jsonFilesRootDir "json" \
             --arg threadsCount  "${{ github.event.inputs.threads }}"          \
@@ -37,7 +37,6 @@ jobs:
             --arg statisticsPagesRootDir "kgparser/kgstatsWeb/src/main/webapp" \
             '{ "jsonFilesRootDir": $jsonFilesRootDir, "threadsCount": $threadsCount, "minPlayerId": $minPlayerId, "maxPlayerId": $maxPlayerId, "statisticsPagesRootDir": $statisticsPagesRootDir }' > $INPUT_CONFIG_FILE_NAME
       # Clone repository with all branches and tags into github virtual machine
-      - run: pwd && cat $INPUT_CONFIG_FILE_NAME     
       - uses: actions/checkout@v2
 
       # Download and Install specific JDK version
