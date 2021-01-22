@@ -4,11 +4,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import ru.klavogonki.statistics.freemarker.IndexPageTemplate;
-import ru.klavogonki.statistics.freemarker.PageUrls;
+import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.http.UrlConstructor;
 import ru.klavogonki.statistics.dto.PlayersByRankCount;
 import ru.klavogonki.statistics.entity.PlayerEntity;
+import ru.klavogonki.statistics.freemarker.IndexPageTemplate;
+import ru.klavogonki.statistics.freemarker.PageUrls;
 import ru.klavogonki.statistics.repository.PlayerRepository;
 import ru.klavogonki.statistics.springboot.Profiles;
 import ru.klavogonki.statistics.util.DateUtils;
@@ -114,7 +115,7 @@ public class IndexPageExporter implements DataExporter {
         logger.debug("Top 1 player by cars count: {}", top1PlayerByCarsCount);
 
         PlayerEntity top1PlayerByRatingExperienceInOneMonth = playerRepository.findByPlayerId(TOP_1_BY_RATING_EXPERIENCE_IN_ONE_MONTH_PLAYER_ID)
-            .orElseThrow(() -> new IllegalStateException(String.format("Player with playerId = %d is not found.", TOP_1_BY_RATING_EXPERIENCE_IN_ONE_MONTH_PLAYER_ID)));
+            .orElse(getFakeTop1PlayerByRatingExperienceInOneMonth());
 
         logger.debug("Top 1 player by rating experience in one month: {}", top1PlayerByRatingExperienceInOneMonth);
 
@@ -168,5 +169,16 @@ public class IndexPageExporter implements DataExporter {
             .top1PlayerByRatingExperienceInOneMonth(top1PlayerByRatingExperienceInOneMonth)
 
             .export(indexPageFilePath);
+    }
+
+    private PlayerEntity getFakeTop1PlayerByRatingExperienceInOneMonth() {
+        logger.warn("Top 1 player by rating experience in one month (playerId = {}) is not found in the database. Using a fake player instead.", TOP_1_BY_RATING_EXPERIENCE_IN_ONE_MONTH_PLAYER_ID);
+
+        PlayerEntity playerEntity = new PlayerEntity();
+        playerEntity.setPlayerId(TOP_1_BY_RATING_EXPERIENCE_IN_ONE_MONTH_PLAYER_ID);
+        playerEntity.setLogin("iforrest");
+        playerEntity.setRankLevel(Rank.getLevel(Rank.cyberracer).intValue());
+
+        return playerEntity;
     }
 }
