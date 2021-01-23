@@ -16,6 +16,10 @@ on:
         description: 'Number of Execution Threads'
         required: false
         default: 10
+      bucket: 
+        description: 'Amazon S3 bucket name'
+        required: false 
+        default: dievri-kgparser
 
 jobs:
   download:
@@ -26,7 +30,9 @@ jobs:
       SPRING_CONFIG_LOCATION: kgstatsSrv/src/main/resources/application.actions.properties
       INPUT_CONFIG_FILE_NAME: config.json
       OUTPUT_CONFIG_FILE_NAME: config-output.json
-      GENERATE_STATISTICS_DIRECTORY: stats/
+      STATIC_DIR: stats/
+      KGSTATS_WEB_ROOT_DIR: kgstatsWeb/src/main/webapp
+      BUCKET: ${{ github.event.inputs.bucket }}
     steps:
       # install jq (for generations config.json)
       - run: sudo apt-get update && sudo apt-get install -y jq
@@ -109,7 +115,7 @@ jobs:
 
       # Upload Archived Data into Bucket
       - name: Copy Archived Data to S3
-        run: aws s3 cp "$(ls json).tar.gz" s3://dievri-kgparser
+        run: aws s3 cp "$(ls json).tar.gz" s3://${BUCKET}
 
       # Create mysql database to which json data will be parsed 
       - name: Prepare MySQL database
@@ -131,7 +137,7 @@ jobs:
         run: sudo mysqldump -uroot -proot actions > "$(ls json).sql"
 
       - name: Upload DB Dump to s3
-        run: aws s3 cp "$(ls json).sql" s3://dievri-kgparser
+        run: aws s3 cp "$(ls json).sql" s3://${BUCKET}
      
       # Send message into telegram that json files were parsed and DB dump was saved to S3
       - name: Telegram Message Notify
@@ -148,9 +154,9 @@ jobs:
 
       - name: create directories 
         run: |
-          mkdir $GENERATE_STATISTICS_DIRECTORY
-          mkdir $GENERATE_STATISTICS_DIRECTORY/js
-          mkdir $GENERATE_STATISTICS_DIRECTORY/xlsx
+          mkdir $STATIC_DIR
+          mkdir $STATIC_DIR/js
+          mkdir $STATIC_DIR/xlsx
 
       - name: generate static files 
         run: | 
@@ -162,8 +168,25 @@ jobs:
           GENERATE_STATISTICS_FROM_DATABASE                         \
           $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
   
+      - name: copy static files from sources 
+        run: |
+          cp -R $KGSTATS_WEB_ROOT_DIR/css $STATIC_DIR
+          cp -R $KGSTATS_WEB_ROOT_DIR/img $STATIC_DIR
+          cp $KGSTATS_WEB_ROOT_DIR/js/players-by-rank-chart.js $STATIC_DIR/js
+          cp $KGSTATS_WEB_ROOT_DIR/js/stats-data.js $STATIC_DIR/js
+          cp $KGSTATS_WEB_ROOT_DIR/js/stats-top-table.js $STATIC_DIR/js
+          
       - name: Archive Static Pages
         run: tar cvzf "stats.tar.gz" stats/*
       
       - name: Copy Archived Static Pages to S3
-        run: aws s3 cp "stats.tar.gz" s3://dievri-kgparser
+        run: aws s3 cp "stats.tar.gz" s3://${BUCKET}
+
+      - name: Telegram Message Notify
+        uses: appleboy/telegram-action@v0.1.0
+        with:
+          format: html
+          to: ${{ secrets.TGBOT_CHAT }}
+          token: ${{ secrets.TGBOT_TOKEN }}
+          message: |
+            <strong>Statistic Generation Completed Successfully</pre>
