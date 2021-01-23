@@ -92,7 +92,7 @@ public final class PageUrls {
     }
 
     public static String getTopBySpeedPageFilePath(final String rootDir, final int pageNumber) {
-        return rootDir + "stat-top-by-best-speed-page-" + pageNumber + ".html";
+        return rootDir + "/" + "stat-top-by-best-speed-page-" + pageNumber + ".html";
     }
     public static String getTopBySpeedAllPagesExcelFilePath(final String rootDir) {
         return rootDir + "/" + TOP_BY_BEST_SPEED_ALL_PAGES_XLSX;
