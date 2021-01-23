@@ -149,7 +149,7 @@ jobs:
           message: |
             <strong>GitHub Player Data Downloader (Manual Dispatch)</strong>
             <pre><code>
-              archive with json files and database dump uploaded to s3
+              archive with json files and database dump uploaded to s3://${{ github.event.inputs.bucket }}
             </code></pre>
 
       - name: create directories 
@@ -175,12 +175,20 @@ jobs:
           cp $KGSTATS_WEB_ROOT_DIR/js/players-by-rank-chart.js $STATIC_DIR/js
           cp $KGSTATS_WEB_ROOT_DIR/js/stats-data.js $STATIC_DIR/js
           cp $KGSTATS_WEB_ROOT_DIR/js/stats-top-table.js $STATIC_DIR/js
-          
+
       - name: Archive Static Pages
         run: tar cvzf "stats.tar.gz" stats/*
       
       - name: Copy Archived Static Pages to S3
         run: aws s3 cp "stats.tar.gz" s3://${BUCKET}
+
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          external_repository: dievri/dievri.github.io
+          publish_branch: master
+          publish_dir: ./stats
 
       - name: Telegram Message Notify
         uses: appleboy/telegram-action@v0.1.0
