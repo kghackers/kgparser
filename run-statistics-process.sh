@@ -1,5 +1,6 @@
 # declare required variables
 # todo: we should be able to override them from the command line
+ROOT_WORKING_DIR=/d/kg/
 LOG4J_XML_FILE_PATH=log4j2.xml
 KGSTATS_SRV_JAR_FILE_PATH=kgstatsSrv/target/kgstats-srv-1.0.jar
 # todo: maybe take kgstatsSrv statics from target?
@@ -10,11 +11,20 @@ SPRING_CONFIG_LOCATION=kgstatsSrv/src/main/resources/application.actions.propert
 DATABASE_USER=root
 DATABASE_PASSWORD=root
 DATABASE_NAME=actions
-DATABASE_DUMP_FILE_NAME=/d/kg/actions.sql
+
+DATABASE_DUMP_FILE_NAME=actions.sql
+DATABASE_DUMP_FILE_PATH=$ROOT_WORKING_DIR/$DATABASE_DUMP_FILE_NAME
+
 INPUT_CONFIG_FILE_NAME=/d/kg/config.json
 OUTPUT_CONFIG_FILE_NAME=/d/kg/config-output.json
-GENERATE_STATISTICS_DIRECTORY=/d/kg/stats/
-STATIC_DIR=$GENERATE_STATISTICS_DIRECTORY
+
+GENERATE_STATISTICS_DIRECTORY_NAME=/stats
+GENERATE_STATISTICS_DIRECTORY_PATH=$ROOT_WORKING_DIR/$GENERATE_STATISTICS_DIRECTORY_NAME
+STATIC_DIR=$GENERATE_STATISTICS_DIRECTORY_PATH
+
+# zip files
+STATISTICS_ZIP_FILE_PATH=$ROOT_WORKING_DIR/statistics.zip
+DATABASE_DUMP_ZIP_FILE_PATH=$ROOT_WORKING_DIR/database.zip
 
 ## download statistics from Klavogonki to JSON files
 java \
@@ -62,9 +72,9 @@ $ADD_INDEXES_FILE_PATH
 echo "Added indexes from file $ADD_INDEXES_FILE_PATH to database $DATABASE_NAME."
 
 ## generate statistics from database
-mkdir -p $GENERATE_STATISTICS_DIRECTORY
-mkdir -p $GENERATE_STATISTICS_DIRECTORY/js
-mkdir -p $GENERATE_STATISTICS_DIRECTORY/xlsx
+mkdir -p $GENERATE_STATISTICS_DIRECTORY_PATH
+mkdir -p $GENERATE_STATISTICS_DIRECTORY_PATH/js
+mkdir -p $GENERATE_STATISTICS_DIRECTORY_PATH/xlsx
 
 # spring.config.location can contain file path or the directory (directory should end with /)
 # see https://docs.spring.io/spring-boot/docs/1.0.1.RELEASE/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files
@@ -77,7 +87,7 @@ java \
 GENERATE_STATISTICS_FROM_DATABASE \
 $OUTPUT_CONFIG_FILE_NAME
 
-echo "Generated statistics files from database $DATABASE_NAME to directory $GENERATE_STATISTICS_DIRECTORY."
+echo "Generated statistics files from database $DATABASE_NAME to directory $GENERATE_STATISTICS_DIRECTORY_PATH."
 
 # copy static files from sources of kgstatsWeb to generated statistics
 cp -R $KGSTATS_WEB_ROOT_DIR/css $STATIC_DIR
@@ -95,18 +105,27 @@ cp -R $KGSTATS_WEB_ROOT_DIR/2020-12-09 $STATIC_DIR
 echo "Copied static files from $KGSTATS_WEB_ROOT_DIR to $STATIC_DIR."
 
 # create database dump
-mysqldump -u$DATABASE_USER -p$DATABASE_PASSWORD $DATABASE_NAME > $DATABASE_DUMP_FILE_NAME
+mysqldump -u$DATABASE_USER -p$DATABASE_PASSWORD $DATABASE_NAME > $DATABASE_DUMP_FILE_PATH
 
-echo "Dumped database $DATABASE_NAME to file $DATABASE_DUMP_FILE_NAME"
+echo "Dumped database $DATABASE_NAME to file $DATABASE_DUMP_FILE_PATH."
+
+# zip uses the relative paths, therefore we have to navigate to root directory
+cd $ROOT_WORKING_DIR || exit
+
+echo "Change to root working directory $ROOT_WORKING_DIR."
 
 # zip the json files
 # todo: implement
 
 # zip the statistics site
-# todo: implement
+zip -r $STATISTICS_ZIP_FILE_PATH ./$GENERATE_STATISTICS_DIRECTORY_NAME
+
+echo "Zipped directory $GENERATE_STATISTICS_DIRECTORY_PATH to zip file $STATISTICS_ZIP_FILE_PATH."
 
 # zip the database dump
-# todo: implement
+zip $DATABASE_DUMP_ZIP_FILE_PATH ./$DATABASE_DUMP_FILE_NAME
+
+echo "Zipped database dump file $DATABASE_DUMP_FILE_PATH to zip file $DATABASE_DUMP_ZIP_FILE_PATH."
 
 # drop MySQL database
 mysql \
