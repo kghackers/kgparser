@@ -10,6 +10,7 @@ SPRING_CONFIG_LOCATION=kgstatsSrv/src/main/resources/application.actions.propert
 DATABASE_USER=root
 DATABASE_PASSWORD=root
 DATABASE_NAME=actions
+DATABASE_DUMP_FILE_NAME=/d/kg/actions.sql
 INPUT_CONFIG_FILE_NAME=/d/kg/config.json
 OUTPUT_CONFIG_FILE_NAME=/d/kg/config-output.json
 GENERATE_STATISTICS_DIRECTORY=/d/kg/stats/
@@ -94,7 +95,9 @@ cp -R $KGSTATS_WEB_ROOT_DIR/2020-12-09 $STATIC_DIR
 echo "Copied static files from $KGSTATS_WEB_ROOT_DIR to $STATIC_DIR."
 
 # create database dump
-# todo: implement
+mysqldump -u$DATABASE_USER -p$DATABASE_PASSWORD $DATABASE_NAME > $DATABASE_DUMP_FILE_NAME
+
+echo "Dumped database $DATABASE_NAME to file $DATABASE_DUMP_FILE_NAME"
 
 # zip the json files
 # todo: implement
