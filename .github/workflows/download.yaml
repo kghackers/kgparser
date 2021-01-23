@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       KGSTATS_JAR_FILE_PATH: kgstatsSrv/target/kgstats-srv-1.0.jar
+      KGSTATS_SRV_SQL_DIR: kgstatsSrv/src/main/resources/sql
       SPRING_CONFIG_LOCATION: kgstatsSrv/src/main/resources/application.actions.properties
       INPUT_CONFIG_FILE_NAME: config.json
       OUTPUT_CONFIG_FILE_NAME: config-output.json
@@ -132,7 +133,10 @@ jobs:
             -jar $KGSTATS_JAR_FILE_PATH                       \
             IMPORT_JSON_TO_DATABASE                           \
             $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
-
+      
+      - name: Add indexed to Database 
+        run: mysql -uroot -proot actions < $KGSTATS_SRV_SQL_DIR/add-indexes.sql 
+      
       - name: Create Database Dump
         run: sudo mysqldump -uroot -proot actions > "$(ls json).sql"
 
@@ -200,5 +204,5 @@ jobs:
             <strong>GitHub Player Data Downloader (Manual Dispatch)</strong>
             <pre><code>
               Statistic Generation and Deployment Completed Successfully
-              see https://dievri.github.io/
             </code></pre>
+              see https://dievri.github.io/
