@@ -181,10 +181,10 @@ jobs:
           cp $KGSTATS_WEB_ROOT_DIR/js/stats-top-table.js $STATIC_DIR/js
 
       - name: Archive Static Pages
-        run: tar cvzf "stats.tar.gz" stats/*
+        run: tar cvzf ./'stats-'$(date +%x-%X)'.tar.gz' stats/*
       
       - name: Copy Archived Static Pages to S3
-        run: aws s3 cp "stats.tar.gz" s3://${BUCKET}
+        run: aws s3 cp "$(ls stats-*.tar.gz)" s3://${BUCKET}
 
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
