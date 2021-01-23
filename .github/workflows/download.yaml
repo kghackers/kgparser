@@ -134,8 +134,8 @@ jobs:
             IMPORT_JSON_TO_DATABASE                           \
             $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
       
-      - name: Add indexed to Database 
-        run: mysql -uroot -proot actions < $KGSTATS_SRV_SQL_DIR/add-indexes.sql 
+      - name: Add indexes to Database 
+        run: sudo mysql -uroot -proot actions < $KGSTATS_SRV_SQL_DIR/add-indexes.sql 
       
       - name: Create Database Dump
         run: sudo mysqldump -uroot -proot actions > "$(ls json).sql"
