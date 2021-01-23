@@ -2,6 +2,8 @@
 # todo: we should be able to override them from the command line
 LOG4J_XML_FILE_PATH=log4j2.xml
 KGSTATS_SRV_JAR_FILE_PATH=kgstatsSrv/target/kgstats-srv-1.0.jar
+# todo: maybe take kgstatsSrv statics from target?
+KGSTATS_SRV_SQL_DIR=kgstatsSrv/src/main/resources/sql
 # todo: maybe take kgstatsWeb statics from target?
 KGSTATS_WEB_ROOT_DIR=kgstatsWeb/src/main/webapp
 SPRING_CONFIG_LOCATION=kgstatsSrv/src/main/resources/application.actions.properties
@@ -22,15 +24,22 @@ DOWNLOAD_PLAYER_DATA \
 $INPUT_CONFIG_FILE_NAME \
 $OUTPUT_CONFIG_FILE_NAME
 
-# create MySQL database
+echo "Downloaded players data from Klavogonki."
+
+echo "Output file $OUTPUT_CONFIG_FILE_NAME:"
+cat $OUTPUT_CONFIG_FILE_NAME
+
+## create MySQL database
 mysql \
 -u$DATABASE_USER \
 -p$DATABASE_PASSWORD \
 -e "create database ${DATABASE_NAME};"
 
-# import statistics to database
-# spring.config.location can contain file path or the directory (directory should end with /)
-# see https://docs.spring.io/spring-boot/docs/1.0.1.RELEASE/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files
+echo "Created database $DATABASE_NAME"
+
+## import statistics to database
+## spring.config.location can contain file path or the directory (directory should end with /)
+## see https://docs.spring.io/spring-boot/docs/1.0.1.RELEASE/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files
 java \
 -Dfile.encoding=UTF8 \
 -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH \
@@ -41,9 +50,17 @@ IMPORT_JSON_TO_DATABASE \
 $OUTPUT_CONFIG_FILE_NAME
 
 # add indices to the database
-# todo: implement
+ADD_INDEXES_FILE_PATH=$KGSTATS_SRV_SQL_DIR/add-indexes.sql
 
-# generate statistics from database
+mysql \
+-u$DATABASE_USER \
+-p$DATABASE_PASSWORD \
+$DATABASE_NAME < \
+$ADD_INDEXES_FILE_PATH
+
+echo "Added indexes from file $ADD_INDEXES_FILE_PATH to database $DATABASE_NAME."
+
+## generate statistics from database
 mkdir -p $GENERATE_STATISTICS_DIRECTORY
 mkdir -p $GENERATE_STATISTICS_DIRECTORY/js
 mkdir -p $GENERATE_STATISTICS_DIRECTORY/xlsx
@@ -58,6 +75,8 @@ java \
 -jar $KGSTATS_SRV_JAR_FILE_PATH \
 GENERATE_STATISTICS_FROM_DATABASE \
 $OUTPUT_CONFIG_FILE_NAME
+
+echo "Generated statistics files from database $DATABASE_NAME to directory $GENERATE_STATISTICS_DIRECTORY."
 
 # copy static files from sources of kgstatsWeb to generated statistics
 cp -R $KGSTATS_WEB_ROOT_DIR/css $STATIC_DIR
@@ -74,10 +93,16 @@ cp -R $KGSTATS_WEB_ROOT_DIR/2020-12-09 $STATIC_DIR
 
 echo "Copied static files from $KGSTATS_WEB_ROOT_DIR to $STATIC_DIR."
 
+# create database dump
+# todo: implement
+
+# zip the json files
+# todo: implement
+
 # zip the statistics site
 # todo: implement
 
-# create database dump
+# zip the database dump
 # todo: implement
 
 # drop MySQL database
@@ -85,3 +110,5 @@ mysql \
 -u$DATABASE_USER \
 -p$DATABASE_PASSWORD \
 -e "drop database ${DATABASE_NAME};"
+
+echo "Dropped database $DATABASE_NAME."
