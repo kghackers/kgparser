@@ -1,3 +1,5 @@
+echo "Arguments: <minPlayerId> <maxPlayerId> <threadsCount>"
+
 # declare required variables
 # todo: we should be able to override them from the command line
 ROOT_WORKING_DIR=/d/kg/
@@ -21,7 +23,6 @@ DATABASE_DUMP_FILE_PATH=$ROOT_WORKING_DIR/$DATABASE_DUMP_FILE_NAME
 JSON_FILES_DIRECTORY_NAME=/json
 JSON_FILES_DIRECTORY_PATH=$ROOT_WORKING_DIR/$JSON_FILES_DIRECTORY_NAME
 
-# todo: generate input config file by given data in the $ROOT_WORKING_DIR
 INPUT_CONFIG_FILE_NAME=config.json
 INPUT_CONFIG_FILE_PATH=$ROOT_WORKING_DIR/$INPUT_CONFIG_FILE_NAME
 
@@ -40,6 +41,29 @@ DATABASE_DUMP_ZIP_FILE_NAME=database.zip
 # s3 buckets
 S3_BUCKET_TEST=klavostat-test
 S3_BUCKET_DATA=klavostat-data
+
+# create config json file from input arguments
+# todo: add input arguments validation, although it will already work in SpringBoot app
+MIN_PLAYER_ID=$1
+MAX_PLAYER_ID=$2
+THREADS_COUNT=$3
+
+echo "minPlayerId: $MIN_PLAYER_ID"
+echo "maxPlayerId: $MAX_PLAYER_ID"
+echo "threadsCount: $THREADS_COUNT"
+
+jq \
+-n \
+--arg minPlayerId $MIN_PLAYER_ID \
+--arg maxPlayerId $MAX_PLAYER_ID \
+--arg threadsCount $THREADS_COUNT \
+--arg jsonFilesRootDir $JSON_FILES_DIRECTORY_PATH \
+--arg statisticsPagesRootDir $GENERATE_STATISTICS_DIRECTORY_PATH \
+'{"minPlayerId": $minPlayerId|tonumber, "maxPlayerId": $maxPlayerId|tonumber, "threadsCount": $threadsCount|tonumber, "jsonFilesRootDir": $jsonFilesRootDir, "statisticsPagesRootDir": $statisticsPagesRootDir}' \
+> $INPUT_CONFIG_FILE_PATH
+
+echo "Generated input config file $INPUT_CONFIG_FILE_PATH:"
+cat $INPUT_CONFIG_FILE_PATH
 
 ## download statistics from Klavogonki to JSON files
 java \
