@@ -165,12 +165,17 @@ zip "$DATABASE_DUMP_ZIP_FILE_PATH" ./$DATABASE_DUMP_FILE_NAME
 
 echo "Zipped database dump file $DATABASE_DUMP_FILE_PATH to zip file $DATABASE_DUMP_ZIP_FILE_PATH."
 
-# copy zip to archive bucket under date/time directory
+# copy zip to klavostat-data bucket under date/time directory
 aws s3 cp "$ZIP_FILES_DIRECTORY_PATH" "s3://$S3_BUCKET_DATA/$DATA_DOWNLOAD_START_DATE" --recursive
 
-echo "Copied zip files directory $ZIP_FILES_DIRECTORY_PATH to s3 bucket $S3_BUCKET_DATA."
+echo "Copied zip files directory $ZIP_FILES_DIRECTORY_PATH to S3 bucket $S3_BUCKET_DATA."
 
-# copy generated statistics to test bucket
+# delete old files from klavostat-test bucket
+aws s3 rm s3://$S3_BUCKET_TEST --recursive
+
+echo "Deleted all files from S3 bucket $S3_BUCKET_TEST."
+
+# copy generated statistics to klavostat-test bucket
 aws s3 cp $GENERATE_STATISTICS_DIRECTORY_PATH s3://$S3_BUCKET_TEST --recursive
 
 echo "Copied statistics directory $GENERATE_STATISTICS_DIRECTORY_PATH to S3 bucket $S3_BUCKET_TEST."
