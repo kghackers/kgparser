@@ -159,6 +159,13 @@ mkdir -p "$ZIP_FILES_DIRECTORY_PATH"
 
 echo "Created zip files directory $ZIP_FILES_DIRECTORY_PATH."
 
+# copy input and output config files to zip files directory
+cp $INPUT_CONFIG_FILE_PATH "$ZIP_FILES_DIRECTORY_PATH"
+echo "Copied input config file $INPUT_CONFIG_FILE_PATH to zip files directory $ZIP_FILES_DIRECTORY_PATH."
+
+cp $OUTPUT_CONFIG_FILE_PATH "$ZIP_FILES_DIRECTORY_PATH"
+echo "Copied output config file $OUTPUT_CONFIG_FILE_PATH to zip files directory $ZIP_FILES_DIRECTORY_PATH."
+
 # zip uses the relative paths, therefore we have to navigate to root directory
 cd $JSON_FILES_DIRECTORY_PATH || exit
 
