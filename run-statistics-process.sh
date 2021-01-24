@@ -33,9 +33,13 @@ GENERATE_STATISTICS_DIRECTORY_PATH=$ROOT_WORKING_DIR/$GENERATE_STATISTICS_DIRECT
 STATIC_DIR=$GENERATE_STATISTICS_DIRECTORY_PATH
 
 # zip files
-JSON_DATA_ZIP_FILE_PATH=$ROOT_WORKING_DIR/json.zip
-STATISTICS_ZIP_FILE_PATH=$ROOT_WORKING_DIR/statistics.zip
-DATABASE_DUMP_ZIP_FILE_PATH=$ROOT_WORKING_DIR/database.zip
+JSON_DATA_ZIP_FILE_NAME=json.zip
+STATISTICS_ZIP_FILE_NAME=statistics.zip
+DATABASE_DUMP_ZIP_FILE_NAME=database.zip
+
+# s3 buckets
+S3_BUCKET_TEST=klavostat-test
+S3_BUCKET_DATA=klavostat-data
 
 ## download statistics from Klavogonki to JSON files
 java \
@@ -125,6 +129,12 @@ DATA_DOWNLOAD_START_DATE=$(jq -r .dataDownloadStartDateString $OUTPUT_CONFIG_FIL
 
 echo "Parsed data download start date $DATA_DOWNLOAD_START_DATE from output config file $OUTPUT_CONFIG_FILE_PATH."
 
+# create directory for zip files
+ZIP_FILES_DIRECTORY_PATH=$ROOT_WORKING_DIR/$DATA_DOWNLOAD_START_DATE
+mkdir -p "$ZIP_FILES_DIRECTORY_PATH"
+
+echo "Created zip files directory $ZIP_FILES_DIRECTORY_PATH."
+
 # zip uses the relative paths, therefore we have to navigate to root directory
 cd $JSON_FILES_DIRECTORY_PATH || exit
 
@@ -133,7 +143,8 @@ echo "Change to root working directory $JSON_FILES_DIRECTORY_PATH."
 # zip the json files
 JSON_FILES_CURRENT_DOWNLOAD_DIRECTORY_PATH=$JSON_FILES_DIRECTORY_PATH/$DATA_DOWNLOAD_START_DATE
 
-zip -r $JSON_DATA_ZIP_FILE_PATH ./"$DATA_DOWNLOAD_START_DATE"
+JSON_DATA_ZIP_FILE_PATH=$ZIP_FILES_DIRECTORY_PATH/$JSON_DATA_ZIP_FILE_NAME
+zip -r "$JSON_DATA_ZIP_FILE_PATH" ./"$DATA_DOWNLOAD_START_DATE"
 
 echo "Zipped directory $JSON_FILES_CURRENT_DOWNLOAD_DIRECTORY_PATH to zip file $JSON_DATA_ZIP_FILE_PATH."
 
@@ -143,14 +154,26 @@ cd $ROOT_WORKING_DIR || exit
 echo "Change to root working directory $ROOT_WORKING_DIR."
 
 # zip the statistics site
-zip -r $STATISTICS_ZIP_FILE_PATH ./$GENERATE_STATISTICS_DIRECTORY_NAME
+STATISTICS_ZIP_FILE_PATH=$ZIP_FILES_DIRECTORY_PATH/$STATISTICS_ZIP_FILE_NAME
+zip -r "$STATISTICS_ZIP_FILE_PATH" ./$GENERATE_STATISTICS_DIRECTORY_NAME
 
 echo "Zipped directory $GENERATE_STATISTICS_DIRECTORY_PATH to zip file $STATISTICS_ZIP_FILE_PATH."
 
 # zip the database dump
-zip $DATABASE_DUMP_ZIP_FILE_PATH ./$DATABASE_DUMP_FILE_NAME
+DATABASE_DUMP_ZIP_FILE_PATH=$ZIP_FILES_DIRECTORY_PATH/$DATABASE_DUMP_ZIP_FILE_NAME
+zip "$DATABASE_DUMP_ZIP_FILE_PATH" ./$DATABASE_DUMP_FILE_NAME
 
 echo "Zipped database dump file $DATABASE_DUMP_FILE_PATH to zip file $DATABASE_DUMP_ZIP_FILE_PATH."
+
+# copy zip to archive bucket under date/time directory
+aws s3 cp "$ZIP_FILES_DIRECTORY_PATH" "s3://$S3_BUCKET_DATA/$DATA_DOWNLOAD_START_DATE" --recursive
+
+echo "Copied zip files directory $ZIP_FILES_DIRECTORY_PATH to s3 bucket $S3_BUCKET_DATA."
+
+# copy generated statistics to test bucket
+aws s3 cp $GENERATE_STATISTICS_DIRECTORY_PATH s3://$S3_BUCKET_TEST --recursive
+
+echo "Copied statistics directory $GENERATE_STATISTICS_DIRECTORY_PATH to S3 bucket $S3_BUCKET_TEST."
 
 # drop MySQL database
 mysql \
