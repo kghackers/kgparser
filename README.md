@@ -65,7 +65,7 @@ This example passes the alternative Spring application properties file to be abl
 `log4j2.xml` configures the logging.
 
 ```
-java -Dlog4j.configurationFile=log4j2.xml -cp kgstats-srv-1.0.jar -Dspring.profiles.active=database -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ IMPORT_JSON_TO_DATABASE c:/java/config-output.json ``` 
+java -Dlog4j.configurationFile=log4j2.xml -cp kgstats-srv-1.0.jar -Dspring.profiles.active=database -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ IMPORT_JSON_TO_DATABASE c:/java/config-output.json 
 ```
 
 ## How to execute `StatisticsApplication` to generate statistics files from the database 
