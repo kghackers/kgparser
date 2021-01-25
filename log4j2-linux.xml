@@ -6,7 +6,10 @@
                     pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
         </Console>
 
-        <File name="MyFile" fileName="~/logs/kg.log">
+<!--        <File name="MyFile" fileName="~/logs/kg.log">--> <!-- will create a ~ directory from root -->
+
+        <!-- see https://stackoverflow.com/a/54008562/8534088 -->
+        <File name="MyFile" fileName="${sys:user.home}/logs/kg.log">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
     </Appenders>
