@@ -19,11 +19,11 @@ on:
       bucket-test:
         description: 'Amazon S3 bucket name for test'
         required: false
-        default: dievri-kgparser
+        default: klavostat-test
       bucket-data:
         description: 'Amazon S3 bucket name for data'
         required: false
-        default: dievri-kgparser
+        default: klavostat-data
 
 jobs:
   download:
@@ -119,9 +119,9 @@ jobs:
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
+          aws-access-key-id: ${{ secrets.KLAVOSTAT_S3_USER__AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.KLAVOSTAT_S3_USER__AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ KLAVOSTAT_S3_USER__AWS_DEFAULT_REGION }}
 
       # Create mysql database to which json data will be parsed
       - name: Prepare MySQL database
@@ -188,8 +188,8 @@ jobs:
           STATISTICS_ZIP_FILE_PATH=$ZIP_FILES_DIRECTORY_PATH/$STATISTICS_ZIP_FILE_NAME
           zip -r "$STATISTICS_ZIP_FILE_PATH" ./$GENERATE_STATISTICS_DIRECTORY_NAME
           aws s3 cp "$ZIP_FILES_DIRECTORY_PATH" "s3://$S3_BUCKET_DATA/$DATA_DOWNLOAD_START_DATE" --recursive
-          aws s3 rm s3://$S3_BUCKET_TEST/test --recursive
-          aws s3 cp $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME s3://$S3_BUCKET_TEST/test --recursive
+          aws s3 rm s3://$S3_BUCKET_TEST --recursive
+          aws s3 cp $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME s3://$S3_BUCKET_TEST --recursive
 
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
