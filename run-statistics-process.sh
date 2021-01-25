@@ -1,23 +1,35 @@
 echo "Arguments: <minPlayerId> <maxPlayerId> <threadsCount>"
+echo ""
+
+echo "Environment variables values: "
+echo "ROOT_WORKING_DIR: $ROOT_WORKING_DIR"
+echo "LOG4J_XML_FILE_PATH: $LOG4J_XML_FILE_PATH"
+echo "KGSTATS_SRV_JAR_FILE_PATH: $KGSTATS_SRV_JAR_FILE_PATH"
+echo "KGSTATS_SRV_SQL_DIR: $KGSTATS_SRV_SQL_DIR"
+echo "DATABASE_USER: $DATABASE_USER"
+echo "DATABASE_PASSWORD: $DATABASE_PASSWORD"
+echo "DATABASE_NAME: $DATABASE_NAME"
+echo ""
 
 # declare required variables
+# todo: set defaults, see https://stackoverflow.com/a/2013589/8534088
 # todo: we should be able to override them from the command line
-ROOT_WORKING_DIR=/d/kg/
+#ROOT_WORKING_DIR=/d/kg/
 
-LOG4J_XML_FILE_PATH=log4j2.xml
+#LOG4J_XML_FILE_PATH=log4j2.xml
 
-KGSTATS_SRV_JAR_FILE_PATH=kgstatsSrv/target/kgstats-srv-1.0.jar
+#KGSTATS_SRV_JAR_FILE_PATH=kgstatsSrv/target/kgstats-srv-1.0.jar
 # todo: maybe take kgstatsSrv statics from target?
-KGSTATS_SRV_SQL_DIR=kgstatsSrv/src/main/resources/sql
+#KGSTATS_SRV_SQL_DIR=kgstatsSrv/src/main/resources/sql
 # todo: maybe take kgstatsWeb statics from target?
-KGSTATS_WEB_ROOT_DIR=kgstatsWeb/src/main/webapp
-SPRING_CONFIG_LOCATION=kgstatsSrv/src/main/resources/application.actions.properties
+#KGSTATS_WEB_ROOT_DIR=kgstatsWeb/src/main/webapp
+#SPRING_CONFIG_LOCATION=kgstatsSrv/src/main/resources/application.actions.properties
 
-DATABASE_USER=root
-DATABASE_PASSWORD=root
-DATABASE_NAME=actions
+#DATABASE_USER=root
+#DATABASE_PASSWORD=root
+#DATABASE_NAME=actions
 
-DATABASE_DUMP_FILE_NAME=actions.sql
+DATABASE_DUMP_FILE_NAME=database.sql
 DATABASE_DUMP_FILE_PATH=$ROOT_WORKING_DIR/$DATABASE_DUMP_FILE_NAME
 
 JSON_FILES_DIRECTORY_NAME=/json
