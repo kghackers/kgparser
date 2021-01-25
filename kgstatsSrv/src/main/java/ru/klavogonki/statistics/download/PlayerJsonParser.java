@@ -8,9 +8,6 @@ import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.DictionaryMode;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.StandardDictionary;
-import ru.klavogonki.statistics.Config;
-import ru.klavogonki.statistics.util.DateUtils;
-import ru.klavogonki.statistics.util.JacksonUtils;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetIndexDataStats;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
@@ -21,6 +18,9 @@ import ru.klavogonki.openapi.model.GetSummaryUser;
 import ru.klavogonki.openapi.model.Microtime;
 import ru.klavogonki.openapi.model.NonStandardVocabularyType;
 import ru.klavogonki.openapi.model.VocabularyMode;
+import ru.klavogonki.statistics.Config;
+import ru.klavogonki.statistics.util.DateUtils;
+import ru.klavogonki.statistics.util.JacksonUtils;
 
 import java.io.File;
 import java.time.OffsetDateTime;
@@ -628,7 +628,11 @@ public class PlayerJsonParser {
 
         Integer expectedNumRaces = vocabularyStats.getNumRaces();
         if (!numRaces.equals(expectedNumRaces)) {
-            throw new ParserException("Stats overview file %s: Vocabulary %s: info.num_races %s is not equal to expected num_races = %d.", statsOverviewFilePath, vocabularyCode, numRaces, expectedNumRaces);
+            logger.warn("Stats overview file {}: Vocabulary {}: info.num_races {} is not equal to expected num_races = {}.", statsOverviewFilePath, vocabularyCode, numRaces, expectedNumRaces);
+            // this happened on 2021.01.25 on new player 626164 (info.num_races = 398 VS num_races = 397 for Vocabulary voc-25856) and failed the DB load.
+            // Changed from throwing an Exception to log.
+
+//            throw new ParserException("Stats overview file %s: Vocabulary %s: info.num_races %s is not equal to expected num_races = %d.", statsOverviewFilePath, vocabularyCode, numRaces, expectedNumRaces);
         }
 
         // avg_speed
