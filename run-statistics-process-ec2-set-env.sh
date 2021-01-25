@@ -8,6 +8,7 @@ export KGSTATS_SRV_SQL_DIR=kgstatsSrv/src/main/resources/sql
 # todo: maybe take kgstatsWeb statics from target?
 export KGSTATS_WEB_ROOT_DIR=kgstatsWeb/src/main/webapp
 export SPRING_CONFIG_LOCATION=kgstatsSrv/src/main/resources/application.actions.properties
+export GENERATE_STATISTICS_CONFIG_LOCATION=kgstatsSrv/src/main/resources/statistics/statistics-generator-config-generate-all.json
 
 export DATABASE_USER=root
 export DATABASE_PASSWORD=root
