@@ -6,6 +6,9 @@ echo "ROOT_WORKING_DIR: $ROOT_WORKING_DIR"
 echo "LOG4J_XML_FILE_PATH: $LOG4J_XML_FILE_PATH"
 echo "KGSTATS_SRV_JAR_FILE_PATH: $KGSTATS_SRV_JAR_FILE_PATH"
 echo "KGSTATS_SRV_SQL_DIR: $KGSTATS_SRV_SQL_DIR"
+echo "KGSTATS_WEB_ROOT_DIR: $KGSTATS_WEB_ROOT_DIR"
+echo "SPRING_CONFIG_LOCATION: $SPRING_CONFIG_LOCATION"
+echo "GENERATE_STATISTICS_CONFIG_LOCATION: $GENERATE_STATISTICS_CONFIG_LOCATION"
 echo "DATABASE_USER: $DATABASE_USER"
 echo "DATABASE_PASSWORD: $DATABASE_PASSWORD"
 echo "DATABASE_NAME: $DATABASE_NAME"
@@ -77,7 +80,7 @@ jq \
 echo "Generated input config file $INPUT_CONFIG_FILE_PATH:"
 cat $INPUT_CONFIG_FILE_PATH
 
-## download statistics from Klavogonki to JSON files
+# download statistics from Klavogonki to JSON files
 java \
 -Dfile.encoding=UTF8 \
 -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH \
@@ -91,7 +94,7 @@ echo "Downloaded players data from Klavogonki."
 echo "Output file $OUTPUT_CONFIG_FILE_PATH:"
 cat $OUTPUT_CONFIG_FILE_PATH
 
-## create MySQL database
+# create MySQL database
 mysql \
 -u$DATABASE_USER \
 -p$DATABASE_PASSWORD \
@@ -99,9 +102,9 @@ mysql \
 
 echo "Created database $DATABASE_NAME"
 
-## import statistics to database
-## spring.config.location can contain file path or the directory (directory should end with /)
-## see https://docs.spring.io/spring-boot/docs/1.0.1.RELEASE/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files
+# import statistics to database
+# spring.config.location can contain file path or the directory (directory should end with /)
+# see https://docs.spring.io/spring-boot/docs/1.0.1.RELEASE/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files
 java \
 -Dfile.encoding=UTF8 \
 -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH \
@@ -122,7 +125,12 @@ $ADD_INDEXES_FILE_PATH
 
 echo "Added indexes from file $ADD_INDEXES_FILE_PATH to database $DATABASE_NAME."
 
-## generate statistics from database
+# clean up the old statistics directory
+rm -rf $GENERATE_STATISTICS_DIRECTORY_PATH
+
+echo "Deleted the statistics directory $GENERATE_STATISTICS_DIRECTORY_PATH before the generation."
+
+# generate statistics from database
 mkdir -p $GENERATE_STATISTICS_DIRECTORY_PATH
 mkdir -p $GENERATE_STATISTICS_DIRECTORY_PATH/js
 mkdir -p $GENERATE_STATISTICS_DIRECTORY_PATH/xlsx
@@ -136,7 +144,8 @@ java \
 -Dspring.config.location=$SPRING_CONFIG_LOCATION \
 -jar $KGSTATS_SRV_JAR_FILE_PATH \
 GENERATE_STATISTICS_FROM_DATABASE \
-$OUTPUT_CONFIG_FILE_PATH
+$OUTPUT_CONFIG_FILE_PATH \
+$GENERATE_STATISTICS_CONFIG_LOCATION
 
 echo "Generated statistics files from database $DATABASE_NAME to directory $GENERATE_STATISTICS_DIRECTORY_PATH."
 

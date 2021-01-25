@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.statistics.Config;
+import ru.klavogonki.statistics.export.StatisticsGeneratorConfig;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +37,14 @@ public final class JacksonUtils {
         File file = new File(filePath);
         Config config = parse(file, Config.class);
         logger.debug("Successfully parsed config from file {}", filePath);
+        logger.debug("Config: {}", config);
+        return config;
+    }
+
+    public static StatisticsGeneratorConfig parseStatisticsGeneratorConfig(String filePath) {
+        File file = new File(filePath);
+        StatisticsGeneratorConfig config = parse(file, StatisticsGeneratorConfig.class);
+        logger.debug("Successfully parsed statistics generator config from file {}", filePath);
         logger.debug("Config: {}", config);
         return config;
     }
