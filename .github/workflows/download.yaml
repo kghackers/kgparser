@@ -16,8 +16,12 @@ on:
         description: 'Number of Execution Threads'
         required: false
         default: 10
-      bucket:
-        description: 'Amazon S3 bucket name'
+      bucket-test:
+        description: 'Amazon S3 bucket name for test'
+        required: false
+        default: dievri-kgparser
+      bucket-data:
+        description: 'Amazon S3 bucket name for data'
         required: false
         default: dievri-kgparser
 
@@ -26,17 +30,24 @@ jobs:
     name: Download Player Data
     runs-on: ubuntu-latest
     env:
+      LOG4J_XML_FILE_PATH: log4j2.xml
       KGSTATS_JAR_FILE_PATH: kgstatsSrv/target/kgstats-srv-1.0.jar
       KGSTATS_SRV_SQL_DIR: kgstatsSrv/src/main/resources/sql
       SPRING_CONFIG_LOCATION: kgstatsSrv/src/main/resources/application.actions.properties
       INPUT_CONFIG_FILE_NAME: config.json
       OUTPUT_CONFIG_FILE_NAME: config-output.json
-      STATIC_DIR: stats/
+      DATABASE_DUMP_FILE_NAME: database.sql
+      JSON_DATA_ZIP_FILE_NAME: json.zip
+      STATISTICS_ZIP_FILE_NAME: statistics.zip
+      DATABASE_DUMP_ZIP_FILE_NAME: database.zip
+      JSON_FILES_DIRECTORY_PATH: json
+      GENERATE_STATISTICS_DIRECTORY_NAME: stats
       KGSTATS_WEB_ROOT_DIR: kgstatsWeb/src/main/webapp
-      BUCKET: ${{ github.event.inputs.bucket }}
+      S3_BUCKET_TEST: ${{ github.event.inputs.bucket-test }}
+      S3_BUCKET_DATA: ${{ github.event.inputs.bucket-data }}
     steps:
       # install jq (for generations config.json)
-      - run: sudo apt-get update && sudo apt-get install -y jq
+      - run: sudo apt-get update && sudo apt-get install -y jq zip
       # Clone repository with all branches and tags into github virtual machine
       - uses: actions/checkout@v2
 
@@ -64,11 +75,12 @@ jobs:
       # Generate config file using values provided from manual dispatch
       - name: Generate Config File
         run: |
-          jq -n --arg jsonFilesRootDir "json"                                 \
+          jq -n \
+            --arg jsonFilesRootDir "$GITHUB_WORKSPACE/$JSON_FILES_DIRECTORY_PATH" \
             --arg threadsCount  "${{ github.event.inputs.threads }}"          \
             --arg minPlayerId  "${{ github.event.inputs.first_id }}"          \
             --arg maxPlayerId  "${{ github.event.inputs.last_id }}"           \
-            --arg statisticsPagesRootDir "stats"                              \
+            --arg statisticsPagesRootDir "$GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME" \
             '{ "jsonFilesRootDir": $jsonFilesRootDir, "threadsCount": $threadsCount|tonumber, "minPlayerId": $minPlayerId|tonumber, "maxPlayerId": $maxPlayerId|tonumber, "statisticsPagesRootDir": $statisticsPagesRootDir }' > $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME
 
       # Set start time to variable
@@ -77,7 +89,7 @@ jobs:
 
       # Download player data into "jsonFilesRootDir" from $INPUT_CONFIG_FILE_NAME
       - name: Download Player Data
-        run: java -Dlog4j.configurationFile=log4j2.xml -jar $KGSTATS_JAR_FILE_PATH DOWNLOAD_PLAYER_DATA $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
+        run: java -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH -jar $KGSTATS_JAR_FILE_PATH DOWNLOAD_PLAYER_DATA $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
 
       # Set end time to variable
       - run: echo "::set-output name=end::$(date)"
@@ -102,10 +114,6 @@ jobs:
                  End: ${{steps.end_time.outputs.end}}
             </code></pre>
 
-      # Archive all downloaded .json files
-      - name: Archive Data
-        run: tar cvzf "$(ls json).tar.gz" json/*
-
       # Configure AWS CLI with credentials from repository secrets
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v1
@@ -113,10 +121,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
-
-      # Upload Archived Data into Bucket
-      - name: Copy Archived Data to S3
-        run: aws s3 cp "$(ls json).tar.gz" s3://${BUCKET}
 
       # Create mysql database to which json data will be parsed
       - name: Prepare MySQL database
@@ -137,30 +141,11 @@ jobs:
       - name: Add indexes to Database
         run: sudo mysql -uroot -proot actions < $KGSTATS_SRV_SQL_DIR/add-indexes.sql
 
-      - name: Create Database Dump
-        run: sudo mysqldump -uroot -proot actions > "$(ls json).sql"
-
-      - name: Upload DB Dump to s3
-        run: aws s3 cp "$(ls json).sql" s3://${BUCKET}
-
-      # Send message into telegram that json files were parsed and DB dump was saved to S3
-      - name: Telegram Message Notify
-        uses: appleboy/telegram-action@v0.1.0
-        with:
-          format: html
-          to: ${{ secrets.TGBOT_CHAT }}
-          token: ${{ secrets.TGBOT_TOKEN }}
-          message: |
-            <strong>GitHub Player Data Downloader (Manual Dispatch)</strong>
-            <pre><code>
-              archive with json files and database dump uploaded to s3://${{ github.event.inputs.bucket }}
-            </code></pre>
-
       - name: create directories
         run: |
-          mkdir $STATIC_DIR
-          mkdir $STATIC_DIR/js
-          mkdir $STATIC_DIR/xlsx
+          mkdir $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME
+          mkdir $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
+          mkdir $$GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/xlsx
 
       - name: generate static files
         run: |
@@ -174,17 +159,34 @@ jobs:
 
       - name: copy static files from sources
         run: |
-          cp -R $KGSTATS_WEB_ROOT_DIR/css $STATIC_DIR
-          cp -R $KGSTATS_WEB_ROOT_DIR/img $STATIC_DIR
-          cp $KGSTATS_WEB_ROOT_DIR/js/players-by-rank-chart.js $STATIC_DIR/js
-          cp $KGSTATS_WEB_ROOT_DIR/js/stats-data.js $STATIC_DIR/js
-          cp $KGSTATS_WEB_ROOT_DIR/js/stats-top-table.js $STATIC_DIR/js
+          cp -R $KGSTATS_WEB_ROOT_DIR/css $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME
+          cp -R $KGSTATS_WEB_ROOT_DIR/img $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME
+          cp $KGSTATS_WEB_ROOT_DIR/js/players-by-rank-chart.js $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
+          cp $KGSTATS_WEB_ROOT_DIR/js/stats-data.js $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
+          cp $KGSTATS_WEB_ROOT_DIR/js/stats-top-table.js $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
 
-      - name: Archive Static Pages
-        run: tar cvzf "`cat $OUTPUT_CONFIG_FILE_NAME | jq -r '.dataDownloadStartDateString'`.tar.gz" stats/*
+      - name: Create Database Dump
+        run: sudo mysqldump -uroot -proot actions >  "$GITHUB_WORKSPACE/$DATABASE_DUMP_FILE_NAME"
 
-      - name: Copy Archived Static Pages to S3
-        run: aws s3 cp "`cat $OUTPUT_CONFIG_FILE_NAME | jq -r '.dataDownloadStartDateString'`.tar.gz" s3://${BUCKET}
+      - name: Draft Archiving
+        run: |
+          DATA_DOWNLOAD_START_DATE=$(jq -r .dataDownloadStartDateString $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME)
+          ZIP_FILES_DIRECTORY_PATH=$GITHUB_WORKSPACE/$DATA_DOWNLOAD_START_DATE
+          mkdir -p "$ZIP_FILES_DIRECTORY_PATH"
+          cp $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME "$ZIP_FILES_DIRECTORY_PATH"
+          cp $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME "$ZIP_FILES_DIRECTORY_PATH"
+          JSON_FILES_CURRENT_DOWNLOAD_DIRECTORY_PATH=$GITHUB_WORKSPACE/$JSON_FILES_DIRECTORY_PATH/$DATA_DOWNLOAD_START_DATE
+          JSON_DATA_ZIP_FILE_PATH=$ZIP_FILES_DIRECTORY_PATH/$JSON_DATA_ZIP_FILE_NAME
+          zip -r "$JSON_DATA_ZIP_FILE_PATH" ./$JSON_FILES_DIRECTORY_PATH/"$DATA_DOWNLOAD_START_DATE"
+          
+          DATABASE_DUMP_ZIP_FILE_PATH=$ZIP_FILES_DIRECTORY_PATH/$DATABASE_DUMP_ZIP_FILE_NAME
+          zip "$DATABASE_DUMP_ZIP_FILE_PATH" ./$DATABASE_DUMP_FILE_NAME
+
+          aws s3 cp "$ZIP_FILES_DIRECTORY_PATH" "s3://$S3_BUCKET_DATA/$DATA_DOWNLOAD_START_DATE" --recursive
+      
+      #aws s3 rm s3://$S3_BUCKET_TEST --recursive
+      #aws s3 cp $GENERATE_STATISTICS_DIRECTORY_PATH s3://$S3_BUCKET_TEST --recursive
+
 
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -192,7 +194,7 @@ jobs:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
           external_repository: dievri/dievri.github.io
           publish_branch: master
-          publish_dir: ./stats
+          publish_dir: $GITHUB_WORKSPACE/stats
 
       - name: Telegram Message Notify
         uses: appleboy/telegram-action@v0.1.0
