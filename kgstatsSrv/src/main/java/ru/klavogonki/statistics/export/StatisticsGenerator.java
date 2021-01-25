@@ -1,5 +1,6 @@
 package ru.klavogonki.statistics.export;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ import ru.klavogonki.statistics.springboot.Profiles;
 
 @Component
 @Profile(Profiles.DATABASE)
+@Log4j2
 public class StatisticsGenerator {
 
     // aggregate tops
@@ -93,7 +95,7 @@ public class StatisticsGenerator {
     @Autowired
     private PinkiesPlusTopExporter pinkiesPlusTopExporter;
 
-    public void generateStatistics(final Config config) {
+    public void generateStatistics(final Config config, final StatisticsGeneratorConfig generatorConfig) {
         ExportContext context = new ExportContext(config);
 /*
 		context.webRootDir = "C:/java/kgparser/kgstats/src/main/webapp/";
@@ -113,117 +115,60 @@ public class StatisticsGenerator {
 		context.dataDownloadEndDate = DateUtils.parseLocalDateTimeWithUiDateFormat("2020-12-09 16:28:01");
 */
 
-        // todo: select mode (what to do) by arguments
         // todo: add an option to skip Excel import
 
-        boolean exitAfterPageGeneration = false;
-
-        // non-standard vocabularies exporters
-        pinkiesPlusTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        ringFingersTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        trainingIndexFingersTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        digitsOneHundredTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        oneHundredRussianTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        shortTextsTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        frequencyVocabularyTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        miniMarathonTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        normalInEnglishTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        // standard vocabularies exporters
-        sprintTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        digitsTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        marathonTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        referatsTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        abraTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        normalTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        noErrorTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        charsTopExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
+        logger.debug("{}: {}", StatisticsGeneratorConfig.class.getSimpleName(), generatorConfig);
 
         // global tops exporters
-        playersByRankExporter.export(context);
-        if (exitAfterPageGeneration) {
+        export(context, generatorConfig.isExportIndexPage(), indexPageExporter);
+        export(context, generatorConfig.isExportTopBySpeed(), topBySpeedExporter);
+        export(context, generatorConfig.isExportTop500Pages(), top500PagesExporter);
+        export(context, generatorConfig.isExportPlayersByRank(), playersByRankExporter);
+
+        // standard vocabularies exporters
+        export(context, generatorConfig.isExportNormalTop(), normalTopExporter);
+        export(context, generatorConfig.isExportAbraTop(), abraTopExporter);
+        export(context, generatorConfig.isExportReferatsTop(), referatsTopExporter);
+        export(context, generatorConfig.isExportNoErrorTop(), noErrorTopExporter);
+        export(context, generatorConfig.isExportMarathonTop(), marathonTopExporter);
+        export(context, generatorConfig.isExportCharsTop(), charsTopExporter);
+        export(context, generatorConfig.isExportDigitsTop(), digitsTopExporter);
+        export(context, generatorConfig.isExportSprintTop(), sprintTopExporter);
+
+        // non-standard vocabularies exporters
+        export(context, generatorConfig.isExportNormalInEnglishTop(), normalInEnglishTopExporter);
+        export(context, generatorConfig.isExportMiniMarathonTop(), miniMarathonTopExporter);
+        export(context, generatorConfig.isExportShortTextsTop(), shortTextsTopExporter);
+        export(context, generatorConfig.isExportFrequencyVocabularyTop(), frequencyVocabularyTopExporter);
+        export(context, generatorConfig.isExportOneHundredRussianTop(), oneHundredRussianTopExporter);
+        export(context, generatorConfig.isExportDigitsOneHundredTop(), digitsOneHundredTopExporter);
+        export(context, generatorConfig.isExportTrainingIndexFingersTop(), trainingIndexFingersTopExporter);
+        export(context, generatorConfig.isExportRingFingersTop(), ringFingersTopExporter);
+        export(context, generatorConfig.isExportPinkiesPlusTop(), pinkiesPlusTopExporter);
+    }
+
+    // todo: think about moving StatisticsGeneratorConfig field determination to Exporter interface
+    private void export(ExportContext context, boolean export, DataExporter exporter) {
+        logger.info("===============================================");
+
+        if (!export) {
+            logger.info(
+                "{} flag for {} is {}. Do not execute the export.",
+                StatisticsGeneratorConfig.class.getSimpleName(),
+                exporter.getClass().getSimpleName(),
+                false
+            );
+
             return;
         }
 
-        top500PagesExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
+        logger.info(
+            "{} flag for {} is {}. Execute the export.",
+            StatisticsGeneratorConfig.class.getSimpleName(),
+            exporter.getClass().getSimpleName(),
+            true
+        );
 
-        indexPageExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
-
-        topBySpeedExporter.export(context);
-        if (exitAfterPageGeneration) {
-            return;
-        }
+        exporter.export(context);
     }
 }

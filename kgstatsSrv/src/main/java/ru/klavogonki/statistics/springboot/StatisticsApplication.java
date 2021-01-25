@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Import;
 import ru.klavogonki.statistics.Config;
 import ru.klavogonki.statistics.download.PlayerDataDownloader;
 import ru.klavogonki.statistics.export.StatisticsGenerator;
+import ru.klavogonki.statistics.export.StatisticsGeneratorConfig;
 import ru.klavogonki.statistics.import_db.DatabaseImporter;
 import ru.klavogonki.statistics.util.JacksonUtils;
 
@@ -22,7 +23,7 @@ public class StatisticsApplication implements CommandLineRunner {
 	public enum Mode {
 		DOWNLOAD_PLAYER_DATA(3),
 		IMPORT_JSON_TO_DATABASE(2),
-		GENERATE_STATISTICS_FROM_DATABASE(2),
+		GENERATE_STATISTICS_FROM_DATABASE(3),
 		;
 
 		Mode(final int requiredArgumentsCount) {
@@ -101,11 +102,12 @@ public class StatisticsApplication implements CommandLineRunner {
 
 	private void handleGenerateStatistics(final String[] args) {
 		if (args.length != Mode.GENERATE_STATISTICS_FROM_DATABASE.requiredArgumentsCount) {
-			System.out.printf("Usage: %s %s <inputConfigFilePath> %n", StatisticsApplication.class.getSimpleName(), Mode.GENERATE_STATISTICS_FROM_DATABASE.name());
+			System.out.printf("Usage: %s %s <inputConfigFilePath> <statisticsGeneratorConfigFilePath> %n", StatisticsApplication.class.getSimpleName(), Mode.GENERATE_STATISTICS_FROM_DATABASE.name());
 			return;
 		}
 
 		Config config = JacksonUtils.parseConfig(args[1]);
-		statisticsGenerator.generateStatistics(config);
+		StatisticsGeneratorConfig statisticsGeneratorConfig = JacksonUtils.parseStatisticsGeneratorConfig(args[2]);
+		statisticsGenerator.generateStatistics(config, statisticsGeneratorConfig);
 	}
 }
