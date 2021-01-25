@@ -164,7 +164,8 @@ jobs:
           cp $KGSTATS_WEB_ROOT_DIR/js/players-by-rank-chart.js $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
           cp $KGSTATS_WEB_ROOT_DIR/js/stats-data.js $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
           cp $KGSTATS_WEB_ROOT_DIR/js/stats-top-table.js $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
-
+          cp -R $KGSTATS_WEB_ROOT_DIR/2020-12-09 $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME
+      
       - name: Create Database Dump
         run: sudo mysqldump -uroot -proot actions >  "$GITHUB_WORKSPACE/$DATABASE_DUMP_FILE_NAME"
 
@@ -185,9 +186,10 @@ jobs:
           STATISTICS_ZIP_FILE_PATH=$ZIP_FILES_DIRECTORY_PATH/$STATISTICS_ZIP_FILE_NAME
           zip -r "$STATISTICS_ZIP_FILE_PATH" ./$GENERATE_STATISTICS_DIRECTORY_NAME
           aws s3 cp "$ZIP_FILES_DIRECTORY_PATH" "s3://$S3_BUCKET_DATA/$DATA_DOWNLOAD_START_DATE" --recursive
+          aws s3 rm s3://$S3_BUCKET_TEST/test --recursive
           aws s3 cp $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME s3://$S3_BUCKET_TEST/test --recursive
 
-      #aws s3 rm s3://$S3_BUCKET_TEST --recursive
+      
 
 
       - name: Deploy to Github Pages
@@ -196,7 +198,7 @@ jobs:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
           external_repository: dievri/dievri.github.io
           publish_branch: master
-          publish_dir: $GITHUB_WORKSPACE/stats
+          publish_dir: ./stats
 
       - name: Telegram Message Notify
         uses: appleboy/telegram-action@v0.1.0
