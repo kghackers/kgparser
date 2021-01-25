@@ -43,6 +43,7 @@ jobs:
       JSON_FILES_DIRECTORY_PATH: json
       GENERATE_STATISTICS_DIRECTORY_NAME: stats
       KGSTATS_WEB_ROOT_DIR: kgstatsWeb/src/main/webapp
+      GENERATE_STATISTICS_CONFIG_LOCATION: kgstatsSrv/src/main/resources/statistics/statistics-generator-config-generate-all.json
       S3_BUCKET_TEST: ${{ github.event.inputs.bucket-test }}
       S3_BUCKET_DATA: ${{ github.event.inputs.bucket-data }}
     steps:
@@ -155,7 +156,8 @@ jobs:
           -Dspring.config.location=$SPRING_CONFIG_LOCATION          \
           -jar $KGSTATS_JAR_FILE_PATH                               \
           GENERATE_STATISTICS_FROM_DATABASE                         \
-          $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
+          $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME                \
+          $GENERATE_STATISTICS_CONFIG_LOCATION
 
       - name: copy static files from sources
         run: |
@@ -188,9 +190,6 @@ jobs:
           aws s3 cp "$ZIP_FILES_DIRECTORY_PATH" "s3://$S3_BUCKET_DATA/$DATA_DOWNLOAD_START_DATE" --recursive
           aws s3 rm s3://$S3_BUCKET_TEST/test --recursive
           aws s3 cp $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME s3://$S3_BUCKET_TEST/test --recursive
-
-      
-
 
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
