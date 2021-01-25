@@ -7,7 +7,7 @@ import su.opencode.kefir.util.StringUtils;
 /**
  * Словарь.
  */
-public class Dictionary // extends JsonObject // this leads to javadoc generation failure if we use this class in kgparserSpringBoot module
+public class Dictionary // extends JsonObject // this leads to javadoc generation failure if we use this class in kgstatsSrv module
 {
 	public String getCode() {
 		return code;
