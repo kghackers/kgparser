@@ -32,12 +32,12 @@ public class ExcelExportContext<D extends ExcelExportContextData> {
         // creation allowed only via #initContext()
     }
 
-    public static ExcelExportContext initContext(XSSFWorkbook workbook, ExcelStylesMap.Config stylesMapConfig) {
+    public static <D extends ExcelExportContextData> ExcelExportContext<D> initContext(XSSFWorkbook workbook, ExcelStylesMap.Config stylesMapConfig) {
         DataFormat dataFormat = workbook.createDataFormat();
 
         DefaultIndexedColorMap colorMap = new DefaultIndexedColorMap();
 
-        ExcelExportContext context = new ExcelExportContext();
+        ExcelExportContext<D> context = new ExcelExportContext<>();
         context.workbook = workbook;
         context.dataFormat = dataFormat;
         context.colorMap = colorMap;
