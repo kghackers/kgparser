@@ -6,14 +6,15 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import ru.klavogonki.kgparser.Rank;
-import ru.klavogonki.statistics.freemarker.OrderUtils;
 import ru.klavogonki.statistics.dto.PlayerDto;
 import ru.klavogonki.statistics.entity.PlayerEntity;
+import ru.klavogonki.statistics.freemarker.OrderUtils;
 import ru.klavogonki.statistics.util.DateUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.ToIntFunction;
 
 @Mapper
 public interface PlayerDtoMapper {
@@ -23,7 +24,7 @@ public interface PlayerDtoMapper {
     @Mapping(source = "registered", target = "registered")
     PlayerDto playerEntityToPlayerDto(PlayerEntity entity);
 
-    List<PlayerDto> playerEntitiesToPlayerDtos(List<PlayerEntity> entities, @Context Function<PlayerDto, Integer> orderCriteriaGetter);
+    List<PlayerDto> playerEntitiesToPlayerDtos(List<PlayerEntity> entities, @Context ToIntFunction<PlayerDto> orderCriteriaGetter);
 
     default String registeredToLocalDateTime(LocalDateTime registered) {
         return DateUtils.formatDateTimeForUi(registered);
