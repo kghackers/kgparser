@@ -8,6 +8,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.StandardDictionary;
+import ru.klavogonki.kgparser.http.UrlConstructor;
+import ru.klavogonki.statistics.dto.PlayerDto;
+import ru.klavogonki.statistics.dto.PlayerVocabularyDto;
 import ru.klavogonki.statistics.excel.data.ExcelExportContextData;
 import ru.klavogonki.statistics.excel.player.AchievementsCountColumn;
 import ru.klavogonki.statistics.excel.player.BestSpeedColumn;
@@ -21,9 +24,6 @@ import ru.klavogonki.statistics.excel.player.RatingLevelColumn;
 import ru.klavogonki.statistics.excel.player.RegisteredColumn;
 import ru.klavogonki.statistics.excel.player.TotalRacesCountColumn;
 import ru.klavogonki.statistics.excel.player.VocabulariesCountColumn;
-import ru.klavogonki.kgparser.http.UrlConstructor;
-import ru.klavogonki.statistics.dto.PlayerDto;
-import ru.klavogonki.statistics.dto.PlayerVocabularyDto;
 import ru.klavogonki.statistics.util.DateUtils;
 
 import java.util.List;
@@ -238,7 +238,7 @@ public class ExcelExporter {
         }
     }
 
-    private static void addHeaderRow(final List<? extends PlayerColumn<?, ?>> columns, final ExcelExportContext context, final Sheet sheet) {
+    private static void addHeaderRow(final List<? extends PlayerColumn<?, ?>> columns, final ExcelExportContext<?> context, final Sheet sheet) {
         // header row
         Row headerRow = sheet.createRow(HEADER_ROW);
 

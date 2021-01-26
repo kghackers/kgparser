@@ -404,15 +404,15 @@ public class Competition extends JsonObject
 
 			if ( map.containsKey(dictionaryCode) )
 			{ // map already contains round's dictionary -> add round to the existing list
-				List<Round> rounds = map.get(dictionaryCode);
-				rounds.add(round);
+				List<Round> dictionaryRounds = map.get(dictionaryCode);
+				dictionaryRounds.add(round);
 			}
 			else
 			{ // map does not contain round's dictionary -> create new list, put round to it and put it to the map with the dictionary code key
-				List<Round> rounds = new ArrayList<>();
-				rounds.add(round);
+				List<Round> dictionaryRounds = new ArrayList<>();
+				dictionaryRounds.add(round);
 
-				map.put(dictionaryCode, rounds);
+				map.put(dictionaryCode, dictionaryRounds);
 			}
 		}
 
