@@ -24,6 +24,10 @@ on:
         description: 'Amazon S3 bucket name for data'
         required: false
         default: klavostat-data
+      pages-branch:
+        description: 'Github Pages Branch Name'
+        required: false 
+        default: main
 
 jobs:
   download:
@@ -229,7 +233,7 @@ jobs:
         with:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
           external_repository: kghackers/kghackers.github.io
-          publish_branch: main
+          publish_branch: ${{ github.event.inputs.pages-branch }}
           publish_dir: ./stats
       
       # Always notify to telegram chat about outcome of job
