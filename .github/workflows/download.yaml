@@ -90,7 +90,7 @@ jobs:
 
       # Download player data into "jsonFilesRootDir" from $INPUT_CONFIG_FILE_NAME
       - name: Download Player Data
-        run: java -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH -jar $KGSTATS_JAR_FILE_PATH DOWNLOAD_PLAYER_DATA $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
+        run: java -Dfile.encoding=UTF8 -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH -jar $KGSTATS_JAR_FILE_PATH DOWNLOAD_PLAYER_DATA $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
 
       # Set end time to variable
       - run: echo "::set-output name=end::$(date)"
