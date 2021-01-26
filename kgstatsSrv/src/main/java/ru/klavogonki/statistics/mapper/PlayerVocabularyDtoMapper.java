@@ -7,16 +7,17 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import ru.klavogonki.kgparser.Rank;
-import ru.klavogonki.statistics.freemarker.HaulUtils;
-import ru.klavogonki.statistics.freemarker.OrderUtils;
 import ru.klavogonki.kgparser.http.UrlConstructor;
 import ru.klavogonki.statistics.dto.PlayerVocabularyDto;
 import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
+import ru.klavogonki.statistics.freemarker.HaulUtils;
+import ru.klavogonki.statistics.freemarker.OrderUtils;
 import ru.klavogonki.statistics.util.DateUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.ToIntFunction;
 
 @Mapper
 public interface PlayerVocabularyDtoMapper {
@@ -39,7 +40,7 @@ public interface PlayerVocabularyDtoMapper {
     @Mapping(source = "updated", target = "updated")
     PlayerVocabularyDto entityToDto(PlayerVocabularyStatsEntity entity);
 
-    List<PlayerVocabularyDto> entitiesToDtos(List<PlayerVocabularyStatsEntity> entities, @Context Function<PlayerVocabularyDto, Integer> orderCriteriaGetter);
+    List<PlayerVocabularyDto> entitiesToDtos(List<PlayerVocabularyStatsEntity> entities, @Context ToIntFunction<PlayerVocabularyDto> orderCriteriaGetter);
 
     default String localDateTimeToString(LocalDateTime localDateTime) {
         return DateUtils.formatDateTimeForUi(localDateTime);

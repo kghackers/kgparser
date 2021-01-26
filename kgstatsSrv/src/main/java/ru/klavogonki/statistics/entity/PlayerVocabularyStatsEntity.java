@@ -15,12 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "Player_Vocabulary_Stats")
-public class PlayerVocabularyStatsEntity {
+public class PlayerVocabularyStatsEntity implements Serializable {
     @Id
 //    @GeneratedValue
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pvs_SEQ")

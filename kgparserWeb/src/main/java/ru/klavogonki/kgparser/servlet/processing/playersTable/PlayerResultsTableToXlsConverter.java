@@ -27,8 +27,11 @@ import java.util.List;
  * $Revision$
  * $Date::                      $
  */
-public class PlayerResultsTableToXlsConverter
+public final class PlayerResultsTableToXlsConverter
 {
+	private PlayerResultsTableToXlsConverter() {
+	}
+
 	public static XSSFWorkbook toXssfWorkbook(PlayersResultsTable table) {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 

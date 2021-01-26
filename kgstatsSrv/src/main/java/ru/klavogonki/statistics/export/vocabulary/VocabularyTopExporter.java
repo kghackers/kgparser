@@ -177,7 +177,7 @@ public interface VocabularyTopExporter extends DataExporter {
             playersOnPage.forEach(player -> {
                 String login = player.getLogin();
                 if (StringUtils.isBlank(login)) {
-                    logger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
+                    logPlayerHasNoLogin(player);
                     return;
                 }
 
@@ -229,7 +229,7 @@ public interface VocabularyTopExporter extends DataExporter {
             playersOnPage.forEach(player -> {
                 String login = player.getLogin();
                 if (StringUtils.isBlank(login)) {
-                    logger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
+                    logPlayerHasNoLogin(player);
                     return;
                 }
 
@@ -281,7 +281,7 @@ public interface VocabularyTopExporter extends DataExporter {
             playersOnPage.forEach(player -> {
                 String login = player.getLogin();
                 if (StringUtils.isBlank(login)) {
-                    logger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
+                    logPlayerHasNoLogin(player);
                     return;
                 }
 
@@ -313,6 +313,10 @@ public interface VocabularyTopExporter extends DataExporter {
         exportTopByHaulLoginToPageJs(context, loginToPage);
 
         exportTopByHaulToExcel(context, dtos);
+    }
+
+    private void logPlayerHasNoLogin(final PlayerVocabularyDto player) {
+        logger().warn("Player {} has no login. Do not put it to login -> page map.", player.getPlayerId());
     }
 
 

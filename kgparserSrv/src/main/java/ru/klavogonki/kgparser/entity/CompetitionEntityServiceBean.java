@@ -40,7 +40,7 @@ public class CompetitionEntityServiceBean implements CompetitionEntityService
 	@SuppressWarnings("unchecked")
 	public List<CompetitionEntity> getCompetitionEntities() {
 		Query query = em.createQuery("select ce.id, ce.name, ce.link, ce.comment, ce.zipFileName, ce.zipFileSize, ce.zipFileContentType from CompetitionEntity ce order by ce.name");
-		List resultList = query.getResultList();
+		List<Object> resultList = query.getResultList();
 
 		List<CompetitionEntity> result = new ArrayList<>();
 		for (Object o : resultList)

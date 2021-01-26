@@ -56,16 +56,16 @@ Saved output config file will look like this:
 ## How to execute `StatisticsApplication` to import json files save by `PlayerDataDownloader` to the database 
 Database must already exist before the execution.
 
-Pass the _output_ json config filed saved by `PlayerDataDownloader` as an `<inputConfigFilePath>` for `StatisticsApplication`.
+Pass the _output_ json config file saved by `PlayerDataDownloader` as an `<inputConfigFilePath>` for `StatisticsApplication`.
 
-Spring profile "database" must be set to turn on the JPA, Spring repositories etc.
+Spring profile `"database"` must be set to turn on the JPA, Spring repositories etc.
 
 This example passes the alternative Spring application properties file to be able to override the database name from the default `application.properties`. 
 
 `log4j2.xml` configures the logging.
 
 ```
-java -Dlog4j.configurationFile=log4j2.xml -cp kgstats-srv-1.0.jar -Dspring.profiles.active=database -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ IMPORT_JSON_TO_DATABASE c:/java/config-output.json ``` 
+java -Dlog4j.configurationFile=log4j2.xml -cp kgstats-srv-1.0.jar -Dspring.profiles.active=database -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ IMPORT_JSON_TO_DATABASE c:/java/config-output.json 
 ```
 
 ## How to execute `StatisticsApplication` to generate statistics files from the database 
@@ -73,9 +73,11 @@ Database must already exist before the execution.
 
 Database must be filled with data on the previous step.
 
-Pass the _output_ json config filed saved by `PlayerDataDownloader` as an `<inputConfigFilePath>` for `StatisticsApplication`.
+Pass the _output_ json config file saved by `PlayerDataDownloader` as an `<inputConfigFilePath>` for `StatisticsApplication`.
 
-Spring profile "database" must be set to turn on the JPA, Spring repositories etc.
+Pass the statistics generation config file as a `<statisticsGeneratorConfigFilePath>` for `StatisticsApplication`.
+
+Spring profile `"database"` must be set to turn on the JPA, Spring repositories etc.
 
 This example passes the alternative Spring application properties file to be able to override the database name from the default `application.properties`. 
 
@@ -84,10 +86,8 @@ This example passes the alternative Spring application properties file to be abl
 :exclamation: If you have encoding problems in logs and saved files on Windows, also set a `-Dfile.encoding=UTF8` option.
 
 ```
-java -Dlog4j.configurationFile=log4j2.xml -cp kgstats-srv-1.0.jar -Dspring.profiles.active=database -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ GENERATE_STATISTICS_FROM_DATABASE c:/java/config-output.json
+java -Dlog4j.configurationFile=log4j2.xml -cp kgstats-srv-1.0.jar -Dspring.profiles.active=database -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ GENERATE_STATISTICS_FROM_DATABASE c:/java/config-output.json c:/java/generator-config.json
 ```
-
-**TODO:** additional config to set up the generated pages can be added as one more command line argument. 
 
 # Какие графики и таблицы можно сделать на текущих данных
 * Количество игроков по рангам
