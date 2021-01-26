@@ -17,7 +17,6 @@ import ru.klavogonki.statistics.util.DateUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.ToIntFunction;
 
 @Mapper
 public interface PlayerVocabularyDtoMapper {
@@ -40,7 +39,8 @@ public interface PlayerVocabularyDtoMapper {
     @Mapping(source = "updated", target = "updated")
     PlayerVocabularyDto entityToDto(PlayerVocabularyStatsEntity entity);
 
-    List<PlayerVocabularyDto> entitiesToDtos(List<PlayerVocabularyStatsEntity> entities, @Context ToIntFunction<PlayerVocabularyDto> orderCriteriaGetter);
+    @SuppressWarnings("squid:S4276") // OrderUtils.fillOrderNumbers will not work with ToIntFunction, it can fail on conversion of null to int.
+    List<PlayerVocabularyDto> entitiesToDtos(List<PlayerVocabularyStatsEntity> entities, @Context Function<PlayerVocabularyDto, Integer> orderCriteriaGetter);
 
     default String localDateTimeToString(LocalDateTime localDateTime) {
         return DateUtils.formatDateTimeForUi(localDateTime);
