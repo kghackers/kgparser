@@ -11,7 +11,7 @@ public final class PageUrls {
     // html files
     public static final String INDEX = "index.html";
 
-    public static final String TOP_BY_BEST_SPEED_PAGE_1 = getTopBySpeedPageFilePath("", 1);
+    public static final String TOP_BY_BEST_SPEED_PAGE_1 = removeLeadingSlash(getTopBySpeedPageFilePath("", 1));
     public static final String TOP_BY_BEST_SPEED = "stat-top-by-best-speed.html";
 
     public static final String TOP_BY_TOTAL_RACES = "stat-top-by-total-races.html";
@@ -85,6 +85,14 @@ public final class PageUrls {
         sb.append(relativePath);
 
         return sb.toString();
+    }
+
+    public static String removeLeadingSlash(final String path) {
+        if (!path.startsWith("/")) {
+            return path;
+        }
+
+        return path.substring("/".length());
     }
 
     public static String getIndexPageFilePath(final String rootDir) {
