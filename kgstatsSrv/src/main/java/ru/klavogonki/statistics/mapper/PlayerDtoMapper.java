@@ -14,7 +14,6 @@ import ru.klavogonki.statistics.util.DateUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.ToIntFunction;
 
 @Mapper
 public interface PlayerDtoMapper {
@@ -24,7 +23,8 @@ public interface PlayerDtoMapper {
     @Mapping(source = "registered", target = "registered")
     PlayerDto playerEntityToPlayerDto(PlayerEntity entity);
 
-    List<PlayerDto> playerEntitiesToPlayerDtos(List<PlayerEntity> entities, @Context ToIntFunction<PlayerDto> orderCriteriaGetter);
+    @SuppressWarnings("squid:S4276") // OrderUtils.fillOrderNumbers will not work with ToIntFunction, it can fail on conversion of null to int.
+    List<PlayerDto> playerEntitiesToPlayerDtos(List<PlayerEntity> entities, @Context Function<PlayerDto, Integer> orderCriteriaGetter);
 
     default String registeredToLocalDateTime(LocalDateTime registered) {
         return DateUtils.formatDateTimeForUi(registered);
