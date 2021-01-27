@@ -17,7 +17,7 @@ public class OrderUtils {
     }
 
     public static String formatRange(Number from, Number to) {
-        return String.format("%s–%s", from, to); // Ndash (Alt + 0150) used for number range, see https://www.artlebedev.ru/kovodstvo/sections/158/
+        return String.format("%s–%s", from, to); // En dash (Alt + 0150) used for number range, see https://www.artlebedev.ru/kovodstvo/sections/158/
     }
 
     public static <D extends OrderNumberDto, T> void fillOrderNumbers(List<D> players, Function<D, T> criteriaGetter) { // result can be null, therefore ToLongFunction does not work

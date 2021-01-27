@@ -118,7 +118,7 @@ public enum StandardDictionary
 
 	/**
 	 * @param dictionary стандартный словарь
-	 * @return страница стандартного слоаря в <a href="http://klavogonki.ru/wiki/">википедии клавогонок</a>.
+	 * @return страница стандартного словаря в <a href="http://klavogonki.ru/wiki/">википедии клавогонок</a>.
 	 */
 	public static String getDictionaryPageUrl(StandardDictionary dictionary) {
 		switch (dictionary)

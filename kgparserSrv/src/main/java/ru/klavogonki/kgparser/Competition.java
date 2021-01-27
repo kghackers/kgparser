@@ -207,7 +207,7 @@ public class Competition extends JsonObject
 					throw new IllegalStateException( concat("Cannot get normal rank for player with profileId = \"", profileId, "\"") );
 
 				Integer normalRecord = profileIdsToNormalRecords.get(profileId);
-				// do not check on null because normal reoord may be null
+				// do not check on null because normal record may be null
 
 				player.setRank(normalRank);
 				player.setNormalRecord(normalRecord);

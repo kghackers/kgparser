@@ -154,7 +154,7 @@ public final class PlayerResultsTableToXlsConverter
 		for (int i = 0; i < columnsCount; i++)
 		{
 			sheet.setColumnWidth(i, 256 * 20);
-//					sheet.autoSizeColumn(i, true); // does not work, sets columns witdh to 0 and hidden
+//					sheet.autoSizeColumn(i, true); // does not work, sets columns width to 0 and hidden
 		}
 	}
 

@@ -584,7 +584,7 @@ class JacksonUtilsTest {
                 .hasUpdated(null)
             ;
 
-            // validate recent game types - empty for the new playre
+            // validate recent game types - empty for the new player
             List<String> recentGameTypes = stats.getRecentGametypes();
             assertThat(recentGameTypes)
                 .isEmpty();
