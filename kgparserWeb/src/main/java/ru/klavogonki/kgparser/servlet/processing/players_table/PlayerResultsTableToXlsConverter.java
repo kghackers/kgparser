@@ -11,11 +11,11 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import ru.klavogonki.kgparser.processing.playersTable.HeaderCell;
-import ru.klavogonki.kgparser.processing.playersTable.HeaderRow;
-import ru.klavogonki.kgparser.processing.playersTable.PlayerCell;
-import ru.klavogonki.kgparser.processing.playersTable.PlayerRow;
-import ru.klavogonki.kgparser.processing.playersTable.PlayersResultsTable;
+import ru.klavogonki.kgparser.processing.players_table.HeaderCell;
+import ru.klavogonki.kgparser.processing.players_table.HeaderRow;
+import ru.klavogonki.kgparser.processing.players_table.PlayerCell;
+import ru.klavogonki.kgparser.processing.players_table.PlayerRow;
+import ru.klavogonki.kgparser.processing.players_table.PlayersResultsTable;
 import su.opencode.kefir.util.StringUtils;
 
 import java.util.List;

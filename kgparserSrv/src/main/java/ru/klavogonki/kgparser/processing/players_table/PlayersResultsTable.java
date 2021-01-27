@@ -1,13 +1,4 @@
-package ru.klavogonki.kgparser.processing.playersTable;
-
-/**
- * Copyright 2014 LLC "Open Code"
- * http://www.o-code.ru
- * $HeadURL$
- * $Author$
- * $Revision$
- * $Date::                      $
- */
+package ru.klavogonki.kgparser.processing.players_table;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -91,7 +82,9 @@ public class PlayersResultsTable extends JsonObject
 		for (Player player : players)
 		{
 			if (player.isGuest())
+			{
 				continue;
+			}
 
 			playerResults.add( new PlayerResult(player, competition) );
 		}
@@ -104,7 +97,9 @@ public class PlayersResultsTable extends JsonObject
 		{
 			Player player = playerResult.getPlayer();
 			if (player.isGuest()) // do not add guests to the table
+			{
 				continue;
+			}
 
 			PlayerRow row = new PlayerRow();
 			row.addCell( player.getProfileId().toString() );

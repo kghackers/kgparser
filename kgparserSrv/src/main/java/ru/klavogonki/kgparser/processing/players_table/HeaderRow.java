@@ -1,13 +1,4 @@
-package ru.klavogonki.kgparser.processing.playersTable;
-
-/**
- * Copyright 2014 LLC "Open Code"
- * http://www.o-code.ru
- * $HeadURL$
- * $Author$
- * $Revision$
- * $Date::                      $
- */
+package ru.klavogonki.kgparser.processing.players_table;
 
 import su.opencode.kefir.srv.json.JsonObject;
 

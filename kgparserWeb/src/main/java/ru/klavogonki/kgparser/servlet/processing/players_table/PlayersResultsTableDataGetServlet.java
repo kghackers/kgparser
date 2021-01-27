@@ -2,7 +2,7 @@ package ru.klavogonki.kgparser.servlet.processing.players_table;
 
 import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.entity.CompetitionEntityService;
-import ru.klavogonki.kgparser.processing.playersTable.PlayersResultsTable;
+import ru.klavogonki.kgparser.processing.players_table.PlayersResultsTable;
 import su.opencode.kefir.srv.ClientException;
 import su.opencode.kefir.web.Action;
 import su.opencode.kefir.web.InitiableAction;

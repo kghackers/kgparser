@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.processing.playersTable;
+package ru.klavogonki.kgparser.processing.players_table;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

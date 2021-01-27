@@ -1,27 +1,18 @@
-package ru.klavogonki.kgparser.processing.playersTable;
-
-/**
- * Copyright 2014 LLC "Open Code"
- * http://www.o-code.ru
- * $HeadURL$
- * $Author$
- * $Revision$
- * $Date::                      $
- */
+package ru.klavogonki.kgparser.processing.players_table;
 
 import su.opencode.kefir.srv.json.JsonObject;
 
 /**
- * Объект-оболочка для ячейки в строке заголовка таблицы.
+ * Объект-оболочка для ячейки в теле таблицы.
  * Может иметь объединение столбцов.
  */
-public class HeaderCell extends JsonObject
+public class PlayerCell extends JsonObject
 {
-	public HeaderCell(String text) {
+	public PlayerCell(String text) {
 		this.text = text;
 	}
 
-	public HeaderCell(String text, Integer colSpan) {
+	public PlayerCell(String text, Integer colSpan) {
 		this.text = text;
 		this.colSpan = colSpan;
 	}
@@ -45,7 +36,6 @@ public class HeaderCell extends JsonObject
 
 	/**
 	 * Текст в ячейке.
-	 * Является заголовком столбца таблицы.
 	 */
 	private String text;
 
