@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.servlet.processing.playersTable;
+package ru.klavogonki.kgparser.servlet.processing.players_table;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -161,13 +161,16 @@ public final class PlayerResultsTableToXlsConverter
 	private static int getColumnsCount(PlayersResultsTable table) {
 		int columnsCount = 0;
 		HeaderRow firstHeaderRow = table.getHeaderRows().get(0);
-		for (HeaderCell cell : firstHeaderRow.getCells())
-		{
-			if (cell.hasColSpan())
+
+		for (HeaderCell cell : firstHeaderRow.getCells()) {
+			if (cell.hasColSpan()) {
 				columnsCount += cell.getColSpan();
-			else
+			}
+			else {
 				columnsCount += 1;
+			}
 		}
+
 		return columnsCount;
 	}
 

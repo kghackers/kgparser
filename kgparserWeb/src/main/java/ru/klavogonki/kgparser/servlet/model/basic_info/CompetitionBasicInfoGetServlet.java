@@ -1,8 +1,7 @@
-package ru.klavogonki.kgparser.servlet.processing.playersTable;
+package ru.klavogonki.kgparser.servlet.model.basic_info;
 
 import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.entity.CompetitionEntityService;
-import ru.klavogonki.kgparser.processing.playersTable.PlayersResultsTable;
 import su.opencode.kefir.srv.ClientException;
 import su.opencode.kefir.web.Action;
 import su.opencode.kefir.web.InitiableAction;
@@ -11,14 +10,13 @@ import su.opencode.kefir.web.JsonServlet;
 import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
- * Copyright 2014 LLC "Open Code"
- * http://www.o-code.ru
+ * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
  * $Author$
  * $Revision$
  * $Date::                      $
  */
-public class PlayersResultsTableDataGetServlet extends JsonServlet
+public class CompetitionBasicInfoGetServlet extends JsonServlet
 {
 	@Override
 	protected Action getAction() {
@@ -27,19 +25,19 @@ public class PlayersResultsTableDataGetServlet extends JsonServlet
 			@Override
 			public void doAction() throws Exception {
 				Long competitionEntityId = getLongParam(COMPETITION_ENTITY_ID_PARAM_NAME);
-				if (competitionEntityId == null)
+				if (competitionEntityId == null) {
 					throw new ClientException( concat(sb, "\"", COMPETITION_ENTITY_ID_PARAM_NAME, "\" parameter is not set") );
+				}
 
 				CompetitionEntityService service = getService(CompetitionEntityService.class);
 				Competition competition = service.getCompetition(competitionEntityId);
 
-				if (competition == null)
+				if (competition == null) {
 					throw new ClientException( concat(sb, "Competition not found for competitionEntityId = ", competitionEntityId) );
+				}
 
-				PlayersResultsTable table = new PlayersResultsTable();
-				table.fillTable(competition);
-
-				writeSuccess(table);
+				CompetitionBasicInfo basicInfo = new CompetitionBasicInfo(competition);
+				writeSuccess(basicInfo);
 			}
 		};
 	}

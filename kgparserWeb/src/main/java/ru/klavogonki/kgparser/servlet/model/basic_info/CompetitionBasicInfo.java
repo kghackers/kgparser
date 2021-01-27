@@ -1,13 +1,20 @@
-package ru.klavogonki.kgparser.servlet.model.basicInfo;
+package ru.klavogonki.kgparser.servlet.model.basic_info;
 
-import ru.klavogonki.kgparser.*;
+import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.Dictionary;
+import ru.klavogonki.kgparser.Player;
+import ru.klavogonki.kgparser.PlayerRoundResult;
+import ru.klavogonki.kgparser.Round;
 import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.DateUtils;
 import su.opencode.kefir.util.ObjectUtils;
 
 import java.text.DateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
@@ -20,6 +27,7 @@ public class CompetitionBasicInfo extends JsonObject
 {
 	public CompetitionBasicInfo() {
 	}
+
 	public CompetitionBasicInfo(Competition competition) {
 		this.name = competition.getName();
 		this.roundsCount = competition.getRounds().size();
@@ -66,7 +74,8 @@ public class CompetitionBasicInfo extends JsonObject
 
 			this.players.add(vo);
 		}
-		Collections.sort(this.players, new PlayersBasicInfoComparator()); // sort players
+
+		this.players.sort(new PlayersBasicInfoComparator()); // sort players
 
 		DateFormat dateFormat = DateUtils.getDayMonthYearHourMinuteSecondFormat();
 		this.rounds = new ArrayList<>();

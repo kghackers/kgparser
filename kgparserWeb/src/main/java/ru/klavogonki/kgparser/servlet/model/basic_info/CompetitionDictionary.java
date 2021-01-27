@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.servlet.model.basicInfo;
+package ru.klavogonki.kgparser.servlet.model.basic_info;
 
 import ru.klavogonki.kgparser.Dictionary;
 import su.opencode.kefir.srv.json.JsonObject;

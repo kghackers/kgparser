@@ -1,7 +1,9 @@
-package ru.klavogonki.kgparser.servlet.model.basicInfo;
+package ru.klavogonki.kgparser.servlet.processing.players_table;
 
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.entity.CompetitionEntityService;
+import ru.klavogonki.kgparser.processing.playersTable.PlayersResultsTable;
 import su.opencode.kefir.srv.ClientException;
 import su.opencode.kefir.web.Action;
 import su.opencode.kefir.web.InitiableAction;
@@ -16,7 +18,7 @@ import static su.opencode.kefir.util.StringUtils.concat;
  * $Revision$
  * $Date::                      $
  */
-public class CompetitionBasicInfoGetServlet extends JsonServlet
+public class PlayerResultsTableXlsGetServlet extends JsonServlet
 {
 	@Override
 	protected Action getAction() {
@@ -25,17 +27,23 @@ public class CompetitionBasicInfoGetServlet extends JsonServlet
 			@Override
 			public void doAction() throws Exception {
 				Long competitionEntityId = getLongParam(COMPETITION_ENTITY_ID_PARAM_NAME);
-				if (competitionEntityId == null)
+				if (competitionEntityId == null) {
 					throw new ClientException( concat(sb, "\"", COMPETITION_ENTITY_ID_PARAM_NAME, "\" parameter is not set") );
+				}
 
 				CompetitionEntityService service = getService(CompetitionEntityService.class);
 				Competition competition = service.getCompetition(competitionEntityId);
 
-				if (competition == null)
+				if (competition == null) {
 					throw new ClientException( concat(sb, "Competition not found for competitionEntityId = ", competitionEntityId) );
+				}
 
-				CompetitionBasicInfo basicInfo = new CompetitionBasicInfo(competition);
-				writeSuccess(basicInfo);
+				PlayersResultsTable table = new PlayersResultsTable();
+				table.fillTable(competition);
+
+				String fileName = concat(sb, "competition-", competitionEntityId, "-playerResultsTable.xlsx");
+				XSSFWorkbook workbook = PlayerResultsTableToXlsConverter.toXssfWorkbook(table);
+				writeToExcel(fileName, workbook);
 			}
 		};
 	}

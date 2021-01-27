@@ -1,7 +1,7 @@
 package ru.klavogonki.kgparser.servlet.model.round;
 
 import ru.klavogonki.kgparser.PlayerRoundResult;
-import ru.klavogonki.kgparser.servlet.model.basicInfo.PlayerBasicInfo;
+import ru.klavogonki.kgparser.servlet.model.basic_info.PlayerBasicInfo;
 import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.StringUtils;
 
@@ -16,6 +16,7 @@ public class PlayerRoundResultInfo extends JsonObject
 {
 	public PlayerRoundResultInfo() {
 	}
+
 	public PlayerRoundResultInfo(PlayerRoundResult result) {
 		this.setPlayer( new PlayerBasicInfo(result.getPlayer()) );
 		this.setPlace(result.getPlace());
@@ -70,8 +71,9 @@ public class PlayerRoundResultInfo extends JsonObject
 	}
 
 	public String getErrorsCountStr() {
-		if (errorsCount == null)
+		if (errorsCount == null) {
 			return "0";
+		}
 
 		return errorsCount.toString();
 	}

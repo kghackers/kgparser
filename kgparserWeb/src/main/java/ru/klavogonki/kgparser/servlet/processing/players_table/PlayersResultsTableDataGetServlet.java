@@ -1,6 +1,5 @@
-package ru.klavogonki.kgparser.servlet.processing.playersTable;
+package ru.klavogonki.kgparser.servlet.processing.players_table;
 
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.entity.CompetitionEntityService;
 import ru.klavogonki.kgparser.processing.playersTable.PlayersResultsTable;
@@ -12,13 +11,14 @@ import su.opencode.kefir.web.JsonServlet;
 import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
- * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
+ * Copyright 2014 LLC "Open Code"
+ * http://www.o-code.ru
  * $HeadURL$
  * $Author$
  * $Revision$
  * $Date::                      $
  */
-public class PlayerResultsTableXlsGetServlet extends JsonServlet
+public class PlayersResultsTableDataGetServlet extends JsonServlet
 {
 	@Override
 	protected Action getAction() {
@@ -27,21 +27,21 @@ public class PlayerResultsTableXlsGetServlet extends JsonServlet
 			@Override
 			public void doAction() throws Exception {
 				Long competitionEntityId = getLongParam(COMPETITION_ENTITY_ID_PARAM_NAME);
-				if (competitionEntityId == null)
+				if (competitionEntityId == null) {
 					throw new ClientException( concat(sb, "\"", COMPETITION_ENTITY_ID_PARAM_NAME, "\" parameter is not set") );
+				}
 
 				CompetitionEntityService service = getService(CompetitionEntityService.class);
 				Competition competition = service.getCompetition(competitionEntityId);
 
-				if (competition == null)
+				if (competition == null) {
 					throw new ClientException( concat(sb, "Competition not found for competitionEntityId = ", competitionEntityId) );
+				}
 
 				PlayersResultsTable table = new PlayersResultsTable();
 				table.fillTable(competition);
 
-				String fileName = concat(sb, "competition-", competitionEntityId, "-playerResultsTable.xlsx");
-				XSSFWorkbook workbook = PlayerResultsTableToXlsConverter.toXssfWorkbook(table);
-				writeToExcel(fileName, workbook);
+				writeSuccess(table);
 			}
 		};
 	}

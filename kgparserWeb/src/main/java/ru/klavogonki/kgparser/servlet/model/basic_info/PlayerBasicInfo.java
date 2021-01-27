@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser.servlet.model.basicInfo;
+package ru.klavogonki.kgparser.servlet.model.basic_info;
 
 import ru.klavogonki.kgparser.Player;
 import ru.klavogonki.kgparser.Rank;
@@ -17,6 +17,7 @@ public class PlayerBasicInfo extends JsonObject
 {
 	public PlayerBasicInfo() {
 	}
+
 	public PlayerBasicInfo(Player player) {
 		if (player.isGuest())
 		{

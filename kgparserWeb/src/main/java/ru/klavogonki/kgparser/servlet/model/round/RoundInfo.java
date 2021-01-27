@@ -4,22 +4,13 @@ import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.PlayerRoundResult;
 import ru.klavogonki.kgparser.PlayerRoundResultPlacesComparator;
 import ru.klavogonki.kgparser.Round;
-import ru.klavogonki.kgparser.servlet.model.basicInfo.CompetitionDictionary;
+import ru.klavogonki.kgparser.servlet.model.basic_info.CompetitionDictionary;
 import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.DateUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-/**
- * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
- * $HeadURL$
- * $Author$
- * $Revision$
- * $Date::                      $
- */
 
 /**
  * Объект, хранящий данные для отображения на странице заезда.
@@ -28,6 +19,7 @@ public class RoundInfo extends JsonObject
 {
 	public RoundInfo() {
 	}
+
 	public RoundInfo(Competition competition, Round round) {
 		this.competitionName = competition.getName();
 
@@ -42,20 +34,23 @@ public class RoundInfo extends JsonObject
 		this.bookName = round.getBookName();
 
 		List<PlayerRoundResult> results = round.getResults();
-		Collections.sort(results, new PlayerRoundResultPlacesComparator());
+		results.sort(new PlayerRoundResultPlacesComparator());
 
 		this.playerResults = new ArrayList<>();
-		for (PlayerRoundResult result : results)
+		for (PlayerRoundResult result : results) {
 			this.playerResults.add( new PlayerRoundResultInfo(result) );
+		}
 
 		// links to neighbour rounds
 		this.hasPreviousRound = (this.number > Round.FIRST_ROUND_NUMBER);
-		if (this.hasPreviousRound)
+		if (Boolean.TRUE.equals(this.hasPreviousRound)) { // ugly null-safe check, hail Sonar
 			this.previousRoundNumber = (this.number - 1);
+		}
 
 		this.hasNextRound = (this.number < (Round.FIRST_ROUND_NUMBER + competition.getRounds().size() - 1) );
-		if (this.hasNextRound)
+		if (Boolean.TRUE.equals(this.hasNextRound)) { // ugly null-safe check, hail Sonar
 			this.nextRoundNumber = (this.number + 1);
+		}
 	}
 
 	public String getCompetitionName() {
