@@ -1,3 +1,4 @@
+# for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
 # This workflow contains jobs for downloading player data
 name: Player Data Downloader
 on:
@@ -15,13 +16,43 @@ on:
         description: 'Number of Execution Threads'
         required: false
         default: 10
+      bucket-test:
+        description: 'Amazon S3 bucket name for test'
+        required: false
+        default: klavostat-test
+      bucket-data:
+        description: 'Amazon S3 bucket name for data'
+        required: false
+        default: klavostat-data
+      pages-branch:
+        description: 'Github Pages Branch Name'
+        required: false
+        default: main
 
 jobs:
   download:
     name: Download Player Data
     runs-on: ubuntu-latest
-    # for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
+    env:
+      LOG4J_XML_FILE_PATH: log4j2.xml
+      KGSTATS_JAR_FILE_PATH: kgstatsSrv/target/kgstats-srv-1.0.jar
+      KGSTATS_SRV_SQL_DIR: kgstatsSrv/src/main/resources/sql
+      SPRING_CONFIG_LOCATION: kgstatsSrv/src/main/resources/application.actions.properties
+      INPUT_CONFIG_FILE_NAME: config.json
+      OUTPUT_CONFIG_FILE_NAME: config-output.json
+      DATABASE_DUMP_FILE_NAME: database.sql
+      JSON_DATA_ZIP_FILE_NAME: json.zip
+      STATISTICS_ZIP_FILE_NAME: statistics.zip
+      DATABASE_DUMP_ZIP_FILE_NAME: database.zip
+      JSON_FILES_DIRECTORY_PATH: json
+      GENERATE_STATISTICS_DIRECTORY_NAME: stats
+      KGSTATS_WEB_ROOT_DIR: kgstatsWeb/src/main/webapp
+      GENERATE_STATISTICS_CONFIG_LOCATION: kgstatsSrv/src/main/resources/statistics/statistics-generator-config-generate-all.json
+      S3_BUCKET_TEST: ${{ github.event.inputs.bucket-test }}
+      S3_BUCKET_DATA: ${{ github.event.inputs.bucket-data }}
     steps:
+      # install jq (for generations config.json)
+      - run: sudo apt-get update && sudo apt-get install -y jq zip
       # Clone repository with all branches and tags into github virtual machine
       - uses: actions/checkout@v2
 
@@ -46,18 +77,30 @@ jobs:
       - name: Install KG Parser
         run: mvn install -Dmaven.javadoc.skip -Dmaven.test.skip=true
 
+      # Generate config file using values provided from manual dispatch
+      - name: Generate Config File
+        run: |
+          jq -n \
+            --arg jsonFilesRootDir "$GITHUB_WORKSPACE/$JSON_FILES_DIRECTORY_PATH" \
+            --arg threadsCount  "${{ github.event.inputs.threads }}"          \
+            --arg minPlayerId  "${{ github.event.inputs.first_id }}"          \
+            --arg maxPlayerId  "${{ github.event.inputs.last_id }}"           \
+            --arg statisticsPagesRootDir "$GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME" \
+            '{ "jsonFilesRootDir": $jsonFilesRootDir, "threadsCount": $threadsCount|tonumber, "minPlayerId": $minPlayerId|tonumber, "maxPlayerId": $maxPlayerId|tonumber, "statisticsPagesRootDir": $statisticsPagesRootDir }' > $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME
+
       # Set start time to variable
       - run: echo "::set-output name=start::$(date)"
         id: start_time
-      # Run Player Data Downloader with inputs provided from dispatch if present
-      # or run with defaults and save into data directory
-      - name: Download Data
-        # todo: pass paths to generated input file and output file
-        run: java -Dlog4j.configurationFile=log4j2.xml -jar kgstatsSrv/target/kgstats-srv-1.0.jar DOWNLOAD_PLAYER_DATA data ${{ github.event.inputs.first_id }} ${{ github.event.inputs.last_id }} ${{ github.event.inputs.threads }}
 
+      # Download player data into "jsonFilesRootDir" from $INPUT_CONFIG_FILE_NAME
+      - name: Download Player Data
+        run: java -Dfile.encoding=UTF8 -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH -jar $KGSTATS_JAR_FILE_PATH DOWNLOAD_PLAYER_DATA $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
+
+      # Set end time to variable
       - run: echo "::set-output name=end::$(date)"
         id: end_time
 
+      # Send message to the telegram group with start and end time of downloading json data
       - name: Telegram Message Notify
         uses: appleboy/telegram-action@v0.1.0
         with:
@@ -76,37 +119,34 @@ jobs:
                  End: ${{steps.end_time.outputs.end}}
             </code></pre>
 
-      # Archive all downloaded .json files
-      - name: Archive Data
-        run: tar cvzf "$(ls data).tar.gz" data/*
-
       # Configure AWS CLI with credentials from repository secrets
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
+          aws-access-key-id: ${{ secrets.KLAVOSTAT_S3_USER__AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.KLAVOSTAT_S3_USER__AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.KLAVOSTAT_S3_USER__AWS_DEFAULT_REGION }}
 
-      # Upload Archived Data into Bucket
-      - name: Copy Archived Data to S3
-        run: aws s3 cp "$(ls data).tar.gz" s3://dievri-kgparser
-
-      # Process downloaded files
+      # Create mysql database to which json data will be parsed
+      # see https://dba.stackexchange.com/a/76789/200298 on character encoding
       - name: Prepare MySQL database
         run: |
               sudo systemctl start mysql
-              sudo mysql -uroot -proot -e "create database actions;"
+              sudo mysql -uroot -proot -e "CREATE DATABASE actions CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+#      unknown collation on githubActions, probably it's an old MySQL version # todo: set up new 8+ MySQL
+#              sudo mysql -uroot -proot -e "CREATE DATABASE actions CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;"
 
+      # Parse downloaded data to MySQL Database
       - name: Parse json files and import data to the database
-        # todo: pass path to input file, it must be the file saved as output file by DOWNLOAD_PLAYER_DATA execution
-        run: java -jar kgstatsSrv/target/kgstats-srv-1.0.jar -Dspring.profiles.active=database -Dspring.config.name=application.actions.properties -Dspring.config.location=kgstatsSrv/src/main/resources/ IMPORT_JSON_TO_DATABASE "data" ${{ github.event.inputs.first_id }} ${{ github.event.inputs.last_id }} 1 "$(ls data)"
-
-      - name: Create Database Dump
-        run: sudo mysqldump -uroot -proot actions > "$(ls data).sql"
-
-      - name: Upload DB Dump to s3
-        run: aws s3 cp "$(ls data).sql" s3://dievri-kgparser
+        run: |
+            java -Dfile.encoding=UTF8                         \
+            -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH    \
+            -Dspring.profiles.active=database                 \
+            -Dspring.config.location=$SPRING_CONFIG_LOCATION  \
+            -jar $KGSTATS_JAR_FILE_PATH                       \
+            IMPORT_JSON_TO_DATABASE                           \
+            $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME
+            # Send message to the telegram group with start and end time of downloading json data
 
       - name: Telegram Message Notify
         uses: appleboy/telegram-action@v0.1.0
@@ -117,5 +157,94 @@ jobs:
           message: |
             <strong>GitHub Player Data Downloader (Manual Dispatch)</strong>
             <pre><code>
-              archive with json files and database dump uploaded to s3
+              JSON files successfully parsed and imported to database
             </code></pre>
+
+      # Add indexes to database
+      - name: Add indexes to Database
+        run: sudo mysql -uroot -proot actions < $KGSTATS_SRV_SQL_DIR/add-indexes.sql
+
+      # Create directory for importing static files from repo
+      - name: create directories
+        run: |
+          mkdir $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME
+          mkdir $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
+          mkdir $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/xlsx
+
+      # Generate static files using data from database
+      - name: generate static files
+        run: |
+          java -Dfile.encoding=UTF8                                 \
+          -Dlog4j.configurationFile=$LOG4J_XML_FILE_PATH            \
+          -Dspring.profiles.active=database                         \
+          -Dspring.config.location=$SPRING_CONFIG_LOCATION          \
+          -jar $KGSTATS_JAR_FILE_PATH                               \
+          GENERATE_STATISTICS_FROM_DATABASE                         \
+          $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME                \
+          $GENERATE_STATISTICS_CONFIG_LOCATION
+
+      - name: Telegram Message Notify
+        uses: appleboy/telegram-action@v0.1.0
+        with:
+          format: html
+          to: ${{ secrets.TGBOT_CHAT }}
+          token: ${{ secrets.TGBOT_TOKEN }}
+          message: |
+            <strong>GitHub Player Data Downloader (Manual Dispatch)</strong>
+            <pre><code>
+              Static files successfully generated
+            </code></pre>
+
+      # Copy style files and old statistics data
+      - name: copy static files from sources
+        run: |
+          cp -R $KGSTATS_WEB_ROOT_DIR/css $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME
+          cp -R $KGSTATS_WEB_ROOT_DIR/img $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME
+          cp $KGSTATS_WEB_ROOT_DIR/js/players-by-rank-chart.js $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
+          cp $KGSTATS_WEB_ROOT_DIR/js/stats-data.js $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
+          cp $KGSTATS_WEB_ROOT_DIR/js/stats-top-table.js $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME/js
+          cp -R $KGSTATS_WEB_ROOT_DIR/2020-12-09 $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME
+
+      # Create dump of parsed data database
+      - name: Create Database Dump
+        run: sudo mysqldump -uroot -proot actions >  "$GITHUB_WORKSPACE/$DATABASE_DUMP_FILE_NAME"
+
+      # Create zip archives and upload them to S3 buckets
+      - name: Draft Archiving
+        run: |
+          DATA_DOWNLOAD_START_DATE=$(jq -r .dataDownloadStartDateString $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME)
+          ZIP_FILES_DIRECTORY_PATH=$GITHUB_WORKSPACE/$DATA_DOWNLOAD_START_DATE
+          mkdir -p "$ZIP_FILES_DIRECTORY_PATH"
+          cp $GITHUB_WORKSPACE/$INPUT_CONFIG_FILE_NAME "$ZIP_FILES_DIRECTORY_PATH"
+          cp $GITHUB_WORKSPACE/$OUTPUT_CONFIG_FILE_NAME "$ZIP_FILES_DIRECTORY_PATH"
+          JSON_FILES_CURRENT_DOWNLOAD_DIRECTORY_PATH=$GITHUB_WORKSPACE/$JSON_FILES_DIRECTORY_PATH/$DATA_DOWNLOAD_START_DATE
+          JSON_DATA_ZIP_FILE_PATH=$ZIP_FILES_DIRECTORY_PATH/$JSON_DATA_ZIP_FILE_NAME
+          cd $JSON_FILES_DIRECTORY_PATH
+          zip -r "$JSON_DATA_ZIP_FILE_PATH" ./"$DATA_DOWNLOAD_START_DATE"
+          cd ..
+          DATABASE_DUMP_ZIP_FILE_PATH=$ZIP_FILES_DIRECTORY_PATH/$DATABASE_DUMP_ZIP_FILE_NAME
+          zip "$DATABASE_DUMP_ZIP_FILE_PATH" ./$DATABASE_DUMP_FILE_NAME
+          STATISTICS_ZIP_FILE_PATH=$ZIP_FILES_DIRECTORY_PATH/$STATISTICS_ZIP_FILE_NAME
+          zip -r "$STATISTICS_ZIP_FILE_PATH" ./$GENERATE_STATISTICS_DIRECTORY_NAME
+          aws s3 cp "$ZIP_FILES_DIRECTORY_PATH" "s3://$S3_BUCKET_DATA/$DATA_DOWNLOAD_START_DATE" --recursive
+          aws s3 rm s3://$S3_BUCKET_TEST --recursive
+          aws s3 cp $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME s3://$S3_BUCKET_TEST --recursive
+
+      # Deploy generated static files to github pages (https://kghackers.github.io)
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          external_repository: kghackers/kghackers.github.io
+          publish_branch: ${{ github.event.inputs.pages-branch }}
+          publish_dir: ./stats
+
+      # Always notify to telegram chat about outcome of job
+      # no matter failed or succeeded
+      - name: Notify Telegram
+        uses: yanzay/notify-telegram@v0.1.0
+        if: always()
+        with:
+          chat: ${{ secrets.TGBOT_CHAT }}
+          token: ${{ secrets.TGBOT_TOKEN }}
+          status: ${{ job.status }}
