@@ -12,6 +12,6 @@ public class Client {
     public void send(ParentDTO dto) {
         Sender sender = new Sender();
 
-        sender.send(dto);
+        dto.send(sender);
     }
 }
