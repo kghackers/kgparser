@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     # for local run --  $ act -j build -P ubuntu-latest=nektos/act-environments-ubuntu:18.04
     steps:
-      # Clone repository with all branches and tags into github virtual machine 
-      - uses: actions/checkout@v2
+      # Clone repository with all branches and tags into GitHub virtual machine
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
         
@@ -65,7 +65,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
@@ -84,7 +84,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     # exclude html directory from java analysis
     - name: Remove HTML directory
       run: rm -rf html
@@ -97,7 +97,7 @@ jobs:
         java-version: 21
 
          # for act caching download https://static.azul.com/zulu/bin/zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
-         # to root workdir an uncomment
+         # to root workdir uncomment
          # jdkFile: zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
 
     # Load packages from cache if present
