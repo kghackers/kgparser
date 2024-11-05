@@ -51,3 +51,31 @@ select id, name from klavogonki.voc where (deleted = 0);
 ## Поля
 
 Пока здесь только `id` и `name`, так что всех данных для `**GetStatsOverviewGameType**` нет.
+
+# voc20241105utf-8!.csv
+
+Здесь, наконец, удалось сделать выгрузку в кодировке `UTF-8`, а не `Windows-1251`.
+
+```sql
+select * from klavogonki.voc where (deleted = 0);
+```
+
+## Поля
+
+```csv
+"id";"created";"first_created";"name";"description";"user_id";"deleted";"rating";"rating_cnt";"url";"rows";"symbols";"type";"edit_for";"import";"difficulty";"public";"popularity";"info"
+```
+
+:exclamation: Внутри поля `description` могут быть переносы строк.  
+
+Пример словаря с переносами — https://klavogonki.ru/vocs/206105
+
+В поле `info` похоже, что сохраняется формат html (видимо, некое Rich-поле при редактуре поля),
+переносы выполнены через тэг `<br />`. 
+
+Эти данные должны замариться на все поля из `GetStatsOverviewGameType`
+
+:question: Однако непонятно, как заполняется поле `GetStatsOverviewGameType#book_done`.
+Может быть, сравнивается число отрезков в книге (`vocs.rows`) и пробег юзера по словарю?
+
+Но пробег может быть больше, чем длина словаря.
