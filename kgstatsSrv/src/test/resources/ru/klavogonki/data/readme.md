@@ -142,3 +142,19 @@ limit 500;
 ## Поля
 Только `playerId` и `carsCount`.
 
+
+# sumraces20240416.csv
+
+По сути является просто суммой всех пробегов по всем словарям из `userinfo`, сгруппированным по игрокам.
+
+Выбраны только игроки с ненулевым суммарным пробегом.
+
+```sql
+select 
+user_id, 
+sum(num_races) as sum_races 
+from klavogonki.userinfo 
+group by user_id 
+having (sum_races > 0);
+```
+
