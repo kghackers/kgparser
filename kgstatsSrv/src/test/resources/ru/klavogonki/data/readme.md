@@ -117,3 +117,28 @@ select id, login from klavogonki.user where (blocked != 0);
 
 ## Поля
 Только `id` и `login`.
+
+
+# cars20241101.csv
+
+Топ-500 игроков по числу машин в гараже.
+
+Бонусные машины тоже должны учитываться здесь.
+
+Теоретически максимально возможное число машин — 44, но у заблокированного уникума [pashkan](https://klavogonki.ru/u/#/155280/car/)
+было 46 машин (видимо, две уникальные кастомные).
+
+```sql
+select 
+user_id, 
+count(1) count
+from klavogonki.user_scores
+where (type = 'car')
+group by user_id
+order by count desc
+limit 500;
+```
+
+## Поля
+Только `playerId` и `carsCount`.
+
