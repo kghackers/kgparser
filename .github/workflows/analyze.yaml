@@ -28,8 +28,9 @@ jobs:
          # jdkFile: zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
 
       # Load packages from cache if present
+      # see https://github.com/actions/cache
       - name: Cache Maven packages
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -100,8 +101,9 @@ jobs:
          # jdkFile: zulu11.43.21-ca-jdk11.0.9-linux_x64.tar.gz
 
     # Load packages from cache if present
+    # see https://github.com/actions/cache
     - name: Cache Maven packages
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
