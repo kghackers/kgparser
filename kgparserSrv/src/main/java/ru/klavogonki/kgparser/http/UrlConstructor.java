@@ -169,4 +169,14 @@ public final class UrlConstructor {
     public static String getUserIdByLogin(String playerLogin) {
         return getLink(".fetchuser?login=%s", playerLogin);
     }
+
+    /**
+     * Возвращает пройденные части заданной книги для заданного игрока.
+     * @param playerId идентификатор игрока
+     * @param bookVocabularyId идентификатор книжного словаря
+     * @return Информация для экрана "Прогресс" по книге
+     */
+    public static String getUserBookProgress(int playerId, int bookVocabularyId) {
+        return getLink("/api/profile/get-book-parts?userId=%d&vocId=%d", playerId, bookVocabularyId);
+    }
 }
