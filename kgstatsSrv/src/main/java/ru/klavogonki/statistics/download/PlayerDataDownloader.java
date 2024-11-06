@@ -162,13 +162,16 @@ public class PlayerDataDownloader {
 
         // todo: use some nice library instead
         URL url = new URL(urlString);
-        String out = new Scanner(url.openStream(), StandardCharsets.UTF_8) // this line will require java 10
-            .useDelimiter("\\A")
-            .next();
 
-        logger.debug("Response for url {}:", urlString);
-        logger.debug(StringUtils.abbreviate(out, 100));  // do not spam the whole response to log!
-        return out;
+        try (Scanner scanner = new Scanner(url.openStream(), StandardCharsets.UTF_8)) {
+            String out = scanner // this line will require java 10
+                .useDelimiter("\\A")
+                .next();
+
+            logger.debug("Response for url {}:", urlString);
+            logger.debug(StringUtils.abbreviate(out, 100));  // do not spam the whole response to log!
+            return out;
+        }
     }
 
     static List<ImmutablePair<Integer, Integer>> split(Config config) {
