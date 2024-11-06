@@ -230,21 +230,21 @@ jobs:
           aws s3 rm s3://$S3_BUCKET_TEST --recursive
           aws s3 cp $GITHUB_WORKSPACE/$GENERATE_STATISTICS_DIRECTORY_NAME s3://$S3_BUCKET_TEST --recursive
 
-      # Deploy generated static files to github pages (https://kghackers.github.io)
-      - name: Deploy to Github Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
-          external_repository: kghackers/kghackers.github.io
-          publish_branch: ${{ github.event.inputs.pages-branch }}
-          publish_dir: ./stats
-
-      # Always notify to telegram chat about outcome of job
-      # no matter failed or succeeded
-      - name: Notify Telegram
-        uses: yanzay/notify-telegram@v0.1.0
-        if: always()
-        with:
-          chat: ${{ secrets.TGBOT_CHAT }}
-          token: ${{ secrets.TGBOT_TOKEN }}
-          status: ${{ job.status }}
+#      # Deploy generated static files to github pages (https://kghackers.github.io)
+#      - name: Deploy to Github Pages
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+#          external_repository: kghackers/kghackers.github.io
+#          publish_branch: ${{ github.event.inputs.pages-branch }}
+#          publish_dir: ./stats
+#
+#      # Always notify to telegram chat about outcome of job
+#      # no matter failed or succeeded
+#      - name: Notify Telegram
+#        uses: yanzay/notify-telegram@v0.1.0
+#        if: always()
+#        with:
+#          chat: ${{ secrets.TGBOT_CHAT }}
+#          token: ${{ secrets.TGBOT_TOKEN }}
+#          status: ${{ job.status }}
