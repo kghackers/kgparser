@@ -417,7 +417,10 @@ public class PlayerJsonParser {
         String err = response.getErr();
 
         if (StringUtils.isNotBlank(err)) {
-            if (!err.equals(ApiErrors.INVALID_USER_ID_ERROR) && !err.equals(ApiErrors.PERMISSION_BLOCKED_ERROR)) {
+            if (!err.equals(ApiErrors.INVALID_USER_ID_ERROR)
+                && !err.equals(ApiErrors.PERMISSION_BLOCKED_ERROR)
+                && !err.equals(ApiErrors.PERMISSION_FRIENDS)
+            ) {
                 throw new ParserException("Stats overview file %s: Unknown error: %s", statsOverviewFilePath, err);
             }
 

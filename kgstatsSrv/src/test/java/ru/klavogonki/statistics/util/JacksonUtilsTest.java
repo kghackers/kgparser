@@ -611,6 +611,27 @@ class JacksonUtilsTest {
                 .isEmpty();
         }
 
+        @Test
+        @DisplayName("Test parsing stats overview for a player who is hidden or denied the access to his/her statistics from everyone except his friends.")
+        void permissionFriendsOnly() {
+            File file = TestUtils.readFromStatisticsDownload("get-stats-overview-2001.json");
+
+            GetStatsOverviewResponse stats = JacksonUtils.parse(file, GetStatsOverviewResponse.class);
+            logPlayerStatsOverview(stats);
+
+            GetStatsOverviewResponseAssert
+                .assertThat(stats)
+                .isNotNull()
+                .hasErr(ApiErrors.PERMISSION_FRIENDS)
+                .hasOk(null);
+
+            assertThat(stats.getGametypes())
+                .isEmpty();
+
+            assertThat(stats.getRecentGametypes())
+                .isEmpty();
+        }
+
         private void logPlayerStatsOverview(final GetStatsOverviewResponse response) {
             logger.info("Player stats overview: ");
             logger.info(response);

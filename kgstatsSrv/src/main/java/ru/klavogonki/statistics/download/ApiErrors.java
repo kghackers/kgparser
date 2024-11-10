@@ -16,6 +16,9 @@ public final class ApiErrors {
     // happens in /get-stats-overview
     public static final String PERMISSION_BLOCKED_ERROR = "permission blocked";
 
+    // happens in /get-stats-overview (maybe "stats only visible to friends")
+    public static final String PERMISSION_FRIENDS = "permission friends";
+
     private ApiErrors() {
     }
 }
