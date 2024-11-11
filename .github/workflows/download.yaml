@@ -69,10 +69,10 @@ jobs:
 
       # Load packages from cache if present
       - name: Cache Maven packages
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-m2-${{ hashFiles('pom.xml', '*/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
       # Build project, run tests and send to SonarCloud for analysis
