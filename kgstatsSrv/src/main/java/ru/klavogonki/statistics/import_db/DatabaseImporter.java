@@ -141,7 +141,7 @@ public class DatabaseImporter {
 			.stream()
 			.map(PlayerEntity::getDbId)
 			.sorted()
-			.collect(Collectors.toList());
+			.toList();
 
 		if (existingPlayersWithId.isEmpty()) {
 			logger.debug("No players with playerId = {} found in the database. Nothing to delete.", playerId);

@@ -141,7 +141,7 @@ public enum Car {
         List<Car> carsWithId = Arrays
             .stream(Car.values())
             .filter(car -> car.id == carId)
-            .collect(Collectors.toList());
+            .toList();
 
         if (carsWithId.size() == 1) {
             return carsWithId.get(0);
@@ -151,7 +151,7 @@ public enum Car {
         List<Car> carsWithPersonalId = Arrays
             .stream(Car.values())
             .filter(car -> (car.personalId != null) && (car.personalId == carId))
-            .collect(Collectors.toList());
+            .toList();
 
         if (carsWithPersonalId.size() == 1) {
             return carsWithPersonalId.get(0);
