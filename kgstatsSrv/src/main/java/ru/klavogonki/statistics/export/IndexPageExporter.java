@@ -177,7 +177,7 @@ public class IndexPageExporter implements DataExporter {
         PlayerEntity playerEntity = new PlayerEntity();
         playerEntity.setPlayerId(TOP_1_BY_RATING_EXPERIENCE_IN_ONE_MONTH_PLAYER_ID);
         playerEntity.setLogin("iforrest");
-        playerEntity.setRankLevel(Rank.getLevel(Rank.cyberracer).intValue());
+        playerEntity.setRankLevel(Rank.cyberracer.level);
 
         return playerEntity;
     }

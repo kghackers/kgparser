@@ -74,8 +74,8 @@ public final class ErrorsCountChartFiller {
             HighChartSeries series = new HighChartSeries();
             series.setName(player.getName());
             series.setRank(player.getRank().toString());
-            series.setRankDisplayName(Rank.getDisplayName(player.getRank()));
-            series.setColor(Rank.getColor(player.getRank()));
+            series.setRankDisplayName(player.getRank().displayName);
+            series.setColor(player.getRank().color);
             series.setData(errorsCounts);
             seriesList.add(series);
         }

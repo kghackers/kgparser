@@ -1,5 +1,7 @@
 package ru.klavogonki.kgparser;
 
+import java.util.Arrays;
+
 import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
@@ -10,48 +12,69 @@ public enum Rank
 	/**
 	 * Новичок. Рекорд &lt; 100.
 	 */
-	novice,
+	novice(1, "Новичок", "#8D8D8D"),
 
 	/**
 	 * Любитель. Рекорд от 100 до 199.
 	 */
-	amateur,
+	amateur(2, "Любитель", "#4F9A97"),
 
 	/**
 	 * Таксист. Рекорд от 200 до 299.
 	 */
-	cabman,
+	cabman(3, "Таксист", "#187818"),
 
 	/**
 	 * Профи. Рекорд от 300 до 399.
 	 */
-	pro,
+	pro(4, "Профи", "#8C8100"),
 
 	/**
 	 * Гонщик. Рекорд от 400 до 499.
 	 */
-	racer,
+	racer(5, "Гонщик", "#BA5800"),
 
 	/**
 	 * Маньяк. Рекорд от 500 до 599.
 	 */
-	maniac,
+	maniac(6, "Маньяк", "#BC0143"),
 
 	/**
 	 * Супермен. Рекорд от 600 до 699.
 	 */
-	superman,
+	superman(7, "Супермен", "#5E0B9E"),
 
 	/**
 	 * Кибергонщик. Рекорд от 700 до 799.
 	 */
-	cyberracer,
+	cyberracer(8, "Кибергонщик", "#00037C"),
 
 	/**
 	 * Экстракибер. Рекорд &gt;= 800.
 	 */
-	extracyber,
+	extracyber(9, "Экстракибер", "#061956"),
 	;
+
+	Rank(int level, String displayName, String color) {
+		this.level = level;
+		this.displayName = displayName;
+		this.color = color;
+	}
+
+	/**
+	 * Числовой код ранга (level).
+	 */
+	public final int level;
+
+	/**
+	 * Русское название ранга для отображения.
+	 */
+	public final String displayName;
+
+	/**
+	 * Цвет на КГ, соответствующий рангу, в форме "#00FF02".
+	 */
+	public final String color;
 
 	/**
 	 * @param normalRecord рекорд в {@linkplain StandardDictionary#normal режиме "Обычный"}
@@ -85,91 +108,21 @@ public enum Rank
 		return Rank.extracyber; // рекорд в обычном >= 700 -> экстракибер
 	}
 
-	/**
-	 * @param rank ранг
-	 * @return цвет на КГ, соответствующий рангу, в форме "#00FF02".
-	 */
-	public static String getColor(Rank rank) {
-		switch (rank)
-		{
-			case novice: return "#8D8D8D";
-			case amateur: return "#4F9A97";
-			case cabman: return "#187818";
-			case pro: return "#8C8100";
-			case racer: return "#BA5800";
-			case maniac: return "#BC0143";
-			case superman: return "#5E0B9E";
-			case cyberracer: return "#00037C";
-			case extracyber: return "#061956";
-
-			default: throw new IllegalArgumentException( concat("Incorrect rank: ", rank) );
-		}
-	}
-
 	public static String getDisplayName(int level) {
-		return getDisplayName(Rank.getRank(level));
+		return Rank.getRank(level).displayName;
 	}
 
-	/**
-	 * @param rank ранг
-	 * @return русское название ранга для отображения
-	 */
-	public static String getDisplayName(Rank rank) {
-		switch (rank)
-		{
-			case novice: return "Новичок";
-			case amateur: return "Любитель";
-			case cabman: return "Таксист";
-			case pro: return "Профи";
-			case racer: return "Гонщик";
-			case maniac: return "Маньяк";
-			case superman: return "Супермен";
-			case cyberracer: return "Кибергонщик";
-			case extracyber: return "Экстракибер";
-
-			default: throw new IllegalArgumentException( concat("Incorrect rank: ", rank) );
-		}
-	}
-
-	/**
-	 * @param rank ранг
-	 * @return числовой код ранга (level)
-	 */
-	public static Byte getLevel(Rank rank) { // todo: change to int, stop this perversion!
-		switch (rank)
-		{
-			case novice: return 1;
-			case amateur: return 2;
-			case cabman: return 3;
-			case pro: return 4;
-			case racer: return 5;
-			case maniac: return 6;
-			case superman: return 7;
-			case cyberracer: return 8;
-			case extracyber: return 9;
-
-			default: throw new IllegalArgumentException( concat("Incorrect rank: ", rank) );
-		}
-	}
 	/**
 	 * @param level числовой код ранга
 	 * @return ранг с указанным числовым кодом
 	 */
 	public static Rank getRank(int level) {
-		switch (level)
-		{
-			case 1: return novice;
-			case 2: return amateur;
-			case 3: return cabman;
-			case 4: return pro;
-			case 5: return racer;
-			case 6: return maniac;
-			case 7: return superman;
-			case 8: return cyberracer;
-			case 9: return extracyber;
-
-			default: throw new IllegalArgumentException( concat("Incorrect rank level: " + level) );
-		}
+		return Arrays.stream(Rank.values())
+			.filter( rank -> rank.level == level )
+			.findFirst()
+			.orElseThrow(() ->
+				new IllegalArgumentException( concat("Incorrect rank level: " + level) )
+			);
 	}
 
 	/**

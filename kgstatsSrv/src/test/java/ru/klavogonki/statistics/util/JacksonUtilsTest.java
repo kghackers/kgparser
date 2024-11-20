@@ -64,8 +64,8 @@ class JacksonUtilsTest {
                 .assertThat(summary)
                 .hasErr(null)
                 .hasIsOnline(Boolean.TRUE)
-                .hasLevel(Rank.getLevel(Rank.superman).intValue())
-                .hasTitle(Rank.getDisplayName(Rank.superman))
+                .hasLevel(Rank.superman.level)
+                .hasTitle(Rank.superman.displayName)
                 .hasBlocked(0);
 
             GetSummaryUser user = summary.getUser();
@@ -109,8 +109,8 @@ class JacksonUtilsTest {
                 .assertThat(summary)
                 .hasErr(null)
                 .hasIsOnline(Boolean.FALSE)
-                .hasLevel(Rank.getLevel(Rank.maniac).intValue())
-                .hasTitle(Rank.getDisplayName(Rank.maniac))
+                .hasLevel(Rank.maniac.level)
+                .hasTitle(Rank.maniac.displayName)
                 .hasBlocked(0);
 
             GetSummaryUser user = summary.getUser();
@@ -153,8 +153,8 @@ class JacksonUtilsTest {
                 .assertThat(summary)
                 .hasErr(null)
                 .hasIsOnline(Boolean.TRUE)
-                .hasLevel(Rank.getLevel(Rank.novice).intValue())
-                .hasTitle(Rank.getDisplayName(Rank.novice))
+                .hasLevel(Rank.novice.level)
+                .hasTitle(Rank.novice.displayName)
                 .hasBlocked(0);
 
             GetSummaryUser user = summary.getUser();
@@ -195,7 +195,7 @@ class JacksonUtilsTest {
                 .assertThat(summary)
                 .hasErr(null)
                 .hasIsOnline(Boolean.FALSE)
-                .hasLevel(Rank.getLevel(Rank.superman).intValue())
+                .hasLevel(Rank.superman.level)
                 .hasTitle(Rank.KLAVO_MECHANIC_TITLE)
                 .hasBlocked(0);
 

@@ -26,7 +26,7 @@ public class ExampleTemplate extends FreemarkerTemplate {
         PlayerEntity player = new PlayerEntity();
         player.setLogin("nosferatum");
         player.setPlayerId(242585);
-        player.setRankLevel(Rank.getLevel(Rank.superman).intValue());
+        player.setRankLevel(Rank.superman.level);
 
         templateData.put("testPlayer", player);
 

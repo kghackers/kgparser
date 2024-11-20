@@ -16,6 +16,6 @@ public class RankComparator implements Comparator<Rank>
 {
 	@Override
 	public int compare(Rank o1, Rank o2) {
-		return Rank.getLevel(o1).compareTo( Rank.getLevel(o2) );
+		return Integer.compare(o1.level, o2.level);
 	}
 }

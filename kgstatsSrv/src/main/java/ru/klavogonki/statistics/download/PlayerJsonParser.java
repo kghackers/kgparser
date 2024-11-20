@@ -251,7 +251,7 @@ public class PlayerJsonParser {
             throw new ParserException("Summary file %s: summary.title is null or blank", summaryFilePath);
         }
 
-        String expectedRankTitle = Rank.getDisplayName(rank);
+        String expectedRankTitle = rank.displayName;
         if (!title.equals(expectedRankTitle) && !title.equals(Rank.KLAVO_MECHANIC_TITLE)) {
             throw new ParserException("Summary file %s: summary.title has incorrect value %s, must be %s", summaryFilePath, title, expectedRankTitle);
         }

@@ -19,9 +19,9 @@ public class RankDto extends JsonObject
 			throw new IllegalArgumentException("rank cannot be null");
 
 		this.name = rank.toString();
-		this.level = Rank.getLevel(rank);
-		this.color = Rank.getColor(rank);
-		this.displayName = Rank.getDisplayName(rank);
+		this.level = rank.level;
+		this.color = rank.color;
+		this.displayName = rank.displayName;
 	}
 
 	public String getName() {

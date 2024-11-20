@@ -28,7 +28,7 @@ public final class ExcelUtils {
     }
 
     public static byte[] getRgb(Rank rank) {
-        return getRgb(Rank.getColor(rank));
+        return getRgb(rank.color);
     }
 
     public static byte[] getRgb(final String hexColor) {

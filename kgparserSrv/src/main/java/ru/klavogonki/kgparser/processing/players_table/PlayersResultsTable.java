@@ -104,7 +104,7 @@ public class PlayersResultsTable extends JsonObject
 			PlayerRow row = new PlayerRow();
 			row.addCell( player.getProfileId().toString() );
 			row.addCell( player.getName() );
-			row.addCell( Rank.getDisplayName(player.getRank()) );
+			row.addCell( player.getRank().displayName );
 			row.addCell( (player.getNormalRecord() == null) ? null : player.getNormalRecord().toString() );
 
 			for (Round round : competition.getRounds())

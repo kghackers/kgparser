@@ -61,7 +61,7 @@ public class Player extends JsonObject implements Comparable<Player>
 		if ( isGuest() )
 			return Rank.GUEST_COLOR;
 
-		return Rank.getColor( getRank() );
+		return getRank().color;
 	}
 
 	@Json(exclude = true)

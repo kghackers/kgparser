@@ -13,7 +13,7 @@ public class PlayersByRankCount {
         Rank rank = Rank.getRank(rankLevel);
 
         this.rankName = rank.name();
-        this.rankDisplayName = Rank.getDisplayName(rank);
+        this.rankDisplayName = rank.displayName;
     }
 
     private Integer rankLevel;
