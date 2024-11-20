@@ -566,7 +566,7 @@ class JacksonUtilsTest {
                 .hasBookDone(null) // bookDone set for book dictionaries only
             ;
 
-            // minimal 0/null info for a brand new user
+            // minimal 0/null info for a brand-new user
             GetStatsOverviewGameTypeInfo normalStatsInfo = normalStats.getInfo();
             GetStatsOverviewGameTypeInfoAssert
                 .assertThat(normalStatsInfo)

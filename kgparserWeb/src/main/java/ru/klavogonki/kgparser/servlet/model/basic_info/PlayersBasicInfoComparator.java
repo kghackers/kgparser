@@ -3,8 +3,8 @@ package ru.klavogonki.kgparser.servlet.model.basic_info;
 import java.util.Comparator;
 
 /**
- * Упорядочивает игроков сначала по убыванию количества доездов в соревновании
- * , а внутри одинакового количества заездов &mdash; по имени.
+ * Упорядочивает игроков сначала по убыванию количества доездов в соревновании,
+ *  а внутри одинакового количества заездов &mdash; по имени.
  */
 public class PlayersBasicInfoComparator implements Comparator<PlayerBasicInfo>
 {

@@ -14,7 +14,7 @@ public abstract class ExcelTemplate<D extends ExcelExportContextData> {
 
     protected List<D> players = new ArrayList<>();
 
-    // Sheet name in excel is limited to 31 chars, it will be to 31 characters if too long
+    // Sheet name in Excel is limited to 31 chars, it will be to 31 characters if too long
     // @see https://excel.uservoice.com/forums/304921-excel-for-windows-desktop-application/suggestions/10770162-allow-31-characters-in-a-sheet-name
     public abstract String getSheetName();
 

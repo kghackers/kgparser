@@ -99,7 +99,7 @@ class CarTest {
         assertThat(publishedPersonalCarByPersonalId).isEqualTo(Car.TRAM);
 
         assertThatThrownBy(() -> {
-            Car.getById(0);// non-existing car id
+            Car.getById(0); // non-existing car id
         })
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("0 cars")

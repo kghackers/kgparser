@@ -50,27 +50,56 @@ public class PlayerVocabularyDto
 
     // данные игрока по конкретному словарю, PlayerVocabularyStatsEntity
 
-    private Integer racesCount; // пробег игрока по словарю
+    /**
+     * Пробег игрока по словарю.
+     */
+    private Integer racesCount;
 
-    private Double averageSpeed; // средняя скорость игрока по словарю, знаков в минуту
+    /**
+     * Средняя скорость игрока по словарю, знаков в минуту.
+     */
+    private Double averageSpeed;
 
-    private Integer bestSpeed; // рекорд игрока по словарю, знаков в минуту
+    /**
+     * Рекорд игрока по словарю, знаков в минуту.
+     */
+    private Integer bestSpeed;
 
-    private Double averageError; // процент ошибок игрока по словарю, в процентах
+    /**
+     * Процент ошибок игрока по словарю, в процентах.
+     */
+    private Double averageError; //
 
-    private String haul; // время, проведённое игроком в словаре, в секундах. Отформатированное для показа в UI
+    /**
+     * Время, проведённое игроком в словаре, в секундах. Отформатированное для показа в UI.
+     */
+    private String haul;
 
-    private Integer haulInteger; // true haul, for order number
+    /**
+     * True haul, for order number.
+     */
+    private Integer haulInteger;
 
-    private Integer qual; // на сколько пройдена квалификация по словарю. Рекорды в словаре засчитываются в пределах 1.2 * qual.
+    /**
+     * На сколько пройдена квалификация по словарю. Рекорды в словаре засчитываются в пределах 1.2 * qual.
+     */
+    private Integer qual;
 
     // don't care about dirty
     // string since Java8 Date/Time formatting does not work in Freemarker
     // see https://stackoverflow.com/questions/32063276/java-time-java-8-support-in-freemarker
-    private String updated; // Время апдейта результата игроков по словарю. Московское время.
+    /**
+     * Время апдейта результата игроков по словарю. Московское время.
+     */
+    private String updated;
 
-    // exact value of PlayerVocabularyStatsEntity#updated, for Excel
+    /**
+     * Exact value of PlayerVocabularyStatsEntity#updated, for Excel
+     */
     private LocalDateTime updatedDateTime;
 
-    private Boolean bookDone; // пройдена ли книга. Заполнено только для словарей-книг.
+    /**
+     * Пройдена ли книга. Заполнено только для словарей-книг.
+     */
+    private Boolean bookDone;
 }

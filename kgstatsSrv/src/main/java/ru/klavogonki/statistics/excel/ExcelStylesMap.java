@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /**
  * We cannot use more than 64000 cell styles in Excel template.
- * Therefore we have to pre-create all required styles and reuse them.
+ * Therefore, we have to pre-create all required styles and reuse them.
  * @see <a href="https://bz.apache.org/bugzilla/show_bug.cgi?id=63613">Bug in Apache POI</a>
  * @see <a href="https://docs.microsoft.com/en-us/office/troubleshoot/excel/too-many-different-cell-formats-in-excel">You receive a "Too many different cell formats" error message in Excel</a>
  */

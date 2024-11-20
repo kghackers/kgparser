@@ -85,21 +85,45 @@ public class PlayerVocabularyStatsEntity implements Serializable {
      */
     private Integer vocabularyTextType;
 
-    private Integer racesCount; // пробег игрока по словарю
+    /**
+     * Пробег игрока по словарю.
+     */
+    private Integer racesCount;
 
-    private Double averageSpeed; // средняя скорость игрока по словарю, знаков в минуту
+    /**
+     * Средняя скорость игрока по словарю, знаков в минуту.
+     */
+    private Double averageSpeed;
 
-    private Integer bestSpeed; // рекорд игрока по словарю, знаков в минуту
+    /**
+     * Рекорд игрока по словарю, знаков в минуту.
+     */
+    private Integer bestSpeed;
 
-    private Double averageError; // процент ошибок игрока по словарю, в процентах
+    /**
+     * Процент ошибок игрока по словарю, в процентах.
+     */
+    private Double averageError;
 
-    private Integer haul; // время, проведённое игроком в словаре, в секундах
+    /**
+     * Время, проведённое игроком в словаре, в секундах
+     */
+    private Integer haul;
 
-    private Integer qual; // на сколько пройдена квалификация по словарю. Рекорды в словаре засчитываются в пределах 1.2 * qual.
+    /**
+     * На сколько пройдена квалификация по словарю. Рекорды в словаре засчитываются в пределах 1.2 * qual.
+     */
+    private Integer qual;
 
     private Integer dirty; // todo: wtf is this?
 
-    private LocalDateTime updated; // Время апдейта результата игроков по словарю. Московское время.
+    /**
+     * Время апдейта результата игроков по словарю. Московское время.
+     */
+    private LocalDateTime updated;
 
-    private Boolean bookDone; // пройдена ли книга. Заполнено только для словарей-книг.
+    /**
+     * Пройдена ли книга. Заполнено только для словарей-книг.
+     */
+    private Boolean bookDone;
 }
