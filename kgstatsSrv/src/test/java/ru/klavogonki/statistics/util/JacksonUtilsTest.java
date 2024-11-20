@@ -90,7 +90,7 @@ class JacksonUtilsTest {
                 .hasCar(Car.F1.id)
                 .hasColor("#BF1300");
 
-            Map<String, Integer> tuning = (Map<String, Integer>) car.getTuning();
+            Map<String, Integer> tuning = getNonEmptyTuning(car);
             assertThat(tuning)
                 .hasSize(2)
                 .containsEntry("0", 3)
@@ -135,9 +135,7 @@ class JacksonUtilsTest {
                 .hasCar(Car.CARAVEL.personalId)
                 .hasColor("#000000");
 
-            List<Integer> tuning = (List<Integer>) car.getTuning();
-            assertThat(tuning)
-                .isEmpty();
+            assertEmptyTunning(car);
         }
 
         @Test
@@ -178,9 +176,7 @@ class JacksonUtilsTest {
                 .hasCar(Car.ZAZ_965.id)
                 .hasColor("#777777");
 
-            List<Integer> tuning = (List<Integer>) car.getTuning();
-            assertThat(tuning)
-                .isEmpty();
+            assertEmptyTunning(car);
         }
 
         @Test
@@ -221,7 +217,7 @@ class JacksonUtilsTest {
                 .hasCar(Car.AUDI_TT.id)
                 .hasColor("#893425");
 
-            Map<String, Integer> tuning = (Map<String, Integer>) car.getTuning();
+            Map<String, Integer> tuning = getNonEmptyTuning(car);
             assertThat(tuning)
                 .hasSize(1)
                 .containsEntry("1", 1);
@@ -257,6 +253,26 @@ class JacksonUtilsTest {
         private void logPlayerSummary(final GetSummaryResponse summary) {
             logger.info("Player summary: ");
             logger.info(summary);
+        }
+
+        private void assertEmptyTunning(ru.klavogonki.openapi.model.Car car) {
+            List<Integer> tuning = getEmptyTuning(car);
+
+            assertThat(tuning).isEmpty();
+        }
+
+        @SuppressWarnings("unchecked")
+        private List<Integer> getEmptyTuning(ru.klavogonki.openapi.model.Car car) {
+            return (List<Integer>) car.getTuning();
+        }
+
+        @SuppressWarnings("unchecked")
+        private Map<String, Integer> getNonEmptyTuning(ru.klavogonki.openapi.model.Car car) {
+            Map<String, Integer> tuning = (Map<String, Integer>) car.getTuning();
+
+            assertThat(tuning).isNotEmpty();
+
+            return tuning;
         }
     }
 
