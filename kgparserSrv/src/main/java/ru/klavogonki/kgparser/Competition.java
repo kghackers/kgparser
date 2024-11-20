@@ -275,7 +275,7 @@ public class Competition extends JsonObject
 	}
 
 	/**
-	 * @param dictionaryCode строковый  код словаря
+	 * @param dictionaryCode строковый код словаря
 	 * @return <code>true</code> &mdash; если соревнование содержит хотя бы один заезд по словарю с указанным кодом
 	 * <br>
 	 * <code>false</code> &mdash; если соревнование не содержит ни одного заезда по словарю с указанным кодом

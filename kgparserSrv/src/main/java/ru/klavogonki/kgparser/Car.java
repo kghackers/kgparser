@@ -2,7 +2,6 @@ package ru.klavogonki.kgparser;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * List of cars with ids and Russian names.
