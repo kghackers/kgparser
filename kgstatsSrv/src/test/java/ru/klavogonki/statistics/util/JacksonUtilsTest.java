@@ -146,7 +146,6 @@ class JacksonUtilsTest {
             GetSummaryResponse summary = JacksonUtils.parse(file, GetSummaryResponse.class);
             logPlayerSummary(summary);
 
-
             GetSummaryResponseAssert
                 .assertThat(summary)
                 .hasErr(null)
