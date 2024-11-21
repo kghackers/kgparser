@@ -17,6 +17,7 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<kotlin.version>2.0.21</kotlin.version>
 		<org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
 		<lombok.version>1.18.34</lombok.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
@@ -41,7 +42,7 @@
 		<maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
 		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
 		<maven-war-plugin.version>3.4.0</maven-war-plugin.version>
-		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+		<maven-javadoc-plugin.version>3.11.1</maven-javadoc-plugin.version>
 		<maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
 		<openapi-generator-maven-plugin.version>5.0.0</openapi-generator-maven-plugin.version>
 		<build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
@@ -158,9 +159,25 @@
 	</build>
 
 	<!-- see https://stackoverflow.com/a/37280943/8534088-->
-	<!-- dependencies will be ALWAYS inherited by all child modules -->
+	<!-- dependencies will ALWAYS be inherited by all child modules -->
 
 	<dependencies>
+
+		<!-- Kotlin dependency -->
+		<!-- see https://kotlinlang.org/docs/maven.html#dependencies -->
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib</artifactId>
+			<version>${kotlin.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-reflect</artifactId>
+			<version>${kotlin.version}</version>
+		</dependency>
+
+
 		<!-- Use log4j2 instead of slf4j -->
 		<!-- see https://stackoverflow.com/a/41500347/8534088 -->
 		<dependency>
