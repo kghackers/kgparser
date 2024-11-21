@@ -150,18 +150,27 @@
 			</plugin>
 
 			<!-- see https://kotlinlang.org/docs/maven.html#compile-kotlin-and-java-sources -->
+			<!-- see https://kotlinlang.org/docs/lombok.html#maven -->
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
 				<artifactId>kotlin-maven-plugin</artifactId>
 				<version>${kotlin.version}</version>
-				<extensions>true</extensions> <!-- You can set this option
-            to automatically take information about lifecycles -->
+				<extensions>true</extensions> <!-- You can set this option to automatically take information about lifecycles -->
+
+				<configuration>
+					<compilerPlugins>
+						<plugin>lombok</plugin>
+					</compilerPlugins>
+					<pluginOptions>
+						<option>lombok:config=${project.basedir}/src/main/java/lombok.config</option>
+					</pluginOptions>
+				</configuration>
+
 				<executions>
 					<execution>
 						<id>compile</id>
 						<goals>
-							<goal>compile</goal> <!-- You can skip the <goals> element
-                        if you enable extensions for the plugin -->
+							<goal>compile</goal> <!-- You can skip the <goals> element if you enable extensions for the plugin -->
 						</goals>
 						<configuration>
 							<sourceDirs>
@@ -173,8 +182,7 @@
 					<execution>
 						<id>test-compile</id>
 						<goals>
-							<goal>test-compile</goal> <!-- You can skip the <goals> element
-                    if you enable extensions for the plugin -->
+							<goal>test-compile</goal> <!-- You can skip the <goals> element if you enable extensions for the plugin -->
 						</goals>
 						<configuration>
 							<sourceDirs>
@@ -184,6 +192,24 @@
 						</configuration>
 					</execution>
 				</executions>
+
+				<!-- Enable use Lombok-generated code from Java classes in Kotlin -->
+				<!-- see https://github.com/kotlin-hands-on/kotlin-lombok-examples/blob/master/kotlin_lombok_maven/nokapt/pom.xml -->
+				<dependencies>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-lombok</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
+<!--
+					<dependency>
+						<groupId>org.projectlombok</groupId>
+						<artifactId>lombok</artifactId>
+						<version>${lombok.version}</version>
+						<scope>provided</scope>
+					</dependency>
+-->
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

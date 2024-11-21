@@ -29,6 +29,27 @@ public class Config {
     // @see ExportContext
     private String statisticsPagesRootDir;
 
+    // Explicit non-Lombok getters added to make the usage from the Kotlin clas work (see ExportContext).
+    public int getMinPlayerId() {
+        return minPlayerId;
+    }
+
+    public int getMaxPlayerId() {
+        return maxPlayerId;
+    }
+
+    public OffsetDateTime getDataDownloadStartDate() {
+        return dataDownloadStartDate;
+    }
+
+    public OffsetDateTime getDataDownloadEndDate() {
+        return dataDownloadEndDate;
+    }
+
+    public String getStatisticsPagesRootDir() {
+        return statisticsPagesRootDir;
+    }
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY) // do not de-serialize, there is no setter and no field
     public int getTotalPlayers() {
         return maxPlayerId - minPlayerId + 1;
