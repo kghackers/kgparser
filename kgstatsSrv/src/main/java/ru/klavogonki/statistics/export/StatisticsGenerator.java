@@ -120,31 +120,31 @@ public class StatisticsGenerator {
         logger.debug("{}: {}", StatisticsGeneratorConfig.class.getSimpleName(), generatorConfig);
 
         // global tops exporters
-        export(context, generatorConfig.isExportIndexPage(), indexPageExporter);
-        export(context, generatorConfig.isExportTopBySpeed(), topBySpeedExporter);
-        export(context, generatorConfig.isExportTop500Pages(), top500PagesExporter);
-        export(context, generatorConfig.isExportPlayersByRank(), playersByRankExporter);
+        export(context, generatorConfig.getExportIndexPage(), indexPageExporter);
+        export(context, generatorConfig.getExportTopBySpeed(), topBySpeedExporter);
+        export(context, generatorConfig.getExportTop500Pages(), top500PagesExporter);
+        export(context, generatorConfig.getExportPlayersByRank(), playersByRankExporter);
 
         // standard vocabularies exporters
-        export(context, generatorConfig.isExportNormalTop(), normalTopExporter);
-        export(context, generatorConfig.isExportAbraTop(), abraTopExporter);
-        export(context, generatorConfig.isExportReferatsTop(), referatsTopExporter);
-        export(context, generatorConfig.isExportNoErrorTop(), noErrorTopExporter);
-        export(context, generatorConfig.isExportMarathonTop(), marathonTopExporter);
-        export(context, generatorConfig.isExportCharsTop(), charsTopExporter);
-        export(context, generatorConfig.isExportDigitsTop(), digitsTopExporter);
-        export(context, generatorConfig.isExportSprintTop(), sprintTopExporter);
+        export(context, generatorConfig.getExportNormalTop(), normalTopExporter);
+        export(context, generatorConfig.getExportAbraTop(), abraTopExporter);
+        export(context, generatorConfig.getExportReferatsTop(), referatsTopExporter);
+        export(context, generatorConfig.getExportNoErrorTop(), noErrorTopExporter);
+        export(context, generatorConfig.getExportMarathonTop(), marathonTopExporter);
+        export(context, generatorConfig.getExportCharsTop(), charsTopExporter);
+        export(context, generatorConfig.getExportDigitsTop(), digitsTopExporter);
+        export(context, generatorConfig.getExportSprintTop(), sprintTopExporter);
 
         // non-standard vocabularies exporters
-        export(context, generatorConfig.isExportNormalInEnglishTop(), normalInEnglishTopExporter);
-        export(context, generatorConfig.isExportMiniMarathonTop(), miniMarathonTopExporter);
-        export(context, generatorConfig.isExportShortTextsTop(), shortTextsTopExporter);
-        export(context, generatorConfig.isExportFrequencyVocabularyTop(), frequencyVocabularyTopExporter);
-        export(context, generatorConfig.isExportOneHundredRussianTop(), oneHundredRussianTopExporter);
-        export(context, generatorConfig.isExportDigitsOneHundredTop(), digitsOneHundredTopExporter);
-        export(context, generatorConfig.isExportTrainingIndexFingersTop(), trainingIndexFingersTopExporter);
-        export(context, generatorConfig.isExportRingFingersTop(), ringFingersTopExporter);
-        export(context, generatorConfig.isExportPinkiesPlusTop(), pinkiesPlusTopExporter);
+        export(context, generatorConfig.getExportNormalInEnglishTop(), normalInEnglishTopExporter);
+        export(context, generatorConfig.getExportMiniMarathonTop(), miniMarathonTopExporter);
+        export(context, generatorConfig.getExportShortTextsTop(), shortTextsTopExporter);
+        export(context, generatorConfig.getExportFrequencyVocabularyTop(), frequencyVocabularyTopExporter);
+        export(context, generatorConfig.getExportOneHundredRussianTop(), oneHundredRussianTopExporter);
+        export(context, generatorConfig.getExportDigitsOneHundredTop(), digitsOneHundredTopExporter);
+        export(context, generatorConfig.getExportTrainingIndexFingersTop(), trainingIndexFingersTopExporter);
+        export(context, generatorConfig.getExportRingFingersTop(), ringFingersTopExporter);
+        export(context, generatorConfig.getExportPinkiesPlusTop(), pinkiesPlusTopExporter);
     }
 
     // todo: think about moving StatisticsGeneratorConfig field determination to Exporter interface

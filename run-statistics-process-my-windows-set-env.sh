@@ -1,4 +1,5 @@
-export ROOT_WORKING_DIR=/d/kg/
+#export ROOT_WORKING_DIR=/d/kg/
+export ROOT_WORKING_DIR=/c/kg/2024.11.11
 
 export LOG4J_XML_FILE_PATH=./log4j2.xml
 
