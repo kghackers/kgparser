@@ -1,6 +1,7 @@
 package ru.klavogonki.statistics.freemarker;
 
 import ru.klavogonki.statistics.export.ExportContext;
+import ru.klavogonki.statistics.export.ExporterUtils;
 
 /**
  * Aggregates names/paths of all pages, so that we can pass them to FreeMarker templates
@@ -11,7 +12,7 @@ public final class PageUrls {
     // html files
     public static final String INDEX = "index.html";
 
-    public static final String TOP_BY_BEST_SPEED_PAGE_1 = removeLeadingSlash(getTopBySpeedPageFilePath("", 1));
+    public static final String TOP_BY_BEST_SPEED_PAGE_1 = removeLeadingSlash(getTopBySpeedPageFilePath("", ExporterUtils.FIRST_PAGE_NUMBER));
     public static final String TOP_BY_BEST_SPEED = "stat-top-by-best-speed.html";
 
     public static final String TOP_BY_TOTAL_RACES = "stat-top-by-total-races.html";
