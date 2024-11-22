@@ -2,8 +2,6 @@ package ru.klavogonki.kgparser;
 
 import java.util.Comparator;
 
-import static su.opencode.kefir.util.StringUtils.concat;
-
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
@@ -24,11 +22,11 @@ public class PlayerRoundResultPlacesComparator implements Comparator<PlayerRound
 
 		// check place1 validity
 		if ( (place1 != null) && (!PlayerRoundResult.isCorrectPlace(place1)) )
-			throw new IllegalArgumentException( concat("Incorrect player1 place: ", place1) );
+			throw new IllegalArgumentException( String.format("Incorrect player1 place: %d.", place1) );
 
 		// check place2 validity
 		if ( (place2 != null) && (!PlayerRoundResult.isCorrectPlace(place2)) )
-			throw new IllegalArgumentException( concat("Incorrect player2 place: ", place2) );
+			throw new IllegalArgumentException( String.format("Incorrect player2 place: %d.", place2) );
 
 		if ( (place1 == null) && (place2 == null) )
 			return 0; // undefined order

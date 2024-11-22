@@ -129,7 +129,7 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	 */
 	@Json(exclude = true)
 	public static String getDictionaryCode(int dictionaryId) {
-		return StringUtils.concat( NON_STANDARD_DICTIONARY_ID_PREFIX, Integer.toString(dictionaryId) );
+		return NON_STANDARD_DICTIONARY_ID_PREFIX + dictionaryId;
 	}
 
 	@Json(exclude = true)

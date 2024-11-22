@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.Player;
 import ru.klavogonki.kgparser.PlayerRoundResult;
-import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.Round;
 import su.opencode.kefir.srv.json.JsonObject;
 import su.opencode.kefir.util.StringUtils;
@@ -13,8 +12,6 @@ import su.opencode.kefir.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Результирующая таблица игроков.
@@ -41,7 +38,7 @@ public class PlayersResultsTable extends JsonObject
 		// rounds data
 		for (Round round : competition.getRounds())
 		{
-			firstRow.addCell( concat(sb, "Заезд № ", round.getNumber()), 3 );
+			firstRow.addCell( String.format("Заезд № %d", round.getNumber()), 3 );
 		}
 
 		// total

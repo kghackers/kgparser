@@ -4,8 +4,6 @@ import su.opencode.kefir.util.FileUtils;
 
 import java.nio.charset.StandardCharsets;
 
-import static su.opencode.kefir.util.StringUtils.concat;
-
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
@@ -16,7 +14,7 @@ import static su.opencode.kefir.util.StringUtils.concat;
 public class ConfigurationLoader
 {
 	public String readConfigurationFile(String filePath) {
-		String path = concat( System.getProperty("jboss.server.home.dir"), "/conf/", filePath);
+		String path = System.getProperty("jboss.server.home.dir") + "/conf/" + filePath;
 		byte[] bytes = FileUtils.readFile(path);
 		return new String(bytes, StandardCharsets.UTF_8);
 	}

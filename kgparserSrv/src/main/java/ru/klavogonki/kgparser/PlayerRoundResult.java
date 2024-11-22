@@ -5,8 +5,6 @@ import su.opencode.kefir.srv.json.JsonObject;
 
 import java.util.Date;
 
-import static su.opencode.kefir.util.StringUtils.concat;
-
 /**
  * Результат игрока в конкретном заезде.
  */
@@ -39,13 +37,13 @@ public class PlayerRoundResult extends JsonObject
 			return null;
 
 		if (place < FIRST_PLACE)
-			throw new IllegalArgumentException( concat("Incorrect place: ", place) );
+			throw new IllegalArgumentException( String.format("Incorrect place: %d.", place) );
 
 		return place;
 	}
 	public void setPlace(Integer place) {
 		if (place < FIRST_PLACE)
-			throw new IllegalArgumentException( concat("Incorrect place: ", place) );
+			throw new IllegalArgumentException( String.format("Incorrect place: %d.", place) );
 
 		this.place = place;
 	}
@@ -69,7 +67,7 @@ public class PlayerRoundResult extends JsonObject
 	}
 	public void setSpeed(Integer speed) {
 		if (speed <= 0)
-			throw new IllegalArgumentException( concat("Incorrect speed: ", speed) );
+			throw new IllegalArgumentException( String.format("Incorrect speed: %d.", speed) );
 
 		this.speed = speed;
 	}
@@ -79,7 +77,7 @@ public class PlayerRoundResult extends JsonObject
 	}
 	public void setCharsTotal(Integer charsTotal) {
 		if (charsTotal <= 0)
-			throw new IllegalArgumentException( concat("Incorrect charsTotal: ", charsTotal) );
+			throw new IllegalArgumentException( String.format("Incorrect charsTotal: %d.", charsTotal) );
 
 		this.charsTotal = charsTotal;
 	}
@@ -89,7 +87,7 @@ public class PlayerRoundResult extends JsonObject
 	}
 	public void setErrorsCount(Integer errorsCount) {
 		if (errorsCount < 0)
-			throw new IllegalArgumentException( concat("Incorrect errorsCount: ", errorsCount) );
+			throw new IllegalArgumentException( String.format("Incorrect errorsCount: %d.", errorsCount) );
 
 		this.errorsCount = errorsCount;
 	}
@@ -99,7 +97,7 @@ public class PlayerRoundResult extends JsonObject
 	}
 	public void setErrorPercentage(Double errorPercentage) {
 		if (errorPercentage < 0)
-			throw new IllegalArgumentException( concat("Incorrect errorPercentage: ", errorPercentage) );
+			throw new IllegalArgumentException( String.format("Incorrect errorPercentage: %s.", errorPercentage) );
 
 		this.errorPercentage = errorPercentage;
 	}
@@ -116,7 +114,7 @@ public class PlayerRoundResult extends JsonObject
 	}
 	public void setTime(Float time) {
 		if (time < 0)
-			throw new IllegalArgumentException( concat("Incorrect time: ", time) );
+			throw new IllegalArgumentException( String.format("Incorrect time: %s.", time) );
 
 		this.time = time;
 	}
