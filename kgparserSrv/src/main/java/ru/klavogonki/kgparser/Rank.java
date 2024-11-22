@@ -2,8 +2,6 @@ package ru.klavogonki.kgparser;
 
 import java.util.Arrays;
 
-import static su.opencode.kefir.util.StringUtils.concat;
-
 /**
  * Ранг игрока. Различается в зависимости от рекорда в обычном режиме.
  */
@@ -121,7 +119,7 @@ public enum Rank
 			.filter( rank -> rank.level == level )
 			.findFirst()
 			.orElseThrow(() ->
-				new IllegalArgumentException( concat("Incorrect rank level: " + level) )
+				new IllegalArgumentException( String.format("Incorrect rank level: %d.", level) )
 			);
 	}
 
