@@ -96,97 +96,102 @@ public final class PageUrls {
     }
 
     public static String getIndexPageFilePath(final String rootDir) {
-        return rootDir + "/" + INDEX;
+        return fullPath(rootDir, INDEX);
     }
 
     public static String getTopBySpeedPageFilePath(final String rootDir, final int pageNumber) {
-        return rootDir + "/" + "stat-top-by-best-speed-page-" + pageNumber + ".html";
+        String pageFileName = "stat-top-by-best-speed-page-" + pageNumber + ".html";
+        return fullPath(rootDir, pageFileName);
     }
     public static String getTopBySpeedAllPagesExcelFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_BEST_SPEED_ALL_PAGES_XLSX;
+        return fullPath(rootDir, TOP_BY_BEST_SPEED_ALL_PAGES_XLSX);
     }
     public static String getTopBySpeedAllPagesExcelZipFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_BEST_SPEED_ALL_PAGES_ZIP;
+        return fullPath(rootDir, TOP_BY_BEST_SPEED_ALL_PAGES_ZIP);
     }
 
     public static String getTopBySpeedLoginToPageFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS;
+        return fullPath(rootDir, TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS);
     }
 
     public static String getTopByTotalRacesCountFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_TOTAL_RACES;
+        return fullPath(rootDir, TOP_BY_TOTAL_RACES);
     }
     public static String getTopByTotalRacesCountExcelFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_TOTAL_RACES_XLSX;
+        return fullPath(rootDir, TOP_BY_TOTAL_RACES_XLSX);
     }
     public static String getTopByTotalRacesCountExcelZipFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_TOTAL_RACES_ZIP;
+        return fullPath(rootDir, TOP_BY_TOTAL_RACES_ZIP);
     }
 
     public static String getTopByBestSpeedFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_BEST_SPEED;
+        return fullPath(rootDir, TOP_BY_BEST_SPEED);
     }
     public static String getTopByBestSpeedExcelFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_BEST_SPEED_XLSX;
+        return fullPath(rootDir, TOP_BY_BEST_SPEED_XLSX);
     }
     public static String getTopByBestSpeedExcelZipFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_BEST_SPEED_ZIP;
+        return fullPath(rootDir, TOP_BY_BEST_SPEED_ZIP);
     }
 
     public static String getTopByRatingLevelFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_RATING_LEVEL;
+        return fullPath(rootDir, TOP_BY_RATING_LEVEL);
     }
     public static String getTopByRatingLevelExcelFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_RATING_LEVEL_XLSX;
+        return fullPath(rootDir, TOP_BY_RATING_LEVEL_XLSX);
     }
     public static String getTopByRatingLevelExcelZipFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_RATING_LEVEL_ZIP;
+        return fullPath(rootDir, TOP_BY_RATING_LEVEL_ZIP);
     }
 
     public static String getTopByFriendsCountFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_FRIENDS_COUNT;
+        return fullPath(rootDir, TOP_BY_FRIENDS_COUNT);
     }
     public static String getTopByFriendsCountExcelFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_FRIENDS_COUNT_XLSX;
+        return fullPath(rootDir, TOP_BY_FRIENDS_COUNT_XLSX);
     }
     public static String getTopByFriendsCountExcelZipFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_FRIENDS_COUNT_ZIP;
+        return fullPath(rootDir, TOP_BY_FRIENDS_COUNT_ZIP);
     }
 
     public static String getTopByAchievementsCountFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_ACHIEVEMENTS_COUNT;
+        return fullPath(rootDir, TOP_BY_ACHIEVEMENTS_COUNT);
     }
     public static String getTopByAchievementsCountExcelFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_ACHIEVEMENTS_COUNT_XLSX;
+        return fullPath(rootDir, TOP_BY_ACHIEVEMENTS_COUNT_XLSX);
     }
     public static String getTopByAchievementsCountExcelZipFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_ACHIEVEMENTS_COUNT_ZIP;
+        return fullPath(rootDir, TOP_BY_ACHIEVEMENTS_COUNT_ZIP);
     }
 
     public static String getTopByVocabulariesCountFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_VOCABULARIES_COUNT;
+        return fullPath(rootDir, TOP_BY_VOCABULARIES_COUNT);
     }
     public static String getTopByVocabulariesCountExcelFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_VOCABULARIES_COUNT_XLSX;
+        return fullPath(rootDir, TOP_BY_VOCABULARIES_COUNT_XLSX);
     }
     public static String getTopByVocabulariesCountExcelZipFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_VOCABULARIES_COUNT_ZIP;
+        return fullPath(rootDir, TOP_BY_VOCABULARIES_COUNT_ZIP);
     }
 
     public static String getTopByCarsCountFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_CARS_COUNT;
+        return fullPath(rootDir, TOP_BY_CARS_COUNT);
     }
     public static String getTopByCarsCountExcelFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_CARS_COUNT_XLSX;
+        return fullPath(rootDir, TOP_BY_CARS_COUNT_XLSX);
     }
     public static String getTopByCarsCountExcelZipFilePath(final String rootDir) {
-        return rootDir + "/" + TOP_BY_CARS_COUNT_ZIP;
+        return fullPath(rootDir, TOP_BY_CARS_COUNT_ZIP);
     }
 
     public static String getPlayerByRankFilePath(final String rootDir) {
-        return rootDir + "/" + PLAYER_BY_RANK;
+        return fullPath(rootDir, PLAYER_BY_RANK);
     }
     public static String getPlayerByRankDataFilePath(final String rootDir) {
-        return rootDir + "/" + PLAYERS_BY_RANK_DATA_JS;
+        return fullPath(rootDir, PLAYERS_BY_RANK_DATA_JS);
+    }
+
+    private static String fullPath(String rootDir, String relativePath) {
+        return rootDir + "/" + relativePath;
     }
 }
