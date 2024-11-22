@@ -250,7 +250,7 @@ public class Competition extends JsonObject
 			if (dictionary.isStandard())
 			{
 				StandardDictionary standardDictionary = StandardDictionary.valueOf(dictionaryCode);
-				codesToNames.put(dictionaryCode, StandardDictionary.getDisplayName(standardDictionary));
+				codesToNames.put(dictionaryCode, standardDictionary.displayName);
 			}
 			else
 			{

@@ -25,7 +25,7 @@ public class TestHelper
 
 	// todo: move to constructors
 	public static Dictionary getDictionary(StandardDictionary dictionary) {
-		return getDictionary( dictionary.toString(), StandardDictionary.getDisplayName(dictionary) );
+		return getDictionary( dictionary.toString(), dictionary.displayName );
 	}
 	public static Dictionary getDictionary(int dictionaryId, String name) {
 		return getDictionary( Dictionary.getDictionaryCode(dictionaryId), name );

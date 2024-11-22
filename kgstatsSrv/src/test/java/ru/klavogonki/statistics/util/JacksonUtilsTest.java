@@ -495,12 +495,12 @@ class JacksonUtilsTest {
             // todo: validate size
 
             // validate player stats in "normal"
-            GetStatsOverviewGameType normalStats = gameTypes.get(StandardDictionary.normal.name());// no getValue, but toString works
+            GetStatsOverviewGameType normalStats = gameTypes.get(StandardDictionary.normal.name()); // no getValue, but toString works
             GetStatsOverviewGameTypeAssert
                 .assertThat(normalStats)
                 .isNotNull()
                 .hasId(null)
-                .hasName(StandardDictionary.getDisplayName(StandardDictionary.normal))
+                .hasName(StandardDictionary.normal.displayName)
                 .hasNumRaces(29445)
                 .hasType(null) // type set for non-standard dictionaries only
                 .hasRows(null) // rows set for non-standard dictionaries only
@@ -514,7 +514,7 @@ class JacksonUtilsTest {
                 .hasId(1826608)
                 .hasUserId(242585)
                 .hasMode(VocabularyMode.NORMAL)
-                .hasTexttype(StandardDictionary.getTextType(StandardDictionary.normal))
+                .hasTexttype(StandardDictionary.normal.textType)
                 .hasNumRaces(29445)
                 .hasAvgSpeed(453.123)
                 .hasBestSpeed(626)
@@ -568,12 +568,12 @@ class JacksonUtilsTest {
                 .hasSize(1); // for new player, only empty result for "normal" is present
 
             // validate player stats in "normal"
-            GetStatsOverviewGameType normalStats = gameTypes.get(StandardDictionary.normal.name());// no getValue, but toString works
+            GetStatsOverviewGameType normalStats = gameTypes.get(StandardDictionary.normal.name()); // no getValue, but toString works
             GetStatsOverviewGameTypeAssert
                 .assertThat(normalStats)
                 .isNotNull()
                 .hasId(null)
-                .hasName(StandardDictionary.getDisplayName(StandardDictionary.normal))
+                .hasName(StandardDictionary.normal.displayName)
                 .hasNumRaces(0)
                 .hasType(null) // type set for non-standard dictionaries only
                 .hasRows(null) // rows set for non-standard dictionaries only
@@ -588,7 +588,7 @@ class JacksonUtilsTest {
                 .hasId(30914229)
                 .hasUserId(624511)
                 .hasMode(VocabularyMode.NORMAL)
-                .hasTexttype(StandardDictionary.getTextType(StandardDictionary.normal))
+                .hasTexttype(StandardDictionary.normal.textType)
                 .hasNumRaces(0)
                 .hasAvgSpeed(0d)
                 .hasBestSpeed(null)

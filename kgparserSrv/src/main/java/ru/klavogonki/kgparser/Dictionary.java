@@ -113,11 +113,13 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	 */
 	@Json(exclude = true)
 	public static int getDictionaryId(String code) {
-		if ( isStandard(code) ) {
-			throw new IllegalArgumentException("Dictionary with code = \"" + code + "\" is standard. Cannot get dictionary id from it."); // todo: use concat
+		if (isStandard(code)) {
+			throw new IllegalArgumentException(
+				String.format("Dictionary with code = \"%s\" is standard. Cannot get dictionary id from it.", code)
+			);
 		}
 
-		String codeStr = code.substring( NON_STANDARD_DICTIONARY_ID_PREFIX.length() );
+		String codeStr = code.substring(NON_STANDARD_DICTIONARY_ID_PREFIX.length());
 		return Integer.parseInt(codeStr);
 	}
 
@@ -137,7 +139,7 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 		}
 
 		StandardDictionary standardDictionary = StandardDictionary.valueOf(code);
-		return StandardDictionary.getTextType(standardDictionary);
+		return standardDictionary.textType;
 	}
 
 	/**
@@ -146,9 +148,8 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	 */
 	@Json(exclude = true)
 	public static String getDictionaryColor(String dictionaryCode) {
-		if ( isStandard(dictionaryCode) )
-		{
-			return StandardDictionary.getColor( StandardDictionary.valueOf(dictionaryCode) );
+		if (isStandard(dictionaryCode)) {
+			return StandardDictionary.valueOf(dictionaryCode).color;
 		}
 
 		return NON_STANDARD_DICTIONARY_COLOR;
@@ -161,8 +162,9 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	 * ссылка на страницу словаря &mdash; для нестандартных словарей
 	 */
 	public static String getDictionaryPageUrl(String dictionaryCode) {
-		if ( isStandard(dictionaryCode) )
-			return StandardDictionary.getDictionaryPageUrl( StandardDictionary.valueOf(dictionaryCode) );
+		if (isStandard(dictionaryCode)) {
+			return StandardDictionary.valueOf(dictionaryCode).wikiPageUrl;
+		}
 
 		return UrlConstructor.dictionaryPage( getDictionaryId(dictionaryCode) );
 	}

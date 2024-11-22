@@ -10,7 +10,7 @@ object VocabularyTopUtils : Logging {
     @JvmStatic
     fun takenPlayersWithMinimalRacesCount(vocabulary: StandardDictionary, racesCount: Int) =
         takenPlayersWithMinimalRacesCount(
-            StandardDictionary.getDisplayNameInPrepositionalCase(vocabulary),
+            vocabulary.displayNamePrepositional,
             racesCount
         )
 
@@ -24,7 +24,7 @@ object VocabularyTopUtils : Logging {
 
     @JvmStatic
     fun topByBestSpeedIn(vocabulary: StandardDictionary) =
-        topByBestSpeedIn(StandardDictionary.getDisplayNameInPrepositionalCase(vocabulary))
+        topByBestSpeedIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
     fun topByBestSpeedIn(vocabulary: NonStandardDictionary) =
@@ -36,7 +36,7 @@ object VocabularyTopUtils : Logging {
 
     @JvmStatic
     fun topByRecordIn(vocabulary: StandardDictionary) =
-        topByRecordIn(StandardDictionary.getDisplayNameInPrepositionalCase(vocabulary))
+        topByRecordIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
     fun topByRecordIn(vocabulary: NonStandardDictionary) =
@@ -129,7 +129,7 @@ object VocabularyTopUtils : Logging {
 
     @JvmStatic
     fun topByRacesCountIn(vocabulary: StandardDictionary) =
-        topByRacesCountIn(StandardDictionary.getDisplayNameInPrepositionalCase(vocabulary))
+        topByRacesCountIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
     fun topByRacesCountIn(vocabulary: NonStandardDictionary) =
@@ -141,7 +141,7 @@ object VocabularyTopUtils : Logging {
 
     @JvmStatic
     fun topByHaulIn(vocabulary: StandardDictionary) =
-        topByHaulIn(StandardDictionary.getDisplayNameInPrepositionalCase(vocabulary))
+        topByHaulIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
     fun topByHaulIn(vocabulary: NonStandardDictionary) =
