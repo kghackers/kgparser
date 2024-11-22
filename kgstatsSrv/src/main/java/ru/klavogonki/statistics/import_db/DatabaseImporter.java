@@ -42,7 +42,7 @@ public class DatabaseImporter {
     // todo: autowire it, @see https://mapstruct.org/documentation/stable/reference/html/#using-dependency-injection
     private final PlayerVocabularyStatsMapper statsMapper = Mappers.getMapper(PlayerVocabularyStatsMapper.class);
 
-    private List<PlayerEntity> playersBatch = new ArrayList<>(); // todo: find a nicer solution
+    private final List<PlayerEntity> playersBatch = new ArrayList<>(); // todo: find a nicer solution
 
     public void importJsonToDatabase(final Config config) {
         // todo: move all related logic to a separate Spring component

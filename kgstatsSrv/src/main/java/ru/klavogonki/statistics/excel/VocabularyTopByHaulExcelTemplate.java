@@ -17,7 +17,7 @@ import java.util.List;
 
 public class VocabularyTopByHaulExcelTemplate extends ExcelTemplate<PlayerVocabularyDto> {
 
-    private String sheetName;
+    private final String sheetName;
 
     public VocabularyTopByHaulExcelTemplate(final String sheetName) {
         this.sheetName = sheetName;
