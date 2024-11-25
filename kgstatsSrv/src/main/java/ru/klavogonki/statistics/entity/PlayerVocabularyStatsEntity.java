@@ -2,7 +2,7 @@ package ru.klavogonki.statistics.entity;
 
 import lombok.Data;
 import ru.klavogonki.common.DictionaryMode;
-import ru.klavogonki.kgparser.NonStandardDictionaryType;
+import ru.klavogonki.common.NonStandardDictionaryType;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -49,7 +49,7 @@ public class PlayerVocabularyStatsEntity implements Serializable {
 
     private String vocabularyName;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // todo: save using the klavogonikiName field, NOT the enum itself (to save compatibility with the old databases)
     private NonStandardDictionaryType vocabularyType;
 
     private Integer vocabularySymbols; // for non-standard dictionaries only
@@ -67,7 +67,7 @@ public class PlayerVocabularyStatsEntity implements Serializable {
      *
      * @see DictionaryMode#getDictionaryMode
      */
-    @Enumerated(EnumType.STRING) // todo: save using the klavogonikiName field, NOT the enum itself
+    @Enumerated(EnumType.STRING) // todo: save using the klavogonikiName field, NOT the enum itself (to save compatibility with the old databases)
     private DictionaryMode vocabularyMode;
 
     /**

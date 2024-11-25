@@ -7,7 +7,7 @@ enum class DictionaryMode(
     /**
      * Имя в API клавогонок. Все буквы в нижнем регистре.
      */
-    @JvmField val klavogonkiName: String,
+    @JvmField val klavogonkiName: String
 ) {
     normal("normal"),
 

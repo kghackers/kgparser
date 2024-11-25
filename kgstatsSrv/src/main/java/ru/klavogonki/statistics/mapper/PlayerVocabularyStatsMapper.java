@@ -8,7 +8,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.ValueMapping;
 import org.mapstruct.ValueMappings;
 import ru.klavogonki.common.DictionaryMode;
-import ru.klavogonki.kgparser.NonStandardDictionaryType;
+import ru.klavogonki.common.NonStandardDictionaryType;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
 import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 import ru.klavogonki.openapi.model.NonStandardVocabularyType;
