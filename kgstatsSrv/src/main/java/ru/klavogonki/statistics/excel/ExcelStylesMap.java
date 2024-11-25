@@ -6,7 +6,7 @@ import org.apache.poi.xssf.usermodel.IndexedColorMap;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
-import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.common.Rank;
 import ru.klavogonki.statistics.excel.data.ExcelExportContextData;
 
 import java.util.EnumMap;

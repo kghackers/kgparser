@@ -1,5 +1,6 @@
 package ru.klavogonki.kgparser;
 
+import ru.klavogonki.common.Rank;
 import su.opencode.kefir.srv.json.JsonObject;
 
 /**

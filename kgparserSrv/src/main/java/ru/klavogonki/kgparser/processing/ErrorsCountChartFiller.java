@@ -2,10 +2,10 @@ package ru.klavogonki.kgparser.processing;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.klavogonki.common.Rank;
 import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.Player;
 import ru.klavogonki.kgparser.PlayerRoundResult;
-import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.kgparser.RankDto;
 import ru.klavogonki.kgparser.Round;
 

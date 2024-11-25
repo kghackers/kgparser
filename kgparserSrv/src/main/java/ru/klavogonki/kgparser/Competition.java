@@ -2,6 +2,7 @@ package ru.klavogonki.kgparser;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.klavogonki.common.Rank;
 import ru.klavogonki.common.StandardDictionary;
 import ru.klavogonki.kgparser.http.HttpClientTest;
 import su.opencode.kefir.srv.json.Json;

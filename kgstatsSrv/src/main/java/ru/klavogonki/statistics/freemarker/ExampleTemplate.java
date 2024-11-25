@@ -1,7 +1,7 @@
 package ru.klavogonki.statistics.freemarker;
 
 import lombok.extern.log4j.Log4j2;
-import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.common.Rank;
 import ru.klavogonki.statistics.entity.PlayerEntity;
 
 import java.util.Map;

@@ -1,7 +1,7 @@
 package ru.klavogonki.kgparser.servlet.model.basic_info;
 
+import ru.klavogonki.common.Rank;
 import ru.klavogonki.kgparser.Player;
-import ru.klavogonki.kgparser.Rank;
 import su.opencode.kefir.srv.json.JsonObject;
 
 import java.util.Map;

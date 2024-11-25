@@ -1,7 +1,7 @@
 package ru.klavogonki.statistics.dto;
 
 import lombok.Data;
-import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.common.Rank;
 import ru.klavogonki.statistics.excel.data.ExcelExportContextData;
 import ru.klavogonki.statistics.excel.data.OrderNumberExcelData;
 import ru.klavogonki.statistics.freemarker.OrderUtils;
