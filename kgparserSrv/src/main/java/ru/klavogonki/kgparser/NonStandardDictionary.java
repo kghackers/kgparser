@@ -59,17 +59,17 @@ public enum NonStandardDictionary {
     ;
 
 
-    NonStandardDictionary(final int code, final String name, final String namePrepositional) {
-        this(Dictionary.NON_STANDARD_DICTIONARY_ID_PREFIX + code, name, namePrepositional);
+    NonStandardDictionary(final int code, final String displayName, final String displayNamePrepositional) {
+        this(Dictionary.NON_STANDARD_DICTIONARY_ID_PREFIX + code, displayName, displayNamePrepositional);
     }
 
-    NonStandardDictionary(final String code, final String name, final String namePrepositional) {
+    NonStandardDictionary(final String code, final String displayName, final String displayNamePrepositional) {
         this.code = code;
-        this.name = name;
-        this.namePrepositional = namePrepositional;
+        this.displayName = displayName;
+        this.displayNamePrepositional = displayNamePrepositional;
     }
 
     public final String code;
-    public final String name;
-    public final String namePrepositional;
+    public final String displayName;
+    public final String displayNamePrepositional;
 }
