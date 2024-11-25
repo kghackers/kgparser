@@ -87,7 +87,7 @@ class JacksonUtilsTest {
             CarAssert
                 .assertThat(car)
                 .isNotNull()
-                .hasCar(Car.F1.getId())
+                .hasCar(Car.F1.id)
                 .hasColor("#BF1300");
 
             Map<String, Integer> tuning = getNonEmptyTuning(car);
@@ -132,7 +132,7 @@ class JacksonUtilsTest {
             CarAssert
                 .assertThat(car)
                 .isNotNull()
-                .hasCar(Car.CARAVEL.getPersonalId())
+                .hasCar(Car.CARAVEL.personalId)
                 .hasColor("#000000");
 
             assertEmptyTunning(car);
@@ -172,7 +172,7 @@ class JacksonUtilsTest {
             CarAssert
                 .assertThat(car)
                 .isNotNull()
-                .hasCar(Car.ZAZ_965.getId())
+                .hasCar(Car.ZAZ_965.id)
                 .hasColor("#777777");
 
             assertEmptyTunning(car);
@@ -213,7 +213,7 @@ class JacksonUtilsTest {
             CarAssert
                 .assertThat(car)
                 .isNotNull()
-                .hasCar(Car.AUDI_TT.getId())
+                .hasCar(Car.AUDI_TT.id)
                 .hasColor("#893425");
 
             Map<String, Integer> tuning = getNonEmptyTuning(car);

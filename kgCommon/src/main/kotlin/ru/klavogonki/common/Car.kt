@@ -4,7 +4,12 @@ package ru.klavogonki.common
  * List of cars with ids and Russian names.
  */
 @SuppressWarnings("MagicNumber")
-enum class Car {
+enum class Car(
+    @JvmField val id: Int,
+    @JvmField val displayName: String,
+    @JvmField val ownerId: Int?, // for personal autos
+    @JvmField val personalId: Int?, // for personal autos that have been made public
+) {
     // common/public autos
     ZAZ_965(1, "ЗАЗ 965"),
     VAZ_2104(2, "ВАЗ 2104"),
@@ -106,31 +111,10 @@ enum class Car {
     FERRARI_F2(1024, "Ferrari F12", 320247), // http://klavogonki.ru/u/#/320247/car/
     ;
 
-    constructor(id: Int, displayName: String) {
-        this.id = id
-        this.displayName = displayName
-        this.ownerId = null
-        this.personalId = null
-    }
+    constructor(id: Int, displayName: String) : this(id, displayName, null, null)
 
-    constructor(id: Int, displayName: String, ownerId: Int) { // for personal cars that have not been made public
-        this.id = id
-        this.displayName = displayName
-        this.ownerId = ownerId
-        this.personalId = null
-    }
-
-    constructor(
-        id: Int,
-        displayName: String,
-        ownerId: Int,
-        personalId: Int
-    ) { // for personal cars that have not been made public
-        this.id = id
-        this.displayName = displayName
-        this.ownerId = ownerId
-        this.personalId = personalId
-    }
+    // for personal cars that have not been made public
+    constructor(id: Int, displayName: String, ownerId: Int) : this(id, displayName, ownerId, null)
 
     @Suppress("Unused")
     fun isPersonalOnly() = (ownerId != null) && (personalId == null)
@@ -140,11 +124,6 @@ enum class Car {
 
     @Suppress("Unused")
     fun isPublic() = (id < FIRST_PERSONAL_CAR_ID)
-
-    val id: Int
-    val displayName: String
-    val ownerId: Int? // for personal autos
-    val personalId: Int? // for personal autos that have been made public
 
     companion object {
         fun isPersonalId(carId: Int): Boolean {

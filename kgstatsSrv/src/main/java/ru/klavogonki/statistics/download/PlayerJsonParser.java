@@ -4,9 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.common.Car;
+import ru.klavogonki.common.DictionaryMode;
 import ru.klavogonki.common.DictionaryUtils;
 import ru.klavogonki.common.StandardDictionary;
-import ru.klavogonki.kgparser.DictionaryMode;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
 import ru.klavogonki.openapi.model.GetIndexDataStats;
@@ -608,7 +608,7 @@ public class PlayerJsonParser {
         DictionaryMode expectedMode = DictionaryMode.getDictionaryMode(vocabularyCode);
 
         // todo: mapper conversion VocabularyMode -> DictionaryMode?
-        if (!mode.toString().equals(expectedMode.toString())) {
+        if (!mode.toString().equals(expectedMode.klavogonkiName)) {
             throw new ParserException("Stats overview file %s: Vocabulary %s: info.mode %s is not equal to expected mode = %d.", statsOverviewFilePath, vocabularyCode, mode, expectedMode);
         }
 

@@ -1,7 +1,7 @@
 package ru.klavogonki.statistics.entity;
 
 import lombok.Data;
-import ru.klavogonki.kgparser.DictionaryMode;
+import ru.klavogonki.common.DictionaryMode;
 import ru.klavogonki.kgparser.NonStandardDictionaryType;
 
 import javax.persistence.Entity;
@@ -67,7 +67,7 @@ public class PlayerVocabularyStatsEntity implements Serializable {
      *
      * @see DictionaryMode#getDictionaryMode
      */
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // todo: save using the klavogonikiName field, NOT the enum itself
     private DictionaryMode vocabularyMode;
 
     /**
