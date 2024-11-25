@@ -138,7 +138,7 @@ public final class UrlConstructor {
 
     // car images
     public static String basicCarImage(Car car) {
-        return getLink("/img/cars/%d.png", car.id);
+        return getLink("/img/cars/%d.png", car.getId());
     }
 
     // todo: maybe extract API to a separate class
