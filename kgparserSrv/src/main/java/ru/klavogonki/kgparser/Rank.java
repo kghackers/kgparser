@@ -1,5 +1,7 @@
 package ru.klavogonki.kgparser;
 
+import ru.klavogonki.common.StandardDictionary;
+
 import java.util.Arrays;
 
 /**

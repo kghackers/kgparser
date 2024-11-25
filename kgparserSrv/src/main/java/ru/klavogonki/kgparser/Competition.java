@@ -2,6 +2,7 @@ package ru.klavogonki.kgparser;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.klavogonki.common.StandardDictionary;
 import ru.klavogonki.kgparser.http.HttpClientTest;
 import su.opencode.kefir.srv.json.Json;
 import su.opencode.kefir.srv.json.JsonObject;
@@ -258,7 +259,7 @@ public class Competition extends JsonObject
 
 			if (dictionary.isStandard())
 			{
-				StandardDictionary standardDictionary = StandardDictionary.valueOf(dictionaryCode);
+				StandardDictionary standardDictionary = StandardDictionary.getByKlavogonkiName(dictionaryCode);
 				codesToNames.put(dictionaryCode, standardDictionary.displayName);
 			}
 			else

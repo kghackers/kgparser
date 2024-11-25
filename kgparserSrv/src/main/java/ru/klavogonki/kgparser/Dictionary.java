@@ -1,5 +1,6 @@
 package ru.klavogonki.kgparser;
 
+import ru.klavogonki.common.StandardDictionary;
 import ru.klavogonki.kgparser.http.UrlConstructor;
 import su.opencode.kefir.srv.json.Json;
 import su.opencode.kefir.util.StringUtils;
@@ -138,7 +139,7 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 			return getDictionaryId(code);
 		}
 
-		StandardDictionary standardDictionary = StandardDictionary.valueOf(code);
+		StandardDictionary standardDictionary = StandardDictionary.getByKlavogonkiName(code);
 		return standardDictionary.textType;
 	}
 
@@ -149,7 +150,7 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	@Json(exclude = true)
 	public static String getDictionaryColor(String dictionaryCode) {
 		if (isStandard(dictionaryCode)) {
-			return StandardDictionary.valueOf(dictionaryCode).color;
+			return StandardDictionary.getByKlavogonkiName(dictionaryCode).color;
 		}
 
 		return NON_STANDARD_DICTIONARY_COLOR;
@@ -163,7 +164,7 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	 */
 	public static String getDictionaryPageUrl(String dictionaryCode) {
 		if (isStandard(dictionaryCode)) {
-			return StandardDictionary.valueOf(dictionaryCode).wikiPageUrl;
+			return StandardDictionary.getByKlavogonkiName(dictionaryCode).wikiPageUrl;
 		}
 
 		return UrlConstructor.dictionaryPage( getDictionaryId(dictionaryCode) );

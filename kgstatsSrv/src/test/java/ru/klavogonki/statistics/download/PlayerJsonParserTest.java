@@ -2,8 +2,7 @@ package ru.klavogonki.statistics.download;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.klavogonki.kgparser.StandardDictionary;
-import ru.klavogonki.statistics.util.TestUtils;
+import ru.klavogonki.common.StandardDictionary;
 import ru.klavogonki.openapi.model.Bio;
 import ru.klavogonki.openapi.model.BioAssert;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
@@ -14,6 +13,7 @@ import ru.klavogonki.openapi.model.Microtime;
 import ru.klavogonki.openapi.model.MicrotimeAssert;
 import ru.klavogonki.openapi.model.NonStandardVocabularyType;
 import ru.klavogonki.openapi.model.VocabularyMode;
+import ru.klavogonki.statistics.util.TestUtils;
 
 import java.io.File;
 import java.time.OffsetDateTime;

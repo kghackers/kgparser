@@ -1,5 +1,7 @@
 package ru.klavogonki.kgparser;
 
+import ru.klavogonki.common.StandardDictionary;
+
 public enum DictionaryMode {
 
     normal,
@@ -17,7 +19,7 @@ public enum DictionaryMode {
             return normal;
         }
 
-        StandardDictionary standardDictionary = StandardDictionary.valueOf(dictionaryCode);
+        StandardDictionary standardDictionary = StandardDictionary.getByKlavogonkiName(dictionaryCode);
 
         switch (standardDictionary) {
             case normal:

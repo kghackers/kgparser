@@ -1,9 +1,9 @@
 package ru.klavogonki.kgparser.test;
 
+import ru.klavogonki.common.StandardDictionary;
 import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.Player;
 import ru.klavogonki.kgparser.Round;
-import ru.klavogonki.kgparser.StandardDictionary;
 
 /**
  * Copyright 2014 LLC "Open Code"

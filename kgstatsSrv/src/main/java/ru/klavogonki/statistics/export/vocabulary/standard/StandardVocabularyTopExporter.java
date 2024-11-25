@@ -1,6 +1,6 @@
 package ru.klavogonki.statistics.export.vocabulary.standard;
 
-import ru.klavogonki.kgparser.StandardDictionary;
+import ru.klavogonki.common.StandardDictionary;
 import ru.klavogonki.statistics.export.vocabulary.VocabularyTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.VocabularyTopUtils;
 
