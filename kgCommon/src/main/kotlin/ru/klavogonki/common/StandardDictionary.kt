@@ -3,7 +3,7 @@ package ru.klavogonki.common
 /**
  * Энум с названиями стандартных словарей (режимов), как они используются в AJAX-API.
  */
-@SuppressWarnings("MagicNumber", "LongParameterList")
+@Suppress("MagicNumber", "LongParameterList")
 enum class StandardDictionary(
 
     /**

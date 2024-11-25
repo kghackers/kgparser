@@ -1,8 +1,8 @@
 package ru.klavogonki.statistics.export.vocabulary
 
 import org.apache.logging.log4j.kotlin.Logging
+import ru.klavogonki.common.NonStandardDictionary
 import ru.klavogonki.common.StandardDictionary
-import ru.klavogonki.kgparser.NonStandardDictionary
 import ru.klavogonki.statistics.excel.ExcelExporter
 
 @Suppress("TooManyFunctions")

@@ -3,7 +3,7 @@ package ru.klavogonki.common
 /**
  * List of cars with ids and Russian names.
  */
-@SuppressWarnings("MagicNumber")
+@Suppress("MagicNumber")
 enum class Car(
     @JvmField val id: Int,
     @JvmField val displayName: String,
