@@ -3,7 +3,7 @@ package ru.klavogonki.statistics.download;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.klavogonki.kgparser.Car;
+import ru.klavogonki.common.Car;
 import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.DictionaryMode;
 import ru.klavogonki.kgparser.Rank;

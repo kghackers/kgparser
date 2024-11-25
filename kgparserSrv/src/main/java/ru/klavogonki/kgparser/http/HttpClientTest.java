@@ -41,8 +41,8 @@ public class HttpClientTest
 //		int playerId = 233067; // E_l_e_n_a (racer)
 //		int playerId = 139052; // alanen (maniac)
 //		int playerId = NOSFERATUM_PROFILE_ID; // nosferatum (superman)
-//		int playerId = 79473; // _Jack_ (cyberracer>
-//		int playerId = 1210; // ToNick (extracyber>
+//		int playerId = 79473; // _Jack_ (cyberracer)
+//		int playerId = 1210; // ToNick (extracyber)
 
 
 //		int playerId = 231371; // Phemmer

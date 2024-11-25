@@ -1,4 +1,4 @@
-package ru.klavogonki.kgparser;
+package ru.klavogonki.common;
 
 import java.util.Arrays;
 import java.util.List;

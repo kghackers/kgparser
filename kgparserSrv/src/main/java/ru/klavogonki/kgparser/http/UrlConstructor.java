@@ -1,6 +1,6 @@
 package ru.klavogonki.kgparser.http;
 
-import ru.klavogonki.kgparser.Car;
+import ru.klavogonki.common.Car;
 import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.Player;
 

@@ -9,6 +9,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>kgCommon</module> <!-- relative path to module-->
 		<module>kgparserSrv</module> <!-- relative path to module-->
 		<module>kgparserWeb</module> <!-- relative path to module-->
 		<module>kgstatsSrv</module>	<!-- relative path to module-->
@@ -349,6 +350,15 @@
 				<optional>true</optional>
 				<scope>system</scope>
 				<systemPath>${maven.multiModuleProjectDirectory}/jboss-libs/kefir-srv-1.0.jar</systemPath>
+			</dependency>
+
+			<dependency>
+				<!-- common module dependency -->
+				<groupId>ru.klavogonki.kgparser</groupId>
+				<artifactId>kg-common</artifactId>
+				<version>1.0</version>
+				<scope>compile</scope>
+				<optional>true</optional>
 			</dependency>
 
 			<dependency>

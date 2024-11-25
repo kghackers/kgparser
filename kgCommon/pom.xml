@@ -9,13 +9,13 @@
 		<version>1.0</version>
 	</parent>
 
-	<artifactId>kgstats-srv</artifactId>
-	<name>kgstats-srv</name>
-	<description>Spring Boot module of Klavogonki statistics</description>
+	<artifactId>kg-common</artifactId>
+	<name>kg-common</name>
+	<description>Common module with basic Klavogonki classes, uses by both legacy kgparser and kgstats</description>
 
-	<!-- include the source classes to the resulting jar -->
-	<!-- todo: think about this for kgstats-srv -->
+	<!-- build as a trivial jar file -->
 	<packaging>jar</packaging>
+
 
 	<dependencies>
 		<dependency>
@@ -47,51 +47,48 @@
 			<artifactId>junit-jupiter-engine</artifactId>
 		</dependency>
 
+<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+-->
 
-		<!-- Enable javax.validation in SpringBoot -->
-		<!-- see https://nullbeans.com/how-to-use-java-bean-validation-in-spring-boot/ -->
+<!--
+		&lt;!&ndash; Enable javax.validation in SpringBoot &ndash;&gt;
+		&lt;!&ndash; see https://nullbeans.com/how-to-use-java-bean-validation-in-spring-boot/ &ndash;&gt;
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+-->
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
+<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
+-->
 
+<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
+-->
 
 		<!-- Add Log4j2 Dependency -->
+<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
-
-		<!-- module on kg-common  -->
-		<dependency>
-			<groupId>ru.klavogonki.kgparser</groupId>
-			<artifactId>kg-common</artifactId>
-		</dependency>
-
-		<!-- module on kgparser-srv -->
-		<!-- todo: remove this, only use kg-common -->
-		<dependency>
-			<groupId>ru.klavogonki.kgparser</groupId>
-			<artifactId>kgparser-srv</artifactId>
-		</dependency>
+-->
 
 		<!-- mapstruct -->
 		<dependency>
@@ -99,29 +96,7 @@
 			<artifactId>mapstruct</artifactId>
 		</dependency>
 
-		<!-- FreeMarker -->
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-		</dependency>
-
-		<!-- POI - for export to Excel (XLSX) -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-		</dependency>
-
-		<!-- Zip4j - useful library for easily zipping/unzipping files -->
-		<dependency>
-			<groupId>net.lingala.zip4j</groupId>
-			<artifactId>zip4j</artifactId>
-		</dependency>
-
-		<!-- OpenAPI generator -->
+		<!-- 1 generator -->
 		<dependency>
 			<groupId>org.openapitools</groupId>
 			<artifactId>jackson-databind-nullable</artifactId>
@@ -138,6 +113,7 @@
 
 	<build>
 		<plugins>
+<!--
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -150,15 +126,8 @@
 					</execution>
 				</executions>
 
-				<!--
-                    After removing @SpringBootApplication from StatisticsApplication,
-                    we have to explicitly set the main class
-                    to avoid "Unable to find a single main class from the following candidates" error.
-                -->
-				<configuration>
-					<mainClass>ru.klavogonki.statistics.springboot.StatisticsApplication</mainClass>
-				</configuration>
 			</plugin>
+-->
 
 			<!-- see https://kotlinlang.org/docs/maven.html#compile-kotlin-and-java-sources -->
 			<!-- see https://kotlinlang.org/docs/lombok.html#maven -->
@@ -327,38 +296,6 @@
 				</configuration>
 			</plugin>
 -->
-
-			<!-- see https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin -->
-			<plugin>
-				<groupId>org.openapitools</groupId>
-				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>${openapi-generator-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<inputSpec>
-								${project.basedir}/src/main/resources/kg-api.yaml
-							</inputSpec>
-
-							<generatorName>jaxrs-spec</generatorName> <!-- this uses Jackson as serializer -->
-
-							<!--							<verbose>true</verbose>-->
-
-							<apiPackage>ru.klavogonki.openapi.api</apiPackage>
-							<modelPackage>ru.klavogonki.openapi.model</modelPackage>
-
-							<configOptions>
-								<interfaceOnly>true</interfaceOnly>
-								<dateLibrary>java8</dateLibrary>
-								<!--								<hideGenerationTimestamp>true</hideGenerationTimestamp>-->
-							</configOptions>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 
 			<!-- add sources generated by OpenAPI Generator to jar -->
 			<!-- see http://www.jeeatwork.com/?p=166 -->
