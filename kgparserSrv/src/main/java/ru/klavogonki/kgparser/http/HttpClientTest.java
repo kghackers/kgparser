@@ -13,6 +13,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.json.JSONObject;
 import ru.klavogonki.common.StandardDictionary;
+import ru.klavogonki.common.UrlConstructor;
 import ru.klavogonki.kgparser.Rank;
 import su.opencode.kefir.util.JsonUtils;
 import su.opencode.kefir.util.ObjectUtils;
@@ -70,7 +71,7 @@ public class HttpClientTest
 		logger.info("");
 //		String dictionaryCode = StandardDictionary.normal.toString(); // обычный
 		String dictionaryCode = StandardDictionary.chars.toString(); // буквы
-//		String dictionaryCode = Dictionary.getDictionaryCode(192); // частотный
+//		String dictionaryCode = DictionaryUtils.getDictionaryCode(192); // частотный
 		url = UrlConstructor.getStatsDetail(playerId, dictionaryCode);
 		logger.info("url: {}",  url);
 		body = getResponseBody(url);

@@ -1,7 +1,6 @@
 package ru.klavogonki.statistics.entity;
 
 import lombok.Data;
-import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.DictionaryMode;
 import ru.klavogonki.kgparser.NonStandardDictionaryType;
 
@@ -81,7 +80,7 @@ public class PlayerVocabularyStatsEntity implements Serializable {
      *  <li>Для нестандартных словарей — числовой id словаря.</li>
      * </ul>
      *
-     * @see Dictionary#getTextType
+     * @see ru.klavogonki.common.DictionaryUtils#getTextType
      */
     private Integer vocabularyTextType;
 

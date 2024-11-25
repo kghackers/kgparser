@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.common.Car;
+import ru.klavogonki.common.DictionaryUtils;
 import ru.klavogonki.common.StandardDictionary;
-import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.DictionaryMode;
 import ru.klavogonki.kgparser.Rank;
 import ru.klavogonki.openapi.model.GetIndexDataResponse;
@@ -435,12 +435,12 @@ public class PlayerJsonParser {
 
             GetStatsOverviewGameType vocabularyStats = entry.getValue();
 
-            if (!Dictionary.isValid(vocabularyCode)) { // we have dictionaries with "" code
+            if (!DictionaryUtils.isValid(vocabularyCode)) { // we have dictionaries with "" code
                 logger.warn("Stats overview file {}: Invalid vocabulary code: {}. Cannot validate it as standard or non-standard.", statsOverviewFilePath, vocabularyCode);
                 // todo: we may write some heuristic determination whether this dictionary is standard or non-standard
 //                throw new ParserException("Stats overview file %s: Incorrect vocabulary code in gametypes: \"%s\"", statsOverviewFilePath, vocabularyCode);
             }
-            else if (Dictionary.isStandard(vocabularyCode)) {
+            else if (DictionaryUtils.isStandard(vocabularyCode)) {
                 validateCommon(statsOverviewFilePath, vocabularyCode, vocabularyStats);
                 validateStandardVocabulary(statsOverviewFilePath, vocabularyCode, vocabularyStats);
                 validateInfo(playerId, statsOverviewFilePath, vocabularyCode, vocabularyStats);
@@ -508,7 +508,7 @@ public class PlayerJsonParser {
             throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but id is not present.", statsOverviewFilePath, vocabularyCode);
         }
 
-        int expectedId = Dictionary.getDictionaryId(vocabularyCode);
+        int expectedId = DictionaryUtils.getDictionaryId(vocabularyCode);
         if (id != expectedId) {
             throw new ParserException("Stats overview file %s: Vocabulary %s is non-standard, but id = %d is not equal to expectedId = %d.", statsOverviewFilePath, vocabularyCode, id, expectedId);
         }
@@ -618,7 +618,7 @@ public class PlayerJsonParser {
             throw new ParserException("Stats overview file %s: Vocabulary %s: info.texttype is not present.", statsOverviewFilePath, vocabularyCode);
         }
 
-        int expectedTextType = Dictionary.getTextType(vocabularyCode);
+        int expectedTextType = DictionaryUtils.getTextType(vocabularyCode);
         if (!textType.equals(expectedTextType)) {
             throw new ParserException("Stats overview file %s: Vocabulary %s: info.texttype %s is not equal to expected textType = %d.", statsOverviewFilePath, vocabularyCode, textType, expectedTextType);
         }

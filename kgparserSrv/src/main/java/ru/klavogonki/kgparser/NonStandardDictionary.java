@@ -1,5 +1,7 @@
 package ru.klavogonki.kgparser;
 
+import ru.klavogonki.common.DictionaryUtils;
+
 /**
  * Популярные нестандартные словари.
  */
@@ -60,7 +62,7 @@ public enum NonStandardDictionary {
 
 
     NonStandardDictionary(final int code, final String displayName, final String displayNamePrepositional) {
-        this(Dictionary.NON_STANDARD_DICTIONARY_ID_PREFIX + code, displayName, displayNamePrepositional);
+        this(DictionaryUtils.NON_STANDARD_DICTIONARY_ID_PREFIX + code, displayName, displayNamePrepositional);
     }
 
     NonStandardDictionary(final String code, final String displayName, final String displayNamePrepositional) {

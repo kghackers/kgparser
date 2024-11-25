@@ -1,5 +1,6 @@
 package ru.klavogonki.kgparser.test;
 
+import ru.klavogonki.common.DictionaryUtils;
 import ru.klavogonki.common.StandardDictionary;
 import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.Player;
@@ -28,7 +29,7 @@ public class TestHelper
 		return getDictionary( dictionary.toString(), dictionary.displayName );
 	}
 	public static Dictionary getDictionary(int dictionaryId, String name) {
-		return getDictionary( Dictionary.getDictionaryCode(dictionaryId), name );
+		return getDictionary( DictionaryUtils.getDictionaryCode(dictionaryId), name );
 	}
 	public static Dictionary getDictionary(String code, String name) {
 		Dictionary dictionary = new Dictionary();

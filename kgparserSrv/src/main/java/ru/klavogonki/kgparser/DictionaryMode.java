@@ -1,5 +1,6 @@
 package ru.klavogonki.kgparser;
 
+import ru.klavogonki.common.DictionaryUtils;
 import ru.klavogonki.common.StandardDictionary;
 
 public enum DictionaryMode {
@@ -15,7 +16,7 @@ public enum DictionaryMode {
     ;
 
     public static DictionaryMode getDictionaryMode(String dictionaryCode) {
-        if (!Dictionary.isStandard(dictionaryCode)) {
+        if (!DictionaryUtils.isStandard(dictionaryCode)) {
             return normal;
         }
 

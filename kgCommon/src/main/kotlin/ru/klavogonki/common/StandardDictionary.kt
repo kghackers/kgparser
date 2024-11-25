@@ -1,13 +1,6 @@
 package ru.klavogonki.common
 
 /**
- * Copyright 2014 [Dmitriy Popov](mailto:dmitry.weirdo@gmail.com).
- * $HeadURL$
- * $Author$
- * $Revision$
- * $Date::                      $
- * <br></br>
- * <br></br>
  * Энум с названиями стандартных словарей (режимов), как они используются в AJAX-API.
  */
 @SuppressWarnings("MagicNumber")

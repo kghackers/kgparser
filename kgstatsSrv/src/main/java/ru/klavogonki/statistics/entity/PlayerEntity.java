@@ -3,8 +3,8 @@ package ru.klavogonki.statistics.entity;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
+import ru.klavogonki.common.UrlConstructor;
 import ru.klavogonki.kgparser.Rank;
-import ru.klavogonki.kgparser.http.UrlConstructor;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
