@@ -190,3 +190,19 @@ mvn compile
 
 :exclamation: Now after making changes in `kgparserSrv`, you have to `mvn install`
 this module before running MapStruct in `kgstatsSrv`.
+
+## Legacy module and Maven profile
+
+By default, the legacy modules `kgparserSrv` and `kgparserWeb` are excluded from the build.
+
+If you want to turn them on, you have to switch on the Maven `legacy-kgparser` profile.
+
+For example:
+
+```bash
+mvn clean -P legacy-kgparser
+```
+
+```bash
+mvn install -P legacy-kgparser
+```

@@ -10,8 +10,6 @@
 
 	<modules>
 		<module>kgCommon</module> <!-- relative path to module-->
-		<module>kgparserSrv</module> <!-- relative path to module-->
-		<module>kgparserWeb</module> <!-- relative path to module-->
 		<module>kgstatsSrv</module>	<!-- relative path to module-->
 		<module>kgstatsWeb</module> <!-- relative path to module-->
 	</modules>
@@ -34,8 +32,6 @@
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 		<commons-lang3.version>3.17.0</commons-lang3.version>
 		<commons-io.version>2.17.0</commons-io.version>
-		<commons-fileupload.version>1.5</commons-fileupload.version>
-		<httpclient.version>4.5.13</httpclient.version>
 
 		<!-- Open API Generator -->
 		<jackson-databind-nullable-version>0.2.0</jackson-databind-nullable-version>
@@ -72,13 +68,8 @@
 		<jacoco.version>0.8.12</jacoco.version>
 
 		<!-- libraries used for old modules, probably with old versions. May also be used by Kefir. -->
-		<servlet-api.version>2.5</servlet-api.version>
 		<persistence-api.version>1.0</persistence-api.version>
 		<javaee-api.version>6.0</javaee-api.version>
-		<org.json.json.version>20240303</org.json.json.version>
-		<org.htmlparser.thumbelina.version>2.1</org.htmlparser.thumbelina.version>
-		<kefir-util.version>1.0</kefir-util.version>
-		<kefir-srv.version>1.0</kefir-srv.version>
 
 		<!-- standard properties -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -319,62 +310,11 @@
 			</dependency>
 
 			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-				<version>${servlet-api.version}</version>
-				<scope>provided</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<dependency>
-				<groupId>org.json</groupId>
-				<artifactId>json</artifactId>
-				<version>${org.json.json.version}</version>
-				<scope>provided</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<dependency>
-				<groupId>su.opencode.kefir</groupId>
-				<artifactId>kefir-util</artifactId>
-				<version>${kefir-util.version}</version>
-				<optional>true</optional>
-				<scope>system</scope>
-				<systemPath>${maven.multiModuleProjectDirectory}/jboss-libs/kefir-util-1.0.jar</systemPath>
-			</dependency>
-
-			<dependency>
-				<groupId>su.opencode.kefir</groupId>
-				<artifactId>kefir-srv</artifactId>
-				<version>${kefir-srv.version}</version>
-				<optional>true</optional>
-				<scope>system</scope>
-				<systemPath>${maven.multiModuleProjectDirectory}/jboss-libs/kefir-srv-1.0.jar</systemPath>
-			</dependency>
-
-			<dependency>
 				<!-- common module dependency -->
 				<groupId>ru.klavogonki.kgparser</groupId>
 				<artifactId>kg-common</artifactId>
 				<version>1.0</version>
 				<scope>compile</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<dependency>
-				<!-- server module dependency -->
-				<groupId>ru.klavogonki.kgparser</groupId>
-				<artifactId>kgparser-srv</artifactId>
-				<version>1.0</version>
-				<scope>compile</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<dependency>
-				<groupId>commons-fileupload</groupId>
-				<artifactId>commons-fileupload</artifactId>
-				<version>${commons-fileupload.version}</version>
-				<scope>provided</scope>
 				<optional>true</optional>
 			</dependency>
 
@@ -391,23 +331,6 @@
 				<artifactId>javaee-api</artifactId>
 				<version>${javaee-api.version}</version>
 				<scope>compile</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>${httpclient.version}</version>
-				<scope>compile</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<!-- Html Parser - used in HtmlParserTest only -->
-			<dependency>
-				<groupId>org.htmlparser</groupId>
-				<artifactId>thumbelina</artifactId>
-				<version>${org.htmlparser.thumbelina.version}</version>
-				<scope>provided</scope>
 				<optional>true</optional>
 			</dependency>
 
@@ -509,6 +432,109 @@
 
 		</dependencies>
 	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>legacy-kgparser</id>
+
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+
+			<modules>
+				<module>kgparserSrv</module> <!-- relative path to module-->
+				<module>kgparserWeb</module> <!-- relative path to module-->
+			</modules>
+
+			<properties>
+				<servlet-api.version>2.5</servlet-api.version>
+				<org.json.json.version>20240303</org.json.json.version>
+				<kefir-util.version>1.0</kefir-util.version>
+				<kefir-srv.version>1.0</kefir-srv.version>
+				<org.htmlparser.thumbelina.version>2.1</org.htmlparser.thumbelina.version>
+				<commons-fileupload.version>1.5</commons-fileupload.version>
+				<httpclient.version>4.5.13</httpclient.version>
+			</properties>
+
+			<dependencyManagement>
+				<dependencies>
+
+					<dependency>
+						<groupId>su.opencode.kefir</groupId>
+						<artifactId>kefir-util</artifactId>
+						<version>${kefir-util.version}</version>
+						<optional>true</optional>
+						<scope>system</scope>
+						<systemPath>${maven.multiModuleProjectDirectory}/jboss-libs/kefir-util-1.0.jar</systemPath>
+					</dependency>
+
+					<dependency>
+						<groupId>su.opencode.kefir</groupId>
+						<artifactId>kefir-srv</artifactId>
+						<version>${kefir-srv.version}</version>
+						<optional>true</optional>
+						<scope>system</scope>
+						<systemPath>${maven.multiModuleProjectDirectory}/jboss-libs/kefir-srv-1.0.jar</systemPath>
+					</dependency>
+
+					<dependency>
+						<!-- server module dependency -->
+						<groupId>ru.klavogonki.kgparser</groupId>
+						<artifactId>kgparser-srv</artifactId>
+						<version>1.0</version>
+						<scope>compile</scope>
+						<optional>true</optional>
+					</dependency>
+
+					<!-- Html Parser - used in HtmlParserTest only -->
+					<dependency>
+						<groupId>org.htmlparser</groupId>
+						<artifactId>thumbelina</artifactId>
+						<version>${org.htmlparser.thumbelina.version}</version>
+						<scope>provided</scope>
+						<optional>true</optional>
+					</dependency>
+
+					<!-- Used in CompetitionUploadServlet only -->
+					<dependency>
+						<groupId>commons-fileupload</groupId>
+						<artifactId>commons-fileupload</artifactId>
+						<version>${commons-fileupload.version}</version>
+						<scope>provided</scope>
+						<optional>true</optional>
+					</dependency>
+
+					<!-- Used in CompetitionZipFileDownloadServlet only -->
+					<dependency>
+						<groupId>javax.servlet</groupId>
+						<artifactId>servlet-api</artifactId>
+						<version>${servlet-api.version}</version>
+						<scope>provided</scope>
+						<optional>true</optional>
+					</dependency>
+
+					<!-- Used in legacy modules only -->
+					<dependency>
+						<groupId>org.json</groupId>
+						<artifactId>json</artifactId>
+						<version>${org.json.json.version}</version>
+						<scope>provided</scope>
+						<optional>true</optional>
+					</dependency>
+
+					<!-- Used in HttpClientTest only -->
+					<dependency>
+						<groupId>org.apache.httpcomponents</groupId>
+						<artifactId>httpclient</artifactId>
+						<version>${httpclient.version}</version>
+						<scope>compile</scope>
+						<optional>true</optional>
+					</dependency>
+
+				</dependencies>
+			</dependencyManagement>
+		</profile>
+	</profiles>
 
 	<developers>
 		<developer>
