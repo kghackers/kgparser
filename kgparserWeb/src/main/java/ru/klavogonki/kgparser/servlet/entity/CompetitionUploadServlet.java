@@ -18,8 +18,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static su.opencode.kefir.util.StringUtils.concat;
-
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
@@ -66,8 +64,10 @@ public class CompetitionUploadServlet extends JsonServlet
 				}
 				catch (Exception e)
 				{
-					logger.error( concat("Error while parsing zip file \"", entity.getZipFileName(), "\" into Competition model:"), e );
-					throw new RuntimeException( concat("Error while parsing zip file \"", entity.getZipFileName(), "\" into Competition model:"), e);
+					String errorMessage = String.format("Error while parsing zip file \"%s\" into Competition model:", entity.getZipFileName());
+
+					logger.error(errorMessage, e );
+					throw new RuntimeException(errorMessage, e);
 				}
 
 				try
@@ -77,14 +77,17 @@ public class CompetitionUploadServlet extends JsonServlet
 				}
 				catch (Exception e)
 				{
-					logger.error(concat("Error while transforming Competition model to JSON:"), e);
-					throw new RuntimeException( concat("Error while transforming Competition model to JSON:"), e);
+					String errorMessage = "Error while transforming Competition model to JSON:";
+
+					logger.error(errorMessage, e);
+					throw new RuntimeException(errorMessage, e);
 				}
 
 				CompetitionEntityService service = getService(CompetitionEntityService.class);
 				Long competitionId = service.createCompetitionEntity(entity);
 
-				response.sendRedirect( concat(sb, "./competitionUploadSuccess.jsp?competitionId=", competitionId) );
+				String redirectLocation = String.format("./competitionUploadSuccess.jsp?competitionId=%d", competitionId);
+				response.sendRedirect(redirectLocation);
 			}
 
 			private CompetitionEntity processMultipartContent() throws FileUploadException, UnsupportedEncodingException {
