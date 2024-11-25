@@ -151,6 +151,7 @@ enum class Car {
             return carId >= FIRST_PERSONAL_CAR_ID
         }
 
+        @JvmStatic
         fun getById(carId: Int): Car {
             val carsWithId = entries
                 .filter { it.id == carId }
