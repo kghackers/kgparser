@@ -23,11 +23,11 @@
 			<artifactId>assertj-core</artifactId>
 		</dependency>
 
+		<!-- Jackson dependencies -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -36,7 +36,13 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 
+
+		<!-- JUnit -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -47,6 +53,7 @@
 			<artifactId>junit-jupiter-engine</artifactId>
 		</dependency>
 
+		<!-- Spring Boot -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -86,11 +93,17 @@
 			<artifactId>kg-common</artifactId>
 		</dependency>
 
-		<!-- module on kgparser-srv -->
-		<!-- todo: remove this, only use kg-common -->
+		<!--
+			Exclude these failures:
+			package javax.ws.rs.core does not exist
+
+			See https://stackoverflow.com/questions/14189380/compilation-error-package-javax-ws-rs-does-not-exist-dependencies-not-resolved
+
+			// todo: maybe we can update to the newer OpenApi generator and use some other packages
+		-->
 		<dependency>
-			<groupId>ru.klavogonki.kgparser</groupId>
-			<artifactId>kgparser-srv</artifactId>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
 		</dependency>
 
 		<!-- mapstruct -->
