@@ -186,6 +186,13 @@ internal class UrlConstructorTest {
         )
     }
 
+    @Test
+    fun testGetUserBookProgress() {
+        val link = UrlConstructor.getUserBookProgress(NOSFERATUM_PROFILE_ID, BOOK_DICTIONARY_ID)
+
+        assertThat(link).isEqualTo("https://klavogonki.ru/api/profile/get-book-parts?userId=242585&vocId=30149")
+    }
+
     companion object {
         const val NOSFERATUM_PROFILE_ID = 242585
 
@@ -194,5 +201,7 @@ internal class UrlConstructorTest {
         const val NON_STANDARD_DICTIONARY_ID = 5539 // todo: use constant from NonStandardDictionary
         const val NON_STANDARD_DICTIONARY_ID_STRING = NON_STANDARD_DICTIONARY_ID.toString()
         val NON_STANDARD_DICTIONARY_CODE = DictionaryUtils.getDictionaryCode(NON_STANDARD_DICTIONARY_ID)
+
+        const val BOOK_DICTIONARY_ID = 30149; // https://klavogonki.ru/vocs/30149
     }
 }

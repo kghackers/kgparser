@@ -146,6 +146,16 @@ object UrlConstructor {
     }
 
     /**
+     * Возвращает пройденные части заданной книги для заданного игрока.
+     * @param playerId идентификатор игрока
+     * @param bookVocabularyId идентификатор книжного словаря, числовая часть, без префикса `voc-`
+     * @return Информация для экрана &laquo;Прогресс&raquo; по книге.
+     */
+    @JvmStatic
+    fun getUserBookProgress(playerId: Int, bookVocabularyId: Int) =
+        getLink("/api/profile/get-book-parts?userId=%d&vocId=%d", playerId, bookVocabularyId)
+
+    /**
      * @param playerLogin логин игрока
      * @return json вида `{"id":242585}` для корректного логина
      * либо `{"id":false}` для некорректного логина
