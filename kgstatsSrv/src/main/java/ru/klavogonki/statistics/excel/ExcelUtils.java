@@ -15,7 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.common.Rank;
 
 import java.awt.*;
 import java.io.FileOutputStream;

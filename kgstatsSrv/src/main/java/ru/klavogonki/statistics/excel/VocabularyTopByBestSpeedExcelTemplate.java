@@ -17,7 +17,7 @@ import java.util.List;
 
 public class VocabularyTopByBestSpeedExcelTemplate extends ExcelTemplate<PlayerVocabularyDto> {
 
-    private String sheetName;
+    private final String sheetName;
 
     public VocabularyTopByBestSpeedExcelTemplate(final String sheetName) {
         this.sheetName = sheetName;

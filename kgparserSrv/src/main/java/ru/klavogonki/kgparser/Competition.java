@@ -2,6 +2,8 @@ package ru.klavogonki.kgparser;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.klavogonki.common.Rank;
+import ru.klavogonki.common.StandardDictionary;
 import ru.klavogonki.kgparser.http.HttpClientTest;
 import su.opencode.kefir.srv.json.Json;
 import su.opencode.kefir.srv.json.JsonObject;
@@ -17,8 +19,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import static su.opencode.kefir.util.StringUtils.concat;
 
 /**
  * Соревнование. Содержит в себе набор заездов в рамках соревнования.
@@ -153,8 +153,11 @@ public class Competition extends JsonObject
 					continue;
 
 				Rank normalRank = profileIdsToRanks.get( player.getProfileId() );
-				if (normalRank == null)
-					throw new IllegalStateException( concat("Cannot get normal rank for player with profileId = \"", player.getProfileId(), "\"") );
+				if (normalRank == null) {
+					throw new IllegalStateException(
+						String.format("Cannot get normal rank for player with profileId = %d.", player.getProfileId())
+					);
+				}
 
 				player.setRank(normalRank);
 			}
@@ -204,7 +207,11 @@ public class Competition extends JsonObject
 				Integer profileId = player.getProfileId();
 				Rank normalRank = profileIdsToRanks.get(profileId);
 				if (normalRank == null)
-					throw new IllegalStateException( concat("Cannot get normal rank for player with profileId = \"", profileId, "\"") );
+				{
+					throw new IllegalStateException(
+						String.format("Cannot get normal rank for player with profileId = %d.", profileId)
+					);
+				}
 
 				Integer normalRecord = profileIdsToNormalRecords.get(profileId);
 				// do not check on null because normal record may be null
@@ -227,7 +234,11 @@ public class Competition extends JsonObject
 		{
 			Dictionary dictionary = round.getDictionary();
 			if (dictionary == null)
-				throw new IllegalStateException( StringUtils.concat("Round ", round.getNumber(), " has no set dictionary") );
+			{
+				throw new IllegalStateException(
+					String.format("Round %d has no set dictionary", round.getNumber())
+				);
+			}
 
 			dictionaries.add(dictionary);
 		}
@@ -249,8 +260,8 @@ public class Competition extends JsonObject
 
 			if (dictionary.isStandard())
 			{
-				StandardDictionary standardDictionary = StandardDictionary.valueOf(dictionaryCode);
-				codesToNames.put(dictionaryCode, StandardDictionary.getDisplayName(standardDictionary));
+				StandardDictionary standardDictionary = StandardDictionary.getByKlavogonkiName(dictionaryCode);
+				codesToNames.put(dictionaryCode, standardDictionary.displayName);
 			}
 			else
 			{
@@ -315,18 +326,25 @@ public class Competition extends JsonObject
 	@Json(exclude = true)
 	public int getRoundsCount(String dictionaryCode) {
 		if ( StringUtils.empty(dictionaryCode) )
+		{
 			throw new IllegalArgumentException("dictionaryCode must not be null or empty");
+		}
 
 		int count = 0;
 
 		for (Round round : rounds)
 		{
 			Dictionary dictionary = round.getDictionary();
-			if (dictionary == null)
-				throw new IllegalStateException( StringUtils.concat("Round ", round.getNumber(), " has no set dictionary") );
+			if (dictionary == null) {
+				throw new IllegalStateException(
+					String.format("Round %d has no set dictionary.", round.getNumber())
+				);
+			}
 
 			if ( dictionary.hasCode(dictionaryCode) )
+			{
 				count++;
+			}
 		}
 
 		return count;
@@ -337,8 +355,9 @@ public class Competition extends JsonObject
 	 */
 	@Json(exclude = true)
 	public int getRoundsCount(Dictionary dictionary) {
-		if (dictionary == null)
+		if (dictionary == null) {
 			throw new IllegalArgumentException("dictionary cannot be null");
+		}
 
 		return getRoundsCount( dictionary.getCode() );
 	}
@@ -349,8 +368,9 @@ public class Competition extends JsonObject
 	 */
 	@Json(exclude = true)
 	public int getRoundsCount(Player player) {
-		if (player == null)
+		if (player == null) {
 			throw new IllegalArgumentException("player cannot be null");
+		}
 
 		int count = 0;
 
@@ -398,7 +418,11 @@ public class Competition extends JsonObject
 		{
 			Dictionary dictionary = round.getDictionary();
 			if (dictionary == null)
-				throw new IllegalStateException( StringUtils.concat("Round ", round.getNumber(), " has no set dictionary") );
+			{
+				throw new IllegalStateException(
+					String.format("Round %d has no set dictionary.", round.getNumber())
+				);
+			}
 
 			String dictionaryCode = dictionary.getCode();
 

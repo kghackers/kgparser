@@ -1,9 +1,9 @@
 package ru.klavogonki.statistics.excel.player;
 
 import lombok.extern.log4j.Log4j2;
+import ru.klavogonki.common.UrlConstructor;
 import ru.klavogonki.statistics.excel.ExcelExportContext;
 import ru.klavogonki.statistics.excel.data.ExcelExportContextData;
-import ru.klavogonki.kgparser.http.UrlConstructor;
 
 import java.util.function.Function;
 
@@ -42,7 +42,7 @@ public class ProfileLinkColumn<D extends ExcelExportContextData> implements Play
         }
 
         // use a special link with no # in it, since Excel has a bug with links containing #
-        String profileLink = UrlConstructor.userProfileLinkWithNoHash(playerId);
+        String profileLink = UrlConstructor.userProfileLinkWithoutHash(playerId);
         context.setIntegerHyperlink(profileLink, playerId); // todo: think about this,this will also set link integer format
     }
 }

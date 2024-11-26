@@ -10,8 +10,6 @@ import su.opencode.kefir.util.ZipUtils;
 
 import java.util.UUID;
 
-import static su.opencode.kefir.util.StringUtils.concat;
-
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
@@ -28,26 +26,27 @@ public class ZipFileParser {
     }
 
     public static Competition parseZipFile(CompetitionEntity entity, String exportScriptVersion) {
-        StringBuilder sb = new StringBuilder();
-        String dirPath = getDirPath(sb);
+        String dirPath = getDirPath();
         logger.info("Directory path to extract zip file: \"{}\"", dirPath);
         FileUtils.createDirs(dirPath);
         logger.info("Directory \"{}\" created successfully.", dirPath);
 
-        String filePath = concat(sb, dirPath, FileUtils.FILE_SEPARATOR, entity.getZipFileName());
+        String filePath = dirPath + FileUtils.FILE_SEPARATOR + entity.getZipFileName();
         logger.info("Zip file path: {}", filePath);
 
         FileUtils.writeToFile(filePath, entity.getZipFileData());
         logger.info("Zip file successfully written to path \"{}\".", filePath);
 
-        String extractDirPath = concat(sb, dirPath, FileUtils.FILE_SEPARATOR, "extracted");
+        String extractDirPath = dirPath + FileUtils.FILE_SEPARATOR + "extracted";
         ZipUtils.unzip(filePath, extractDirPath);
         logger.info("Zip file \"{}\" successfully extracted to path \"{}\".", filePath, extractDirPath);
 
         return VoidmainJsonParser.parseCompetition(entity.getName(), extractDirPath, exportScriptVersion);
     }
 
-    private static String getDirPath(StringBuilder sb) {
-        return concat(sb, System.getProperty("jboss.server.home.dir"), FileUtils.FILE_SEPARATOR, ZIP_FILES_EXTRACT_DIR, FileUtils.FILE_SEPARATOR, "zip-", UUID.randomUUID());
+    private static String getDirPath() {
+        return System.getProperty("jboss.server.home.dir") +
+            FileUtils.FILE_SEPARATOR + ZIP_FILES_EXTRACT_DIR +
+            FileUtils.FILE_SEPARATOR + "zip-" + UUID.randomUUID();
     }
 }

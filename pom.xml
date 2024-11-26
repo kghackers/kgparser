@@ -9,14 +9,17 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>kgparserSrv</module> <!-- relative path to module-->
-		<module>kgparserWeb</module> <!-- relative path to module-->
+		<module>kgCommon</module> <!-- relative path to module-->
 		<module>kgstatsSrv</module>	<!-- relative path to module-->
 		<module>kgstatsWeb</module> <!-- relative path to module-->
 	</modules>
 
 	<properties>
 		<java.version>17</java.version>
+
+		<kotlin.version>2.0.21</kotlin.version>
+		<log4j2.api.kotlin.version>1.5.0</log4j2.api.kotlin.version>
+
 		<org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
 		<lombok.version>1.18.34</lombok.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
@@ -29,8 +32,6 @@
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 		<commons-lang3.version>3.17.0</commons-lang3.version>
 		<commons-io.version>2.17.0</commons-io.version>
-		<commons-fileupload.version>1.5</commons-fileupload.version>
-		<httpclient.version>4.5.13</httpclient.version>
 
 		<!-- Open API Generator -->
 		<jackson-databind-nullable-version>0.2.0</jackson-databind-nullable-version>
@@ -41,7 +42,10 @@
 		<maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
 		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
 		<maven-war-plugin.version>3.4.0</maven-war-plugin.version>
-		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+
+		<maven-javadoc-plugin.version>3.11.1</maven-javadoc-plugin.version>
+		<maven-dokka-plugin.version>1.9.20</maven-dokka-plugin.version>
+
 		<maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
 		<openapi-generator-maven-plugin.version>5.0.0</openapi-generator-maven-plugin.version>
 		<build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
@@ -64,13 +68,8 @@
 		<jacoco.version>0.8.12</jacoco.version>
 
 		<!-- libraries used for old modules, probably with old versions. May also be used by Kefir. -->
-		<servlet-api.version>2.5</servlet-api.version>
 		<persistence-api.version>1.0</persistence-api.version>
 		<javaee-api.version>6.0</javaee-api.version>
-		<org.json.json.version>20240303</org.json.json.version>
-		<org.htmlparser.thumbelina.version>2.1</org.htmlparser.thumbelina.version>
-		<kefir-util.version>1.0</kefir-util.version>
-		<kefir-srv.version>1.0</kefir-srv.version>
 
 		<!-- standard properties -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -134,13 +133,19 @@
 				<version>${maven-war-plugin.version}</version>
 			</plugin>
 
+			<!--
+				maven-javadoc-plugin does NOT support the Kotlin code
+				see https://kotlinlang.org/docs/maven.html#generate-documentation
+			-->
+
+<!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${maven-javadoc-plugin.version}</version>
 				<configuration>
 					<show>private</show>
-					<!-- see https://stackoverflow.com/a/61884267/8534088 -->
+					&lt;!&ndash; see https://stackoverflow.com/a/61884267/8534088 &ndash;&gt;
 					<detectJavaApiLink>false</detectJavaApiLink>
 				</configuration>
 				<executions>
@@ -153,14 +158,60 @@
 					</execution>
 				</executions>
 			</plugin>
+-->
+
+
+			<!--
+				todo: dokka does not generate docs for the Kotlin classes (at least in the javadoc format)
+
+				see C:\java\kgparser\kgstatsSrv\target\dokkaJavadoc\index.html
+			-->
+			<plugin>
+				<groupId>org.jetbrains.dokka</groupId>
+				<artifactId>dokka-maven-plugin</artifactId>
+				<version>${maven-dokka-plugin.version}</version>
+				<executions>
+					<execution>
+<!--						<phase>pre-site</phase>-->
+						<phase>package</phase>
+						<goals>
+							<goal>dokka</goal>
+							<goal>javadoc</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<sourceDirectories>
+						<dir>${project.basedir}/src/main/kotlin</dir>
+						<dir>${project.basedir}/src/main/java</dir>
+					</sourceDirectories>
+				</configuration>
+			</plugin>
 
 		</plugins>
 	</build>
 
 	<!-- see https://stackoverflow.com/a/37280943/8534088-->
-	<!-- dependencies will be ALWAYS inherited by all child modules -->
+	<!-- dependencies will ALWAYS be inherited by all child modules -->
 
 	<dependencies>
+
+		<!-- Kotlin dependency -->
+		<!-- see https://kotlinlang.org/docs/maven.html#dependencies -->
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib</artifactId>
+			<version>${kotlin.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-reflect</artifactId>
+			<version>${kotlin.version}</version>
+		</dependency>
+
+
 		<!-- Use log4j2 instead of slf4j -->
 		<!-- see https://stackoverflow.com/a/41500347/8534088 -->
 		<dependency>
@@ -173,6 +224,13 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>${log4j2.version}</version>
+		</dependency>
+
+		<!-- Kotlin dependency for log4j -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api-kotlin</artifactId>
+			<version>${log4j2.api.kotlin.version}</version>
 		</dependency>
 
 		<!-- todo: think about defining maven-compiler-plugin with lombok also in parent (see kgparser-springboot module) -->
@@ -252,53 +310,11 @@
 			</dependency>
 
 			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-				<version>${servlet-api.version}</version>
-				<scope>provided</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<dependency>
-				<groupId>org.json</groupId>
-				<artifactId>json</artifactId>
-				<version>${org.json.json.version}</version>
-				<scope>provided</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<dependency>
-				<groupId>su.opencode.kefir</groupId>
-				<artifactId>kefir-util</artifactId>
-				<version>${kefir-util.version}</version>
-				<optional>true</optional>
-				<scope>system</scope>
-				<systemPath>${maven.multiModuleProjectDirectory}/jboss-libs/kefir-util-1.0.jar</systemPath>
-			</dependency>
-
-			<dependency>
-				<groupId>su.opencode.kefir</groupId>
-				<artifactId>kefir-srv</artifactId>
-				<version>${kefir-srv.version}</version>
-				<optional>true</optional>
-				<scope>system</scope>
-				<systemPath>${maven.multiModuleProjectDirectory}/jboss-libs/kefir-srv-1.0.jar</systemPath>
-			</dependency>
-
-			<dependency>
-				<!-- server module dependency -->
+				<!-- common module dependency -->
 				<groupId>ru.klavogonki.kgparser</groupId>
-				<artifactId>kgparser-srv</artifactId>
+				<artifactId>kg-common</artifactId>
 				<version>1.0</version>
 				<scope>compile</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<dependency>
-				<groupId>commons-fileupload</groupId>
-				<artifactId>commons-fileupload</artifactId>
-				<version>${commons-fileupload.version}</version>
-				<scope>provided</scope>
 				<optional>true</optional>
 			</dependency>
 
@@ -315,23 +331,6 @@
 				<artifactId>javaee-api</artifactId>
 				<version>${javaee-api.version}</version>
 				<scope>compile</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>${httpclient.version}</version>
-				<scope>compile</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<!-- Html Parser - used in HtmlParserTest only -->
-			<dependency>
-				<groupId>org.htmlparser</groupId>
-				<artifactId>thumbelina</artifactId>
-				<version>${org.htmlparser.thumbelina.version}</version>
-				<scope>provided</scope>
 				<optional>true</optional>
 			</dependency>
 
@@ -433,6 +432,109 @@
 
 		</dependencies>
 	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>legacy-kgparser</id>
+
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+
+			<modules>
+				<module>kgparserSrv</module> <!-- relative path to module-->
+				<module>kgparserWeb</module> <!-- relative path to module-->
+			</modules>
+
+			<properties>
+				<servlet-api.version>2.5</servlet-api.version>
+				<org.json.json.version>20240303</org.json.json.version>
+				<kefir-util.version>1.0</kefir-util.version>
+				<kefir-srv.version>1.0</kefir-srv.version>
+				<org.htmlparser.thumbelina.version>2.1</org.htmlparser.thumbelina.version>
+				<commons-fileupload.version>1.5</commons-fileupload.version>
+				<httpclient.version>4.5.13</httpclient.version>
+			</properties>
+
+			<dependencyManagement>
+				<dependencies>
+
+					<dependency>
+						<groupId>su.opencode.kefir</groupId>
+						<artifactId>kefir-util</artifactId>
+						<version>${kefir-util.version}</version>
+						<optional>true</optional>
+						<scope>system</scope>
+						<systemPath>${maven.multiModuleProjectDirectory}/jboss-libs/kefir-util-1.0.jar</systemPath>
+					</dependency>
+
+					<dependency>
+						<groupId>su.opencode.kefir</groupId>
+						<artifactId>kefir-srv</artifactId>
+						<version>${kefir-srv.version}</version>
+						<optional>true</optional>
+						<scope>system</scope>
+						<systemPath>${maven.multiModuleProjectDirectory}/jboss-libs/kefir-srv-1.0.jar</systemPath>
+					</dependency>
+
+					<dependency>
+						<!-- server module dependency -->
+						<groupId>ru.klavogonki.kgparser</groupId>
+						<artifactId>kgparser-srv</artifactId>
+						<version>1.0</version>
+						<scope>compile</scope>
+						<optional>true</optional>
+					</dependency>
+
+					<!-- Html Parser - used in HtmlParserTest only -->
+					<dependency>
+						<groupId>org.htmlparser</groupId>
+						<artifactId>thumbelina</artifactId>
+						<version>${org.htmlparser.thumbelina.version}</version>
+						<scope>provided</scope>
+						<optional>true</optional>
+					</dependency>
+
+					<!-- Used in CompetitionUploadServlet only -->
+					<dependency>
+						<groupId>commons-fileupload</groupId>
+						<artifactId>commons-fileupload</artifactId>
+						<version>${commons-fileupload.version}</version>
+						<scope>provided</scope>
+						<optional>true</optional>
+					</dependency>
+
+					<!-- Used in CompetitionZipFileDownloadServlet only -->
+					<dependency>
+						<groupId>javax.servlet</groupId>
+						<artifactId>servlet-api</artifactId>
+						<version>${servlet-api.version}</version>
+						<scope>provided</scope>
+						<optional>true</optional>
+					</dependency>
+
+					<!-- Used in legacy modules only -->
+					<dependency>
+						<groupId>org.json</groupId>
+						<artifactId>json</artifactId>
+						<version>${org.json.json.version}</version>
+						<scope>provided</scope>
+						<optional>true</optional>
+					</dependency>
+
+					<!-- Used in HttpClientTest only -->
+					<dependency>
+						<groupId>org.apache.httpcomponents</groupId>
+						<artifactId>httpclient</artifactId>
+						<version>${httpclient.version}</version>
+						<scope>compile</scope>
+						<optional>true</optional>
+					</dependency>
+
+				</dependencies>
+			</dependencyManagement>
+		</profile>
+	</profiles>
 
 	<developers>
 		<developer>

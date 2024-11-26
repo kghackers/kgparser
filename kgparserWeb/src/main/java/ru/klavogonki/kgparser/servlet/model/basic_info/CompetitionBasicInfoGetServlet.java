@@ -7,8 +7,6 @@ import su.opencode.kefir.web.Action;
 import su.opencode.kefir.web.InitiableAction;
 import su.opencode.kefir.web.JsonServlet;
 
-import static su.opencode.kefir.util.StringUtils.concat;
-
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
@@ -16,31 +14,31 @@ import static su.opencode.kefir.util.StringUtils.concat;
  * $Revision$
  * $Date::                      $
  */
-public class CompetitionBasicInfoGetServlet extends JsonServlet
-{
-	@Override
-	protected Action getAction() {
-		return new InitiableAction()
-		{
-			@Override
-			public void doAction() throws Exception {
-				Long competitionEntityId = getLongParam(COMPETITION_ENTITY_ID_PARAM_NAME);
-				if (competitionEntityId == null) {
-					throw new ClientException( concat(sb, "\"", COMPETITION_ENTITY_ID_PARAM_NAME, "\" parameter is not set") );
-				}
+public class CompetitionBasicInfoGetServlet extends JsonServlet {
+    @Override
+    protected Action getAction() {
+        return new InitiableAction() {
+            @Override
+            public void doAction() throws Exception {
+                Long competitionEntityId = getLongParam(COMPETITION_ENTITY_ID_PARAM_NAME);
+                if (competitionEntityId == null) {
+					String errorMessage = String.format("\"%s\" parameter is not set", COMPETITION_ENTITY_ID_PARAM_NAME);
+					throw new ClientException(errorMessage);
+                }
 
-				CompetitionEntityService service = getService(CompetitionEntityService.class);
-				Competition competition = service.getCompetition(competitionEntityId);
+                CompetitionEntityService service = getService(CompetitionEntityService.class);
+                Competition competition = service.getCompetition(competitionEntityId);
 
-				if (competition == null) {
-					throw new ClientException( concat(sb, "Competition not found for competitionEntityId = ", competitionEntityId) );
-				}
+                if (competition == null) {
+					String errorMessage = String.format("Competition not found for competitionEntityId = %d", competitionEntityId);
+					throw new ClientException(errorMessage);
+                }
 
-				CompetitionBasicInfo basicInfo = new CompetitionBasicInfo(competition);
-				writeSuccess(basicInfo);
-			}
-		};
-	}
+                CompetitionBasicInfo basicInfo = new CompetitionBasicInfo(competition);
+                writeSuccess(basicInfo);
+            }
+        };
+    }
 
-	public static final String COMPETITION_ENTITY_ID_PARAM_NAME = "competitionId";
+    public static final String COMPETITION_ENTITY_ID_PARAM_NAME = "competitionId";
 }

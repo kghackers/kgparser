@@ -5,7 +5,7 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.common.Rank;
 import ru.klavogonki.statistics.dto.PlayerDto;
 import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.freemarker.OrderUtils;

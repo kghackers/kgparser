@@ -1,11 +1,11 @@
 package ru.klavogonki.kgparser.test;
 
 import org.junit.jupiter.api.Test;
+import ru.klavogonki.common.StandardDictionary;
 import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.Player;
 import ru.klavogonki.kgparser.PlayerRoundResult;
 import ru.klavogonki.kgparser.Round;
-import ru.klavogonki.kgparser.StandardDictionary;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.klavogonki.kgparser.test.TestHelper.createPlayer;

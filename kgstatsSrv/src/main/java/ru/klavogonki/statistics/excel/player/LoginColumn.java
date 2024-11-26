@@ -1,7 +1,7 @@
 package ru.klavogonki.statistics.excel.player;
 
 import lombok.extern.log4j.Log4j2;
-import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.common.Rank;
 import ru.klavogonki.statistics.excel.ExcelExportContext;
 import ru.klavogonki.statistics.excel.data.ExcelExportContextData;
 

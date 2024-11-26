@@ -2,7 +2,7 @@ package ru.klavogonki.statistics.download;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.klavogonki.kgparser.http.UrlConstructor;
+import ru.klavogonki.common.UrlConstructor;
 import ru.klavogonki.statistics.Config;
 
 public class StatsOverviewDownloader implements DataDownloader {

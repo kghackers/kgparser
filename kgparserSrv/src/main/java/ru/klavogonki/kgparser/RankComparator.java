@@ -1,5 +1,7 @@
 package ru.klavogonki.kgparser;
 
+import ru.klavogonki.common.Rank;
+
 import java.util.Comparator;
 
 /**

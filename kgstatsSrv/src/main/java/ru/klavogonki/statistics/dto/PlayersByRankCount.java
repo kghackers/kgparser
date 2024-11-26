@@ -1,7 +1,7 @@
 package ru.klavogonki.statistics.dto;
 
 import lombok.Data;
-import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.common.Rank;
 
 @Data
 public class PlayersByRankCount {

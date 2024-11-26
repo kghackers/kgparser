@@ -7,15 +7,15 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ValueMapping;
 import org.mapstruct.ValueMappings;
-import ru.klavogonki.kgparser.DictionaryMode;
-import ru.klavogonki.kgparser.NonStandardDictionaryType;
-import ru.klavogonki.statistics.entity.PlayerEntity;
-import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
-import ru.klavogonki.statistics.util.DateUtils;
+import ru.klavogonki.common.DictionaryMode;
+import ru.klavogonki.common.NonStandardDictionaryType;
 import ru.klavogonki.openapi.model.GetStatsOverviewGameType;
 import ru.klavogonki.openapi.model.GetStatsOverviewResponse;
 import ru.klavogonki.openapi.model.NonStandardVocabularyType;
 import ru.klavogonki.openapi.model.VocabularyMode;
+import ru.klavogonki.statistics.entity.PlayerEntity;
+import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
+import ru.klavogonki.statistics.util.DateUtils;
 
 import java.time.LocalDateTime;
 

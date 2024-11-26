@@ -13,8 +13,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import static su.opencode.kefir.util.StringUtils.concat;
-
 /**
  * Copyright 2014 LLC "Open Code"
  * http://www.o-code.ru
@@ -33,14 +31,16 @@ public class CompetitionZipFileDownloadServlet extends JsonServlet
 			public void doAction() throws Exception {
 				Long competitionEntityId = getLongParam(COMPETITION_ENTITY_ID_PARAM_NAME);
 				if (competitionEntityId == null) {
-					throw new ClientException(concat(sb, "\"", COMPETITION_ENTITY_ID_PARAM_NAME, "\" parameter is not set"));
+					String errorMessage = String.format("\"%s\" parameter is not set", COMPETITION_ENTITY_ID_PARAM_NAME);
+					throw new ClientException(errorMessage);
 				}
 
 				CompetitionEntityService service = getService(CompetitionEntityService.class);
 				CompetitionEntity entity = service.getCompetitionEntity(competitionEntityId);
 
 				if (entity == null) {
-					throw new ClientException(concat(sb, "CompetitionEntity not found for id = ", competitionEntityId));
+					String errorMessage = String.format("CompetitionEntity not found for id = %d", competitionEntityId);
+					throw new ClientException(errorMessage);
 				}
 
 				String contentType = entity.getZipFileContentType();

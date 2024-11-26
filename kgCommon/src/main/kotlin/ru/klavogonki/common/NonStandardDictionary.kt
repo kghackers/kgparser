@@ -1,10 +1,14 @@
-package ru.klavogonki.kgparser;
+package ru.klavogonki.common
 
 /**
  * Популярные нестандартные словари.
  */
-public enum NonStandardDictionary {
-
+@Suppress("MagicNumber", "Unused")
+enum class NonStandardDictionary(
+    @JvmField val code: String,
+    @JvmField val displayName: String,
+    @JvmField val displayNamePrepositional: String
+) {
     // most popular non-standard dictionaries
     NORMAL_IN_ENGLISH(5539, "Обычный in English", "Обычном in English"),
     ONE_HUNDRED_RUSSIAN(25856, "Соточка", "Соточке"),
@@ -48,7 +52,7 @@ public enum NonStandardDictionary {
     HRUST_EXERCISE_21(32013, "Упражнение №21", "Упражнении №21"),
     HRUST_EXERCISE_22(32014, "Упражнение №22", "Упражнении №22"),
     HRUST_EXERCISE_23(32015, "Упражнение №23", "Упражнении №23"),
-//    HRUST_EXERCISE_24(32016, "Упражнение №24", "Упражнении №24"),
+    //    HRUST_EXERCISE_24(32016, "Упражнение №24", "Упражнении №24"),
     HRUST_EXERCISE_24(32016, "Упражнение заключительное", "Упражнении заключительном"),
 
     // Мультилингва
@@ -58,18 +62,13 @@ public enum NonStandardDictionary {
     // номера словарей по возрастанию: normal 5539 8950 25130 29236 29464 29468 29510 29513 29521 29537 29616 29667 30395 30641 35239 40559 106181 106487 106554 106688 114083 114825 115209 115378 115424 115943 116073 116553 116554 116745 117862 122698 122702 122761 122888 122891 123163 130272 136302 136354 136403 136795 136908 137357 138500 141412 141415 141423 141609 141610 141960
     ;
 
-
-    NonStandardDictionary(final int code, final String name, final String namePrepositional) {
-        this(Dictionary.NON_STANDARD_DICTIONARY_ID_PREFIX + code, name, namePrepositional);
-    }
-
-    NonStandardDictionary(final String code, final String name, final String namePrepositional) {
-        this.code = code;
-        this.name = name;
-        this.namePrepositional = namePrepositional;
-    }
-
-    public final String code;
-    public final String name;
-    public final String namePrepositional;
+    constructor(
+        code: Int,
+        displayName: String,
+        displayNamePrepositional: String
+    ) : this(
+        DictionaryUtils.getDictionaryCode(code),
+        displayName,
+        displayNamePrepositional
+    )
 }

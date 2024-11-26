@@ -1,9 +1,10 @@
 package ru.klavogonki.kgparser.test;
 
+import ru.klavogonki.common.DictionaryUtils;
+import ru.klavogonki.common.StandardDictionary;
 import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.Player;
 import ru.klavogonki.kgparser.Round;
-import ru.klavogonki.kgparser.StandardDictionary;
 
 /**
  * Copyright 2014 LLC "Open Code"
@@ -25,10 +26,10 @@ public class TestHelper
 
 	// todo: move to constructors
 	public static Dictionary getDictionary(StandardDictionary dictionary) {
-		return getDictionary( dictionary.toString(), StandardDictionary.getDisplayName(dictionary) );
+		return getDictionary( dictionary.toString(), dictionary.displayName );
 	}
 	public static Dictionary getDictionary(int dictionaryId, String name) {
-		return getDictionary( Dictionary.getDictionaryCode(dictionaryId), name );
+		return getDictionary( DictionaryUtils.getDictionaryCode(dictionaryId), name );
 	}
 	public static Dictionary getDictionary(String code, String name) {
 		Dictionary dictionary = new Dictionary();

@@ -1,6 +1,6 @@
 package ru.klavogonki.statistics.excel.data;
 
-import ru.klavogonki.kgparser.Rank;
+import ru.klavogonki.common.Rank;
 
 /**
  * Root class used as Excel export data.

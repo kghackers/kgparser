@@ -1,6 +1,7 @@
 package ru.klavogonki.kgparser;
 
-import ru.klavogonki.kgparser.http.UrlConstructor;
+import ru.klavogonki.common.DictionaryUtils;
+import ru.klavogonki.common.StandardDictionary;
 import su.opencode.kefir.srv.json.Json;
 import su.opencode.kefir.util.StringUtils;
 
@@ -27,7 +28,7 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 		if ( this.isStandard() )
 			return null;
 
-		return getDictionaryId( this.getCode() );
+		return DictionaryUtils.getDictionaryId( this.getCode() );
 //		return id;
 	}
 //	public void setId(int id) {
@@ -43,6 +44,7 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 
 		return this.code.equals(dictionaryCode);
 	}
+
 	public boolean isSame(Dictionary dictionary) {
 		if (dictionary == null)
 			throw new IllegalArgumentException("dictionary cannot be null");
@@ -70,106 +72,22 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	 */
 	@Json(exclude = true)
 	public boolean isStandard() {
-		return isStandard(this.code);
+		return DictionaryUtils.isStandard(this.code);
 	}
 
 	@Json(exclude = true)
 	public String getColor() {
-		return getDictionaryColor(this.code);
+		return DictionaryUtils.getDictionaryColor(this.code);
 	}
 
 	@Json(exclude = true)
 	public String getDictionaryPageUrl() {
-		return getDictionaryPageUrl(this.code);
-	}
-
-	@Json(exclude = true)
-	public static boolean isValid(String code) {
-		return code.startsWith(NON_STANDARD_DICTIONARY_ID_PREFIX) || StandardDictionary.isValidStandardDictionaryCode(code);
-	}
-
-	/**
-	 * @param code строковый код словаря (gametype в ajax-api)
-	 * @return <code>true</code> &mdash; если словарь с указанным кодом является {@linkplain StandardDictionary стандартным};
-	 * <br>
-	 * <code>false</code> &mdash; если словарь с указанным кодом является пользовательским словарем.
-	 */
-	@Json(exclude = true)
-	public static boolean isStandard(String code) {
-		if (code.startsWith(NON_STANDARD_DICTIONARY_ID_PREFIX)) {
-			return false;
-		}
-
-		if (StandardDictionary.isValidStandardDictionaryCode(code)) {
-			return true;
-		}
-
-		throw new IllegalArgumentException(String.format("Incorrect dictionary code: \"%s\".", code));
-	}
-
-	/**
-	 * @param code строковый код словаря (gametype в ajax-api)
-	 * @return числовой идентификатор словаря
-	 */
-	@Json(exclude = true)
-	public static int getDictionaryId(String code) {
-		if ( isStandard(code) ) {
-			throw new IllegalArgumentException("Dictionary with code = \"" + code + "\" is standard. Cannot get dictionary id from it."); // todo: use concat
-		}
-
-		String codeStr = code.substring( NON_STANDARD_DICTIONARY_ID_PREFIX.length() );
-		return Integer.parseInt(codeStr);
-	}
-
-	/**
-	 * @param dictionaryId идентификатор словаря
-	 * @return строковый код словаря
-	 */
-	@Json(exclude = true)
-	public static String getDictionaryCode(int dictionaryId) {
-		return StringUtils.concat( NON_STANDARD_DICTIONARY_ID_PREFIX, Integer.toString(dictionaryId) );
-	}
-
-	@Json(exclude = true)
-	public static int getTextType(String code) {
-		if (!isStandard(code)) {
-			return getDictionaryId(code);
-		}
-
-		StandardDictionary standardDictionary = StandardDictionary.valueOf(code);
-		return StandardDictionary.getTextType(standardDictionary);
-	}
-
-	/**
-	 * @param dictionaryCode строковый код словаря
-	 * @return цвет, соответствующий словарю.
-	 */
-	@Json(exclude = true)
-	public static String getDictionaryColor(String dictionaryCode) {
-		if ( isStandard(dictionaryCode) )
-		{
-			return StandardDictionary.getColor( StandardDictionary.valueOf(dictionaryCode) );
-		}
-
-		return NON_STANDARD_DICTIONARY_COLOR;
-	}
-
-	/**
-	 * @param dictionaryCode строковый код словаря
-	 * @return <code>null</code> &mdash; для стандартных словарей
-	 * <br>
-	 * ссылка на страницу словаря &mdash; для нестандартных словарей
-	 */
-	public static String getDictionaryPageUrl(String dictionaryCode) {
-		if ( isStandard(dictionaryCode) )
-			return StandardDictionary.getDictionaryPageUrl( StandardDictionary.valueOf(dictionaryCode) );
-
-		return UrlConstructor.dictionaryPage( getDictionaryId(dictionaryCode) );
+		return DictionaryUtils.getDictionaryPageUrl(this.code);
 	}
 
 	/**
 	 * Строковый код словаря.
-	 * Для нестандартных словарей начинается с {@linkplain #NON_STANDARD_DICTIONARY_ID_PREFIX соответствующего префикса}.
+	 * Для нестандартных словарей начинается с {@linkplain ru.klavogonki.common.DictionaryUtils#NON_STANDARD_DICTIONARY_ID_PREFIX соответствующего префикса}.
 	 */
 	private String code;
 
@@ -182,14 +100,4 @@ public class Dictionary // extends JsonObject // this leads to javadoc generatio
 	 * Название словаря.
 	 */
 	private String name;
-
-	/**
-	 * Префикс, с которого начинается код нестандартного словаря.
-	 */
-	public static final String NON_STANDARD_DICTIONARY_ID_PREFIX = "voc-";
-
-	/**
-	 * Цвет для отображения нестандартного словаря.
-	 */
-	public static final String NON_STANDARD_DICTIONARY_COLOR = "#524CA7";
 }

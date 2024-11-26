@@ -5,10 +5,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
+import ru.klavogonki.common.UrlConstructor;
 import ru.klavogonki.kgparser.Competition;
 import ru.klavogonki.kgparser.Dictionary;
 import ru.klavogonki.kgparser.Player;
-import ru.klavogonki.kgparser.http.UrlConstructor;
 
 import java.util.Set;
 
@@ -70,7 +70,7 @@ public class CompetitionResultsTest
 				"Player {} (profileId = {}, profileLink = {})",
 				player.getName(),
 				player.getProfileId(),
-				UrlConstructor.userProfileLink(player)
+				UrlConstructor.userProfileLink(player.getProfileId())
 			);
 
 			int totalRoundsCount = competition.getRoundsCount(player);

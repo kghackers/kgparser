@@ -12,8 +12,9 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.json.JSONObject;
-import ru.klavogonki.kgparser.Rank;
-import ru.klavogonki.kgparser.StandardDictionary;
+import ru.klavogonki.common.Rank;
+import ru.klavogonki.common.StandardDictionary;
+import ru.klavogonki.common.UrlConstructor;
 import su.opencode.kefir.util.JsonUtils;
 import su.opencode.kefir.util.ObjectUtils;
 import su.opencode.kefir.util.StringUtils;
@@ -41,8 +42,8 @@ public class HttpClientTest
 //		int playerId = 233067; // E_l_e_n_a (racer)
 //		int playerId = 139052; // alanen (maniac)
 //		int playerId = NOSFERATUM_PROFILE_ID; // nosferatum (superman)
-//		int playerId = 79473; // _Jack_ (cyberracer>
-//		int playerId = 1210; // ToNick (extracyber>
+//		int playerId = 79473; // _Jack_ (cyberracer)
+//		int playerId = 1210; // ToNick (extracyber)
 
 
 //		int playerId = 231371; // Phemmer
@@ -70,7 +71,7 @@ public class HttpClientTest
 		logger.info("");
 //		String dictionaryCode = StandardDictionary.normal.toString(); // обычный
 		String dictionaryCode = StandardDictionary.chars.toString(); // буквы
-//		String dictionaryCode = Dictionary.getDictionaryCode(192); // частотный
+//		String dictionaryCode = DictionaryUtils.getDictionaryCode(192); // частотный
 		url = UrlConstructor.getStatsDetail(playerId, dictionaryCode);
 		logger.info("url: {}",  url);
 		body = getResponseBody(url);

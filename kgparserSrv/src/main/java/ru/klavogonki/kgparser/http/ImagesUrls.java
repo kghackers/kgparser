@@ -1,5 +1,7 @@
 package ru.klavogonki.kgparser.http;
 
+import ru.klavogonki.common.UrlConstructor;
+
 /**
  * Copyright 2014 <a href="mailto:dmitry.weirdo@gmail.com">Dmitriy Popov</a>.
  * $HeadURL$
