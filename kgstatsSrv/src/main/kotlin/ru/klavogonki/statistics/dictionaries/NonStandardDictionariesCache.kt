@@ -20,13 +20,40 @@ object NonStandardDictionariesCache : Logging {
 
         val nonStandardDictionaries = JacksonUtils.parseNonStandardDictionaryData(fileName)
 
+        logger.info(
+            "Total non-standard dictionaries read from json file \"$NON_STANDARD_DICTIONARIES_JSON_RESOURCE\": " +
+                "${nonStandardDictionaries.size}."
+        )
+
+        // validate no duplicate ids
+        validate(nonStandardDictionaries)
+
         return nonStandardDictionaries
+    }
+
+    private fun validate(dictionaries: List<NonStandardDictionaryData>) {
+        val repeatCodeToCount: Map<Int, Int> = dictionaries
+            .groupingBy { it.code }
+            .eachCount()
+            .filter { it.value > 1 }
+
+        if (repeatCodeToCount.isNotEmpty()) {
+            repeatCodeToCount.forEach {
+                logger.error("Duplicate dictionary code ${it.key}: used ${it.value} times.")
+            }
+        }
+
+        check(repeatCodeToCount.isEmpty()) {
+            "Duplicate dictionary codes: $repeatCodeToCount"
+        }
+
+        logger.info("No dictionary code duplicates.")
     }
 
     @JvmStatic
     fun main(args: Array<String>) {
         val nonStandardDictionaries = parse()
 
-        logger.info("Total non-standard dictionaries read from json file: ${nonStandardDictionaries.size}.")
+        logger.info("[main]: Total non-standard dictionaries read from json file: ${nonStandardDictionaries.size}.")
     }
 }
