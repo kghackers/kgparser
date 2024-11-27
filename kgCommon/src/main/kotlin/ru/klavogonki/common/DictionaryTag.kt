@@ -19,6 +19,7 @@ enum class DictionaryTag(
     HUNDRED("Соточка"),
     SHORT_TEXTS("Короткие тексты"),
     FREQUENT("Частотный"),
+    CYBERTEXT("Кибертекст"),
     FINGERS("Пальцы"),
     HAND("Рука"),
     LEFT_HAND("Левая"),

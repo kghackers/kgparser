@@ -2,6 +2,7 @@ package ru.klavogonki.statistics.util;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -10,11 +11,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.statistics.Config;
+import ru.klavogonki.statistics.dictionaries.NonStandardDictionaryData;
 import ru.klavogonki.statistics.export.StatisticsGeneratorConfig;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public final class JacksonUtils {
     private static final Logger logger = LogManager.getLogger(JacksonUtils.class);
@@ -47,6 +50,23 @@ public final class JacksonUtils {
         logger.debug("Successfully parsed statistics generator config from file {}", filePath);
         logger.debug("Config: {}", config);
         return config;
+    }
+
+    public static List<NonStandardDictionaryData> parseNonStandardDictionaryData(String filePath) {
+        TypeReference<List<NonStandardDictionaryData>> typeReference = new TypeReference<>() {
+        };
+
+        File file = new File(filePath);
+
+        try {
+            ObjectMapper mapper = createObjectMapper();
+
+            return mapper.readValue(file, typeReference);
+        } catch (IOException e) {
+            String errorMessage = String.format("Error on parsing file \"%s\" to class %s", filePath, typeReference.getClass().getName());
+
+            throw handleError(e, errorMessage);
+        }
     }
 
     public static void serialize(File file, Object object) {

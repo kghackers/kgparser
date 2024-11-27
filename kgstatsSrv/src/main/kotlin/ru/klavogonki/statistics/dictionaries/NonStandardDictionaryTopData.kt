@@ -1,15 +1,27 @@
 package ru.klavogonki.statistics.dictionaries
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
+
+@JsonPropertyOrder(
+    "loggerName",
+    "minRacesCount",
+    "topByBestSpeedExcelSheetName",
+    "topByRacesCountExcelSheetName",
+    "topByHaulExcelSheetName"
+)
 data class NonStandardDictionaryTopData(
 
     /**
      * Английское имя для использования в логгировании при генерации топов словаря.
      */
+    @JsonProperty("loggerName")
     @JvmField val loggerName: String,
 
     /**
      * Минимальное число заездов (пробег) по словарю для того, чтобы игрок попадал в топ по данному словарю.
      */
+    @JsonProperty("minRacesCount")
     @JvmField val minRacesCount: Int,
 
     /**
@@ -20,6 +32,7 @@ data class NonStandardDictionaryTopData(
      * Используется обычно в случае, если стандартное название листа имеет длину больше 31 символа,
      * что ломает Excel для Windows.
      */
+    @JsonProperty("topByBestSpeedExcelSheetName")
     @JvmField val topByBestSpeedExcelSheetName: String?,
 
     /**
@@ -30,6 +43,7 @@ data class NonStandardDictionaryTopData(
      * Используется обычно в случае, если стандартное название листа имеет длину больше 31 символа,
      * что ломает Excel для Windows.
      */
+    @JsonProperty("topByRacesCountExcelSheetName")
     @JvmField val topByRacesCountExcelSheetName: String?,
 
     /**
@@ -40,5 +54,6 @@ data class NonStandardDictionaryTopData(
      * Используется обычно в случае, если стандартное название листа имеет длину больше 31 символа,
      * что ломает Excel для Windows.
      */
+    @JsonProperty("topByHaulExcelSheetName")
     @JvmField val topByHaulExcelSheetName: String?
 )
