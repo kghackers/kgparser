@@ -80,4 +80,26 @@ enum class NonStandardDictionary(
         displayName,
         displayNamePrepositional
     )
+
+    companion object {
+        fun getByDictionaryCode(code: String): NonStandardDictionary {
+            val values = entries.filter { it.code == code }
+
+            check(values.isNotEmpty()) {
+                "No non-standard dictionary for code = \"$code\"."
+            }
+
+            check(values.size == 1) {
+                "More than one non-standard dictionary for code = \"$code\"."
+            }
+
+            return values[0]
+        }
+
+        fun getByDictionaryId(dictionaryId: Int): NonStandardDictionary {
+            val code = DictionaryUtils.getDictionaryCode(dictionaryId)
+
+            return getByDictionaryCode(code)
+        }
+    }
 }

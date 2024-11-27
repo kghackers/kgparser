@@ -1,11 +1,15 @@
 package ru.klavogonki.statistics.dictionaries
 
 import org.apache.logging.log4j.kotlin.Logging
+import ru.klavogonki.common.DictionaryUtils
+import ru.klavogonki.common.NonStandardDictionary
 import ru.klavogonki.statistics.util.JacksonUtils
 
 object NonStandardDictionariesCache : Logging {
 
     private const val NON_STANDARD_DICTIONARIES_JSON_RESOURCE = "/dictionaries/non-standard-dictionaries.json"
+
+    private val nonStandardDictionaries = parse()
 
 /*
     val nonStandardDictionaries: List<NonStandardDictionaryData> = ObjectMapper()
@@ -50,10 +54,23 @@ object NonStandardDictionariesCache : Logging {
         logger.info("No dictionary code duplicates.")
     }
 
+    fun getDictionary(code: Int): NonStandardDictionaryData {
+        return nonStandardDictionaries
+            .firstOrNull { it.code == code }
+            ?: error("No dictionary found by code = $code.")
+    }
+
+    fun getDictionary(code: String): NonStandardDictionaryData {
+        val intCode = DictionaryUtils.getDictionaryId(code)
+
+        return getDictionary(intCode)
+    }
+
     @JvmStatic
     fun main(args: Array<String>) {
-        val nonStandardDictionaries = parse()
+        val shortTexts = getDictionary(NonStandardDictionary.SHORT_TEXTS.code)
+        logger.info("Short texts dictionary: \n$shortTexts")
 
-        logger.info("[main]: Total non-standard dictionaries read from json file: ${nonStandardDictionaries.size}.")
+        val bad = getDictionary(666999)
     }
 }
