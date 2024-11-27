@@ -14,7 +14,7 @@ enum class DictionaryTag(
     EXERCISE("Упражнение"),
     HRUST("Хруст"),
     DIGITS("Цифры"),
-    CHARS("Буквы"),
+    LETTERS("Буквы"),
     MINI_MARATHON("Мини-марафон"),
     HUNDRED("Соточка"),
     SHORT_TEXTS("Короткие тексты"),

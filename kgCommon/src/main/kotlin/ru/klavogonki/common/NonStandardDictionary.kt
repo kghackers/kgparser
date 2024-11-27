@@ -9,18 +9,23 @@ enum class NonStandardDictionary(
     @JvmField val displayName: String,
     @JvmField val displayNamePrepositional: String
 ) {
-    // most popular non-standard dictionaries
+    // English
     NORMAL_IN_ENGLISH(5539, "Обычный in English", "Обычном in English"),
-    ONE_HUNDRED_RUSSIAN(25856, "Соточка", "Соточке"),
-    FREQUENCY_VOCABULARY(192, "Частотный словарь", "Частотном словаре"),
-    SHORT_TEXTS(1789, "Короткие тексты", "Коротких текстах"),
-    DIGITS_ONE_HUNDRED(62238, "Цифросоточка", "Цифросоточке"),
-    FIVE_THOUSAND_MOST_POPULAR_WORDS(203, "5000 самых частых слов", "5000 самых частых словах"),
     ONE_HUNDRED(62586, "One Hundred", "One Hundred"),
     SHORT_TEXTS_IN_ENGLISH(14878, "Short Texts in English", "Short Texts in English"),
-    MINI_MARATHON(6018, "Мини-марафон, 800 знаков", "Мини-марафоне, 800 знаков"),
+
+    // Частотка на русском
+    ONE_HUNDRED_RUSSIAN(25856, "Соточка", "Соточке"),
+    FREQUENCY_VOCABULARY(192, "Частотный словарь", "Частотном словаре"),
+    FIVE_THOUSAND_MOST_POPULAR_WORDS(203, "5000 самых частых слов", "5000 самых частых словах"),
+    SHORT_TEXTS(1789, "Короткие тексты", "Коротких текстах"),
     CYBERTEXT(6562, "Кибертекст", "Кибертексте"),
     CYBERTEXT_2(115606, "Кибертекст 2.0", "Кибертексте 2.0"),
+
+    // Цифры
+    DIGITS_ONE_HUNDRED(62238, "Цифросоточка", "Цифросоточке"),
+
+    MINI_MARATHON(6018, "Мини-марафон, 800 знаков", "Мини-марафоне, 800 знаков"),
 
     // Пальцы
     PINKIES_PLUS(3714, "Мизинцы+", "Мизинцах+"),
