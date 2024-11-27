@@ -13,18 +13,8 @@ import ru.klavogonki.statistics.springboot.Profiles;
 public class TrainingIndexFingersTopExporter extends NonStandardVocabularyTopExporterDefaultImpl {
 
     @Override
-    public NonStandardDictionary vocabulary() {
-        return NonStandardDictionary.TRAINING_INDEX_FINGERS;
-    }
-
-    @Override
-    public int minRacesCount() {
-        return 100; // about 562 users
-    }
-
-    @Override
-    public String loggerName() {
-        return this.getClass().getSimpleName();
+    public int dictionaryId() {
+        return NonStandardDictionary.TRAINING_INDEX_FINGERS.id;
     }
 
     @Override

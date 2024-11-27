@@ -6,6 +6,7 @@ package ru.klavogonki.common
 @Suppress("MagicNumber", "Unused")
 enum class NonStandardDictionary(
     @JvmField val code: String,
+    @JvmField val id: Int,
     @JvmField val displayName: String,
     @JvmField val displayNamePrepositional: String
 ) {
@@ -77,11 +78,13 @@ enum class NonStandardDictionary(
         displayNamePrepositional: String
     ) : this(
         DictionaryUtils.getDictionaryCode(code),
+        code,
         displayName,
         displayNamePrepositional
     )
 
     companion object {
+        @JvmStatic
         fun getByDictionaryCode(code: String): NonStandardDictionary {
             val values = entries.filter { it.code == code }
 
@@ -96,6 +99,7 @@ enum class NonStandardDictionary(
             return values[0]
         }
 
+        @JvmStatic
         fun getByDictionaryId(dictionaryId: Int): NonStandardDictionary {
             val code = DictionaryUtils.getDictionaryCode(dictionaryId)
 

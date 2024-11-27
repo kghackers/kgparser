@@ -13,17 +13,7 @@ import ru.klavogonki.statistics.springboot.Profiles;
 public class DigitsOneHundredTopExporter extends NonStandardVocabularyTopExporterDefaultImpl {
 
     @Override
-    public NonStandardDictionary vocabulary() {
-        return NonStandardDictionary.DIGITS_ONE_HUNDRED;
-    }
-
-    @Override
-    public int minRacesCount() {
-        return 100; // about 2582 users
-    }
-
-    @Override
-    public String loggerName() {
-        return this.getClass().getSimpleName();
+    public int dictionaryId() {
+        return NonStandardDictionary.DIGITS_ONE_HUNDRED.id;
     }
 }

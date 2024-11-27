@@ -13,17 +13,7 @@ import ru.klavogonki.statistics.springboot.Profiles;
 public class OneHundredRussianTopExporter extends NonStandardVocabularyTopExporterDefaultImpl {
 
     @Override
-    public NonStandardDictionary vocabulary() {
-        return NonStandardDictionary.ONE_HUNDRED_RUSSIAN;
-    }
-
-    @Override
-    public int minRacesCount() {
-        return 500; // about 1984 users
-    }
-
-    @Override
-    public String loggerName() {
-        return this.getClass().getSimpleName();
+    public int dictionaryId() {
+        return NonStandardDictionary.ONE_HUNDRED_RUSSIAN.id;
     }
 }

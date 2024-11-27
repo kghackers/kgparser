@@ -13,17 +13,7 @@ import ru.klavogonki.statistics.springboot.Profiles;
 public class PinkiesPlusTopExporter extends NonStandardVocabularyTopExporterDefaultImpl {
 
     @Override
-    public NonStandardDictionary vocabulary() {
-        return NonStandardDictionary.PINKIES_PLUS;
-    }
-
-    @Override
-    public int minRacesCount() {
-        return 100; // about 571 users
-    }
-
-    @Override
-    public String loggerName() {
-        return this.getClass().getSimpleName();
+    public int dictionaryId() {
+        return NonStandardDictionary.PINKIES_PLUS.id;
     }
 }

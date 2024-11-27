@@ -13,18 +13,8 @@ import ru.klavogonki.statistics.springboot.Profiles;
 public class NormalInEnglishTopExporter extends NonStandardVocabularyTopExporterDefaultImpl {
 
     @Override
-    public NonStandardDictionary vocabulary() {
-        return NonStandardDictionary.NORMAL_IN_ENGLISH;
-    }
-
-    @Override
-    public int minRacesCount() {
-        return 200; // about 3248 users
-    }
-
-    @Override
-    public String loggerName() {
-        return this.getClass().getSimpleName();
+    public int dictionaryId() {
+        return NonStandardDictionary.NORMAL_IN_ENGLISH.id;
     }
 
     @Override

@@ -55,6 +55,7 @@ object NonStandardDictionariesCache : Logging {
     }
 
     fun getDictionary(code: Int): NonStandardDictionaryData {
+        // todo: get it from a static map
         return nonStandardDictionaries
             .firstOrNull { it.code == code }
             ?: error("No dictionary found by code = $code.")

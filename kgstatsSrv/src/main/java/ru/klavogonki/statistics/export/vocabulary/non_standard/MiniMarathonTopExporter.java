@@ -13,18 +13,8 @@ import ru.klavogonki.statistics.springboot.Profiles;
 public class MiniMarathonTopExporter extends NonStandardVocabularyTopExporterDefaultImpl {
 
     @Override
-    public NonStandardDictionary vocabulary() {
-        return NonStandardDictionary.MINI_MARATHON;
-    }
-
-    @Override
-    public int minRacesCount() {
-        return 100; // about 916 users
-    }
-
-    @Override
-    public String loggerName() {
-        return this.getClass().getSimpleName();
+    public int dictionaryId() {
+        return NonStandardDictionary.MINI_MARATHON.id;
     }
 
     @Override

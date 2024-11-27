@@ -1,8 +1,13 @@
 package ru.klavogonki.statistics.export.vocabulary.non_standard;
 
 import ru.klavogonki.common.NonStandardDictionary;
+import ru.klavogonki.statistics.dictionaries.NonStandardDictionariesCache;
+import ru.klavogonki.statistics.dictionaries.NonStandardDictionaryData;
+import ru.klavogonki.statistics.dictionaries.NonStandardDictionaryTopData;
 import ru.klavogonki.statistics.export.vocabulary.VocabularyTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.VocabularyTopUtils;
+
+import java.util.Objects;
 
 public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter {
 
@@ -11,11 +16,55 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
         return false;
     }
 
-    NonStandardDictionary vocabulary();
+    int dictionaryId();
+
+    @Deprecated(since = "use vocabularyData() instead")
+    default NonStandardDictionary vocabulary() {
+        return NonStandardDictionary.getByDictionaryId(
+            dictionaryId()
+        );
+    }
+
+    default NonStandardDictionaryData vocabularyData() {
+        int code = dictionaryId();
+
+        NonStandardDictionaryData dictionaryData = NonStandardDictionariesCache.INSTANCE.getDictionary(code);
+
+        assertDictionaryHasTopSet(dictionaryData);
+
+        return dictionaryData;
+    }
+
+    default NonStandardDictionaryTopData vocabularyTopData() {
+        return assertDictionaryHasTopSet(vocabularyData());
+    }
 
     @Override
-    default String vocabularyCode() {
-        return vocabulary().code;
+    default int minRacesCount() {
+        return vocabularyTopData().minRacesCount;
+    }
+
+    @Override
+    default String loggerName() {
+        return vocabularyTopData().loggerName;
+    }
+
+    private static NonStandardDictionaryTopData assertDictionaryHasTopSet(NonStandardDictionaryData dictionaryData) {
+        Objects.requireNonNull(
+            dictionaryData.top,
+            String.format(
+                "Non-standard dictionary with code = %d, name = \"%s\" has no top configured.",
+                dictionaryData.code,
+                dictionaryData.displayName
+            )
+        );
+
+        return dictionaryData.top;
+    }
+
+    @Override
+    default String vocabularyCode() { // full code. in "voc-123" format
+        return vocabularyData().getFullCode();
     }
 
     @Override

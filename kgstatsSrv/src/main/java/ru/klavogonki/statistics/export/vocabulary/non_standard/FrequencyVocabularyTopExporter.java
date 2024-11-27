@@ -13,18 +13,8 @@ import ru.klavogonki.statistics.springboot.Profiles;
 public class FrequencyVocabularyTopExporter extends NonStandardVocabularyTopExporterDefaultImpl {
 
     @Override
-    public NonStandardDictionary vocabulary() {
-        return NonStandardDictionary.FREQUENCY_VOCABULARY;
-    }
-
-    @Override
-    public int minRacesCount() {
-        return 200; // about 2664 users
-    }
-
-    @Override
-    public String loggerName() {
-        return this.getClass().getSimpleName();
+    public int dictionaryId() {
+        return NonStandardDictionary.FREQUENCY_VOCABULARY.id;
     }
 
     @Override

@@ -13,17 +13,7 @@ import ru.klavogonki.statistics.springboot.Profiles;
 public class RingFingersTopExporter extends NonStandardVocabularyTopExporterDefaultImpl {
 
     @Override
-    public NonStandardDictionary vocabulary() {
-        return NonStandardDictionary.RING_FINGERS;
-    }
-
-    @Override
-    public int minRacesCount() {
-        return 50; // about 279 users
-    }
-
-    @Override
-    public String loggerName() {
-        return this.getClass().getSimpleName();
+    public int dictionaryId() {
+        return NonStandardDictionary.RING_FINGERS.id;
     }
 }

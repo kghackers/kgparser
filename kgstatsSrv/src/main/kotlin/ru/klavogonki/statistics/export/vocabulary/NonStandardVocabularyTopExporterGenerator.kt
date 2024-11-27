@@ -24,15 +24,14 @@ object NonStandardVocabularyTopExporterGenerator : Logging {
         }
 
         return object : NonStandardVocabularyTopExporterDefaultImpl() {
+            override fun dictionaryId() = dictionaryData.code
+
             override fun minRacesCount() = dictionaryData.top.minRacesCount
 
             override fun loggerName() = dictionaryData.top.loggerName
 
-            override fun vocabulary(): NonStandardDictionary {
-                // todo: change the parent signature to return NonStandardDictionaryData instead
-
-                return NonStandardDictionary.getByDictionaryId(dictionaryData.code)
-            }
+            // todo: think whether this override from NonStandardVocabularyTopExporter is required
+            override fun vocabularyData() = dictionaryData
 
             override fun topByBestSpeedExcelSheetName() =
                 dictionaryData.top.topByBestSpeedExcelSheetName

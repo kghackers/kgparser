@@ -13,18 +13,8 @@ import ru.klavogonki.statistics.springboot.Profiles;
 public class ShortTextsTopExporter extends NonStandardVocabularyTopExporterDefaultImpl {
 
     @Override
-    public NonStandardDictionary vocabulary() {
-        return NonStandardDictionary.SHORT_TEXTS;
-    }
-
-    @Override
-    public int minRacesCount() {
-        return 200; // about 2440 users
-    }
-
-    @Override
-    public String loggerName() {
-        return this.getClass().getSimpleName();
+    public int dictionaryId() {
+        return NonStandardDictionary.SHORT_TEXTS.id;
     }
 
     @Override
