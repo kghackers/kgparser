@@ -11,13 +11,9 @@ object NonStandardDictionariesCache : Logging {
 
     private val nonStandardDictionaries = parse()
 
-/*
-    val nonStandardDictionaries: List<NonStandardDictionaryData> = ObjectMapper()
-        .readValue(
-            this.javaClass.getResource(NON_STANDARD_DICTIONARIES_JSON_RESOURCE),
-            object : TypeReference<List<NonStandardDictionaryData>>() {}
-        )
-*/
+    private val dictionaryByCode: Map<Int, NonStandardDictionaryData> = nonStandardDictionaries
+        .groupBy { it.code }
+        .mapValues { it.value.first() } // we're sure the code is unique
 
     private fun parse(): List<NonStandardDictionaryData> {
         val fileName = this.javaClass.getResource(NON_STANDARD_DICTIONARIES_JSON_RESOURCE).file
@@ -55,16 +51,14 @@ object NonStandardDictionariesCache : Logging {
     }
 
     fun getDictionary(code: Int): NonStandardDictionaryData {
-        // todo: get it from a static map
-        return nonStandardDictionaries
-            .firstOrNull { it.code == code }
+        return dictionaryByCode[code]
             ?: error("No dictionary found by code = $code.")
     }
 
     fun getDictionary(code: String): NonStandardDictionaryData {
-        val intCode = DictionaryUtils.getDictionaryId(code)
+        val dictionaryId = DictionaryUtils.getDictionaryId(code)
 
-        return getDictionary(intCode)
+        return getDictionary(dictionaryId)
     }
 
     @JvmStatic
