@@ -1,8 +1,9 @@
 package ru.klavogonki.statistics.export.vocabulary;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
+import ru.klavogonki.statistics.dto.PlayerVocabularyDto;
+import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.statistics.excel.ExcelExporter;
 import ru.klavogonki.statistics.excel.VocabularyTopByBestSpeedExcelTemplate;
 import ru.klavogonki.statistics.excel.VocabularyTopByHaulExcelTemplate;
@@ -10,6 +11,7 @@ import ru.klavogonki.statistics.excel.VocabularyTopByRacesCountExcelTemplate;
 import ru.klavogonki.statistics.export.DataExporter;
 import ru.klavogonki.statistics.export.ExportContext;
 import ru.klavogonki.statistics.export.ExporterUtils;
+import ru.klavogonki.statistics.export.LoggerWrapper;
 import ru.klavogonki.statistics.freemarker.PageUrls;
 import ru.klavogonki.statistics.freemarker.VocabularyTopByHaulLoginToPageTemplate;
 import ru.klavogonki.statistics.freemarker.VocabularyTopByHaulTemplate;
@@ -17,8 +19,6 @@ import ru.klavogonki.statistics.freemarker.VocabularyTopByRacesCountLoginToPageT
 import ru.klavogonki.statistics.freemarker.VocabularyTopByRacesCountTemplate;
 import ru.klavogonki.statistics.freemarker.VocabularyTopBySpeedLoginToPageTemplate;
 import ru.klavogonki.statistics.freemarker.VocabularyTopBySpeedTemplate;
-import ru.klavogonki.statistics.dto.PlayerVocabularyDto;
-import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.statistics.mapper.PlayerVocabularyDtoMapper;
 import ru.klavogonki.statistics.util.JacksonUtils;
 
@@ -37,7 +37,8 @@ public interface VocabularyTopExporter extends DataExporter {
 
     int minRacesCount();
 
-    Logger logger();
+    String loggerName();
+    LoggerWrapper logger();
 
     default int pageSize() {
         return 100;

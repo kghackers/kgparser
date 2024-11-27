@@ -1,11 +1,11 @@
 package ru.klavogonki.statistics.export.vocabulary
 
-import org.apache.logging.log4j.Logger
 import org.apache.logging.log4j.kotlin.Logging
 import ru.klavogonki.common.DictionaryUtils
 import ru.klavogonki.common.NonStandardDictionary
 import ru.klavogonki.statistics.dictionaries.NonStandardDictionariesCache
 import ru.klavogonki.statistics.export.vocabulary.non_standard.NonStandardVocabularyTopExporter
+import ru.klavogonki.statistics.export.vocabulary.standard.NonStandardVocabularyTopExporterDefaultImpl
 
 object NonStandardVocabularyTopExporterGenerator : Logging {
 
@@ -23,16 +23,10 @@ object NonStandardVocabularyTopExporterGenerator : Logging {
                 " has NO top metadata."
         }
 
-        return object : NonStandardVocabularyTopExporter {
-            override fun minRacesCount(): Int {
-                return dictionaryData.top.minRacesCount
-            }
+        return object : NonStandardVocabularyTopExporterDefaultImpl() {
+            override fun minRacesCount() = dictionaryData.top.minRacesCount
 
-            override fun logger(): Logger {
-                TODO("Not yet implemented")
-
-                // todo: change the parent signature method to return String and log like this
-            }
+            override fun loggerName() = dictionaryData.top.loggerName
 
             override fun vocabulary(): NonStandardDictionary {
                 // todo: change the parent signature to return NonStandardDictionaryData instead
@@ -60,6 +54,7 @@ object NonStandardVocabularyTopExporterGenerator : Logging {
 
         logger.info(
             "normalInEnglishTopExporter:" +
+                "\n  - loggerName = ${normalInEnglishTopExporter.loggerName()}" +
                 "\n  - minRacesCount = ${normalInEnglishTopExporter.minRacesCount()}" +
                 "\n  - topByBestSpeedExcelSheetName = ${normalInEnglishTopExporter.topByBestSpeedExcelSheetName()}" +
                 "\n  - topByRacesCountExcelSheetName = ${normalInEnglishTopExporter.topByRacesCountExcelSheetName()}" +
@@ -70,6 +65,7 @@ object NonStandardVocabularyTopExporterGenerator : Logging {
 
         logger.info(
             "digitsOneHundredTopExporter:" +
+                "\n  - loggerName = ${digitsOneHundredTopExporter.loggerName()}" +
                 "\n  - minRacesCount = ${digitsOneHundredTopExporter.minRacesCount()}" +
                 "\n  - topByBestSpeedExcelSheetName = ${digitsOneHundredTopExporter.topByBestSpeedExcelSheetName()}" +
                 "\n  - topByRacesCountExcelSheetName = ${digitsOneHundredTopExporter.topByRacesCountExcelSheetName()}" +
