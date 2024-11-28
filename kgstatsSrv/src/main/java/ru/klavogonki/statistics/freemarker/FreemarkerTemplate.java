@@ -72,6 +72,8 @@ public abstract class FreemarkerTemplate {
         configuration.setClassForTemplateLoading(FreemarkerTemplate.class, "/");
         configuration.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
 
+        configuration.setAPIBuiltinEnabled(true); // required to use non-string keys in maps
+
         Template template = configuration.getTemplate(ftlTemplate);
 
         template.process(templateData, out);

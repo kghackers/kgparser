@@ -20,6 +20,7 @@ public class ExampleTemplate extends FreemarkerTemplate {
 
     @Override
     public void export(final String filePath) {
+        templateData.put("testString", "A&nbsp;value&nbsp;test&nbsp;non&nbsp;breaking&nbsp;space!!!!");
         templateData.put("testInteger", 123456789);
         templateData.put("testDouble", 222.265);
 
@@ -37,11 +38,24 @@ public class ExampleTemplate extends FreemarkerTemplate {
 
         templateData.put("testMap", map);
 
+        Map<Integer, PlayerEntity> idToPlayerMap = new TreeMap<>();
+        idToPlayerMap.put(242585, player);
+//        intMap.put(2, "value 2");
+
+        templateData.put("idToPlayerMap", idToPlayerMap);
+
+
         String result = super.exportToString();
         logger.debug("result:\n{}", result);
+
+        exportFreemarkerToFile(
+            getTemplatePath(),
+            filePath,
+            templateData
+        );
     }
 
     public static void main(String[] args) {
-        new ExampleTemplate().export("example.html");
+        new ExampleTemplate().export("C:\\java\\kgparser\\.ignoreme\\freemarker-example.html");
     }
 }
