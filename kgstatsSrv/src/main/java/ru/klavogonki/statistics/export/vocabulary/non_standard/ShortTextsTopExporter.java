@@ -16,22 +16,4 @@ public class ShortTextsTopExporter extends NonStandardVocabularyTopExporterDefau
     public int dictionaryId() {
         return NonStandardDictionary.SHORT_TEXTS.id;
     }
-
-    @Override
-    public String topByBestSpeedExcelSheetName() {
-//        return "Топ по рекорду в «Коротких текстах»"; // 35 chars
-        return "Рекорды в «Коротких текстах»"; // 28 chars
-    }
-
-    @Override
-    public String topByRacesCountExcelSheetName() {
-//        return "Топ по пробегу в «Коротких текстах»"; // 35 chars
-        return "Пробег в «Коротких текстах»"; // 27 chars
-    }
-
-    @Override
-    public String topByHaulExcelSheetName() {
-//        return "Топ по времени в «Коротких текстах»"; // 35 chars
-        return "Время в «Коротких текстах»"; // 26 chars
-    }
 }

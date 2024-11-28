@@ -16,22 +16,4 @@ public class NormalInEnglishTopExporter extends NonStandardVocabularyTopExporter
     public int dictionaryId() {
         return NonStandardDictionary.NORMAL_IN_ENGLISH.id;
     }
-
-    @Override
-    public String topByBestSpeedExcelSheetName() {
-//        return "Топ по рекорду в «Обычном in English»"; // 37 chars
-        return "Рекорды в «Обычном in English»"; // 30 chars
-    }
-
-    @Override
-    public String topByRacesCountExcelSheetName() {
-//        return "Топ по пробегу в «Обычном in English»"; // 37 chars
-        return "Пробег в «Обычном in English»"; // 29 chars
-    }
-
-    @Override
-    public String topByHaulExcelSheetName() {
-//        return "Топ по времени в «Обычном in English»"; // 37 chars
-        return "Время в «Обычном in English»"; // 28 chars
-    }
 }

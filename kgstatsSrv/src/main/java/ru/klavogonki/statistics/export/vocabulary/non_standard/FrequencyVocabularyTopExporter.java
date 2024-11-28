@@ -16,22 +16,4 @@ public class FrequencyVocabularyTopExporter extends NonStandardVocabularyTopExpo
     public int dictionaryId() {
         return NonStandardDictionary.FREQUENCY_VOCABULARY.id;
     }
-
-    @Override
-    public String topByBestSpeedExcelSheetName() {
-//        return "Топ по рекорду в «Частотном словаре»"; // 36 chars
-        return "Топ по рекорду в «Частотном»"; // 28 chars
-    }
-
-    @Override
-    public String topByRacesCountExcelSheetName() {
-//        return "Топ по пробегу в «Частотном словаре»"; // 36 chars
-        return "Топ по пробегу в «Частотном»"; // 28 chars
-    }
-
-    @Override
-    public String topByHaulExcelSheetName() {
-//        return "Топ по времени в «Частотном словаре»"; // 36 chars
-        return "Топ по времени в «Частотном»"; // 28 chars
-    }
 }

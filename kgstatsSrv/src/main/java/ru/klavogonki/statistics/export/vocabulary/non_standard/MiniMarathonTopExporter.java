@@ -16,22 +16,4 @@ public class MiniMarathonTopExporter extends NonStandardVocabularyTopExporterDef
     public int dictionaryId() {
         return NonStandardDictionary.MINI_MARATHON.id;
     }
-
-    @Override
-    public String topByBestSpeedExcelSheetName() {
-//        return "Топ по рекорду в «Мини-марафоне, 800 знаков»"; // 44 chars
-        return "Рекорды в «Мини-марафоне»"; // 25 chars
-    }
-
-    @Override
-    public String topByRacesCountExcelSheetName() {
-//        return "Топ по пробегу в «Мини-марафоне, 800 знаков»"; // 44 chars
-        return "Пробег в «Мини-марафоне»"; // 24 chars
-    }
-
-    @Override
-    public String topByHaulExcelSheetName() {
-//        return "Топ по времени в «Мини-марафоне, 800 знаков»"; // 44 chars
-        return "Время в «Мини-марафоне»"; // 23 chars
-    }
 }

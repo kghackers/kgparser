@@ -9,6 +9,7 @@ import ru.klavogonki.statistics.export.vocabulary.VocabularyTopUtils;
 
 import java.util.Objects;
 
+// todo: this object is basically the same as impelemented by NonStandardVocabularyTopExporterGenerator
 public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter {
 
     @Override
@@ -81,7 +82,11 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
     }
     @Override
     default String topByBestSpeedExcelSheetName() {
-        return VocabularyTopUtils.topByBestSpeedExcelSheetName(vocabulary());
+        // same logic as in NonStandardVocabularyTopExporterGenerator
+        return Objects.requireNonNullElseGet(
+            vocabularyTopData().topByBestSpeedExcelSheetName,
+            () -> VocabularyTopUtils.topByBestSpeedExcelSheetName(vocabulary())
+        );
     }
 
     @Override
@@ -98,7 +103,11 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
     }
     @Override
     default String topByRacesCountExcelSheetName() {
-        return VocabularyTopUtils.topByRacesCountIn(vocabulary()); // 30 chars :)
+        // same logic as in NonStandardVocabularyTopExporterGenerator
+        return Objects.requireNonNullElseGet(
+            vocabularyTopData().topByRacesCountExcelSheetName,
+            () -> VocabularyTopUtils.topByRacesCountIn(vocabulary())
+        );
     }
 
     @Override
@@ -115,7 +124,11 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
     }
     @Override
     default String topByHaulExcelSheetName() {
-        return VocabularyTopUtils.topByHaulIn(vocabulary());
+        // same logic as in NonStandardVocabularyTopExporterGenerator
+        return Objects.requireNonNullElseGet(
+            vocabularyTopData().topByHaulExcelSheetName,
+            () -> VocabularyTopUtils.topByHaulIn(vocabulary())
+        );
     }
 
     // override compared to default to not compare "voc-" 2 times, since vocabularyCode() already contains "voc-"
