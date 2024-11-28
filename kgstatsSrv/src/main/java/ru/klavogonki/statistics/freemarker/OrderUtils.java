@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+// todo: move out of freemarker package
 @Log4j2
 public class OrderUtils {
 

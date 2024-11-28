@@ -1,6 +1,7 @@
 package ru.klavogonki.statistics.freemarker;
 
 import lombok.extern.log4j.Log4j2;
+import ru.klavogonki.statistics.export.ExportContext;
 
 @Log4j2
 public class VocabularyTopByRacesCountTemplate extends VocabularyTopTemplate {
@@ -11,8 +12,8 @@ public class VocabularyTopByRacesCountTemplate extends VocabularyTopTemplate {
     }
 
     @Override
-    public void export(final String filePath) {
-        super.export(filePath);
+    public void export(ExportContext context, String filePath) {
+        super.export(context, filePath);
 
         logger.debug(
             "Top by races count {} players (page {}) exported to file {}",

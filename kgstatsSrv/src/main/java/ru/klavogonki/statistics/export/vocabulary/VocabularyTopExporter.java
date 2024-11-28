@@ -212,7 +212,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
-                .export(pageFilePath);
+                .export(context, pageFilePath);
 
             logger().debug("Top by best speed: Exported page {}/{}.", pageNumber, totalPages);
         }
@@ -264,7 +264,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
-                .export(pageFilePath);
+                .export(context, pageFilePath);
 
             logger().debug("Top by races count: Exported page {}/{}.", pageNumber, totalPages);
         }
@@ -316,7 +316,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
-                .export(pageFilePath);
+                .export(context, pageFilePath);
 
             logger().debug("Top by haul: Exported page {}/{}.", pageNumber, totalPages);
         }
@@ -340,7 +340,7 @@ public interface VocabularyTopExporter extends DataExporter {
         new VocabularyTopBySpeedLoginToPageTemplate()
             .loginToPage(loginToPage)
             .loginToPageString(loginToPageString)
-            .export(loginToPageFilePath);
+            .export(context, loginToPageFilePath);
     }
 
     private void exportTopByRacesCountLoginToPageJs(final ExportContext context, final Map<String, Integer> loginToPage) {
@@ -352,7 +352,7 @@ public interface VocabularyTopExporter extends DataExporter {
         new VocabularyTopByRacesCountLoginToPageTemplate()
             .loginToPage(loginToPage)
             .loginToPageString(loginToPageString)
-            .export(loginToPageFilePath);
+            .export(context, loginToPageFilePath);
     }
 
     private void exportTopByHaulLoginToPageJs(final ExportContext context, final Map<String, Integer> loginToPage) {
@@ -364,7 +364,7 @@ public interface VocabularyTopExporter extends DataExporter {
         new VocabularyTopByHaulLoginToPageTemplate()
             .loginToPage(loginToPage)
             .loginToPageString(loginToPageString)
-            .export(loginToPageFilePath);
+            .export(context, loginToPageFilePath);
     }
 
 

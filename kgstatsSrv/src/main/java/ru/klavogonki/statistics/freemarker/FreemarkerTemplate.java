@@ -5,6 +5,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
 import lombok.extern.log4j.Log4j2;
+import ru.klavogonki.statistics.export.ExportContext;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,14 +29,16 @@ public abstract class FreemarkerTemplate {
      */
     public abstract String getTemplatePath();
 
-    public void export(String filePath) {
-        templateData.put(LINKS_KEY, new Links());
+    public void export(ExportContext context, String filePath) {
+        Links links = Links.create(context);
+        templateData.put(LINKS_KEY, links);
 
         exportFreemarkerToFile(getTemplatePath(), filePath, templateData);
     }
 
-    public String exportToString() {
-        templateData.put(LINKS_KEY, new Links());
+    public String exportToString(ExportContext context) {
+        Links links = Links.create(context);
+        templateData.put(LINKS_KEY, links);
 
         return exportFreemarkerToString(getTemplatePath(), templateData);
     }

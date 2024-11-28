@@ -70,7 +70,11 @@ class StatisticsGenerator : Logging {
             "PlayerVocabularyStatsRepository is null. Check your Spring profiles."
         }
 
-        val context = ExportContext(config, repository)
+        // non-standard vocabularies exporters
+        val nonStandardDictionariesGeneratorContext =
+            NonStandardVocabularyTopExporterGenerator.generateContext(generatorConfig.nonStandardDictionariesCodes)
+
+        val context = ExportContext(config, repository, nonStandardDictionariesGeneratorContext)
 
         /*
 		context.webRootDir = "C:/java/kgparser/kgstats/src/main/webapp/";
@@ -110,9 +114,6 @@ class StatisticsGenerator : Logging {
         export(context, generatorConfig.exportSprintTop, sprintTopExporter)
 
         // non-standard vocabularies exporters
-        val nonStandardDictionariesGeneratorContext =
-            NonStandardVocabularyTopExporterGenerator.generateContext(generatorConfig.nonStandardDictionariesCodes)
-
         generatorConfig.nonStandardDictionariesCodes.forEach {
             val exporter = nonStandardDictionariesGeneratorContext.getExporter(it)
 

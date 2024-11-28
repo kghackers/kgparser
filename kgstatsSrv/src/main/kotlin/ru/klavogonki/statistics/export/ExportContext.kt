@@ -1,6 +1,7 @@
 package ru.klavogonki.statistics.export
 
 import ru.klavogonki.statistics.Config
+import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyGeneratorContext
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository
 import ru.klavogonki.statistics.util.DateUtils
 import java.time.LocalDateTime
@@ -13,10 +14,14 @@ data class ExportContext(
     @JvmField val maxPlayerId: Int,
     @JvmField val dataDownloadStartDate: LocalDateTime,
     @JvmField val dataDownloadEndDate: LocalDateTime,
-    @JvmField val repository: PlayerVocabularyStatsRepository
+    @JvmField val repository: PlayerVocabularyStatsRepository,
+    @JvmField val nonStandardDictionariesGeneratorContext: NonStandardVocabularyGeneratorContext
 ) {
-    constructor(config: Config, repository: PlayerVocabularyStatsRepository): this(
-        // we can use property-access from a Java class when there is an explicit geter
+    constructor(
+        config: Config,
+        repository: PlayerVocabularyStatsRepository,
+        nonStandardDictionariesGeneratorContext: NonStandardVocabularyGeneratorContext
+    ) : this(  // we can use property-access from a Java class when there is an explicit geter
         // but the lombok-generated getters do NOT work
 
         webRootDir = config.statisticsPagesRootDir,
@@ -31,6 +36,8 @@ data class ExportContext(
         // todo: also change to OffsetDateTime
         dataDownloadEndDate = DateUtils.convertToUtcLocalDateTime(config.dataDownloadEndDate),
 
-        repository = repository
+        repository = repository,
+
+        nonStandardDictionariesGeneratorContext = nonStandardDictionariesGeneratorContext
     )
 }
