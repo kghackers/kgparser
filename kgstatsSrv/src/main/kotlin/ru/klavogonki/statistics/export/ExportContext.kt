@@ -1,6 +1,7 @@
 package ru.klavogonki.statistics.export
 
 import ru.klavogonki.statistics.Config
+import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository
 import ru.klavogonki.statistics.util.DateUtils
 import java.time.LocalDateTime
 
@@ -11,9 +12,10 @@ data class ExportContext(
     @JvmField val minPlayerId: Int,
     @JvmField val maxPlayerId: Int,
     @JvmField val dataDownloadStartDate: LocalDateTime,
-    @JvmField val dataDownloadEndDate: LocalDateTime
+    @JvmField val dataDownloadEndDate: LocalDateTime,
+    @JvmField val repository: PlayerVocabularyStatsRepository
 ) {
-    constructor(config: Config): this(
+    constructor(config: Config, repository: PlayerVocabularyStatsRepository): this(
         // we can use property-access from a Java class when there is an explicit geter
         // but the lombok-generated getters do NOT work
 
@@ -27,6 +29,8 @@ data class ExportContext(
 
         // todo: think about UTC timeZone
         // todo: also change to OffsetDateTime
-        dataDownloadEndDate = DateUtils.convertToUtcLocalDateTime(config.dataDownloadEndDate)
+        dataDownloadEndDate = DateUtils.convertToUtcLocalDateTime(config.dataDownloadEndDate),
+
+        repository = repository
     )
 }

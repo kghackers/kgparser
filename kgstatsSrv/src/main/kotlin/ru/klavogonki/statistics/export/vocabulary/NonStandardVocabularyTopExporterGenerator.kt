@@ -49,6 +49,20 @@ object NonStandardVocabularyTopExporterGenerator : Logging {
         }
     }
 
+    fun generateContext(dictionaryIds: List<Int>) : NonStandardVocabularyGeneratorContext {
+        val distinctDictionaryIds = dictionaryIds.distinct()
+
+        val dictionaryIdToExporter = mutableMapOf<Int, NonStandardVocabularyTopExporter>()
+
+        distinctDictionaryIds.forEach {
+            val exporter = generate(it)
+
+            dictionaryIdToExporter[it] = exporter
+        }
+
+        return NonStandardVocabularyGeneratorContext(dictionaryIdToExporter)
+    }
+
     @JvmStatic
     fun main(args: Array<String>) {
         val normalInEnglishTopExporter = generate(NonStandardDictionary.NORMAL_IN_ENGLISH.code)

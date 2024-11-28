@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
+import ru.klavogonki.statistics.export.ExportContext;
 import ru.klavogonki.statistics.export.LoggerWrapper;
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository;
 import ru.klavogonki.statistics.springboot.Profiles;
@@ -36,7 +37,7 @@ public abstract class StandardVocabularyTopExporterDefaultImpl implements Standa
     }
 
     @Override
-    public List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed() {
+    public List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed(ExportContext context) {
         List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByBestSpeedDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
         logger().debug("Total players by best speed, min total races = {}: {}", minRacesCount(), players.size());
 
@@ -44,7 +45,7 @@ public abstract class StandardVocabularyTopExporterDefaultImpl implements Standa
     }
 
     @Override
-    public List<PlayerVocabularyStatsEntity> getPlayersByRacesCount() {
+    public List<PlayerVocabularyStatsEntity> getPlayersByRacesCount(ExportContext context) {
         List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByRacesCountDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
         logger().debug("Total players by races count, min total races = {}: {}", minRacesCount(), players.size());
 
@@ -52,7 +53,7 @@ public abstract class StandardVocabularyTopExporterDefaultImpl implements Standa
     }
 
     @Override
-    public List<PlayerVocabularyStatsEntity> getPlayersByHaul() {
+    public List<PlayerVocabularyStatsEntity> getPlayersByHaul(ExportContext context) {
         List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByHaulDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
         logger().debug("Total players by haul, min total races = {}: {}", minRacesCount(), players.size());
 

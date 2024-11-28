@@ -90,15 +90,15 @@ public interface VocabularyTopExporter extends DataExporter {
         return "DEFAULT_TOP_BY_HAUL_EXCEL_SHEET_NAME";
     }
 
-    default List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed() {
+    default List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed(ExportContext context) {
         return Collections.emptyList();
     }
 
-    default List<PlayerVocabularyStatsEntity> getPlayersByRacesCount() {
+    default List<PlayerVocabularyStatsEntity> getPlayersByRacesCount(ExportContext context) {
         return Collections.emptyList();
     }
 
-    default List<PlayerVocabularyStatsEntity> getPlayersByHaul() {
+    default List<PlayerVocabularyStatsEntity> getPlayersByHaul(ExportContext context) {
         return Collections.emptyList();
     }
 
@@ -171,7 +171,7 @@ public interface VocabularyTopExporter extends DataExporter {
     }
 
     private void exportTopByBestSpeed(final ExportContext context, final PlayerVocabularyDtoMapper mapper) {
-        List<PlayerVocabularyStatsEntity> players = getPlayersByBestSpeed();
+        List<PlayerVocabularyStatsEntity> players = getPlayersByBestSpeed(context);
         List<PlayerVocabularyDto> dtos = mapper.entitiesToDtos(players, PlayerVocabularyDto::getBestSpeed);
 
         int totalPlayers = players.size();
@@ -223,7 +223,7 @@ public interface VocabularyTopExporter extends DataExporter {
     }
 
     private void exportTopByRacesCount(final ExportContext context, final PlayerVocabularyDtoMapper mapper) {
-        List<PlayerVocabularyStatsEntity> players = getPlayersByRacesCount();
+        List<PlayerVocabularyStatsEntity> players = getPlayersByRacesCount(context);
         List<PlayerVocabularyDto> dtos = mapper.entitiesToDtos(players, PlayerVocabularyDto::getRacesCount);
 
         int totalPlayers = players.size();
@@ -275,7 +275,7 @@ public interface VocabularyTopExporter extends DataExporter {
     }
 
     private void exportTopByHaul(final ExportContext context, final PlayerVocabularyDtoMapper mapper) {
-        List<PlayerVocabularyStatsEntity> players = getPlayersByHaul();
+        List<PlayerVocabularyStatsEntity> players = getPlayersByHaul(context);
         List<PlayerVocabularyDto> dtos = mapper.entitiesToDtos(players, PlayerVocabularyDto::getHaulInteger);
 
         int totalPlayers = players.size();

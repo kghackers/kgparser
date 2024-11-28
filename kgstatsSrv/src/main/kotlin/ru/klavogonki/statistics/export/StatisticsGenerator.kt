@@ -7,15 +7,8 @@ import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 import ru.klavogonki.common.NonStandardDictionary
 import ru.klavogonki.statistics.Config
-import ru.klavogonki.statistics.export.vocabulary.non_standard.DigitsOneHundredTopExporter
-import ru.klavogonki.statistics.export.vocabulary.non_standard.FrequencyVocabularyTopExporter
-import ru.klavogonki.statistics.export.vocabulary.non_standard.MiniMarathonTopExporter
-import ru.klavogonki.statistics.export.vocabulary.non_standard.NormalInEnglishTopExporter
-import ru.klavogonki.statistics.export.vocabulary.non_standard.OneHundredRussianTopExporter
-import ru.klavogonki.statistics.export.vocabulary.non_standard.PinkiesPlusTopExporter
-import ru.klavogonki.statistics.export.vocabulary.non_standard.RingFingersTopExporter
-import ru.klavogonki.statistics.export.vocabulary.non_standard.ShortTextsTopExporter
-import ru.klavogonki.statistics.export.vocabulary.non_standard.TrainingIndexFingersTopExporter
+import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyTopExporterGenerator
+import ru.klavogonki.statistics.export.vocabulary.non_standard.NonStandardVocabularyTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.AbraTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.CharsTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.DigitsTopExporter
@@ -24,6 +17,7 @@ import ru.klavogonki.statistics.export.vocabulary.standard.NoErrorTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.NormalTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.ReferatsTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.SprintTopExporter
+import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository
 import ru.klavogonki.statistics.springboot.Profiles
 
 @Component
@@ -68,36 +62,15 @@ class StatisticsGenerator : Logging {
     @Autowired
     private val sprintTopExporter: SprintTopExporter? = null
 
-    // non-standard vocabularies
     @Autowired
-    private val normalInEnglishTopExporter: NormalInEnglishTopExporter? = null
-
-    @Autowired
-    private val miniMarathonTopExporter: MiniMarathonTopExporter? = null
-
-    @Autowired
-    private val shortTextsTopExporter: ShortTextsTopExporter? = null
-
-    @Autowired
-    private val frequencyVocabularyTopExporter: FrequencyVocabularyTopExporter? = null
-
-    @Autowired
-    private val oneHundredRussianTopExporter: OneHundredRussianTopExporter? = null
-
-    @Autowired
-    private val digitsOneHundredTopExporter: DigitsOneHundredTopExporter? = null
-
-    @Autowired
-    private val trainingIndexFingersTopExporter: TrainingIndexFingersTopExporter? = null
-
-    @Autowired
-    private val ringFingersTopExporter: RingFingersTopExporter? = null
-
-    @Autowired
-    private val pinkiesPlusTopExporter: PinkiesPlusTopExporter? = null
+    private val repository: PlayerVocabularyStatsRepository? = null
 
     fun generateStatistics(config: Config, generatorConfig: StatisticsGeneratorConfig) {
-        val context = ExportContext(config)
+        checkNotNull(repository) {
+            "PlayerVocabularyStatsRepository is null. Check your Spring profiles."
+        }
+
+        val context = ExportContext(config, repository)
 
         /*
 		context.webRootDir = "C:/java/kgparser/kgstats/src/main/webapp/";
@@ -137,15 +110,15 @@ class StatisticsGenerator : Logging {
         export(context, generatorConfig.exportSprintTop, sprintTopExporter)
 
         // non-standard vocabularies exporters
-        export(context, generatorConfig, NonStandardDictionary.NORMAL_IN_ENGLISH, normalInEnglishTopExporter)
-        export(context, generatorConfig, NonStandardDictionary.MINI_MARATHON, miniMarathonTopExporter)
-        export(context, generatorConfig, NonStandardDictionary.SHORT_TEXTS, shortTextsTopExporter)
-        export(context, generatorConfig, NonStandardDictionary.FREQUENCY_VOCABULARY, frequencyVocabularyTopExporter)
-        export(context, generatorConfig, NonStandardDictionary.ONE_HUNDRED_RUSSIAN, oneHundredRussianTopExporter)
-        export(context, generatorConfig, NonStandardDictionary.DIGITS_ONE_HUNDRED, digitsOneHundredTopExporter)
-        export(context, generatorConfig, NonStandardDictionary.TRAINING_INDEX_FINGERS, trainingIndexFingersTopExporter)
-        export(context, generatorConfig, NonStandardDictionary.RING_FINGERS, ringFingersTopExporter)
-        export(context, generatorConfig, NonStandardDictionary.PINKIES_PLUS, pinkiesPlusTopExporter)
+        val nonStandardDictionariesGeneratorContext =
+            NonStandardVocabularyTopExporterGenerator.generateContext(generatorConfig.nonStandardDictionariesCodes)
+
+        generatorConfig.nonStandardDictionariesCodes.forEach {
+            val exporter = nonStandardDictionariesGeneratorContext.getExporter(it)
+
+            // export flag is true since we're only iterating the dictionaries set in the config
+            export(context, true, exporter)
+        }
     }
 
     // todo: think about moving StatisticsGeneratorConfig field determination to Exporter interface
@@ -187,10 +160,12 @@ class StatisticsGenerator : Logging {
 
         logger.info("===============================================")
 
+        val exporterName = getExporterName(exporter)
+
         if (!export) {
             logger.info(
                 "${StatisticsGeneratorConfig::class.java.simpleName} flag" +
-                    " for ${exporter.javaClass.simpleName} is ${false}. Do not execute the export.",
+                    " for $exporterName is ${false}. Do not execute the export.",
             )
 
             return
@@ -198,9 +173,21 @@ class StatisticsGenerator : Logging {
 
         logger.info(
             "${StatisticsGeneratorConfig::class.java.simpleName} flag" +
-                " for ${exporter.javaClass.simpleName} is ${true}. Execute the export.",
+                " for $exporterName is ${true}. Execute the export.",
         )
 
         exporter.export(context)
+    }
+
+    private fun getExporterName(exporter: DataExporter): String {
+        // todo: we may just return exporter name from DataExporter interface
+
+        if (exporter is NonStandardVocabularyTopExporter) {
+            return exporter.vocabularyTopData().loggerName
+        }
+
+        // other exporters now have
+        // todo: if we switch completely to generated exporters -> user
+        return exporter.javaClass.simpleName
     }
 }

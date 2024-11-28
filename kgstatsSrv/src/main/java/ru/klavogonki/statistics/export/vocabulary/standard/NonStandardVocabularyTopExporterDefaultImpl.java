@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
+import ru.klavogonki.statistics.export.ExportContext;
 import ru.klavogonki.statistics.export.LoggerWrapper;
 import ru.klavogonki.statistics.export.vocabulary.non_standard.NonStandardVocabularyTopExporter;
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository;
@@ -38,26 +39,38 @@ public abstract class NonStandardVocabularyTopExporterDefaultImpl implements Non
     }
 
     @Override
-    public List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed() {
-        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByBestSpeedDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
+    public List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed(ExportContext context) {
+        PlayerVocabularyStatsRepository repo = getRepositorySafe(context);
+
+        List<PlayerVocabularyStatsEntity> players = repo.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByBestSpeedDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
         logger().debug("Total players by best speed, min total races = {}: {}", minRacesCount(), players.size());
 
         return players;
     }
 
     @Override
-    public List<PlayerVocabularyStatsEntity> getPlayersByRacesCount() {
-        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByRacesCountDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
+    public List<PlayerVocabularyStatsEntity> getPlayersByRacesCount(ExportContext context) {
+        PlayerVocabularyStatsRepository repo = getRepositorySafe(context);
+
+        List<PlayerVocabularyStatsEntity> players = repo.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByRacesCountDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
         logger().debug("Total players by races count, min total races = {}: {}", minRacesCount(), players.size());
 
         return players;
     }
 
     @Override
-    public List<PlayerVocabularyStatsEntity> getPlayersByHaul() {
-        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByHaulDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
+    public List<PlayerVocabularyStatsEntity> getPlayersByHaul(ExportContext context) {
+        PlayerVocabularyStatsRepository repo = getRepositorySafe(context);
+
+        List<PlayerVocabularyStatsEntity> players = repo.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByHaulDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
         logger().debug("Total players by haul, min total races = {}: {}", minRacesCount(), players.size());
 
         return players;
+    }
+
+    private PlayerVocabularyStatsRepository getRepositorySafe(ExportContext context) {
+        return (this.repository != null)
+            ? this.repository // this.repository is not inherited by the dynamicaally created subclasses
+            : context.repository;
     }
 }
