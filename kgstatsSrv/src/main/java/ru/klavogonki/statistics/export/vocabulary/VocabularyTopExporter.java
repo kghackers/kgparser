@@ -95,6 +95,9 @@ public interface VocabularyTopExporter extends DataExporter {
         return Collections.emptyList();
     }
 
+    default String topByBestSpeedFirstPageFilePath() {
+        return topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+    }
     default String topByBestSpeedPageFilePath(final int pageNumber) {
         return String.format("./voc-%s-top-by-best-speed-page-%d.html", vocabularyCode(), pageNumber);
     }

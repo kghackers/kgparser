@@ -1,7 +1,6 @@
 package ru.klavogonki.statistics.freemarker;
 
 import lombok.Data;
-import ru.klavogonki.statistics.export.ExporterUtils;
 import ru.klavogonki.statistics.export.vocabulary.non_standard.DigitsOneHundredTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.non_standard.FrequencyVocabularyTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.non_standard.MiniMarathonTopExporter;
@@ -66,25 +65,25 @@ public class Links {
 
     // vocabularies landing pages
     // standard vocabularies
-    private String normalTopBySpeedPage1 = new NormalTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String abraTopBySpeedPage1 = new AbraTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String referatsTopBySpeedPage1 = new ReferatsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String noErrorTopBySpeedPage1 = new NoErrorTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String marathonTopBySpeedPage1 = new MarathonTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String charsTopBySpeedPage1 = new CharsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String digitsTopBySpeedPage1 = new DigitsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String sprintTopBySpeedPage1 = new SprintTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+    private String normalTopBySpeedPage1 = new NormalTopExporter().topByBestSpeedFirstPageFilePath();
+    private String abraTopBySpeedPage1 = new AbraTopExporter().topByBestSpeedFirstPageFilePath();
+    private String referatsTopBySpeedPage1 = new ReferatsTopExporter().topByBestSpeedFirstPageFilePath();
+    private String noErrorTopBySpeedPage1 = new NoErrorTopExporter().topByBestSpeedFirstPageFilePath();
+    private String marathonTopBySpeedPage1 = new MarathonTopExporter().topByBestSpeedFirstPageFilePath();
+    private String charsTopBySpeedPage1 = new CharsTopExporter().topByBestSpeedFirstPageFilePath();
+    private String digitsTopBySpeedPage1 = new DigitsTopExporter().topByBestSpeedFirstPageFilePath();
+    private String sprintTopBySpeedPage1 = new SprintTopExporter().topByBestSpeedFirstPageFilePath();
 
     // non-standard vocabularies
-    private String normalInEnglishTopBySpeedPage1 = new NormalInEnglishTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String miniMarathonTopBySpeedPage1 = new MiniMarathonTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String shortTextsTopBySpeedPage1 = new ShortTextsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String frequencyVocabularyTopBySpeedPage1 = new FrequencyVocabularyTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String oneHundredRussianTopBySpeedPage1 = new OneHundredRussianTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String digitsOneHundredTopBySpeedPage1 = new DigitsOneHundredTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String trainingIndexFingersTopBySpeedPage1 = new TrainingIndexFingersTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String ringFingersTopBySpeedPage1 = new RingFingersTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String pinkiesPlusTopBySpeedPage1 = new PinkiesPlusTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+    private String normalInEnglishTopBySpeedPage1 = new NormalInEnglishTopExporter().topByBestSpeedFirstPageFilePath();
+    private String miniMarathonTopBySpeedPage1 = new MiniMarathonTopExporter().topByBestSpeedFirstPageFilePath();
+    private String shortTextsTopBySpeedPage1 = new ShortTextsTopExporter().topByBestSpeedFirstPageFilePath();
+    private String frequencyVocabularyTopBySpeedPage1 = new FrequencyVocabularyTopExporter().topByBestSpeedFirstPageFilePath();
+    private String oneHundredRussianTopBySpeedPage1 = new OneHundredRussianTopExporter().topByBestSpeedFirstPageFilePath();
+    private String digitsOneHundredTopBySpeedPage1 = new DigitsOneHundredTopExporter().topByBestSpeedFirstPageFilePath();
+    private String trainingIndexFingersTopBySpeedPage1 = new TrainingIndexFingersTopExporter().topByBestSpeedFirstPageFilePath();
+    private String ringFingersTopBySpeedPage1 = new RingFingersTopExporter().topByBestSpeedFirstPageFilePath();
+    private String pinkiesPlusTopBySpeedPage1 = new PinkiesPlusTopExporter().topByBestSpeedFirstPageFilePath();
 
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;
