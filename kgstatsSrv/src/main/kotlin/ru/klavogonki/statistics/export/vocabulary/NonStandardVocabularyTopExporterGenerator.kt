@@ -31,7 +31,7 @@ object NonStandardVocabularyTopExporterGenerator : Logging {
             override fun loggerName() = dictionaryData.top.loggerName
 
             // todo: think whether this override from NonStandardVocabularyTopExporter is required
-            override fun vocabularyData() = dictionaryData
+            override fun vocabulary() = dictionaryData
 
             override fun topByBestSpeedExcelSheetName() =
                 dictionaryData.top.topByBestSpeedExcelSheetName

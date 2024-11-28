@@ -1,8 +1,8 @@
 package ru.klavogonki.statistics.export.vocabulary
 
 import org.apache.logging.log4j.kotlin.Logging
-import ru.klavogonki.common.NonStandardDictionary
 import ru.klavogonki.common.StandardDictionary
+import ru.klavogonki.statistics.dictionaries.NonStandardDictionaryData
 import ru.klavogonki.statistics.excel.ExcelExporter
 
 @Suppress("TooManyFunctions")
@@ -15,7 +15,7 @@ object VocabularyTopUtils : Logging {
         )
 
     @JvmStatic
-    fun takenPlayersWithMinimalRacesCount(vocabulary: NonStandardDictionary, racesCount: Int) =
+    fun takenPlayersWithMinimalRacesCount(vocabulary: NonStandardDictionaryData, racesCount: Int) =
         takenPlayersWithMinimalRacesCount(vocabulary.displayNamePrepositional, racesCount)
 
     @JvmStatic
@@ -27,7 +27,7 @@ object VocabularyTopUtils : Logging {
         topByBestSpeedIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
-    fun topByBestSpeedIn(vocabulary: NonStandardDictionary) =
+    fun topByBestSpeedIn(vocabulary: NonStandardDictionaryData) =
         topByBestSpeedIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
@@ -39,7 +39,7 @@ object VocabularyTopUtils : Logging {
         topByRecordIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
-    fun topByRecordIn(vocabulary: NonStandardDictionary) =
+    fun topByRecordIn(vocabulary: NonStandardDictionaryData) =
         topByRecordIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
@@ -88,7 +88,7 @@ object VocabularyTopUtils : Logging {
     }
 
     @JvmStatic
-    fun topByBestSpeedExcelSheetName(vocabulary: NonStandardDictionary): String {
+    fun topByBestSpeedExcelSheetName(vocabulary: NonStandardDictionaryData): String {
         val longName = topByBestSpeedIn(vocabulary)
         if (ExcelExporter.isValidSheetName(longName)) {
             logger.debug(
@@ -132,7 +132,7 @@ object VocabularyTopUtils : Logging {
         topByRacesCountIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
-    fun topByRacesCountIn(vocabulary: NonStandardDictionary) =
+    fun topByRacesCountIn(vocabulary: NonStandardDictionaryData) =
         topByRacesCountIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
@@ -144,7 +144,7 @@ object VocabularyTopUtils : Logging {
         topByHaulIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic
-    fun topByHaulIn(vocabulary: NonStandardDictionary) =
+    fun topByHaulIn(vocabulary: NonStandardDictionaryData) =
         topByHaulIn(vocabulary.displayNamePrepositional)
 
     @JvmStatic

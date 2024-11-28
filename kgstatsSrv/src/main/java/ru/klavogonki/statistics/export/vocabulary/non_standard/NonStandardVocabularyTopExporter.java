@@ -1,6 +1,5 @@
 package ru.klavogonki.statistics.export.vocabulary.non_standard;
 
-import ru.klavogonki.common.NonStandardDictionary;
 import ru.klavogonki.statistics.dictionaries.NonStandardDictionariesCache;
 import ru.klavogonki.statistics.dictionaries.NonStandardDictionaryData;
 import ru.klavogonki.statistics.dictionaries.NonStandardDictionaryTopData;
@@ -19,14 +18,7 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
 
     int dictionaryId();
 
-    @Deprecated(since = "use vocabularyData() instead")
-    default NonStandardDictionary vocabulary() {
-        return NonStandardDictionary.getByDictionaryId(
-            dictionaryId()
-        );
-    }
-
-    default NonStandardDictionaryData vocabularyData() {
+    default NonStandardDictionaryData vocabulary() {
         int code = dictionaryId();
 
         NonStandardDictionaryData dictionaryData = NonStandardDictionariesCache.INSTANCE.getDictionary(code);
@@ -37,7 +29,7 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
     }
 
     default NonStandardDictionaryTopData vocabularyTopData() {
-        return assertDictionaryHasTopSet(vocabularyData());
+        return assertDictionaryHasTopSet(vocabulary());
     }
 
     @Override
@@ -65,7 +57,7 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
 
     @Override
     default String vocabularyCode() { // full code. in "voc-123" format
-        return vocabularyData().getFullCode();
+        return vocabulary().getFullCode();
     }
 
     @Override
