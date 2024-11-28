@@ -17,6 +17,11 @@ public class MarathonTopExporter extends StandardVocabularyTopExporterDefaultImp
     }
 
     @Override
+    public String headerName() {
+        return "Марафон";
+    }
+
+    @Override
     public int minRacesCount() {
         return 100;
     }

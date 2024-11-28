@@ -74,6 +74,15 @@ public class Links {
     private String digitsTopBySpeedPage1 = new DigitsTopExporter().topByBestSpeedFirstPageFilePath();
     private String sprintTopBySpeedPage1 = new SprintTopExporter().topByBestSpeedFirstPageFilePath();
 
+    private String normalTopHeader = new NormalTopExporter().headerName();
+    private String abraTopHeader = new AbraTopExporter().headerName();
+    private String referatsTopHeader = new ReferatsTopExporter().headerName();
+    private String noErrorTopHeader = new NoErrorTopExporter().headerName();
+    private String marathonTopHeader = new MarathonTopExporter().headerName();
+    private String charsTopHeader = new CharsTopExporter().headerName();
+    private String digitsTopHeader = new DigitsTopExporter().headerName();
+    private String sprintTopHeader = new SprintTopExporter().headerName();
+
     // non-standard vocabularies
     private String normalInEnglishTopBySpeedPage1 = new NormalInEnglishTopExporter().topByBestSpeedFirstPageFilePath();
     private String miniMarathonTopBySpeedPage1 = new MiniMarathonTopExporter().topByBestSpeedFirstPageFilePath();
@@ -84,6 +93,16 @@ public class Links {
     private String trainingIndexFingersTopBySpeedPage1 = new TrainingIndexFingersTopExporter().topByBestSpeedFirstPageFilePath();
     private String ringFingersTopBySpeedPage1 = new RingFingersTopExporter().topByBestSpeedFirstPageFilePath();
     private String pinkiesPlusTopBySpeedPage1 = new PinkiesPlusTopExporter().topByBestSpeedFirstPageFilePath();
+
+    private String normalInEnglishTopHeader = new NormalInEnglishTopExporter().headerName();
+    private String miniMarathonTopHeader = new MiniMarathonTopExporter().headerName();
+    private String shortTextsTopHeader = new ShortTextsTopExporter().headerName();
+    private String frequencyVocabularyTopHeader = new FrequencyVocabularyTopExporter().headerName();
+    private String oneHundredRussianTopHeader = new OneHundredRussianTopExporter().headerName();
+    private String digitsOneHundredTopHeader = new DigitsOneHundredTopExporter().headerName();
+    private String trainingIndexFingersTopHeader = new TrainingIndexFingersTopExporter().headerName();
+    private String ringFingersTopHeader = new RingFingersTopExporter().headerName();
+    private String pinkiesPlusTopHeader = new PinkiesPlusTopExporter().headerName();
 
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;

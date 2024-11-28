@@ -17,6 +17,11 @@ public class DigitsTopExporter extends StandardVocabularyTopExporterDefaultImpl 
     }
 
     @Override
+    public String headerName() {
+        return "Цифры";
+    }
+
+    @Override
     public int minRacesCount() {
         return 100;
     }

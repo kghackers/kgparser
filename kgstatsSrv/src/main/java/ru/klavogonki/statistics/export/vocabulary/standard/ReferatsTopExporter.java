@@ -17,6 +17,11 @@ public class ReferatsTopExporter extends StandardVocabularyTopExporterDefaultImp
     }
 
     @Override
+    public String headerName() {
+        return "Яндекс.Рефераты";
+    }
+
+    @Override
     public int minRacesCount() {
         return 100;
     }

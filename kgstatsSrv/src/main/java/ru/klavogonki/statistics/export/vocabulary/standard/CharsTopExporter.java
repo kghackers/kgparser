@@ -17,6 +17,11 @@ public class CharsTopExporter extends StandardVocabularyTopExporterDefaultImpl {
     }
 
     @Override
+    public String headerName() {
+        return "Буквы";
+    }
+
+    @Override
     public int minRacesCount() {
         return 100;
     }

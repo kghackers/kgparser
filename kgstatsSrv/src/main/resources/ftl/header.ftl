@@ -18,25 +18,26 @@
                 | <a href="./${links.topByCarsCount}">Топ&nbsp;по&nbsp;числу&nbsp;машин&nbsp;в&nbsp;гараже</a>
                 | <a href="./${links.playersByRank}">Игроки&nbsp;по&nbsp;рангам</a>
                 <div class="header-vertical-space"></div>
-                <a href="./${links.normalTopBySpeedPage1}" class="normal">Обычный</a>
-                | <a href="./${links.abraTopBySpeedPage1}" class="abra">Абракадабра</a>
-                | <a href="./${links.referatsTopBySpeedPage1}" class="referats">Яндекс.Рефераты</a>
-                | <a href="./${links.noErrorTopBySpeedPage1}" class="noerror">Безошибочный</a>
-                | <a href="./${links.marathonTopBySpeedPage1}" class="marathon">Марафон</a>
-                | <a href="./${links.charsTopBySpeedPage1}" class="chars">Буквы</a>
-                | <a href="./${links.digitsTopBySpeedPage1}" class="digits">Цифры</a>
-                | <a href="./${links.sprintTopBySpeedPage1}" class="sprint">Спринт</a>
+                <#-- todo: typical header should be exracted to an ftl template -->
+                <a href="./${links.normalTopBySpeedPage1}" class="normal">${links.normalTopHeader}</a>
+                | <a href="./${links.abraTopBySpeedPage1}" class="abra">${links.abraTopHeader}</a>
+                | <a href="./${links.referatsTopBySpeedPage1}" class="referats">${links.referatsTopHeader}</a>
+                | <a href="./${links.noErrorTopBySpeedPage1}" class="noerror">${links.noErrorTopHeader}</a>
+                | <a href="./${links.marathonTopBySpeedPage1}" class="marathon">${links.marathonTopHeader}</a>
+                | <a href="./${links.charsTopBySpeedPage1}" class="chars">${links.charsTopHeader}</a>
+                | <a href="./${links.digitsTopBySpeedPage1}" class="digits">${links.digitsTopHeader}</a>
+                | <a href="./${links.sprintTopBySpeedPage1}" class="sprint">${links.sprintTopHeader}</a>
                 <div class="header-vertical-space"></div>
-                <a href="./${links.normalInEnglishTopBySpeedPage1}">Обычный&nbsp;in&nbsp;English</a>
-                | <a href="./${links.miniMarathonTopBySpeedPage1}">Мини-марафон,&nbsp;800&nbsp;знаков</a>
-                | <a href="./${links.shortTextsTopBySpeedPage1}">Короткие&nbsp;тексты</a>
-                | <a href="./${links.frequencyVocabularyTopBySpeedPage1}">Частотный&nbsp;словарь</a>
-                | <a href="./${links.oneHundredRussianTopBySpeedPage1}">Соточка</a>
-                | <a href="./${links.digitsOneHundredTopBySpeedPage1}">Цифросоточка</a>
-                | <a href="./${links.trainingIndexFingersTopBySpeedPage1}">Тренируем&nbsp;указательные</a>
+                <a href="./${links.normalInEnglishTopBySpeedPage1}">${links.normalInEnglishTopHeader}</a>
+                | <a href="./${links.miniMarathonTopBySpeedPage1}">${links.miniMarathonTopHeader}</a>
+                | <a href="./${links.shortTextsTopBySpeedPage1}">${links.shortTextsTopHeader}</a>
+                | <a href="./${links.frequencyVocabularyTopBySpeedPage1}">${links.frequencyVocabularyTopHeader}</a>
+                | <a href="./${links.oneHundredRussianTopBySpeedPage1}">${links.oneHundredRussianTopHeader}</a>
+                | <a href="./${links.digitsOneHundredTopBySpeedPage1}">${links.digitsOneHundredTopHeader}</a>
+                | <a href="./${links.trainingIndexFingersTopBySpeedPage1}">${links.trainingIndexFingersTopHeader}</a>
                 <#-- todo: add some dictionary for middle fingers. Probably https://klavogonki.ru/vocs/5029/ :( -->
-                | <a href="./${links.ringFingersTopBySpeedPage1}">Безымянные</a>
-                | <a href="./${links.pinkiesPlusTopBySpeedPage1}">Мизинцы+</a>
+                | <a href="./${links.ringFingersTopBySpeedPage1}">${links.ringFingersTopHeader}</a>
+                | <a href="./${links.pinkiesPlusTopBySpeedPage1}">${links.pinkiesPlusTopHeader}</a>
                 <div class="header-vertical-space"></div>
                 <a href="./2020-12-09/stats.html">Статистика&nbsp;от&nbsp;09.12.2020</a>
             </td>

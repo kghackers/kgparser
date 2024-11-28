@@ -17,6 +17,11 @@ public class AbraTopExporter extends StandardVocabularyTopExporterDefaultImpl {
     }
 
     @Override
+    public String headerName() {
+        return "Абракадабра";
+    }
+
+    @Override
     public int minRacesCount() {
         return 100;
     }

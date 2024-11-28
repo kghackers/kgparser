@@ -35,6 +35,13 @@ public interface VocabularyTopExporter extends DataExporter {
 
     String vocabularyCode();
 
+    /**
+     * @return Название для ссылки из шапки статистики.
+     *
+     * Для названий с пробелами обычно содержит неразрывные пробелы.
+     */
+    String headerName();
+
     int minRacesCount();
 
     String loggerName();

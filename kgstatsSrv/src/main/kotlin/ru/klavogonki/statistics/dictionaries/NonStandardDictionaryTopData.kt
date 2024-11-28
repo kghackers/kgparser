@@ -19,6 +19,14 @@ data class NonStandardDictionaryTopData(
     @JvmField val loggerName: String,
 
     /**
+     * Название словаря для отображения в заголовке статистики.
+     * Обычно содержит неразрывные пробелы, если в названии словаря есть пробелы
+     * (то есть если название состоит из нескольких слов.
+     */
+    @JsonProperty("headerName")
+    @JvmField val headerName: String,
+
+    /**
      * Минимальное число заездов (пробег) по словарю для того, чтобы игрок попадал в топ по данному словарю.
      */
     @JsonProperty("minRacesCount")

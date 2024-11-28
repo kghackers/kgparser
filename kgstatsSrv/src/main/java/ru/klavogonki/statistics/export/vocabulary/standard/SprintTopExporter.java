@@ -17,6 +17,11 @@ public class SprintTopExporter extends StandardVocabularyTopExporterDefaultImpl 
     }
 
     @Override
+    public String headerName() {
+        return "Спринт";
+    }
+
+    @Override
     public int minRacesCount() {
         return 100;
     }

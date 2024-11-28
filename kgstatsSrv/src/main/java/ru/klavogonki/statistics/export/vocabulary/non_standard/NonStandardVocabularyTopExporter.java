@@ -61,6 +61,11 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
     }
 
     @Override
+    default String headerName() {
+        return vocabularyTopData().headerName;
+    }
+
+    @Override
     default String topByBestSpeedPageTitle() {
         return VocabularyTopUtils.topByBestSpeedIn(vocabulary());
     }

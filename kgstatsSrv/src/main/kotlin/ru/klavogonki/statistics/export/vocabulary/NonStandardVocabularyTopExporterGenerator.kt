@@ -33,6 +33,8 @@ object NonStandardVocabularyTopExporterGenerator : Logging {
             // todo: think whether this override from NonStandardVocabularyTopExporter is required
             override fun vocabulary() = dictionaryData
 
+            override fun headerName() = dictionaryData.top.headerName
+
             override fun topByBestSpeedExcelSheetName() =
                 dictionaryData.top.topByBestSpeedExcelSheetName
                     ?: super.topByBestSpeedExcelSheetName()
@@ -54,6 +56,7 @@ object NonStandardVocabularyTopExporterGenerator : Logging {
         logger.info(
             "normalInEnglishTopExporter:" +
                 "\n  - loggerName = ${normalInEnglishTopExporter.loggerName()}" +
+                "\n  - headerName = ${normalInEnglishTopExporter.headerName()}" +
                 "\n  - minRacesCount = ${normalInEnglishTopExporter.minRacesCount()}" +
                 "\n  - topByBestSpeedExcelSheetName = ${normalInEnglishTopExporter.topByBestSpeedExcelSheetName()}" +
                 "\n  - topByRacesCountExcelSheetName = ${normalInEnglishTopExporter.topByRacesCountExcelSheetName()}" +
@@ -65,6 +68,7 @@ object NonStandardVocabularyTopExporterGenerator : Logging {
         logger.info(
             "digitsOneHundredTopExporter:" +
                 "\n  - loggerName = ${digitsOneHundredTopExporter.loggerName()}" +
+                "\n  - headerName = ${digitsOneHundredTopExporter.headerName()}" +
                 "\n  - minRacesCount = ${digitsOneHundredTopExporter.minRacesCount()}" +
                 "\n  - topByBestSpeedExcelSheetName = ${digitsOneHundredTopExporter.topByBestSpeedExcelSheetName()}" +
                 "\n  - topByRacesCountExcelSheetName = ${digitsOneHundredTopExporter.topByRacesCountExcelSheetName()}" +

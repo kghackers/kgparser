@@ -17,6 +17,11 @@ public class NoErrorTopExporter extends StandardVocabularyTopExporterDefaultImpl
     }
 
     @Override
+    public String headerName() {
+        return "Безошибочный";
+    }
+
+    @Override
     public int minRacesCount() {
         return 100; // todo: maybe increase, 3027 players >= 100, 1727 players >= 200
     }

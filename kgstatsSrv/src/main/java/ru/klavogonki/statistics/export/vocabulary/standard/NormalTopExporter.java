@@ -17,6 +17,11 @@ public class NormalTopExporter extends StandardVocabularyTopExporterDefaultImpl 
     }
 
     @Override
+    public String headerName() {
+        return "Обычный";
+    }
+
+    @Override
     public int minRacesCount() {
         return 1000; // todo: maybe increase, 9265 players >= 1000
     }
