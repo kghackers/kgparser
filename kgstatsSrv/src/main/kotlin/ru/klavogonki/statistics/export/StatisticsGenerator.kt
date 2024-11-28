@@ -5,6 +5,7 @@ import org.apache.logging.log4j.kotlin.Logging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
+import ru.klavogonki.common.NonStandardDictionary
 import ru.klavogonki.statistics.Config
 import ru.klavogonki.statistics.export.vocabulary.non_standard.DigitsOneHundredTopExporter
 import ru.klavogonki.statistics.export.vocabulary.non_standard.FrequencyVocabularyTopExporter
@@ -136,18 +137,47 @@ class StatisticsGenerator : Logging {
         export(context, generatorConfig.exportSprintTop, sprintTopExporter)
 
         // non-standard vocabularies exporters
-        export(context, generatorConfig.exportNormalInEnglishTop, normalInEnglishTopExporter)
-        export(context, generatorConfig.exportMiniMarathonTop, miniMarathonTopExporter)
-        export(context, generatorConfig.exportShortTextsTop, shortTextsTopExporter)
-        export(context, generatorConfig.exportFrequencyVocabularyTop, frequencyVocabularyTopExporter)
-        export(context, generatorConfig.exportOneHundredRussianTop, oneHundredRussianTopExporter)
-        export(context, generatorConfig.exportDigitsOneHundredTop, digitsOneHundredTopExporter)
-        export(context, generatorConfig.exportTrainingIndexFingersTop, trainingIndexFingersTopExporter)
-        export(context, generatorConfig.exportRingFingersTop, ringFingersTopExporter)
-        export(context, generatorConfig.exportPinkiesPlusTop, pinkiesPlusTopExporter)
+        export(context, generatorConfig, NonStandardDictionary.NORMAL_IN_ENGLISH, normalInEnglishTopExporter)
+        export(context, generatorConfig, NonStandardDictionary.MINI_MARATHON, miniMarathonTopExporter)
+        export(context, generatorConfig, NonStandardDictionary.SHORT_TEXTS, shortTextsTopExporter)
+        export(context, generatorConfig, NonStandardDictionary.FREQUENCY_VOCABULARY, frequencyVocabularyTopExporter)
+        export(context, generatorConfig, NonStandardDictionary.ONE_HUNDRED_RUSSIAN, oneHundredRussianTopExporter)
+        export(context, generatorConfig, NonStandardDictionary.DIGITS_ONE_HUNDRED, digitsOneHundredTopExporter)
+        export(context, generatorConfig, NonStandardDictionary.TRAINING_INDEX_FINGERS, trainingIndexFingersTopExporter)
+        export(context, generatorConfig, NonStandardDictionary.RING_FINGERS, ringFingersTopExporter)
+        export(context, generatorConfig, NonStandardDictionary.PINKIES_PLUS, pinkiesPlusTopExporter)
     }
 
     // todo: think about moving StatisticsGeneratorConfig field determination to Exporter interface
+    private fun export(
+        context: ExportContext,
+        generatorConfig: StatisticsGeneratorConfig,
+        nonStandardDictionary: NonStandardDictionary,
+        exporter: DataExporter?
+    ) {
+        export(
+            context,
+            generatorConfig,
+            nonStandardDictionary.id,
+            exporter
+        )
+    }
+
+    private fun export(
+        context: ExportContext,
+        generatorConfig: StatisticsGeneratorConfig,
+        nonStandardDictionaryId: Int,
+        exporter: DataExporter?
+    ) {
+        val export = generatorConfig.nonStandardDictionariesCodes.contains(nonStandardDictionaryId)
+
+        export(
+            context,
+            export,
+            exporter
+        )
+    }
+
     private fun export(
         context: ExportContext,
         export: Boolean,

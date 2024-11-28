@@ -25,13 +25,5 @@ data class StatisticsGeneratorConfig(
     val exportSprintTop: Boolean = false,
 
     // non-standard vocabularies
-    val exportNormalInEnglishTop: Boolean = false,
-    val exportMiniMarathonTop: Boolean = false,
-    val exportShortTextsTop: Boolean = false,
-    val exportFrequencyVocabularyTop: Boolean = false,
-    val exportOneHundredRussianTop: Boolean = false,
-    val exportDigitsOneHundredTop: Boolean = false,
-    val exportTrainingIndexFingersTop: Boolean = false,
-    val exportRingFingersTop: Boolean = false,
-    val exportPinkiesPlusTop: Boolean = false
+    val nonStandardDictionariesCodes: List<Int> = emptyList()
 )
