@@ -36,37 +36,37 @@
 
                 <div class="header-vertical-space"></div>
 
-                <#-- todo: extract getting header and into sub-template .ftl if it's possible to have template within template -->
+                <#import "./dictionary-top-speed-link.ftl" as dtsl>
                 <#assign nonStandardDictionaries = links.nonStandardDictionaries>
-                
+
                 <#-- Обычный in English -->
-                <a href="./${nonStandardDictionaries.getTopBySpeedFirstPageFilePath(5539)}">${nonStandardDictionaries.getHeaderName(5539)}</a>
+                <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=5539/>
 
                 <#-- Мини-марафон, 800 знаков -->
-                | <a href="./${nonStandardDictionaries.getTopBySpeedFirstPageFilePath(6018)}">${nonStandardDictionaries.getHeaderName(6018)}</a>
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=6018/>
 
                 <#-- Короткие тексты -->
-                | <a href="./${nonStandardDictionaries.getTopBySpeedFirstPageFilePath(1789)}">${nonStandardDictionaries.getHeaderName(1789)}</a>
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=1789/>
 
                 <#-- Частотный словарь -->
-                | <a href="./${nonStandardDictionaries.getTopBySpeedFirstPageFilePath(192)}">${nonStandardDictionaries.getHeaderName(192)}</a>
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=192/>
 
                 <#-- Соточка -->
-                | <a href="./${nonStandardDictionaries.getTopBySpeedFirstPageFilePath(25856)}">${nonStandardDictionaries.getHeaderName(25856)}</a>
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=25856/>
 
                 <#-- Цифросоточка -->
-                | <a href="./${nonStandardDictionaries.getTopBySpeedFirstPageFilePath(62238)}">${nonStandardDictionaries.getHeaderName(62238)}</a>
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=62238/>
 
                 <#-- Тренируем указательные -->
-                | <a href="./${nonStandardDictionaries.getTopBySpeedFirstPageFilePath(226)}">${nonStandardDictionaries.getHeaderName(226)}</a>
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=226/>
 
                 <#-- todo: add some dictionary for middle fingers. Probably https://klavogonki.ru/vocs/5029/ :( -->
 
                 <#-- Безымянные -->
-                | <a href="./${nonStandardDictionaries.getTopBySpeedFirstPageFilePath(8223)}">${nonStandardDictionaries.getHeaderName(8223)}</a>
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=8223/>
 
                 <#-- Мизинцы+ -->
-                | <a href="./${nonStandardDictionaries.getTopBySpeedFirstPageFilePath(3714)}">${nonStandardDictionaries.getHeaderName(3714)}</a>
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=3714/>
 
                 <div class="header-vertical-space"></div>
 

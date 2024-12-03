@@ -68,6 +68,8 @@ Player from map by id: ${idToPlayerMap?api.get(playerId).login}
 <p>
     <#assign nonStandardDictionaries = links.nonStandardDictionaries>
 
+    <#import "./dictionary-top-speed-link.ftl" as dtsl>
+
     Non standard dictionaries context (from links): ${links.nonStandardDictionaries}
     <br/>
     <br/>
@@ -78,4 +80,11 @@ Player from map by id: ${idToPlayerMap?api.get(playerId).login}
     <br/>
     <br/>
     Page header: ${nonStandardDictionaries.getHeaderName(5539)}
+    <br/>
+    <br/>
+    Link test:
+    <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=5539/>
+
+    <#-- Мини-марафон, 800 знаков -->
+    | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=6018/>
 </p>
