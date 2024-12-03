@@ -2,6 +2,7 @@ package ru.klavogonki.statistics.export
 
 import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity
 import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyTopExporterGenerator.generateContext
+import ru.klavogonki.statistics.freemarker.Links
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository
 import ru.klavogonki.statistics.util.JacksonUtils
 import java.util.Optional
@@ -25,13 +26,16 @@ object ExportContextFactory {
             generatorConfig.nonStandardDictionariesCodes
         )
 
+        val links = Links.create(nonStandardDictionariesGeneratorContext)
+
         // no repository required for freemarker templates
         val fakeRepository = createFakeRepository()
 
         return ExportContext(
             config,
             fakeRepository,
-            nonStandardDictionariesGeneratorContext
+            nonStandardDictionariesGeneratorContext,
+            links
         )
     }
 

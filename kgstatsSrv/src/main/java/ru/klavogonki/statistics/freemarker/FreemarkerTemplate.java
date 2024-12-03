@@ -30,15 +30,13 @@ public abstract class FreemarkerTemplate {
     public abstract String getTemplatePath();
 
     public void export(ExportContext context, String filePath) {
-        Links links = Links.create(context);
-        templateData.put(LINKS_KEY, links);
+        templateData.put(LINKS_KEY, context.links);
 
         exportFreemarkerToFile(getTemplatePath(), filePath, templateData);
     }
 
     public String exportToString(ExportContext context) {
-        Links links = Links.create(context);
-        templateData.put(LINKS_KEY, links);
+        templateData.put(LINKS_KEY, context.links);
 
         return exportFreemarkerToString(getTemplatePath(), templateData);
     }

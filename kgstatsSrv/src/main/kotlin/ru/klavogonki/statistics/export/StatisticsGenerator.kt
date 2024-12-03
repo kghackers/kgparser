@@ -17,6 +17,7 @@ import ru.klavogonki.statistics.export.vocabulary.standard.NoErrorTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.NormalTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.ReferatsTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.SprintTopExporter
+import ru.klavogonki.statistics.freemarker.Links
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository
 import ru.klavogonki.statistics.springboot.Profiles
 
@@ -74,7 +75,14 @@ class StatisticsGenerator : Logging {
         val nonStandardDictionariesGeneratorContext =
             NonStandardVocabularyTopExporterGenerator.generateContext(generatorConfig.nonStandardDictionariesCodes)
 
-        val context = ExportContext(config, repository, nonStandardDictionariesGeneratorContext)
+        val links = Links.create(nonStandardDictionariesGeneratorContext)
+
+        val context = ExportContext(
+            config,
+            repository,
+            nonStandardDictionariesGeneratorContext,
+            links
+        )
 
         /*
 		context.webRootDir = "C:/java/kgparser/kgstats/src/main/webapp/";

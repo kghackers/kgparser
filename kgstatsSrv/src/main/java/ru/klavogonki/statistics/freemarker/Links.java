@@ -3,7 +3,6 @@ package ru.klavogonki.statistics.freemarker;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import ru.klavogonki.common.NonStandardDictionary;
-import ru.klavogonki.statistics.export.ExportContext;
 import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyGeneratorContext;
 import ru.klavogonki.statistics.export.vocabulary.standard.AbraTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.CharsTopExporter;
@@ -118,32 +117,30 @@ public class Links {
     private Links() {
     }
 
-    public static Links create(ExportContext context) {
+    public static Links create(NonStandardVocabularyGeneratorContext context) {
         Links links = new Links();
-
-        NonStandardVocabularyGeneratorContext dictionariesContext = context.nonStandardDictionariesGeneratorContext;
 
         // todo: pass a map to Links instead of multiple separate hardcoded fields
 
-        links.normalInEnglishTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.NORMAL_IN_ENGLISH);
-        links.miniMarathonTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.MINI_MARATHON);
-        links.shortTextsTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.SHORT_TEXTS);
-        links.frequencyVocabularyTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.FREQUENCY_VOCABULARY);
-        links.oneHundredRussianTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.ONE_HUNDRED_RUSSIAN);
-        links.digitsOneHundredTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.DIGITS_ONE_HUNDRED);
-        links.trainingIndexFingersTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.TRAINING_INDEX_FINGERS);
-        links.ringFingersTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.RING_FINGERS);
-        links.pinkiesPlusTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.PINKIES_PLUS);
+        links.normalInEnglishTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.NORMAL_IN_ENGLISH);
+        links.miniMarathonTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.MINI_MARATHON);
+        links.shortTextsTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.SHORT_TEXTS);
+        links.frequencyVocabularyTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.FREQUENCY_VOCABULARY);
+        links.oneHundredRussianTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.ONE_HUNDRED_RUSSIAN);
+        links.digitsOneHundredTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.DIGITS_ONE_HUNDRED);
+        links.trainingIndexFingersTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.TRAINING_INDEX_FINGERS);
+        links.ringFingersTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.RING_FINGERS);
+        links.pinkiesPlusTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.PINKIES_PLUS);
 
-        links.normalInEnglishTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.NORMAL_IN_ENGLISH);
-        links.miniMarathonTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.MINI_MARATHON);
-        links.shortTextsTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.SHORT_TEXTS);
-        links.frequencyVocabularyTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.FREQUENCY_VOCABULARY);
-        links.oneHundredRussianTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.ONE_HUNDRED_RUSSIAN);
-        links.digitsOneHundredTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.DIGITS_ONE_HUNDRED);
-        links.trainingIndexFingersTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.TRAINING_INDEX_FINGERS);
-        links.ringFingersTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.RING_FINGERS);
-        links.pinkiesPlusTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.PINKIES_PLUS);
+        links.normalInEnglishTopHeader = context.getHeaderName(NonStandardDictionary.NORMAL_IN_ENGLISH);
+        links.miniMarathonTopHeader = context.getHeaderName(NonStandardDictionary.MINI_MARATHON);
+        links.shortTextsTopHeader = context.getHeaderName(NonStandardDictionary.SHORT_TEXTS);
+        links.frequencyVocabularyTopHeader = context.getHeaderName(NonStandardDictionary.FREQUENCY_VOCABULARY);
+        links.oneHundredRussianTopHeader = context.getHeaderName(NonStandardDictionary.ONE_HUNDRED_RUSSIAN);
+        links.digitsOneHundredTopHeader = context.getHeaderName(NonStandardDictionary.DIGITS_ONE_HUNDRED);
+        links.trainingIndexFingersTopHeader = context.getHeaderName(NonStandardDictionary.TRAINING_INDEX_FINGERS);
+        links.ringFingersTopHeader = context.getHeaderName(NonStandardDictionary.RING_FINGERS);
+        links.pinkiesPlusTopHeader = context.getHeaderName(NonStandardDictionary.PINKIES_PLUS);
 
         return links;
     }
