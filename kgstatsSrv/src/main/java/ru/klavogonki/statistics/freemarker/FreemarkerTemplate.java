@@ -52,7 +52,7 @@ public abstract class FreemarkerTemplate {
             export(ftlTemplate, templateData, out);
         }
         catch (IOException | TemplateException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); // todo: special dedicated RuntimeException
         }
     }
 
@@ -65,7 +65,7 @@ public abstract class FreemarkerTemplate {
             return out.toString();
         }
         catch (IOException | TemplateException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); // todo: special dedicated RuntimeException
         }
     }
 

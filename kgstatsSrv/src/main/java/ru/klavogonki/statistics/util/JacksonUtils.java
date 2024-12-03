@@ -112,7 +112,7 @@ public final class JacksonUtils {
 
     private static RuntimeException handleError(final IOException e, final String errorMessage) {
         logger.error(errorMessage, e);
-        return new RuntimeException(errorMessage, e);
+        return new RuntimeException(errorMessage, e); // todo: special dedicated RuntimeException
     }
 
     private static ObjectMapper createObjectMapper() {

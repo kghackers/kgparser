@@ -5,7 +5,6 @@ import lombok.extern.log4j.Log4j2;
 import ru.klavogonki.common.NonStandardDictionary;
 import ru.klavogonki.statistics.export.ExportContext;
 import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyGeneratorContext;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.NonStandardVocabularyTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.AbraTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.CharsTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.DigitsTopExporter;
@@ -126,82 +125,26 @@ public class Links {
 
         // todo: pass a map to Links instead of multiple separate hardcoded fields
 
-        links.normalInEnglishTopBySpeedPage1 = getTopBySpeedFirstPageFilePath(dictionariesContext, NonStandardDictionary.NORMAL_IN_ENGLISH);
-        links.miniMarathonTopBySpeedPage1 = getTopBySpeedFirstPageFilePath(dictionariesContext, NonStandardDictionary.MINI_MARATHON);
-        links.shortTextsTopBySpeedPage1 = getTopBySpeedFirstPageFilePath(dictionariesContext, NonStandardDictionary.SHORT_TEXTS);
-        links.frequencyVocabularyTopBySpeedPage1 = getTopBySpeedFirstPageFilePath(dictionariesContext, NonStandardDictionary.FREQUENCY_VOCABULARY);
-        links.oneHundredRussianTopBySpeedPage1 = getTopBySpeedFirstPageFilePath(dictionariesContext, NonStandardDictionary.ONE_HUNDRED_RUSSIAN);
-        links.digitsOneHundredTopBySpeedPage1 = getTopBySpeedFirstPageFilePath(dictionariesContext, NonStandardDictionary.DIGITS_ONE_HUNDRED);
-        links.trainingIndexFingersTopBySpeedPage1 = getTopBySpeedFirstPageFilePath(dictionariesContext, NonStandardDictionary.TRAINING_INDEX_FINGERS);
-        links.ringFingersTopBySpeedPage1 = getTopBySpeedFirstPageFilePath(dictionariesContext, NonStandardDictionary.RING_FINGERS);
-        links.pinkiesPlusTopBySpeedPage1 = getTopBySpeedFirstPageFilePath(dictionariesContext, NonStandardDictionary.PINKIES_PLUS);
+        links.normalInEnglishTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.NORMAL_IN_ENGLISH);
+        links.miniMarathonTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.MINI_MARATHON);
+        links.shortTextsTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.SHORT_TEXTS);
+        links.frequencyVocabularyTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.FREQUENCY_VOCABULARY);
+        links.oneHundredRussianTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.ONE_HUNDRED_RUSSIAN);
+        links.digitsOneHundredTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.DIGITS_ONE_HUNDRED);
+        links.trainingIndexFingersTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.TRAINING_INDEX_FINGERS);
+        links.ringFingersTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.RING_FINGERS);
+        links.pinkiesPlusTopBySpeedPage1 = dictionariesContext.getTopBySpeedFirstPageFilePath(NonStandardDictionary.PINKIES_PLUS);
 
-        links.normalInEnglishTopHeader = getHeaderName(dictionariesContext, NonStandardDictionary.NORMAL_IN_ENGLISH);
-        links.miniMarathonTopHeader = getHeaderName(dictionariesContext, NonStandardDictionary.MINI_MARATHON);
-        links.shortTextsTopHeader = getHeaderName(dictionariesContext, NonStandardDictionary.SHORT_TEXTS);
-        links.frequencyVocabularyTopHeader = getHeaderName(dictionariesContext, NonStandardDictionary.FREQUENCY_VOCABULARY);
-        links.oneHundredRussianTopHeader = getHeaderName(dictionariesContext, NonStandardDictionary.ONE_HUNDRED_RUSSIAN);
-        links.digitsOneHundredTopHeader = getHeaderName(dictionariesContext, NonStandardDictionary.DIGITS_ONE_HUNDRED);
-        links.trainingIndexFingersTopHeader = getHeaderName(dictionariesContext, NonStandardDictionary.TRAINING_INDEX_FINGERS);
-        links.ringFingersTopHeader = getHeaderName(dictionariesContext, NonStandardDictionary.RING_FINGERS);
-        links.pinkiesPlusTopHeader = getHeaderName(dictionariesContext, NonStandardDictionary.PINKIES_PLUS);
+        links.normalInEnglishTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.NORMAL_IN_ENGLISH);
+        links.miniMarathonTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.MINI_MARATHON);
+        links.shortTextsTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.SHORT_TEXTS);
+        links.frequencyVocabularyTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.FREQUENCY_VOCABULARY);
+        links.oneHundredRussianTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.ONE_HUNDRED_RUSSIAN);
+        links.digitsOneHundredTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.DIGITS_ONE_HUNDRED);
+        links.trainingIndexFingersTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.TRAINING_INDEX_FINGERS);
+        links.ringFingersTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.RING_FINGERS);
+        links.pinkiesPlusTopHeader = dictionariesContext.getHeaderName(NonStandardDictionary.PINKIES_PLUS);
 
         return links;
-    }
-
-    private static String getTopBySpeedFirstPageFilePath(
-        NonStandardVocabularyGeneratorContext dictionariesContext,
-        NonStandardDictionary nonStandardDictionary
-    ) {
-        return getTopBySpeedFirstPageFilePath(
-            dictionariesContext,
-            nonStandardDictionary.id
-        );
-    }
-
-    private static String getTopBySpeedFirstPageFilePath(
-        NonStandardVocabularyGeneratorContext dictionariesContext,
-        int dictionaryId
-    ) {
-        NonStandardVocabularyTopExporter exporter = dictionariesContext.getExporterOrNull(dictionaryId);
-
-        if (exporter == null) {
-            logger.warn(
-                "Non-standard dictionary {} is not configured. Retuning empty file path to the top speed first page.",
-                dictionaryId
-            );
-
-            return "";
-        }
-
-        return exporter.topByBestSpeedFirstPageFilePath();
-    }
-
-    private static String getHeaderName(
-        NonStandardVocabularyGeneratorContext dictionariesContext,
-        NonStandardDictionary nonStandardDictionary
-    ) {
-        return getHeaderName(
-            dictionariesContext,
-            nonStandardDictionary.id
-        );
-    }
-
-    private static String getHeaderName(
-        NonStandardVocabularyGeneratorContext dictionariesContext,
-        int dictionaryId
-    ) {
-        NonStandardVocabularyTopExporter exporter = dictionariesContext.getExporterOrNull(dictionaryId);
-
-        if (exporter == null) {
-            logger.warn(
-                "Non-standard dictionary {} is not configured. Retuning empty header name.",
-                dictionaryId
-            );
-
-            return "—"; // todo: think about returning an empty string
-        }
-
-        return exporter.headerName();
     }
 }
