@@ -21,8 +21,11 @@ object HaulUtils : Logging {
         val minutes = (haul % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE
         val seconds = haul % SECONDS_IN_MINUTE
 
+        val minutesFormatted = "%02d".format(minutes)
+        val secondsFormatted = "%02d".format(seconds)
+
         // todo: библиотека со склонением слов
-        val result = "$hours ч. $minutes мин. $seconds сек."
+        val result = "$hours ч. $minutesFormatted мин. $secondsFormatted сек."
         logger.debug("Haul $haul converted to formatted string \"$result\".")
 
         return result
