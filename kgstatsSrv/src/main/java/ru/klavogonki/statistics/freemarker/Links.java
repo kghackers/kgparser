@@ -2,7 +2,6 @@ package ru.klavogonki.statistics.freemarker;
 
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import ru.klavogonki.common.NonStandardDictionary;
 import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyGeneratorContext;
 import ru.klavogonki.statistics.export.vocabulary.standard.AbraTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.CharsTopExporter;
@@ -79,25 +78,7 @@ public class Links {
     private String sprintTopHeader = new SprintTopExporter().headerName();
 
     // non-standard vocabularies
-    private String normalInEnglishTopBySpeedPage1;
-    private String miniMarathonTopBySpeedPage1;
-    private String shortTextsTopBySpeedPage1;
-    private String frequencyVocabularyTopBySpeedPage1;
-    private String oneHundredRussianTopBySpeedPage1;
-    private String digitsOneHundredTopBySpeedPage1;
-    private String trainingIndexFingersTopBySpeedPage1;
-    private String ringFingersTopBySpeedPage1;
-    private String pinkiesPlusTopBySpeedPage1;
-
-    private String normalInEnglishTopHeader;
-    private String miniMarathonTopHeader;
-    private String shortTextsTopHeader;
-    private String frequencyVocabularyTopHeader;
-    private String oneHundredRussianTopHeader;
-    private String digitsOneHundredTopHeader;
-    private String trainingIndexFingersTopHeader;
-    private String ringFingersTopHeader;
-    private String pinkiesPlusTopHeader;
+    private NonStandardVocabularyGeneratorContext nonStandardDictionaries;
 
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;
@@ -120,27 +101,7 @@ public class Links {
     public static Links create(NonStandardVocabularyGeneratorContext context) {
         Links links = new Links();
 
-        // todo: pass a map to Links instead of multiple separate hardcoded fields
-
-        links.normalInEnglishTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.NORMAL_IN_ENGLISH);
-        links.miniMarathonTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.MINI_MARATHON);
-        links.shortTextsTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.SHORT_TEXTS);
-        links.frequencyVocabularyTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.FREQUENCY_VOCABULARY);
-        links.oneHundredRussianTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.ONE_HUNDRED_RUSSIAN);
-        links.digitsOneHundredTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.DIGITS_ONE_HUNDRED);
-        links.trainingIndexFingersTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.TRAINING_INDEX_FINGERS);
-        links.ringFingersTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.RING_FINGERS);
-        links.pinkiesPlusTopBySpeedPage1 = context.getTopBySpeedFirstPageFilePath(NonStandardDictionary.PINKIES_PLUS);
-
-        links.normalInEnglishTopHeader = context.getHeaderName(NonStandardDictionary.NORMAL_IN_ENGLISH);
-        links.miniMarathonTopHeader = context.getHeaderName(NonStandardDictionary.MINI_MARATHON);
-        links.shortTextsTopHeader = context.getHeaderName(NonStandardDictionary.SHORT_TEXTS);
-        links.frequencyVocabularyTopHeader = context.getHeaderName(NonStandardDictionary.FREQUENCY_VOCABULARY);
-        links.oneHundredRussianTopHeader = context.getHeaderName(NonStandardDictionary.ONE_HUNDRED_RUSSIAN);
-        links.digitsOneHundredTopHeader = context.getHeaderName(NonStandardDictionary.DIGITS_ONE_HUNDRED);
-        links.trainingIndexFingersTopHeader = context.getHeaderName(NonStandardDictionary.TRAINING_INDEX_FINGERS);
-        links.ringFingersTopHeader = context.getHeaderName(NonStandardDictionary.RING_FINGERS);
-        links.pinkiesPlusTopHeader = context.getHeaderName(NonStandardDictionary.PINKIES_PLUS);
+        links.nonStandardDictionaries = context;
 
         return links;
     }

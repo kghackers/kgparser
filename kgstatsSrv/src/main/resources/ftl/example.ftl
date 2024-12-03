@@ -64,3 +64,18 @@ One non-existing key from map: ${testMap["bad key"]!""}
 Player from map by id: ${idToPlayerMap?api.get(playerId).login}
 
 </p>
+
+<p>
+    <#assign nonStandardDictionaries = links.nonStandardDictionaries>
+
+    Non standard dictionaries context (from links): ${links.nonStandardDictionaries}
+    <br/>
+    <br/>
+    Non standard dictionaries context (from variables): ${nonStandardDictionaries}
+    <br/>
+    <br/>
+    Page name: ${nonStandardDictionaries.getTopBySpeedFirstPageFilePath(5539)}
+    <br/>
+    <br/>
+    Page header: ${nonStandardDictionaries.getHeaderName(5539)}
+</p>

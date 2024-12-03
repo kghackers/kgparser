@@ -46,6 +46,7 @@ public class ExampleTemplate extends FreemarkerTemplate {
 
         templateData.put("idToPlayerMap", idToPlayerMap);
 
+        templateData.put("links", context.links);
 
         String result = super.exportToString(context);
         logger.debug("result:\n{}", result);
