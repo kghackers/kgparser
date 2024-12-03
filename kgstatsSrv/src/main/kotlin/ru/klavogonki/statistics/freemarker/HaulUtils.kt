@@ -1,13 +1,9 @@
 package ru.klavogonki.statistics.freemarker
 
 import org.apache.logging.log4j.kotlin.Logging
+import ru.klavogonki.statistics.util.DateUtils
 
 object HaulUtils : Logging {
-    // todo: use some library with these constants
-    // see https://stackoverflow.com/questions/2442486/time-consts-in-java
-    private const val SECONDS_IN_MINUTE = 60
-    private const val MINUTES_IN_HOUR = 60
-    private const val SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR
 
     const val NO_HAUL_STRING = "—"
 
@@ -17,9 +13,9 @@ object HaulUtils : Logging {
             return NO_HAUL_STRING
         }
 
-        val hours = haul / SECONDS_IN_HOUR
-        val minutes = (haul % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE
-        val seconds = haul % SECONDS_IN_MINUTE
+        val hours = haul / DateUtils.SECONDS_IN_HOUR
+        val minutes = (haul % DateUtils.SECONDS_IN_HOUR) / DateUtils.SECONDS_IN_MINUTE
+        val seconds = haul % DateUtils.SECONDS_IN_MINUTE
 
         val minutesFormatted = "%02d".format(minutes)
         val secondsFormatted = "%02d".format(seconds)
