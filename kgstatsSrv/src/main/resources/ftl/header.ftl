@@ -39,11 +39,8 @@
                 <#import "./dictionary-top-speed-link.ftl" as dtsl>
                 <#assign nonStandardDictionaries = links.nonStandardDictionaries>
 
-                <#-- Обычный in English -->
-                <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=5539/>
-
                 <#-- Мини-марафон, 800 знаков -->
-                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=6018/>
+                <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=6018/>
 
                 <#-- Короткие тексты -->
                 | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=1789/>
@@ -67,6 +64,23 @@
 
                 <#-- Мизинцы+ -->
                 | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=3714/>
+
+                <div class="header-vertical-space"></div>
+
+                <#-- Обычный in English -->
+                <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=5539/>
+
+                <#-- Мини-марафон in English -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=8835/>
+
+                <#-- Буквы in English -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=248189/>
+
+                <#-- One Hundred -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=62586/>
+
+                <#-- Short Texts in English -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=14878/>
 
                 <div class="header-vertical-space"></div>
 
