@@ -103,7 +103,7 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
         // same logic as in NonStandardVocabularyTopExporterGenerator
         return Objects.requireNonNullElseGet(
             vocabularyTopData().topByRacesCountExcelSheetName,
-            () -> VocabularyTopUtils.topByRacesCountIn(vocabulary())
+            () -> VocabularyTopUtils.topByRacesCountExcelSheetName(vocabulary())
         );
     }
 
@@ -124,7 +124,7 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
         // same logic as in NonStandardVocabularyTopExporterGenerator
         return Objects.requireNonNullElseGet(
             vocabularyTopData().topByHaulExcelSheetName,
-            () -> VocabularyTopUtils.topByHaulIn(vocabulary())
+            () -> VocabularyTopUtils.topByHaulExcelSheetName(vocabulary())
         );
     }
 

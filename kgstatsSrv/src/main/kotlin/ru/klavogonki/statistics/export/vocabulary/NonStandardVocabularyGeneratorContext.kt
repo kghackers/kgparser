@@ -7,6 +7,8 @@ import ru.klavogonki.statistics.export.vocabulary.non_standard.NonStandardVocabu
 data class NonStandardVocabularyGeneratorContext(
     @JvmField val dictionaryIdToExporter: Map<Int, NonStandardVocabularyTopExporter>
 ) : Logging {
+    fun getAllExporters() = dictionaryIdToExporter.values.toList()
+
     fun getExporter(dictionary: NonStandardDictionary): NonStandardVocabularyTopExporter =
         getExporter(dictionary.id)
 

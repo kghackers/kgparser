@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component
 import ru.klavogonki.common.NonStandardDictionary
 import ru.klavogonki.statistics.Config
 import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyTopExporterGenerator
+import ru.klavogonki.statistics.export.vocabulary.VocabularyTopExporter
+import ru.klavogonki.statistics.export.vocabulary.VocabularyTopUtils
 import ru.klavogonki.statistics.export.vocabulary.non_standard.NonStandardVocabularyTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.AbraTopExporter
 import ru.klavogonki.statistics.export.vocabulary.standard.CharsTopExporter
@@ -77,6 +79,26 @@ class StatisticsGenerator : Logging {
 
         val links = Links.create(nonStandardDictionariesGeneratorContext)
 
+        val standardDictionariesTopExporters = listOf<VocabularyTopExporter>(
+            normalTopExporter!!,
+            abraTopExporter!!,
+            referatsTopExporter!!,
+            noErrorTopExporter!!,
+            marathonTopExporter!!,
+            charsTopExporter!!,
+            digitsTopExporter!!,
+            sprintTopExporter!!
+        )
+
+        // does not include the "special" exporters for non-vocabularies
+        val allTopExporters: MutableList<VocabularyTopExporter> = mutableListOf()
+        allTopExporters.addAll(standardDictionariesTopExporters)
+        allTopExporters.addAll(nonStandardDictionariesGeneratorContext.getAllExporters())
+
+        // validate Excel sheet names
+        VocabularyTopUtils.validateTopExporters(allTopExporters)
+
+        // create ExportContext
         val context = ExportContext(
             config,
             repository,
