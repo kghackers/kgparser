@@ -54,6 +54,73 @@ object VocabularyTopUtils : Logging {
 
         // for topByBestSpeedExcelSheetName, try long and short name options
         val longName = topByBestSpeedIn(vocabulary)
+        val shortName = topByRecordIn(vocabulary)
+
+        return topExcelSheetNameWithLongNameAndShortNameOptions(dictionaryName, excelSheetType, longName, shortName)
+    }
+
+    @JvmStatic
+    fun topByBestSpeedExcelSheetName(vocabulary: NonStandardDictionaryData): String {
+        val dictionaryName = vocabulary.displayName
+        val excelSheetType = "topByBestSpeedExcelSheetName"
+
+        // for topByBestSpeedExcelSheetName, try long and short name options
+        val longName = topByBestSpeedIn(vocabulary)
+        val shortName = topByRecordIn(vocabulary)
+
+        return topExcelSheetNameWithLongNameAndShortNameOptions(dictionaryName, excelSheetType, longName, shortName)
+    }
+
+    @JvmStatic
+    fun topByRacesCountExcelSheetName(vocabulary: NonStandardDictionaryData): String {
+        val dictionaryName = vocabulary.displayName
+        val excelSheetType = "topByRacesCountExcelSheetName"
+
+        // for topByRacesCount, we don't have long/short name distinction
+        val name = topByRacesCountIn(vocabulary)
+
+        return topExcelSheetNameWithOneNameOption(dictionaryName, excelSheetType, name)
+    }
+
+    @JvmStatic
+    fun topByRacesCountExcelSheetName(vocabulary: StandardDictionary): String {
+        val dictionaryName = vocabulary.displayName
+        val excelSheetType = "topByRacesCountExcelSheetName"
+
+        // for topByRacesCount, we don't have long/short name distinction
+        val name = topByRacesCountIn(vocabulary)
+
+        return topExcelSheetNameWithOneNameOption(dictionaryName, excelSheetType, name)
+    }
+
+    @JvmStatic
+    fun topByHaulExcelSheetName(vocabulary: StandardDictionary): String {
+        val dictionaryName = vocabulary.displayName
+        val excelSheetType = "topByHaulExcelSheetName"
+
+        // for topByHaul, we don't have long/short name distinction
+        val name = topByHaulIn(vocabulary)
+
+        return topExcelSheetNameWithOneNameOption(dictionaryName, excelSheetType, name)
+    }
+
+    @JvmStatic
+    fun topByHaulExcelSheetName(vocabulary: NonStandardDictionaryData): String {
+        val dictionaryName = vocabulary.displayName
+        val excelSheetType = "topByHaulExcelSheetName"
+
+        // for topByHaul, we don't have long/short name distinction
+        val name = topByHaulIn(vocabulary)
+
+        return topExcelSheetNameWithOneNameOption(dictionaryName, excelSheetType, name)
+    }
+
+    private fun topExcelSheetNameWithLongNameAndShortNameOptions(
+        dictionaryName: String,
+        excelSheetType: String,
+        longName: String,
+        shortName: String
+    ): String {
         if (ExcelExporter.isValidSheetName(longName)) {
             logger.debug(
                 "\"$longName\" (long name)" +
@@ -70,7 +137,6 @@ object VocabularyTopUtils : Logging {
             )
         }
 
-        val shortName = topByRecordIn(vocabulary)
         if (ExcelExporter.isValidSheetName(shortName)) {
             logger.debug(
                 "\"$shortName\" (short name) is a valid $excelSheetType for dictionary \"$dictionaryName\"." +
@@ -92,141 +158,11 @@ object VocabularyTopUtils : Logging {
         )
     }
 
-    @JvmStatic
-    fun topByBestSpeedExcelSheetName(vocabulary: NonStandardDictionaryData): String {
-        val dictionaryName = vocabulary.displayName
-        val excelSheetType = "topByBestSpeedExcelSheetName"
-
-        // for topByBestSpeedExcelSheetName, try long and short name options
-        val longName = topByBestSpeedIn(vocabulary)
-        if (ExcelExporter.isValidSheetName(longName)) {
-            logger.debug(
-                "\"$longName\" (long name) is a valid $excelSheetType for dictionary \"$dictionaryName\"." +
-                    " Use it."
-            )
-
-            return longName
-        } else {
-            logger.debug(
-                "\"$longName\" (long name)" +
-                    " is not a valid $excelSheetType for dictionary \"$dictionaryName\"." +
-                    " Trying a short name..."
-            )
-        }
-
-        val shortName = topByRecordIn(vocabulary)
-        if (ExcelExporter.isValidSheetName(shortName)) {
-            logger.debug(
-                "\"$shortName\" (short name) is a valid $excelSheetType for dictionary \"$dictionaryName\"." +
-                    " Use it."
-            )
-
-            return shortName
-        } else {
-            logger.warn(
-                "\"$shortName\" (short name)" +
-                    " is not a valid $excelSheetType for dictionary \"$dictionaryName\"." +
-                    " This is an epic fail."
-            )
-        }
-
-        error(
-            "Cannot get $excelSheetType for vocabulary \"$dictionaryName\"." +
-                " Both long name \"$longName\" and short name \"$shortName\" are non-valid."
-        )
-    }
-
-    @JvmStatic
-    fun topByRacesCountExcelSheetName(vocabulary: NonStandardDictionaryData): String {
-        val dictionaryName = vocabulary.displayName
-        val excelSheetType = "topByRacesCountExcelSheetName"
-
-        // for topByRacesCount, we don't have long/short name distinction
-        val name = topByRacesCountIn(vocabulary)
-        if (ExcelExporter.isValidSheetName(name)) {
-            logger.debug(
-                "\"$name\" is a valid $excelSheetType for dictionary \"$dictionaryName\"." +
-                    " Use it."
-            )
-
-            return name
-        } else {
-            logger.warn(
-                "\"$name\"" +
-                    " is not a valid $excelSheetType for dictionary \"$dictionaryName\"." +
-                    " This is an epic fail."
-            )
-        }
-
-        error(
-            "Cannot get $excelSheetType for vocabulary \"$dictionaryName\"." +
-                " Name \"$name\" is non-valid."
-        )
-    }
-
-    @JvmStatic
-    fun topByRacesCountExcelSheetName(vocabulary: StandardDictionary): String {
-        val dictionaryName = vocabulary.displayName
-        val excelSheetType = "topByRacesCountExcelSheetName"
-
-        // for topByRacesCount, we don't have long/short name distinction
-        val name = topByRacesCountIn(vocabulary)
-        if (ExcelExporter.isValidSheetName(name)) {
-            logger.debug(
-                "\"$name\" is a valid $excelSheetType for dictionary \"$dictionaryName\"." +
-                    " Use it."
-            )
-
-            return name
-        } else {
-            logger.warn(
-                "\"$name\"" +
-                    " is not a valid $excelSheetType for dictionary \"$dictionaryName\"." +
-                    " This is an epic fail."
-            )
-        }
-
-        error(
-            "Cannot get $excelSheetType for vocabulary \"$dictionaryName\"." +
-                " Name \"$name\" is non-valid."
-        )
-    }
-
-    @JvmStatic
-    fun topByHaulExcelSheetName(vocabulary: StandardDictionary): String {
-        val dictionaryName = vocabulary.displayName
-        val excelSheetType = "topByHaulExcelSheetName"
-
-        // for topByHaul, we don't have long/short name distinction
-        val name = topByHaulIn(vocabulary)
-        if (ExcelExporter.isValidSheetName(name)) {
-            logger.debug(
-                "\"$name\" is a valid $excelSheetType for dictionary \"$dictionaryName\"." +
-                    " Use it."
-            )
-
-            return name
-        } else {
-            logger.warn(
-                "\"$name\"" +
-                    " is not a valid $excelSheetType for dictionary \"$dictionaryName\"." +
-                    " This is an epic fail."
-            )
-        }
-
-        error(
-            "Cannot get $excelSheetType for vocabulary \"$dictionaryName\"." +
-                " Name \"$name\" is non-valid."
-        )
-    }
-
-    @JvmStatic
-    fun topByHaulExcelSheetName(vocabulary: NonStandardDictionaryData): String {
-        val dictionaryName = vocabulary.displayName
-        val excelSheetType = "topByHaulExcelSheetName"
-
-        // for topByHaul, we don't have long/short name distinction
-        val name = topByHaulIn(vocabulary)
+    private fun topExcelSheetNameWithOneNameOption(
+        dictionaryName: String,
+        excelSheetType: String,
+        name: String
+    ): String {
         if (ExcelExporter.isValidSheetName(name)) {
             logger.debug(
                 "\"$name\" is a valid $excelSheetType for dictionary \"$dictionaryName\"." +
@@ -319,7 +255,7 @@ object VocabularyTopUtils : Logging {
         try {
             val sheetName = getSheetNameFunction(exporter)
 
-            // super-safe - the sheet getter should already have failed on an incorrect name
+            // super-safe - the sheet name getter should already have failed on an incorrect name
             ExcelExporter.validateSheetName(sheetName)
         } catch (e: Exception) {
             // error message already contains a dot at the end
