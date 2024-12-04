@@ -88,6 +88,13 @@ public final class DateUtils {
         return offsetDateTime.format(dateTimeFormatter);
     }
 
+    public static String formatDateTimeForLog(OffsetDateTime offsetDateTime) {
+        Objects.requireNonNull(offsetDateTime);
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_FOR_UI);
+        return offsetDateTime.format(dateTimeFormatter);
+    }
+
     public static String formatDateTimeForUi(LocalDateTime localDateTime) {
         if (localDateTime == null) { // https://klavogonki.ru/u/#/166851/stats/ - has statistics, but /get-index-data returns error
             return "—";

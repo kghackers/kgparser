@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit
 
 object DateDiffUtils : Logging {
 
+    @JvmStatic
     fun formatDiff(start: OffsetDateTime, end: OffsetDateTime): String {
         // todo: maybe use Kotlin's Duration, see https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-duration/
 
