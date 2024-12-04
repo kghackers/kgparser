@@ -11,16 +11,27 @@ object VocabularyTopUtils : Logging {
     fun takenPlayersWithMinimalRacesCount(vocabulary: StandardDictionary, racesCount: Int) =
         takenPlayersWithMinimalRacesCount(
             vocabulary.displayNamePrepositional,
-            racesCount
+            racesCount,
+            vocabulary.wikiPageUrl
         )
 
     @JvmStatic
     fun takenPlayersWithMinimalRacesCount(vocabulary: NonStandardDictionaryData, racesCount: Int) =
-        takenPlayersWithMinimalRacesCount(vocabulary.displayNamePrepositional, racesCount)
+        takenPlayersWithMinimalRacesCount(
+            vocabulary.displayNamePrepositional,
+            racesCount,
+            vocabulary.getLink()
+        )
 
-    @JvmStatic
-    fun takenPlayersWithMinimalRacesCount(vocabularyNamePrepositional: String, racesCount: Int) =
-        "Учтены игроки с минимальным пробегом $racesCount в «$vocabularyNamePrepositional»"
+    private fun takenPlayersWithMinimalRacesCount(
+        vocabularyNamePrepositional: String,
+        racesCount: Int,
+        dictionaryPageUrl: String
+    ) =
+        "Учтены игроки с минимальным пробегом $racesCount " +
+            "<a href=\"$dictionaryPageUrl\" target=\"_blank\" rel=\"noopener noreferrer\">" +
+            "в «$vocabularyNamePrepositional»" +
+            "</a>"
 
     @JvmStatic
     fun topByBestSpeedIn(vocabulary: StandardDictionary) =
