@@ -90,6 +90,17 @@
 
                 <div class="header-vertical-space"></div>
 
+                <#-- Буквы "ва ол" -->
+                <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=1/>
+
+                <#-- Моя сильная левая рука -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=812/>
+
+                <#-- Быстрая правая рука -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=853/>
+
+                <div class="header-vertical-space"></div>
+
                 <a href="./2020-12-09/stats.html">Статистика&nbsp;от&nbsp;09.12.2020</a>
             </td>
 
