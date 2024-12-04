@@ -82,6 +82,12 @@
                 <#-- Short Texts in English -->
                 | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=14878/>
 
+                <#-- Частотный английский -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=1432/>
+
+                <#-- Trash -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=106258/>
+
                 <div class="header-vertical-space"></div>
 
                 <a href="./2020-12-09/stats.html">Статистика&nbsp;от&nbsp;09.12.2020</a>
