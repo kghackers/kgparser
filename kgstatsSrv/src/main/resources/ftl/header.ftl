@@ -108,6 +108,9 @@
                 <#-- Частотный чередующийся -->
                 | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=165701/>
 
+                <#-- Трэш 2.0 -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=106257/>
+
                 <div class="header-vertical-space"></div>
 
                 <a href="./2020-12-09/stats.html">Статистика&nbsp;от&nbsp;09.12.2020</a>
