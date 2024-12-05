@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Действующие игроки по рангам</title>
+    <link rel="stylesheet" type="text/css" href="./css/stats.css">
+    <link rel="shortcut icon" href="./img/favicon/favicon.ico"/>
+</head>
+<body>
+<header>
+    <table role="presentation">
+        <tr>
+            <td>
+                <a href="./stats.html">На главную</a>
+                | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser on GitHub</a>
+                | <a href="https://klavogonki.ru/forum/software/59/">Тема на форуме</a>
+                | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
+                <br/>
+                <a href="./stat-top-by-total-races.html">Топ по общему пробегу</a>
+                | <a href="./stat-top-by-best-speed-page-1.html">Топ по рекорду в &laquo;Обычном&raquo;</a>
+                | <a href="./stat-top-by-best-speed.html">Топ-500 в &laquo;Обычном&raquo;</a>
+                | <a href="./stat-top-by-rating-level.html">Топ по уровню</a>
+                | <a href="./stat-top-by-friends-count.html">Топ по числу друзей</a>
+                | <a href="./stat-top-by-achievements-count.html">Топ по числу достижений</a>
+                | <a href="./stat-top-by-vocabularies-count.html">Топ по числу используемых словарей</a>
+                | <a href="./stat-top-by-cars-count.html">Топ по числу машин в гараже</a>
+                | <a href="./stat-players-by-rank.html">Игроки по рангам</a>
+            </td>
+            <td class="header-right">
+                <form action="https://www.paypal.com/donate" method="post" target="_top">
+                    <input type="hidden" name="hosted_button_id" value="WZ2BM3QJYGQTW"/>
+                    <input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0"
+                           name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button"/>
+                    <img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+</header>
+<main>
+    <div class="section">
+        <h2>Действующие игроки по рангам</h2>
+        Учтены существующие незаблокированные игроки с минимум 1 текстом пробега (всего игроков: 358804)
+        <br/>
+        Mаксимальный пробег: 294760
+    </div>
+
+    <div>
+        Выбрать игроков с общим пробегом
+        <label for="min-totalRacesCount-input">от</label>&nbsp;
+        <input id="min-totalRacesCount-input" autofocus value="1"/>
+        <label for="max-totalRacesCount-input">до</label>&nbsp;
+        <input id="max-totalRacesCount-input" value="294760"/>
+        <button id="search-button" class="search-button">Выбрать</button>
+    </div>
+
+    <div class="section" id="section-players_by_rank">
+        <div id="playersByRank-single-chart-wrapper" class="flexWrap">
+            <canvas id="playersByRank-single-barChart-canvas" class="chart-left"></canvas>
+            <canvas id="playersByRank-single-doughnutChart-canvas" class="chart-right"></canvas>
+
+            <div id="playersByRank-single-table-container"></div>
+        </div>
+    </div>
+</main>
+
+<!-- see https://www.chartjs.org/docs/latest/getting-started/installation.html -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous"></script>
+<script src="./js/players-by-rank-chart.js"></script>
+<script src="./js/players-by-rank-data.js"></script>
+<script>
+    const MIN_TOTAL_RACES_COUNT = 1;
+    const MAX_TOTAL_RACES_COUNT = 294760;
+
+    let singleChart;
+
+    window.addEventListener('load', function() {
+        const countsByRank = PlayerByRankFilter.groupByRank(STATS_DATA.rankToTotalRacesCount);
+        const chartData = PlayerByRankFilter.convertToChartData(countsByRank);
+
+        singleChart = new PlayersByRankChart({
+            data: chartData, // by default, show players with at least 1 race
+            label: PlayerByRankFilter.getChartLabel(MIN_TOTAL_RACES_COUNT, MIN_TOTAL_RACES_COUNT, MAX_TOTAL_RACES_COUNT)
+        });
+        singleChart.append('playersByRank-single-barChart-canvas', 'playersByRank-single-doughnutChart-canvas', 'playersByRank-single-table-container');
+
+        const filter = new PlayerByRankFilter({
+            minRacesInputId: 'min-totalRacesCount-input',
+            maxRacesInputId: 'max-totalRacesCount-input',
+            searchButtonId: 'search-button',
+            minTotalRacesCount: MIN_TOTAL_RACES_COUNT,
+            chart: singleChart,
+            data: STATS_DATA.rankToTotalRacesCount
+        });
+
+        filter.bindSearch();
+    });
+</script>
+</body>
+</html>

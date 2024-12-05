@@ -6,27 +6,37 @@ package ru.klavogonki.common
 @Suppress("MagicNumber", "Unused")
 enum class NonStandardDictionary(
     @JvmField val code: String,
+    @JvmField val id: Int,
     @JvmField val displayName: String,
     @JvmField val displayNamePrepositional: String
 ) {
-    // most popular non-standard dictionaries
+    // English
     NORMAL_IN_ENGLISH(5539, "Обычный in English", "Обычном in English"),
-    ONE_HUNDRED_RUSSIAN(25856, "Соточка", "Соточке"),
-    FREQUENCY_VOCABULARY(192, "Частотный словарь", "Частотном словаре"),
-    SHORT_TEXTS(1789, "Короткие тексты", "Коротких текстах"),
-    DIGITS_ONE_HUNDRED(62238, "Цифросоточка", "Цифросоточке"),
-    FIVE_THOUSAND_MOST_POPULAR_WORDS(203, "5000 самых частых слов", "5000 самых частых словах"),
     ONE_HUNDRED(62586, "One Hundred", "One Hundred"),
     SHORT_TEXTS_IN_ENGLISH(14878, "Short Texts in English", "Short Texts in English"),
-    MINI_MARATHON(6018, "Мини-марафон, 800 знаков", "Мини-марафоне, 800 знаков"),
+
+    // Частотка на русском
+    ONE_HUNDRED_RUSSIAN(25856, "Соточка", "Соточке"),
+    FREQUENCY_VOCABULARY(192, "Частотный словарь", "Частотном словаре"),
+    FIVE_THOUSAND_MOST_POPULAR_WORDS(203, "5000 самых частых слов", "5000 самых частых словах"),
+    SHORT_TEXTS(1789, "Короткие тексты", "Коротких текстах"),
     CYBERTEXT(6562, "Кибертекст", "Кибертексте"),
     CYBERTEXT_2(115606, "Кибертекст 2.0", "Кибертексте 2.0"),
+
+    // Цифры
+    DIGITS_ONE_HUNDRED(62238, "Цифросоточка", "Цифросоточке"),
+
+    // Мини-марафон
+    MINI_MARATHON(6018, "Мини-марафон, 800 знаков", "Мини-марафоне, 800 знаков"),
+
+    // Пальцы
     PINKIES_PLUS(3714, "Мизинцы+", "Мизинцах+"),
     TRAINING_INDEX_FINGERS(226, "Тренируем указательные", "Тренируем указательные"),
     RING_FINGERS(8223, "Безымянные", "Безымянных"),
 
     // Упражнения Хруста
-    // номера словарей от 1 до 24 по порядку: 13571 13572 13573 13574 13583 13584 13585 13654 13656 13659
+    // номера словарей от 1 до 24 по порядку:
+    // 13571 13572 13573 13574 13583 13584 13585 13654 13656 13659
     // 13661 13663 13664 16346 16759 16762 17495 17497 17498 17499
     // 32013 32014 32015 32016
     HRUST_EXERCISE_1(13571, "Упражнение №1", "Упражнении №1"),
@@ -68,7 +78,32 @@ enum class NonStandardDictionary(
         displayNamePrepositional: String
     ) : this(
         DictionaryUtils.getDictionaryCode(code),
+        code,
         displayName,
         displayNamePrepositional
     )
+
+    companion object {
+        @JvmStatic
+        fun getByDictionaryCode(code: String): NonStandardDictionary {
+            val values = entries.filter { it.code == code }
+
+            check(values.isNotEmpty()) {
+                "No non-standard dictionary for code = \"$code\"."
+            }
+
+            check(values.size == 1) {
+                "More than one non-standard dictionary for code = \"$code\"."
+            }
+
+            return values[0]
+        }
+
+        @JvmStatic
+        fun getByDictionaryId(dictionaryId: Int): NonStandardDictionary {
+            val code = DictionaryUtils.getDictionaryCode(dictionaryId)
+
+            return getByDictionaryCode(code)
+        }
+    }
 }

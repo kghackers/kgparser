@@ -3,6 +3,8 @@ package ru.klavogonki.statistics.freemarker;
 import lombok.extern.log4j.Log4j2;
 import ru.klavogonki.common.Rank;
 import ru.klavogonki.statistics.entity.PlayerEntity;
+import ru.klavogonki.statistics.export.ExportContext;
+import ru.klavogonki.statistics.export.ExportContextFactory;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -19,7 +21,8 @@ public class ExampleTemplate extends FreemarkerTemplate {
     }
 
     @Override
-    public void export(final String filePath) {
+    public void export(final ExportContext context, final String filePath) {
+        templateData.put("testString", "A&nbsp;value&nbsp;test&nbsp;non&nbsp;breaking&nbsp;space!!!!");
         templateData.put("testInteger", 123456789);
         templateData.put("testDouble", 222.265);
 
@@ -37,11 +40,29 @@ public class ExampleTemplate extends FreemarkerTemplate {
 
         templateData.put("testMap", map);
 
-        String result = super.exportToString();
+        Map<Integer, PlayerEntity> idToPlayerMap = new TreeMap<>();
+        idToPlayerMap.put(242585, player);
+//        intMap.put(2, "value 2");
+
+        templateData.put("idToPlayerMap", idToPlayerMap);
+
+        templateData.put("links", context.links);
+
+        String result = super.exportToString(context);
         logger.debug("result:\n{}", result);
+
+        exportFreemarkerToFile(
+            getTemplatePath(),
+            filePath,
+            templateData
+        );
     }
 
     public static void main(String[] args) {
-        new ExampleTemplate().export("example.html");
+        ExportContext context = ExportContextFactory.INSTANCE.createMock();
+
+        String outputFileName = "C:\\java\\kgparser\\.ignoreme\\freemarker-example.html";
+
+        new ExampleTemplate().export(context, outputFileName);
     }
 }

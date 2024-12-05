@@ -124,6 +124,4 @@ object DictionaryUtils {
             getDictionaryId(dictionaryCode)
         )
     }
-
-
 }

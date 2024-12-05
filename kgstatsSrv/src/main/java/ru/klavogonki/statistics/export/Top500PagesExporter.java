@@ -62,7 +62,7 @@ public class Top500PagesExporter implements DataExporter {
 
         new TopByTotalRacesCountTemplate()
             .players(top500PlayersByTotalRacesCountDto)
-            .export(PageUrls.getTopByTotalRacesCountFilePath(context.webRootDir));
+            .export(context, PageUrls.getTopByTotalRacesCountFilePath(context.webRootDir));
 
         new TopByTotalRacesCountExcelTemplate()
             .players(top500PlayersByTotalRacesCountDto)
@@ -79,7 +79,7 @@ public class Top500PagesExporter implements DataExporter {
 
         new TopByBestSpeedTemplate()
             .players(top500PlayersByBestSpeedDto)
-            .export(PageUrls.getTopByBestSpeedFilePath(context.webRootDir));
+            .export(context, PageUrls.getTopByBestSpeedFilePath(context.webRootDir));
 
         new TopByBestSpeedExcelTemplate()
             .players(top500PlayersByBestSpeedDto)
@@ -96,7 +96,7 @@ public class Top500PagesExporter implements DataExporter {
 
         new TopByRatingLevelTemplate()
             .players(top500PlayersByRatingLevelDto)
-            .export(PageUrls.getTopByRatingLevelFilePath(context.webRootDir));
+            .export(context, PageUrls.getTopByRatingLevelFilePath(context.webRootDir));
 
         new TopByRatingLevelExcelTemplate()
             .players(top500PlayersByRatingLevelDto)
@@ -113,7 +113,7 @@ public class Top500PagesExporter implements DataExporter {
 
         new TopByFriendsCountTemplate()
             .players(top500PlayersByFriendsCountDto)
-            .export(PageUrls.getTopByFriendsCountFilePath(context.webRootDir));
+            .export(context, PageUrls.getTopByFriendsCountFilePath(context.webRootDir));
 
         new TopByFriendsCountExcelTemplate()
             .players(top500PlayersByFriendsCountDto)
@@ -130,7 +130,7 @@ public class Top500PagesExporter implements DataExporter {
 
         new TopByAchievementsCountTemplate()
             .players(top500PlayersByAchievementsCountDto)
-            .export(PageUrls.getTopByAchievementsCountFilePath(context.webRootDir));
+            .export(context, PageUrls.getTopByAchievementsCountFilePath(context.webRootDir));
 
         new TopByAchievementsCountExcelTemplate()
             .players(top500PlayersByAchievementsCountDto)
@@ -147,7 +147,7 @@ public class Top500PagesExporter implements DataExporter {
 
         new TopByVocabulariesCountTemplate()
             .players(top500PlayersByVocabulariesCountDto)
-            .export(PageUrls.getTopByVocabulariesCountFilePath(context.webRootDir));
+            .export(context, PageUrls.getTopByVocabulariesCountFilePath(context.webRootDir));
 
         new TopByVocabulariesCountExcelTemplate()
             .players(top500PlayersByVocabulariesCountDto)
@@ -164,7 +164,7 @@ public class Top500PagesExporter implements DataExporter {
 
         new TopByCarsCountTemplate()
             .players(top500PlayersByCarsCountDto)
-            .export(PageUrls.getTopByCarsCountFilePath(context.webRootDir));
+            .export(context, PageUrls.getTopByCarsCountFilePath(context.webRootDir));
 
         new TopByCarsCountExcelTemplate()
             .players(top500PlayersByCarsCountDto)

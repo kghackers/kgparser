@@ -12,7 +12,11 @@ import ru.klavogonki.statistics.download.PlayerDataDownloader;
 import ru.klavogonki.statistics.export.StatisticsGenerator;
 import ru.klavogonki.statistics.export.StatisticsGeneratorConfig;
 import ru.klavogonki.statistics.import_db.DatabaseImporter;
+import ru.klavogonki.statistics.util.DateDiffUtils;
+import ru.klavogonki.statistics.util.DateUtils;
 import ru.klavogonki.statistics.util.JacksonUtils;
+
+import java.time.OffsetDateTime;
 
 @EntityScan(basePackages= {"ru.klavogonki.statistics.entity"})
 @ComponentScan({"ru.klavogonki.statistics"})
@@ -86,7 +90,10 @@ public class StatisticsApplication implements CommandLineRunner {
 		String outputConfigFilePath = args[2];
 		String[] playerDataDownloaderArgs = {inputConfigFilePath, outputConfigFilePath};
 
-		PlayerDataDownloader.main(playerDataDownloaderArgs);
+		logOperationDuration(
+			Mode.DOWNLOAD_PLAYER_DATA,
+			() -> PlayerDataDownloader.main(playerDataDownloaderArgs)
+		);
 	}
 
 	private void handleImportJsonToDatabase(final String[] args) {
@@ -97,7 +104,10 @@ public class StatisticsApplication implements CommandLineRunner {
 
 		Config config = JacksonUtils.parseConfig(args[1]);
 
-		databaseImporter.importJsonToDatabase(config);
+		logOperationDuration(
+			Mode.IMPORT_JSON_TO_DATABASE,
+			() -> databaseImporter.importJsonToDatabase(config)
+		);
 	}
 
 	private void handleGenerateStatistics(final String[] args) {
@@ -108,6 +118,32 @@ public class StatisticsApplication implements CommandLineRunner {
 
 		Config config = JacksonUtils.parseConfig(args[1]);
 		StatisticsGeneratorConfig statisticsGeneratorConfig = JacksonUtils.parseStatisticsGeneratorConfig(args[2]);
-		statisticsGenerator.generateStatistics(config, statisticsGeneratorConfig);
+
+		logOperationDuration(
+			Mode.GENERATE_STATISTICS_FROM_DATABASE,
+			() -> statisticsGenerator.generateStatistics(config, statisticsGeneratorConfig)
+		);
+	}
+
+	private void logOperationDuration(Mode operation, Runnable operationCaller) {
+		String operationName = operation.name();
+
+		OffsetDateTime startDate = OffsetDateTime.now();
+
+		try {
+			operationCaller.run();
+		} catch (Exception e) {
+			logger.error("Operation {} failed:", operationName, e);
+
+			throw new RuntimeException(e); // todo: custom runtime exception
+		} finally {
+			OffsetDateTime endDate = OffsetDateTime.now();
+
+			String formattedDuration = DateDiffUtils.formatDiff(startDate, endDate);
+
+			logger.info("Operation {} start: {}.", operationName, DateUtils.formatDateTimeForLog(startDate));
+			logger.info("Operation {} end: {}.", operationName, DateUtils.formatDateTimeForLog(endDate));
+			logger.info("Operation {} duration: {}.", operationName, formattedDuration);
+		}
 	}
 }

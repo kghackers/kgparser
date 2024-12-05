@@ -1,8 +1,9 @@
 package ru.klavogonki.statistics.export.vocabulary;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
+import ru.klavogonki.statistics.dto.PlayerVocabularyDto;
+import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.statistics.excel.ExcelExporter;
 import ru.klavogonki.statistics.excel.VocabularyTopByBestSpeedExcelTemplate;
 import ru.klavogonki.statistics.excel.VocabularyTopByHaulExcelTemplate;
@@ -10,6 +11,7 @@ import ru.klavogonki.statistics.excel.VocabularyTopByRacesCountExcelTemplate;
 import ru.klavogonki.statistics.export.DataExporter;
 import ru.klavogonki.statistics.export.ExportContext;
 import ru.klavogonki.statistics.export.ExporterUtils;
+import ru.klavogonki.statistics.export.LoggerWrapper;
 import ru.klavogonki.statistics.freemarker.PageUrls;
 import ru.klavogonki.statistics.freemarker.VocabularyTopByHaulLoginToPageTemplate;
 import ru.klavogonki.statistics.freemarker.VocabularyTopByHaulTemplate;
@@ -17,8 +19,6 @@ import ru.klavogonki.statistics.freemarker.VocabularyTopByRacesCountLoginToPageT
 import ru.klavogonki.statistics.freemarker.VocabularyTopByRacesCountTemplate;
 import ru.klavogonki.statistics.freemarker.VocabularyTopBySpeedLoginToPageTemplate;
 import ru.klavogonki.statistics.freemarker.VocabularyTopBySpeedTemplate;
-import ru.klavogonki.statistics.dto.PlayerVocabularyDto;
-import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.statistics.mapper.PlayerVocabularyDtoMapper;
 import ru.klavogonki.statistics.util.JacksonUtils;
 
@@ -35,9 +35,17 @@ public interface VocabularyTopExporter extends DataExporter {
 
     String vocabularyCode();
 
+    /**
+     * @return Название для ссылки из шапки статистики.
+     *
+     * Для названий с пробелами обычно содержит неразрывные пробелы.
+     */
+    String headerName();
+
     int minRacesCount();
 
-    Logger logger();
+    String loggerName();
+    LoggerWrapper logger();
 
     default int pageSize() {
         return 100;
@@ -82,18 +90,21 @@ public interface VocabularyTopExporter extends DataExporter {
         return "DEFAULT_TOP_BY_HAUL_EXCEL_SHEET_NAME";
     }
 
-    default List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed() {
+    default List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed(ExportContext context) {
         return Collections.emptyList();
     }
 
-    default List<PlayerVocabularyStatsEntity> getPlayersByRacesCount() {
+    default List<PlayerVocabularyStatsEntity> getPlayersByRacesCount(ExportContext context) {
         return Collections.emptyList();
     }
 
-    default List<PlayerVocabularyStatsEntity> getPlayersByHaul() {
+    default List<PlayerVocabularyStatsEntity> getPlayersByHaul(ExportContext context) {
         return Collections.emptyList();
     }
 
+    default String topByBestSpeedFirstPageFilePath() {
+        return topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+    }
     default String topByBestSpeedPageFilePath(final int pageNumber) {
         return String.format("./voc-%s-top-by-best-speed-page-%d.html", vocabularyCode(), pageNumber);
     }
@@ -160,7 +171,7 @@ public interface VocabularyTopExporter extends DataExporter {
     }
 
     private void exportTopByBestSpeed(final ExportContext context, final PlayerVocabularyDtoMapper mapper) {
-        List<PlayerVocabularyStatsEntity> players = getPlayersByBestSpeed();
+        List<PlayerVocabularyStatsEntity> players = getPlayersByBestSpeed(context);
         List<PlayerVocabularyDto> dtos = mapper.entitiesToDtos(players, PlayerVocabularyDto::getBestSpeed);
 
         int totalPlayers = players.size();
@@ -201,7 +212,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
-                .export(pageFilePath);
+                .export(context, pageFilePath);
 
             logger().debug("Top by best speed: Exported page {}/{}.", pageNumber, totalPages);
         }
@@ -212,7 +223,7 @@ public interface VocabularyTopExporter extends DataExporter {
     }
 
     private void exportTopByRacesCount(final ExportContext context, final PlayerVocabularyDtoMapper mapper) {
-        List<PlayerVocabularyStatsEntity> players = getPlayersByRacesCount();
+        List<PlayerVocabularyStatsEntity> players = getPlayersByRacesCount(context);
         List<PlayerVocabularyDto> dtos = mapper.entitiesToDtos(players, PlayerVocabularyDto::getRacesCount);
 
         int totalPlayers = players.size();
@@ -253,7 +264,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
-                .export(pageFilePath);
+                .export(context, pageFilePath);
 
             logger().debug("Top by races count: Exported page {}/{}.", pageNumber, totalPages);
         }
@@ -264,7 +275,7 @@ public interface VocabularyTopExporter extends DataExporter {
     }
 
     private void exportTopByHaul(final ExportContext context, final PlayerVocabularyDtoMapper mapper) {
-        List<PlayerVocabularyStatsEntity> players = getPlayersByHaul();
+        List<PlayerVocabularyStatsEntity> players = getPlayersByHaul(context);
         List<PlayerVocabularyDto> dtos = mapper.entitiesToDtos(players, PlayerVocabularyDto::getHaulInteger);
 
         int totalPlayers = players.size();
@@ -305,7 +316,7 @@ public interface VocabularyTopExporter extends DataExporter {
                 .topByBestSpeedUrl(topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByRacesCountUrl(topByRacesCountPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
                 .topByHaulUrl(topByHaulPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER))
-                .export(pageFilePath);
+                .export(context, pageFilePath);
 
             logger().debug("Top by haul: Exported page {}/{}.", pageNumber, totalPages);
         }
@@ -329,7 +340,7 @@ public interface VocabularyTopExporter extends DataExporter {
         new VocabularyTopBySpeedLoginToPageTemplate()
             .loginToPage(loginToPage)
             .loginToPageString(loginToPageString)
-            .export(loginToPageFilePath);
+            .export(context, loginToPageFilePath);
     }
 
     private void exportTopByRacesCountLoginToPageJs(final ExportContext context, final Map<String, Integer> loginToPage) {
@@ -341,7 +352,7 @@ public interface VocabularyTopExporter extends DataExporter {
         new VocabularyTopByRacesCountLoginToPageTemplate()
             .loginToPage(loginToPage)
             .loginToPageString(loginToPageString)
-            .export(loginToPageFilePath);
+            .export(context, loginToPageFilePath);
     }
 
     private void exportTopByHaulLoginToPageJs(final ExportContext context, final Map<String, Integer> loginToPage) {
@@ -353,7 +364,7 @@ public interface VocabularyTopExporter extends DataExporter {
         new VocabularyTopByHaulLoginToPageTemplate()
             .loginToPage(loginToPage)
             .loginToPageString(loginToPageString)
-            .export(loginToPageFilePath);
+            .export(context, loginToPageFilePath);
     }
 
 

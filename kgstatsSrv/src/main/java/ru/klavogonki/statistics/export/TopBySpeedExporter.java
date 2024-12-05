@@ -74,7 +74,7 @@ public class TopBySpeedExporter implements DataExporter {
                 .totalPages(totalPages)
                 .pageNumber(pageNumber)
                 .players(playersOnPage)
-                .export(topBySpeedPageFilePath);
+                .export(context, topBySpeedPageFilePath);
 
             logger.debug("Exported page {}/{}.", pageNumber, totalPages);
         }
@@ -93,7 +93,7 @@ public class TopBySpeedExporter implements DataExporter {
         new LoginToPageTemplate()
             .loginToPage(loginToPage)
             .loginToPageString(loginToPageString)
-            .export(loginToPageFilePath);
+            .export(context, loginToPageFilePath);
     }
 
     public void exportAllPagesToExcel(final ExportContext context, final List<PlayerDto> dtos) {

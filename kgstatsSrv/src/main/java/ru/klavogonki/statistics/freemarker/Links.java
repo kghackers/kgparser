@@ -1,16 +1,8 @@
 package ru.klavogonki.statistics.freemarker;
 
 import lombok.Data;
-import ru.klavogonki.statistics.export.ExporterUtils;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.DigitsOneHundredTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.FrequencyVocabularyTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.MiniMarathonTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.NormalInEnglishTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.OneHundredRussianTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.PinkiesPlusTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.RingFingersTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.ShortTextsTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.TrainingIndexFingersTopExporter;
+import lombok.extern.log4j.Log4j2;
+import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyGeneratorContext;
 import ru.klavogonki.statistics.export.vocabulary.standard.AbraTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.CharsTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.standard.DigitsTopExporter;
@@ -25,6 +17,7 @@ import ru.klavogonki.statistics.export.vocabulary.standard.SprintTopExporter;
  */
 @Data
 @SuppressWarnings("unused")
+@Log4j2
 public class Links {
 
     // html files
@@ -66,25 +59,26 @@ public class Links {
 
     // vocabularies landing pages
     // standard vocabularies
-    private String normalTopBySpeedPage1 = new NormalTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String abraTopBySpeedPage1 = new AbraTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String referatsTopBySpeedPage1 = new ReferatsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String noErrorTopBySpeedPage1 = new NoErrorTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String marathonTopBySpeedPage1 = new MarathonTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String charsTopBySpeedPage1 = new CharsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String digitsTopBySpeedPage1 = new DigitsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String sprintTopBySpeedPage1 = new SprintTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+    private String normalTopBySpeedPage1 = new NormalTopExporter().topByBestSpeedFirstPageFilePath();
+    private String abraTopBySpeedPage1 = new AbraTopExporter().topByBestSpeedFirstPageFilePath();
+    private String referatsTopBySpeedPage1 = new ReferatsTopExporter().topByBestSpeedFirstPageFilePath();
+    private String noErrorTopBySpeedPage1 = new NoErrorTopExporter().topByBestSpeedFirstPageFilePath();
+    private String marathonTopBySpeedPage1 = new MarathonTopExporter().topByBestSpeedFirstPageFilePath();
+    private String charsTopBySpeedPage1 = new CharsTopExporter().topByBestSpeedFirstPageFilePath();
+    private String digitsTopBySpeedPage1 = new DigitsTopExporter().topByBestSpeedFirstPageFilePath();
+    private String sprintTopBySpeedPage1 = new SprintTopExporter().topByBestSpeedFirstPageFilePath();
+
+    private String normalTopHeader = new NormalTopExporter().headerName();
+    private String abraTopHeader = new AbraTopExporter().headerName();
+    private String referatsTopHeader = new ReferatsTopExporter().headerName();
+    private String noErrorTopHeader = new NoErrorTopExporter().headerName();
+    private String marathonTopHeader = new MarathonTopExporter().headerName();
+    private String charsTopHeader = new CharsTopExporter().headerName();
+    private String digitsTopHeader = new DigitsTopExporter().headerName();
+    private String sprintTopHeader = new SprintTopExporter().headerName();
 
     // non-standard vocabularies
-    private String normalInEnglishTopBySpeedPage1 = new NormalInEnglishTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String miniMarathonTopBySpeedPage1 = new MiniMarathonTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String shortTextsTopBySpeedPage1 = new ShortTextsTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String frequencyVocabularyTopBySpeedPage1 = new FrequencyVocabularyTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String oneHundredRussianTopBySpeedPage1 = new OneHundredRussianTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String digitsOneHundredTopBySpeedPage1 = new DigitsOneHundredTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String trainingIndexFingersTopBySpeedPage1 = new TrainingIndexFingersTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String ringFingersTopBySpeedPage1 = new RingFingersTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
-    private String pinkiesPlusTopBySpeedPage1 = new PinkiesPlusTopExporter().topByBestSpeedPageFilePath(ExporterUtils.FIRST_PAGE_NUMBER);
+    private NonStandardVocabularyGeneratorContext nonStandardDictionaries;
 
     // css files and images
     private String statsCss = PageUrls.STATS_CSS;
@@ -100,4 +94,15 @@ public class Links {
     private String playersByRankDataJs = PageUrls.PLAYERS_BY_RANK_DATA_JS;
     private String topTableJs = PageUrls.TOP_TABLE_JS;
     private String topByBestSpeedLoginToPageJs = PageUrls.TOP_BY_BEST_SPEED_LOGIN_TO_PAGE_JS;
+
+    private Links() {
+    }
+
+    public static Links create(NonStandardVocabularyGeneratorContext context) {
+        Links links = new Links();
+
+        links.nonStandardDictionaries = context;
+
+        return links;
+    }
 }

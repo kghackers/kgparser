@@ -168,7 +168,7 @@ public class IndexPageExporter implements DataExporter {
             .top1PlayerByCarsCount(top1PlayerByCarsCount)
             .top1PlayerByRatingExperienceInOneMonth(top1PlayerByRatingExperienceInOneMonth)
 
-            .export(indexPageFilePath);
+            .export(context, indexPageFilePath);
     }
 
     private PlayerEntity getFakeTop1PlayerByRatingExperienceInOneMonth() {

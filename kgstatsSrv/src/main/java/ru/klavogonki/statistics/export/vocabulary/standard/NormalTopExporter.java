@@ -1,7 +1,6 @@
 package ru.klavogonki.statistics.export.vocabulary.standard;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import ru.klavogonki.common.StandardDictionary;
@@ -18,12 +17,17 @@ public class NormalTopExporter extends StandardVocabularyTopExporterDefaultImpl 
     }
 
     @Override
+    public String headerName() {
+        return "Обычный";
+    }
+
+    @Override
     public int minRacesCount() {
         return 1000; // todo: maybe increase, 9265 players >= 1000
     }
 
     @Override
-    public Logger logger() {
-        return logger;
+    public String loggerName() {
+        return this.getClass().getSimpleName();
     }
 }

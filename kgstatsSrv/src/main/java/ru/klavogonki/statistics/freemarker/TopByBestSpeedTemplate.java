@@ -2,6 +2,7 @@ package ru.klavogonki.statistics.freemarker;
 
 import lombok.extern.log4j.Log4j2;
 import ru.klavogonki.statistics.dto.PlayerDto;
+import ru.klavogonki.statistics.export.ExportContext;
 
 import java.util.List;
 
@@ -26,9 +27,9 @@ public class TopByBestSpeedTemplate extends FreemarkerTemplate {
     }
 
     @Override
-    public void export(final String filePath) {
+    public void export(ExportContext context, String filePath) {
         // todo: validate keys presence?
-        super.export(filePath);
+        super.export(context, filePath);
 
         logger.debug(
             "Top by best speed: {} players exported to file {}",

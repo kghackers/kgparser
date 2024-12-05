@@ -24,5 +24,4 @@ public abstract class VocabularyTopLoginToPageTemplate extends FreemarkerTemplat
     public String getLoginToPageString() {
         return (String) templateData.get(LOGIN_TO_PAGE_STRING_KEY);
     }
-
 }

@@ -5,6 +5,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
 import lombok.extern.log4j.Log4j2;
+import ru.klavogonki.statistics.export.ExportContext;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,14 +29,14 @@ public abstract class FreemarkerTemplate {
      */
     public abstract String getTemplatePath();
 
-    public void export(String filePath) {
-        templateData.put(LINKS_KEY, new Links());
+    public void export(ExportContext context, String filePath) {
+        templateData.put(LINKS_KEY, context.links);
 
         exportFreemarkerToFile(getTemplatePath(), filePath, templateData);
     }
 
-    public String exportToString() {
-        templateData.put(LINKS_KEY, new Links());
+    public String exportToString(ExportContext context) {
+        templateData.put(LINKS_KEY, context.links);
 
         return exportFreemarkerToString(getTemplatePath(), templateData);
     }
@@ -49,7 +50,7 @@ public abstract class FreemarkerTemplate {
             export(ftlTemplate, templateData, out);
         }
         catch (IOException | TemplateException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); // todo: special dedicated RuntimeException
         }
     }
 
@@ -62,7 +63,7 @@ public abstract class FreemarkerTemplate {
             return out.toString();
         }
         catch (IOException | TemplateException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); // todo: special dedicated RuntimeException
         }
     }
 
@@ -71,6 +72,8 @@ public abstract class FreemarkerTemplate {
 
         configuration.setClassForTemplateLoading(FreemarkerTemplate.class, "/");
         configuration.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
+
+        configuration.setAPIBuiltinEnabled(true); // required to use non-string keys in maps
 
         Template template = configuration.getTemplate(ftlTemplate);
 

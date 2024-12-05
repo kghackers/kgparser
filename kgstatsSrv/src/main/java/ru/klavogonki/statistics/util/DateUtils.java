@@ -20,6 +20,12 @@ public final class DateUtils {
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH-mm-ss";
     public static final String DATE_TIME_FORMAT_FOR_UI = "yyyy-MM-dd HH:mm:ss";
 
+    // todo: use some library with these constants
+    // see https://stackoverflow.com/questions/2442486/time-consts-in-java
+    public static final int SECONDS_IN_MINUTE = 60;
+    public static final int MINUTES_IN_HOUR = 60;
+    public static final int SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR;
+
     private DateUtils() {
     }
 
@@ -79,6 +85,13 @@ public final class DateUtils {
         Objects.requireNonNull(offsetDateTime);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        return offsetDateTime.format(dateTimeFormatter);
+    }
+
+    public static String formatDateTimeForLog(OffsetDateTime offsetDateTime) {
+        Objects.requireNonNull(offsetDateTime);
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_FOR_UI);
         return offsetDateTime.format(dateTimeFormatter);
     }
 

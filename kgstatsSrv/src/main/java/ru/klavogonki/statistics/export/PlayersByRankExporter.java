@@ -48,14 +48,14 @@ public class PlayersByRankExporter implements DataExporter {
         // export data js
         new PlayersByRankDataTemplate()
             .rankToTotalRacesCount(playersDataArrayString)
-            .export(PageUrls.getPlayerByRankDataFilePath(context.webRootDir));
+            .export(context, PageUrls.getPlayerByRankDataFilePath(context.webRootDir));
 
         // export html page
         new PlayersByRankTemplate()
             .totalPlayersCount(totalPlayersCount)
             .minTotalRacesCount(MIN_TOTAL_RACES_COUNT)
             .maxTotalRacesCount(maxTotalRacesCount)
-            .export(PageUrls.getPlayerByRankFilePath(context.webRootDir));
+            .export(context, PageUrls.getPlayerByRankFilePath(context.webRootDir));
     }
 
     public String convertToJs2DArrayString(final List<PlayerRankLevelAndTotalRacesCount> playersData) {

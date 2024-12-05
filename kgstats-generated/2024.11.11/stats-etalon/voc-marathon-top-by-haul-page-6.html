@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Топ по времени в «Марафоне»</title>
+    <link rel="stylesheet" type="text/css" href="./css/stats.css">
+    <link rel="shortcut icon" href="./img/favicon/favicon.ico"/>
+</head>
+<body>
+<header>
+    <table role="presentation"> 
+        <tr>
+            <td class="header-left">
+                <a href="./index.html">На главную</a>
+                | <a href="https://github.com/dmitry-weirdo/kgparser/">Kgparser&nbsp;on&nbsp;GitHub</a>
+                | <a href="https://klavogonki.ru/forum/software/59/">Тема&nbsp;на&nbsp;форуме</a>
+                | By <a href="https://klavogonki.ru/u/#/242585/">nosferatum</a>
+                <div class="header-vertical-space"></div>
+                <a href="./stat-top-by-total-races.html">Топ&nbsp;по&nbsp;общему&nbsp;пробегу</a>
+                | <a href="./stat-top-by-best-speed-page-1.html">Топ по рекорду в &laquo;Обычном&raquo;</a>
+                | <a href="./stat-top-by-best-speed.html">Топ-500&nbsp;в&nbsp;&laquo;Обычном&raquo;</a> 
+                | <a href="./stat-top-by-rating-level.html">Топ&nbsp;по&nbsp;уровню</a>
+                | <a href="./stat-top-by-friends-count.html">Топ&nbsp;по&nbsp;числу&nbsp;друзей</a>
+                | <a href="./stat-top-by-achievements-count.html">Топ&nbsp;по&nbsp;числу&nbsp;достижений</a>
+                <div class="header-vertical-space"></div>
+                <a href="./stat-top-by-vocabularies-count.html">Топ&nbsp;по&nbsp;числу&nbsp;используемых&nbsp;словарей</a>
+                | <a href="./stat-top-by-cars-count.html">Топ&nbsp;по&nbsp;числу&nbsp;машин&nbsp;в&nbsp;гараже</a>
+                | <a href="./stat-players-by-rank.html">Игроки&nbsp;по&nbsp;рангам</a>
+                <div class="header-vertical-space"></div>
+                <a href="././voc-normal-top-by-best-speed-page-1.html" class="normal">Обычный</a>
+                | <a href="././voc-abra-top-by-best-speed-page-1.html" class="abra">Абракадабра</a>
+                | <a href="././voc-referats-top-by-best-speed-page-1.html" class="referats">Яндекс.Рефераты</a>
+                | <a href="././voc-noerror-top-by-best-speed-page-1.html" class="noerror">Безошибочный</a>
+                | <a href="././voc-marathon-top-by-best-speed-page-1.html" class="marathon">Марафон</a>
+                | <a href="././voc-chars-top-by-best-speed-page-1.html" class="chars">Буквы</a>
+                | <a href="././voc-digits-top-by-best-speed-page-1.html" class="digits">Цифры</a>
+                | <a href="././voc-sprint-top-by-best-speed-page-1.html" class="sprint">Спринт</a>
+                <div class="header-vertical-space"></div>
+                <a href="././voc-5539-top-by-best-speed-page-1.html">Обычный&nbsp;in&nbsp;English</a>
+                | <a href="././voc-6018-top-by-best-speed-page-1.html">Мини-марафон,&nbsp;800&nbsp;знаков</a>
+                | <a href="././voc-1789-top-by-best-speed-page-1.html">Короткие&nbsp;тексты</a>
+                | <a href="././voc-192-top-by-best-speed-page-1.html">Частотный&nbsp;словарь</a>
+                | <a href="././voc-25856-top-by-best-speed-page-1.html">Соточка</a>
+                | <a href="././voc-62238-top-by-best-speed-page-1.html">Цифросоточка</a>
+                | <a href="././voc-226-top-by-best-speed-page-1.html">Тренируем&nbsp;указательные</a>
+                | <a href="././voc-8223-top-by-best-speed-page-1.html">Безымянные</a>
+                | <a href="././voc-3714-top-by-best-speed-page-1.html">Мизинцы+</a>
+                <div class="header-vertical-space"></div>
+                <a href="./2020-12-09/stats.html">Статистика&nbsp;от&nbsp;09.12.2020</a>
+            </td>
+            <td class="header-right" style="width: 300px;">
+                <form method="POST" action="https://yoomoney.ru/quickpay/confirm.xml" style="padding: 5px 0 0 0; width: 350px;">
+                    <img src="./img/iomoney_logo_white.png" width="100" height="22" alt="ЮMoney"/>
+                    <div class="header-vertical-space"></div>
+                    <input type="hidden" name="receiver" value="4100116361083369">
+                    <input type="hidden" name="formcomment" value="Добровольный донат за Клавостатистику (1)">
+                    <input type="hidden" name="short-dest" value="Добровольный донат за Клавостатистику (2)">
+                    <input type="hidden" name="label" value="$order_id">
+                    <input type="hidden" name="quickpay-form" value="donate">
+                    <input type="hidden" name="targets" value="Донат хорошим людям за Клавостат!">
+                    <input type="text" name="sum" value="200" data-type="number" required pattern="[0-9]+">&nbsp;руб.
+                    <div class="header-vertical-space"></div>
+                    <input type="text" name="comment" style="width: 220px;" value="Донат за Клавостат :)" maxlength="200">
+                    <input type="hidden" name="need-fio" value="false">
+                    <input type="hidden" name="need-email" value="false">
+                    <input type="hidden" name="need-phone" value="false">
+                    <input type="hidden" name="need-address" value="false">
+                    <div class="header-vertical-space"></div>
+                    <label><input type="radio" name="paymentType" value="PC">ЮMoney</label>
+                    <label><input type="radio" name="paymentType" value="AC" checked>Картой</label>
+                    <input type="submit" value="Перевести">
+                </form>
+            </td>
+            <td class="header-right" style="width: 100px;">
+                <form action="https://www.paypal.com/donate" method="post" target="_top">
+                    <input type="hidden" name="hosted_button_id" value="WZ2BM3QJYGQTW"/>
+                    <input type="image" src="./img/paypal-logo-small.webp" border="0"
+                           name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button"/>
+                    <img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1"/>
+                </form>
+                <div class="header-vertical-space"></div>
+                <div class="header-vertical-space"></div>
+                Или на карту Тинькофф&nbsp;&mdash; 5536&nbsp;9139&nbsp;2010&nbsp;2668
+            <td>
+        </tr>
+    </table>
+</header>
+<main>
+    <div class="section">
+        <a href="./voc-marathon-top-by-best-speed-page-1.html">Топ по лучшей скорости</a>&nbsp;&nbsp;&nbsp;
+        <a href="./voc-marathon-top-by-races-count-page-1.html">Топ по пробегу</a>&nbsp;&nbsp;&nbsp;
+        <a href="./voc-marathon-top-by-haul-page-1.html">Топ по времени</a>&nbsp;&nbsp;&nbsp;
+    </div>
+    <div class="section">
+        <h2>
+            Топ по времени в «Марафоне»
+            <a class="excel" href="./xlsx/voc-marathon-top-by-haul.xlsx"><img src="./img/excel.png" class="excel" alt="Скачать Excel" title="Скачать Excel"/>Скачать Excel (все на одной странице)</a>
+        </h2>
+        Учтены игроки с минимальным пробегом 100 в «Марафоне»
+    </div>
+
+    <div>
+        <label for="player-search-input">Найти игрока по логину (полный логин):</label>&nbsp;
+        <input id="player-search-input" autofocus/>
+        <button id="search-button" class="search-button">Искать</button>
+    </div>
+    <div class="paging" id="paging-top"></div>
+
+    <div class="section" id="table-container">
+
+        <table class="data" aria-label="Топ по времени в «Марафоне»">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Логин</th>
+                <th scope="col">Общее время</th> 
+                <th scope="col">Рекорд</th> 
+                <th scope="col">Пробег</th> 
+                <th scope="col">Средняя</th>
+                <th scope="col">Ошибки, %</th>
+                <th scope="col">Квала</th>
+                <th scope="col">Обновлено</th>             </tr>
+
+
+                <tr>
+                    <td class="right">501</td>
+                    <td class="cabman">
+                        <span class="login">evgenius8888</span>
+                        <a href="https://klavogonki.ru/u/#/529446/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 46 мин. 23 сек.</td>
+                    <td class="right">260</td> 
+                    <td class="right">442</td>
+
+
+                    <td class="right">225,10</td> 
+                    <td class="right">5,84</td> 
+                    <td class="right">0</td>
+                    <td class="right">2023-10-21 04:08:15</td>
+                </tr>
+                <tr>
+                    <td class="right">502</td>
+                    <td class="racer">
+                        <span class="login">genie_1855</span>
+                        <a href="https://klavogonki.ru/u/#/398227/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 45 мин. 8 сек.</td>
+                    <td class="right">406</td> 
+                    <td class="right">442</td>
+
+
+                    <td class="right">310,23</td> 
+                    <td class="right">0,61</td> 
+                    <td class="right">0</td>
+                    <td class="right">2019-10-17 21:04:42</td>
+                </tr>
+                <tr>
+                    <td class="right">503</td>
+                    <td class="superman">
+                        <span class="login">_Gia_</span>
+                        <a href="https://klavogonki.ru/u/#/148350/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 38 мин. 55 сек.</td>
+                    <td class="right">475</td> 
+                    <td class="right">442</td>
+
+
+                    <td class="right">413,24</td> 
+                    <td class="right">1,42</td> 
+                    <td class="right">0</td>
+                    <td class="right">2017-04-08 15:30:17</td>
+                </tr>
+                <tr>
+                    <td class="right">504</td>
+                    <td class="cyberracer">
+                        <span class="login">Игрок3</span>
+                        <a href="https://klavogonki.ru/u/#/496833/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 35 мин. 44 сек.</td>
+                    <td class="right">531</td> 
+                    <td class="right">440</td>
+
+
+                    <td class="right">458,27</td> 
+                    <td class="right">2,48</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-11-09 20:45:55</td>
+                </tr>
+                <tr>
+                    <td class="right">505</td>
+                    <td class="maniac">
+                        <span class="login">Zarazara</span>
+                        <a href="https://klavogonki.ru/u/#/157143/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 28 мин. 32 сек.</td>
+                    <td class="right">441</td> 
+                    <td class="right">439</td>
+
+
+                    <td class="right">384,63</td> 
+                    <td class="right">1,02</td> 
+                    <td class="right">0</td>
+                    <td class="right">2015-06-29 21:08:04</td>
+                </tr>
+                <tr>
+                    <td class="right">506</td>
+                    <td class="racer">
+                        <span class="login">Vanches</span>
+                        <a href="https://klavogonki.ru/u/#/163137/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 26 мин. 40 сек.</td>
+                    <td class="right">405</td> 
+                    <td class="right">438</td>
+
+
+                    <td class="right">340,70</td> 
+                    <td class="right">1,36</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-02-01 21:09:26</td>
+                </tr>
+                <tr>
+                    <td class="right">507</td>
+                    <td class="extracyber">
+                        <span class="login">Korner</span>
+                        <a href="https://klavogonki.ru/u/#/20106/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 20 мин. 26 сек.</td>
+                    <td class="right">626</td> 
+                    <td class="right">442</td>
+
+
+                    <td class="right">550,86</td> 
+                    <td class="right">2,44</td> 
+                    <td class="right">0</td>
+                    <td class="right">2013-11-06 22:46:14</td>
+                </tr>
+                <tr>
+                    <td class="right">508</td>
+                    <td class="maniac">
+                        <span class="login">Катушка</span>
+                        <a href="https://klavogonki.ru/u/#/482392/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 19 мин. 29 сек.</td>
+                    <td class="right">441</td> 
+                    <td class="right">437</td>
+
+
+                    <td class="right">388,61</td> 
+                    <td class="right">2,18</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-07-04 15:57:09</td>
+                </tr>
+                <tr>
+                    <td class="right">509</td>
+                    <td class="maniac">
+                        <span class="login">Avensis</span>
+                        <a href="https://klavogonki.ru/u/#/170010/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 16 мин. 36 сек.</td>
+                    <td class="right">443</td> 
+                    <td class="right">436</td>
+
+
+                    <td class="right">387,06</td> 
+                    <td class="right">1,83</td> 
+                    <td class="right">0</td>
+                    <td class="right">2021-02-13 14:52:49</td>
+                </tr>
+                <tr>
+                    <td class="right">510</td>
+                    <td class="pro">
+                        <span class="login">andyudol</span>
+                        <a href="https://klavogonki.ru/u/#/300487/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 13 мин. 25 сек.</td>
+                    <td class="right">241</td> 
+                    <td class="right">428</td>
+
+
+                    <td class="right">158,42</td> 
+                    <td class="right">3,64</td> 
+                    <td class="right">0</td>
+                    <td class="right">2017-02-13 10:08:28</td>
+                </tr>
+                <tr>
+                    <td class="right">511</td>
+                    <td class="maniac">
+                        <span class="login">Natalochka</span>
+                        <a href="https://klavogonki.ru/u/#/281425/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 11 мин. 13 сек.</td>
+                    <td class="right">451</td> 
+                    <td class="right">435</td>
+
+
+                    <td class="right">381,90</td> 
+                    <td class="right">0,63</td> 
+                    <td class="right">0</td>
+                    <td class="right">2018-08-10 19:07:04</td>
+                </tr>
+                <tr>
+                    <td class="right">512</td>
+                    <td class="racer">
+                        <span class="login">AVIKOZA</span>
+                        <a href="https://klavogonki.ru/u/#/382720/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 10 мин. 35 сек.</td>
+                    <td class="right">323</td> 
+                    <td class="right">435</td>
+
+
+                    <td class="right">277,76</td> 
+                    <td class="right">1,37</td> 
+                    <td class="right">0</td>
+                    <td class="right">2015-01-31 01:04:23</td>
+                </tr>
+                <tr>
+                    <td class="right">513</td>
+                    <td class="cabman">
+                        <span class="login">Дмитрий2</span>
+                        <a href="https://klavogonki.ru/u/#/283427/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">36 ч. 1 мин. 43 сек.</td>
+                    <td class="right">242</td> 
+                    <td class="right">433</td>
+
+
+                    <td class="right">195,51</td> 
+                    <td class="right">1,44</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-08-20 19:38:08</td>
+                </tr>
+                <tr>
+                    <td class="right">514</td>
+                    <td class="cabman">
+                        <span class="login">SereDim</span>
+                        <a href="https://klavogonki.ru/u/#/561791/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 57 мин. 21 сек.</td>
+                    <td class="right">285</td> 
+                    <td class="right">432</td>
+
+
+                    <td class="right">236,86</td> 
+                    <td class="right">5,93</td> 
+                    <td class="right">0</td>
+                    <td class="right">2020-02-05 00:30:11</td>
+                </tr>
+                <tr>
+                    <td class="right">515</td>
+                    <td class="racer">
+                        <span class="login">vovetRU</span>
+                        <a href="https://klavogonki.ru/u/#/380954/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 54 мин. 32 сек.</td>
+                    <td class="right">352</td> 
+                    <td class="right">431</td>
+
+
+                    <td class="right">310,43</td> 
+                    <td class="right">2,33</td> 
+                    <td class="right">0</td>
+                    <td class="right">2020-01-30 12:07:09</td>
+                </tr>
+                <tr>
+                    <td class="right">516</td>
+                    <td class="superman">
+                        <span class="login">SEFER</span>
+                        <a href="https://klavogonki.ru/u/#/307939/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 53 мин. 4 сек.</td>
+                    <td class="right">462</td> 
+                    <td class="right">429</td>
+
+
+                    <td class="right">414,60</td> 
+                    <td class="right">1,85</td> 
+                    <td class="right">0</td>
+                    <td class="right">2022-10-04 10:28:58</td>
+                </tr>
+                <tr>
+                    <td class="right">517</td>
+                    <td class="maniac">
+                        <span class="login">Днище_грЕбаное</span>
+                        <a href="https://klavogonki.ru/u/#/218700/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 48 мин. 46 сек.</td>
+                    <td class="right">421</td> 
+                    <td class="right">430</td>
+
+
+                    <td class="right">392,35</td> 
+                    <td class="right">1,82</td> 
+                    <td class="right">0</td>
+                    <td class="right">2013-09-14 21:59:10</td>
+                </tr>
+                <tr>
+                    <td class="right">518</td>
+                    <td class="cabman">
+                        <span class="login">feniks</span>
+                        <a href="https://klavogonki.ru/u/#/24093/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 48 мин. 38 сек.</td>
+                    <td class="right">231</td> 
+                    <td class="right">431</td>
+
+
+                    <td class="right">188,57</td> 
+                    <td class="right">2,14</td> 
+                    <td class="right">0</td>
+                    <td class="right">2016-05-03 22:03:54</td>
+                </tr>
+                <tr>
+                    <td class="right">519</td>
+                    <td class="maniac">
+                        <span class="login">Связист</span>
+                        <a href="https://klavogonki.ru/u/#/233161/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 45 мин. 45 сек.</td>
+                    <td class="right">438</td> 
+                    <td class="right">430</td>
+
+
+                    <td class="right">361,39</td> 
+                    <td class="right">1,31</td> 
+                    <td class="right">0</td>
+                    <td class="right">2012-12-29 14:32:58</td>
+                </tr>
+                <tr>
+                    <td class="right">520</td>
+                    <td class="superman">
+                        <span class="login">fabulaspb</span>
+                        <a href="https://klavogonki.ru/u/#/169595/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 40 мин. 34 сек.</td>
+                    <td class="right">514</td> 
+                    <td class="right">429</td>
+
+
+                    <td class="right">456,26</td> 
+                    <td class="right">1,82</td> 
+                    <td class="right">0</td>
+                    <td class="right">2017-12-09 14:37:45</td>
+                </tr>
+                <tr>
+                    <td class="right">521</td>
+                    <td class="maniac">
+                        <span class="login">Filona</span>
+                        <a href="https://klavogonki.ru/u/#/33270/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 39 мин. 27 сек.</td>
+                    <td class="right">499</td> 
+                    <td class="right">429</td>
+
+
+                    <td class="right">432,87</td> 
+                    <td class="right">1,88</td> 
+                    <td class="right">0</td>
+                    <td class="right">2020-03-15 14:29:45</td>
+                </tr>
+                <tr>
+                    <td class="right">522</td>
+                    <td class="maniac">
+                        <span class="login">korzhik-by</span>
+                        <a href="https://klavogonki.ru/u/#/303353/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 38 мин. 8 сек.</td>
+                    <td class="right">487</td> 
+                    <td class="right">428</td>
+
+
+                    <td class="right">421,83</td> 
+                    <td class="right">1,88</td> 
+                    <td class="right">0</td>
+                    <td class="right">2019-06-14 18:38:48</td>
+                </tr>
+                <tr>
+                    <td class="right">523</td>
+                    <td class="superman">
+                        <span class="login">Уклюжий</span>
+                        <a href="https://klavogonki.ru/u/#/218023/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 32 мин. 27 сек.</td>
+                    <td class="right">460</td> 
+                    <td class="right">428</td>
+
+
+                    <td class="right">395,72</td> 
+                    <td class="right">1,82</td> 
+                    <td class="right">0</td>
+                    <td class="right">2014-07-11 02:11:03</td>
+                </tr>
+                <tr>
+                    <td class="right">524</td>
+                    <td class="maniac">
+                        <span class="login">Атата</span>
+                        <a href="https://klavogonki.ru/u/#/319942/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 32 мин. 7 сек.</td>
+                    <td class="right">431</td> 
+                    <td class="right">427</td>
+
+
+                    <td class="right">345,82</td> 
+                    <td class="right">2,18</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-07-04 21:56:26</td>
+                </tr>
+                <tr>
+                    <td class="right">525</td>
+                    <td class="racer">
+                        <span class="login">трамвайчик</span>
+                        <a href="https://klavogonki.ru/u/#/378019/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 29 мин. 39 сек.</td>
+                    <td class="right">345</td> 
+                    <td class="right">427</td>
+
+
+                    <td class="right">302,10</td> 
+                    <td class="right">0,78</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-09-10 16:10:15</td>
+                </tr>
+                <tr>
+                    <td class="right">526</td>
+                    <td class="maniac">
+                        <span class="login">большой_плавец</span>
+                        <a href="https://klavogonki.ru/u/#/709487/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 29 мин. 3 сек.</td>
+                    <td class="right">467</td> 
+                    <td class="right">426</td>
+
+
+                    <td class="right">411,01</td> 
+                    <td class="right">1,61</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-11-09 00:14:10</td>
+                </tr>
+                <tr>
+                    <td class="right">527</td>
+                    <td class="pro">
+                        <span class="login">impress_che</span>
+                        <a href="https://klavogonki.ru/u/#/94955/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 14 мин. 7 сек.</td>
+                    <td class="right">282</td> 
+                    <td class="right">431</td>
+
+
+                    <td class="right">240,32</td> 
+                    <td class="right">3,31</td> 
+                    <td class="right">0</td>
+                    <td class="right">2010-06-11 20:52:28</td>
+                </tr>
+                <tr>
+                    <td class="right">528</td>
+                    <td class="maniac">
+                        <span class="login">Ai_bek</span>
+                        <a href="https://klavogonki.ru/u/#/221306/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 8 мин. 16 сек.</td>
+                    <td class="right">461</td> 
+                    <td class="right">424</td>
+
+
+                    <td class="right">373,49</td> 
+                    <td class="right">1,52</td> 
+                    <td class="right">0</td>
+                    <td class="right">2020-03-04 15:29:03</td>
+                </tr>
+                <tr>
+                    <td class="right">529</td>
+                    <td class="racer">
+                        <span class="login">kageneko</span>
+                        <a href="https://klavogonki.ru/u/#/136483/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 8 мин. 0 сек.</td>
+                    <td class="right">375</td> 
+                    <td class="right">423</td>
+
+
+                    <td class="right">309,15</td> 
+                    <td class="right">1,62</td> 
+                    <td class="right">0</td>
+                    <td class="right">2022-06-22 23:28:25</td>
+                </tr>
+                <tr>
+                    <td class="right">530</td>
+                    <td class="maniac">
+                        <span class="login">VanDyk</span>
+                        <a href="https://klavogonki.ru/u/#/113322/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 5 мин. 35 сек.</td>
+                    <td class="right">457</td> 
+                    <td class="right">423</td>
+
+
+                    <td class="right">412,49</td> 
+                    <td class="right">1,01</td> 
+                    <td class="right">0</td>
+                    <td class="right">2013-12-14 21:58:14</td>
+                </tr>
+                <tr>
+                    <td class="right">531</td>
+                    <td class="maniac">
+                        <span class="login">Клавишник</span>
+                        <a href="https://klavogonki.ru/u/#/31373/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">35 ч. 2 мин. 50 сек.</td>
+                    <td class="right">422</td> 
+                    <td class="right">421</td>
+
+
+                    <td class="right">355,73</td> 
+                    <td class="right">2,31</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-10-29 22:55:05</td>
+                </tr>
+                <tr>
+                    <td class="right">532</td>
+                    <td class="pro">
+                        <span class="login">AlexVN</span>
+                        <a href="https://klavogonki.ru/u/#/115326/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 59 мин. 32 сек.</td>
+                    <td class="right">250</td> 
+                    <td class="right">421</td>
+
+
+                    <td class="right">222,11</td> 
+                    <td class="right">2,10</td> 
+                    <td class="right">0</td>
+                    <td class="right">2018-04-25 00:34:11</td>
+                </tr>
+                <tr>
+                    <td class="right">533</td>
+                    <td class="superman">
+                        <span class="login">strengthofgod</span>
+                        <a href="https://klavogonki.ru/u/#/552461/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 56 мин. 53 сек.</td>
+                    <td class="right">592</td> 
+                    <td class="right">422</td>
+
+
+                    <td class="right">407,95</td> 
+                    <td class="right">1,97</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-07-21 23:00:31</td>
+                </tr>
+                <tr>
+                    <td class="right">534</td>
+                    <td class="racer">
+                        <span class="login">Книгоход</span>
+                        <a href="https://klavogonki.ru/u/#/303357/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 53 мин. 51 сек.</td>
+                    <td class="right">549</td> 
+                    <td class="right">419</td>
+
+
+                    <td class="right">491,06</td> 
+                    <td class="right">1,98</td> 
+                    <td class="right">0</td>
+                    <td class="right">2019-02-03 09:43:30</td>
+                </tr>
+                <tr>
+                    <td class="right">535</td>
+                    <td class="maniac">
+                        <span class="login">Ллисса</span>
+                        <a href="https://klavogonki.ru/u/#/380525/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 47 мин. 52 сек.</td>
+                    <td class="right">465</td> 
+                    <td class="right">418</td>
+
+
+                    <td class="right">385,15</td> 
+                    <td class="right">2,48</td> 
+                    <td class="right">0</td>
+                    <td class="right">2023-06-11 22:42:36</td>
+                </tr>
+                <tr>
+                    <td class="right">536</td>
+                    <td class="amateur">
+                        <span class="login">vova555</span>
+                        <a href="https://klavogonki.ru/u/#/409054/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 46 мин. 45 сек.</td>
+                    <td class="right">159</td> 
+                    <td class="right">418</td>
+
+
+                    <td class="right">125,03</td> 
+                    <td class="right">3,11</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-09-11 17:05:49</td>
+                </tr>
+                <tr>
+                    <td class="right">537</td>
+                    <td class="pro">
+                        <span class="login">yurgen55</span>
+                        <a href="https://klavogonki.ru/u/#/541739/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 46 мин. 1 сек.</td>
+                    <td class="right">295</td> 
+                    <td class="right">418</td>
+
+
+                    <td class="right">259,35</td> 
+                    <td class="right">2,89</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-06-29 11:51:05</td>
+                </tr>
+                <tr>
+                    <td class="right">538</td>
+                    <td class="superman">
+                        <span class="login">DVRazor</span>
+                        <a href="https://klavogonki.ru/u/#/77581/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 44 мин. 52 сек.</td>
+                    <td class="right">508</td> 
+                    <td class="right">418</td>
+
+
+                    <td class="right">447,42</td> 
+                    <td class="right">2,24</td> 
+                    <td class="right">0</td>
+                    <td class="right">2011-09-10 15:54:02</td>
+                </tr>
+                <tr>
+                    <td class="right">539</td>
+                    <td class="extracyber">
+                        <span class="login">Convicted</span>
+                        <a href="https://klavogonki.ru/u/#/258247/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 42 мин. 31 сек.</td>
+                    <td class="right">623</td> 
+                    <td class="right">417</td>
+
+
+                    <td class="right">507,91</td> 
+                    <td class="right">2,80</td> 
+                    <td class="right">0</td>
+                    <td class="right">2017-05-03 18:17:03</td>
+                </tr>
+                <tr>
+                    <td class="right">540</td>
+                    <td class="maniac">
+                        <span class="login">babasik</span>
+                        <a href="https://klavogonki.ru/u/#/101021/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 34 мин. 54 сек.</td>
+                    <td class="right">364</td> 
+                    <td class="right">416</td>
+
+
+                    <td class="right">307,76</td> 
+                    <td class="right">2,40</td> 
+                    <td class="right">0</td>
+                    <td class="right">2016-10-01 18:18:19</td>
+                </tr>
+                <tr>
+                    <td class="right">541</td>
+                    <td class="extracyber">
+                        <span class="login">Galoperidol</span>
+                        <a href="https://klavogonki.ru/u/#/276990/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 27 мин. 22 сек.</td>
+                    <td class="right">697</td> 
+                    <td class="right">414</td>
+
+
+                    <td class="right">630,51</td> 
+                    <td class="right">1,49</td> 
+                    <td class="right">0</td>
+                    <td class="right">2017-02-28 11:57:52</td>
+                </tr>
+                <tr>
+                    <td class="right">542</td>
+                    <td class="superman">
+                        <span class="login">Слепой</span>
+                        <a href="https://klavogonki.ru/u/#/9136/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 11 мин. 55 сек.</td>
+                    <td class="right">500</td> 
+                    <td class="right">412</td>
+
+
+                    <td class="right">453,79</td> 
+                    <td class="right">1,54</td> 
+                    <td class="right">0</td>
+                    <td class="right">2019-02-09 22:58:08</td>
+                </tr>
+                <tr>
+                    <td class="right">543</td>
+                    <td class="superman">
+                        <span class="login">ИльдарВолжский</span>
+                        <a href="https://klavogonki.ru/u/#/298167/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 9 мин. 6 сек.</td>
+                    <td class="right">514</td> 
+                    <td class="right">410</td>
+
+
+                    <td class="right">462,59</td> 
+                    <td class="right">1,53</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-10-16 19:44:03</td>
+                </tr>
+                <tr>
+                    <td class="right">544</td>
+                    <td class="cabman">
+                        <span class="login">Кузькина</span>
+                        <a href="https://klavogonki.ru/u/#/462367/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 8 мин. 27 сек.</td>
+                    <td class="right">278</td> 
+                    <td class="right">408</td>
+
+
+                    <td class="right">224,37</td> 
+                    <td class="right">1,52</td> 
+                    <td class="right">0</td>
+                    <td class="right">2020-09-21 15:01:03</td>
+                </tr>
+                <tr>
+                    <td class="right">545</td>
+                    <td class="racer">
+                        <span class="login">diskorkl</span>
+                        <a href="https://klavogonki.ru/u/#/373232/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 7 мин. 21 сек.</td>
+                    <td class="right">355</td> 
+                    <td class="right">410</td>
+
+
+                    <td class="right">313,95</td> 
+                    <td class="right">4,66</td> 
+                    <td class="right">0</td>
+                    <td class="right">2023-02-07 15:46:02</td>
+                </tr>
+                <tr>
+                    <td class="right">546</td>
+                    <td class="racer">
+                        <span class="login">пава</span>
+                        <a href="https://klavogonki.ru/u/#/160228/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 6 мин. 35 сек.</td>
+                    <td class="right">409</td> 
+                    <td class="right">410</td>
+
+
+                    <td class="right">339,55</td> 
+                    <td class="right">2,16</td> 
+                    <td class="right">0</td>
+                    <td class="right">2019-11-03 14:29:55</td>
+                </tr>
+                <tr>
+                    <td class="right">547</td>
+                    <td class="pro">
+                        <span class="login">Пофантазируем7</span>
+                        <a href="https://klavogonki.ru/u/#/583274/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 6 мин. 15 сек.</td>
+                    <td class="right">347</td> 
+                    <td class="right">410</td>
+
+
+                    <td class="right">296,19</td> 
+                    <td class="right">1,06</td> 
+                    <td class="right">0</td>
+                    <td class="right">2022-02-17 09:28:59</td>
+                </tr>
+                <tr>
+                    <td class="right">548</td>
+                    <td class="racer">
+                        <span class="login">Leh</span>
+                        <a href="https://klavogonki.ru/u/#/186659/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 5 мин. 2 сек.</td>
+                    <td class="right">385</td> 
+                    <td class="right">410</td>
+
+
+                    <td class="right">332,84</td> 
+                    <td class="right">2,05</td> 
+                    <td class="right">0</td>
+                    <td class="right">2014-10-21 22:50:13</td>
+                </tr>
+                <tr>
+                    <td class="right">549</td>
+                    <td class="pro">
+                        <span class="login">Sandi</span>
+                        <a href="https://klavogonki.ru/u/#/298228/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 3 мин. 18 сек.</td>
+                    <td class="right">342</td> 
+                    <td class="right">409</td>
+
+
+                    <td class="right">305,28</td> 
+                    <td class="right">0,79</td> 
+                    <td class="right">0</td>
+                    <td class="right">2014-12-07 14:57:36</td>
+                </tr>
+                <tr>
+                    <td class="right">550</td>
+                    <td class="pro">
+                        <span class="login">1olegan</span>
+                        <a href="https://klavogonki.ru/u/#/303652/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">34 ч. 0 мин. 50 сек.</td>
+                    <td class="right">274</td> 
+                    <td class="right">409</td>
+
+
+                    <td class="right">221,94</td> 
+                    <td class="right">2,46</td> 
+                    <td class="right">0</td>
+                    <td class="right">2013-12-07 15:00:48</td>
+                </tr>
+                <tr>
+                    <td class="right">551</td>
+                    <td class="superman">
+                        <span class="login">Кадий</span>
+                        <a href="https://klavogonki.ru/u/#/376443/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 59 мин. 12 сек.</td>
+                    <td class="right">510</td> 
+                    <td class="right">408</td>
+
+
+                    <td class="right">470,81</td> 
+                    <td class="right">1,16</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-10-31 15:10:17</td>
+                </tr>
+                <tr>
+                    <td class="right">552</td>
+                    <td class="maniac">
+                        <span class="login">novkostya</span>
+                        <a href="https://klavogonki.ru/u/#/57333/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 57 мин. 52 сек.</td>
+                    <td class="right">449</td> 
+                    <td class="right">409</td>
+
+
+                    <td class="right">386,53</td> 
+                    <td class="right">2,80</td> 
+                    <td class="right">0</td>
+                    <td class="right">2014-10-30 00:52:08</td>
+                </tr>
+                <tr>
+                    <td class="right">553</td>
+                    <td class="racer">
+                        <span class="login">feinstein</span>
+                        <a href="https://klavogonki.ru/u/#/108569/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 57 мин. 41 сек.</td>
+                    <td class="right">394</td> 
+                    <td class="right">408</td>
+
+
+                    <td class="right">355,29</td> 
+                    <td class="right">2,38</td> 
+                    <td class="right">0</td>
+                    <td class="right">2013-08-19 15:00:55</td>
+                </tr>
+                <tr>
+                    <td class="right">554</td>
+                    <td class="superman">
+                        <span class="login">Victor_storm</span>
+                        <a href="https://klavogonki.ru/u/#/573536/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 54 мин. 31 сек.</td>
+                    <td class="right">485</td> 
+                    <td class="right">407</td>
+
+
+                    <td class="right">446,52</td> 
+                    <td class="right">1,10</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-07-05 10:39:10</td>
+                </tr>
+                <tr>
+                    <td class="right">555</td>
+                    <td class="cyberracer">
+                        <span class="login">darkneon</span>
+                        <a href="https://klavogonki.ru/u/#/607241/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 54 мин. 4 сек.</td>
+                    <td class="right">591</td> 
+                    <td class="right">407</td>
+
+
+                    <td class="right">523,05</td> 
+                    <td class="right">1,81</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-11-09 20:45:55</td>
+                </tr>
+                <tr>
+                    <td class="right">556</td>
+                    <td class="maniac">
+                        <span class="login">Slavik89</span>
+                        <a href="https://klavogonki.ru/u/#/376373/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 54 мин. 3 сек.</td>
+                    <td class="right">420</td> 
+                    <td class="right">408</td>
+
+
+                    <td class="right">376,38</td> 
+                    <td class="right">2,28</td> 
+                    <td class="right">0</td>
+                    <td class="right">2023-04-10 16:19:06</td>
+                </tr>
+                <tr>
+                    <td class="right">557</td>
+                    <td class="racer">
+                        <span class="login">Azrae11e</span>
+                        <a href="https://klavogonki.ru/u/#/484267/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 47 мин. 8 сек.</td>
+                    <td class="right">367</td> 
+                    <td class="right">406</td>
+
+
+                    <td class="right">330,49</td> 
+                    <td class="right">2,51</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-05-09 10:19:10</td>
+                </tr>
+                <tr>
+                    <td class="right">558</td>
+                    <td class="pro">
+                        <span class="login">Everything</span>
+                        <a href="https://klavogonki.ru/u/#/225177/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 45 мин. 56 сек.</td>
+                    <td class="right">306</td> 
+                    <td class="right">406</td>
+
+
+                    <td class="right">253,70</td> 
+                    <td class="right">4,86</td> 
+                    <td class="right">0</td>
+                    <td class="right">2016-07-03 17:46:42</td>
+                </tr>
+                <tr>
+                    <td class="right">559</td>
+                    <td class="superman">
+                        <span class="login">Ацкое_манго</span>
+                        <a href="https://klavogonki.ru/u/#/94138/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 42 мин. 54 сек.</td>
+                    <td class="right">519</td> 
+                    <td class="right">406</td>
+
+
+                    <td class="right">395,36</td> 
+                    <td class="right">1,47</td> 
+                    <td class="right">0</td>
+                    <td class="right">2020-07-15 16:10:08</td>
+                </tr>
+                <tr>
+                    <td class="right">560</td>
+                    <td class="maniac">
+                        <span class="login">Locust</span>
+                        <a href="https://klavogonki.ru/u/#/319389/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 38 мин. 24 сек.</td>
+                    <td class="right">439</td> 
+                    <td class="right">404</td>
+
+
+                    <td class="right">375,74</td> 
+                    <td class="right">2,33</td> 
+                    <td class="right">0</td>
+                    <td class="right">2017-08-27 17:59:33</td>
+                </tr>
+                <tr>
+                    <td class="right">561</td>
+                    <td class="maniac">
+                        <span class="login">VisaryMaster</span>
+                        <a href="https://klavogonki.ru/u/#/236928/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 35 мин. 57 сек.</td>
+                    <td class="right">404</td> 
+                    <td class="right">404</td>
+
+
+                    <td class="right">350,69</td> 
+                    <td class="right">1,97</td> 
+                    <td class="right">0</td>
+                    <td class="right">2016-02-14 14:30:13</td>
+                </tr>
+                <tr>
+                    <td class="right">562</td>
+                    <td class="cyberracer">
+                        <span class="login">Кинолог</span>
+                        <a href="https://klavogonki.ru/u/#/271237/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 33 мин. 11 сек.</td>
+                    <td class="right">507</td> 
+                    <td class="right">403</td>
+
+
+                    <td class="right">415,45</td> 
+                    <td class="right">1,98</td> 
+                    <td class="right">0</td>
+                    <td class="right">2013-12-29 14:40:52</td>
+                </tr>
+                <tr>
+                    <td class="right">563</td>
+                    <td class="racer">
+                        <span class="login">inine</span>
+                        <a href="https://klavogonki.ru/u/#/204864/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 32 мин. 45 сек.</td>
+                    <td class="right">356</td> 
+                    <td class="right">403</td>
+
+
+                    <td class="right">314,44</td> 
+                    <td class="right">1,46</td> 
+                    <td class="right">0</td>
+                    <td class="right">2022-01-25 21:10:04</td>
+                </tr>
+                <tr>
+                    <td class="right">564</td>
+                    <td class="maniac">
+                        <span class="login">yulian</span>
+                        <a href="https://klavogonki.ru/u/#/167708/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 31 мин. 21 сек.</td>
+                    <td class="right">456</td> 
+                    <td class="right">403</td>
+
+
+                    <td class="right">366,47</td> 
+                    <td class="right">3,05</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-10-20 12:46:38</td>
+                </tr>
+                <tr>
+                    <td class="right">565</td>
+                    <td class="superman">
+                        <span class="login">Дед-Пихто</span>
+                        <a href="https://klavogonki.ru/u/#/207058/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 27 мин. 17 сек.</td>
+                    <td class="right">507</td> 
+                    <td class="right">402</td>
+
+
+                    <td class="right">409,36</td> 
+                    <td class="right">1,93</td> 
+                    <td class="right">0</td>
+                    <td class="right">2013-03-01 00:51:51</td>
+                </tr>
+                <tr>
+                    <td class="right">566</td>
+                    <td class="maniac">
+                        <span class="login">Никсон</span>
+                        <a href="https://klavogonki.ru/u/#/250938/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 22 мин. 23 сек.</td>
+                    <td class="right">435</td> 
+                    <td class="right">401</td>
+
+
+                    <td class="right">382,66</td> 
+                    <td class="right">2,65</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-10-18 22:19:15</td>
+                </tr>
+                <tr>
+                    <td class="right">567</td>
+                    <td class="pro">
+                        <span class="login">Ружандр</span>
+                        <a href="https://klavogonki.ru/u/#/409524/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 17 мин. 52 сек.</td>
+                    <td class="right">288</td> 
+                    <td class="right">400</td>
+
+
+                    <td class="right">234,89</td> 
+                    <td class="right">0,86</td> 
+                    <td class="right">0</td>
+                    <td class="right">2021-04-15 22:28:58</td>
+                </tr>
+                <tr>
+                    <td class="right">568</td>
+                    <td class="racer">
+                        <span class="login">str_nik</span>
+                        <a href="https://klavogonki.ru/u/#/119420/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 17 мин. 33 сек.</td>
+                    <td class="right">363</td> 
+                    <td class="right">401</td>
+
+
+                    <td class="right">324,62</td> 
+                    <td class="right">2,93</td> 
+                    <td class="right">0</td>
+                    <td class="right">2012-02-07 16:49:39</td>
+                </tr>
+                <tr>
+                    <td class="right">569</td>
+                    <td class="maniac">
+                        <span class="login">xcislav</span>
+                        <a href="https://klavogonki.ru/u/#/262013/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 16 мин. 4 сек.</td>
+                    <td class="right">455</td> 
+                    <td class="right">400</td>
+
+
+                    <td class="right">386,43</td> 
+                    <td class="right">1,64</td> 
+                    <td class="right">0</td>
+                    <td class="right">2021-08-24 06:22:40</td>
+                </tr>
+                <tr>
+                    <td class="right">570</td>
+                    <td class="maniac">
+                        <span class="login">Алуний</span>
+                        <a href="https://klavogonki.ru/u/#/459198/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 14 мин. 35 сек.</td>
+                    <td class="right">456</td> 
+                    <td class="right">399</td>
+
+
+                    <td class="right">403,54</td> 
+                    <td class="right">1,67</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-08-23 22:10:22</td>
+                </tr>
+                <tr>
+                    <td class="right">571</td>
+                    <td class="maniac">
+                        <span class="login">anazk</span>
+                        <a href="https://klavogonki.ru/u/#/131093/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 14 мин. 26 сек.</td>
+                    <td class="right">438</td> 
+                    <td class="right">400</td>
+
+
+                    <td class="right">369,34</td> 
+                    <td class="right">0,91</td> 
+                    <td class="right">0</td>
+                    <td class="right">2009-07-31 17:50:34</td>
+                </tr>
+                <tr>
+                    <td class="right">572</td>
+                    <td class="racer">
+                        <span class="login">freia</span>
+                        <a href="https://klavogonki.ru/u/#/59455/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 12 мин. 25 сек.</td>
+                    <td class="right">395</td> 
+                    <td class="right">400</td>
+
+
+                    <td class="right">325,03</td> 
+                    <td class="right">1,66</td> 
+                    <td class="right">0</td>
+                    <td class="right">2013-09-02 21:29:20</td>
+                </tr>
+                <tr>
+                    <td class="right">573</td>
+                    <td class="maniac">
+                        <span class="login">fianit</span>
+                        <a href="https://klavogonki.ru/u/#/256534/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 10 мин. 31 сек.</td>
+                    <td class="right">423</td> 
+                    <td class="right">398</td>
+
+
+                    <td class="right">375,94</td> 
+                    <td class="right">1,29</td> 
+                    <td class="right">0</td>
+                    <td class="right">2013-10-24 01:15:51</td>
+                </tr>
+                <tr>
+                    <td class="right">574</td>
+                    <td class="racer">
+                        <span class="login">second</span>
+                        <a href="https://klavogonki.ru/u/#/207949/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 9 мин. 50 сек.</td>
+                    <td class="right">374</td> 
+                    <td class="right">398</td>
+
+
+                    <td class="right">299,44</td> 
+                    <td class="right">2,53</td> 
+                    <td class="right">0</td>
+                    <td class="right">2020-12-01 22:24:17</td>
+                </tr>
+                <tr>
+                    <td class="right">575</td>
+                    <td class="maniac">
+                        <span class="login">WellMaxT</span>
+                        <a href="https://klavogonki.ru/u/#/546271/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 9 мин. 43 сек.</td>
+                    <td class="right">473</td> 
+                    <td class="right">398</td>
+
+
+                    <td class="right">421,36</td> 
+                    <td class="right">2,00</td> 
+                    <td class="right">0</td>
+                    <td class="right">2023-12-29 15:29:23</td>
+                </tr>
+                <tr>
+                    <td class="right">576</td>
+                    <td class="maniac">
+                        <span class="login">Lusil</span>
+                        <a href="https://klavogonki.ru/u/#/522146/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 4 мин. 28 сек.</td>
+                    <td class="right">391</td> 
+                    <td class="right">397</td>
+
+
+                    <td class="right">339,11</td> 
+                    <td class="right">2,53</td> 
+                    <td class="right">0</td>
+                    <td class="right">2022-09-27 23:57:36</td>
+                </tr>
+                <tr>
+                    <td class="right">577</td>
+                    <td class="racer">
+                        <span class="login">exploration</span>
+                        <a href="https://klavogonki.ru/u/#/195402/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 3 мин. 45 сек.</td>
+                    <td class="right">359</td> 
+                    <td class="right">398</td>
+
+
+                    <td class="right">320,47</td> 
+                    <td class="right">1,96</td> 
+                    <td class="right">0</td>
+                    <td class="right">2020-02-24 16:08:56</td>
+                </tr>
+                <tr>
+                    <td class="right">578</td>
+                    <td class="superman">
+                        <span class="login">nosferatum</span>
+                        <a href="https://klavogonki.ru/u/#/242585/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 3 мин. 6 сек.</td>
+                    <td class="right">490</td> 
+                    <td class="right">397</td>
+
+
+                    <td class="right">407,77</td> 
+                    <td class="right">1,71</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-10-25 22:10:17</td>
+                </tr>
+                <tr>
+                    <td class="right">579</td>
+                    <td class="cabman">
+                        <span class="login">хандеш</span>
+                        <a href="https://klavogonki.ru/u/#/367047/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">33 ч. 3 мин. 0 сек.</td>
+                    <td class="right">91</td> 
+                    <td class="right">397</td>
+
+
+                    <td class="right">74,88</td> 
+                    <td class="right">3,70</td> 
+                    <td class="right">0</td>
+                    <td class="right">2017-09-11 20:52:10</td>
+                </tr>
+                <tr>
+                    <td class="right">580</td>
+                    <td class="superman">
+                        <span class="login">sqwerty</span>
+                        <a href="https://klavogonki.ru/u/#/650372/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 59 мин. 10 сек.</td>
+                    <td class="right">480</td> 
+                    <td class="right">396</td>
+
+
+                    <td class="right">331,69</td> 
+                    <td class="right">1,08</td> 
+                    <td class="right">0</td>
+                    <td class="right">2023-11-06 20:39:07</td>
+                </tr>
+                <tr>
+                    <td class="right">581</td>
+                    <td class="amateur">
+                        <span class="login">tvger</span>
+                        <a href="https://klavogonki.ru/u/#/522439/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 58 мин. 9 сек.</td>
+                    <td class="right">147</td> 
+                    <td class="right">396</td>
+
+
+                    <td class="right">114,64</td> 
+                    <td class="right">0,84</td> 
+                    <td class="right">0</td>
+                    <td class="right">2018-11-25 15:07:46</td>
+                </tr>
+                <tr>
+                    <td class="right">582</td>
+                    <td class="racer">
+                        <span class="login">Frank_Drebin</span>
+                        <a href="https://klavogonki.ru/u/#/209483/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 54 мин. 26 сек.</td>
+                    <td class="right">351</td> 
+                    <td class="right">396</td>
+
+
+                    <td class="right">293,78</td> 
+                    <td class="right">2,09</td> 
+                    <td class="right">0</td>
+                    <td class="right">2020-06-05 00:20:35</td>
+                </tr>
+                <tr>
+                    <td class="right">583</td>
+                    <td class="racer">
+                        <span class="login">pelmen</span>
+                        <a href="https://klavogonki.ru/u/#/398617/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 54 мин. 18 сек.</td>
+                    <td class="right">394</td> 
+                    <td class="right">395</td>
+
+
+                    <td class="right">342,44</td> 
+                    <td class="right">3,35</td> 
+                    <td class="right">0</td>
+                    <td class="right">2023-10-27 22:29:03</td>
+                </tr>
+                <tr>
+                    <td class="right">584</td>
+                    <td class="pro">
+                        <span class="login">GvOzDi</span>
+                        <a href="https://klavogonki.ru/u/#/486062/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 48 мин. 4 сек.</td>
+                    <td class="right">300</td> 
+                    <td class="right">394</td>
+
+
+                    <td class="right">255,43</td> 
+                    <td class="right">2,34</td> 
+                    <td class="right">0</td>
+                    <td class="right">2021-04-10 11:53:15</td>
+                </tr>
+                <tr>
+                    <td class="right">585</td>
+                    <td class="pro">
+                        <span class="login">ТТВ</span>
+                        <a href="https://klavogonki.ru/u/#/166694/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 46 мин. 48 сек.</td>
+                    <td class="right">257</td> 
+                    <td class="right">394</td>
+
+
+                    <td class="right">218,79</td> 
+                    <td class="right">2,73</td> 
+                    <td class="right">0</td>
+                    <td class="right">2014-01-17 01:17:38</td>
+                </tr>
+                <tr>
+                    <td class="right">586</td>
+                    <td class="maniac">
+                        <span class="login">сварщик</span>
+                        <a href="https://klavogonki.ru/u/#/215321/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 41 мин. 44 сек.</td>
+                    <td class="right">409</td> 
+                    <td class="right">393</td>
+
+
+                    <td class="right">357,55</td> 
+                    <td class="right">1,32</td> 
+                    <td class="right">0</td>
+                    <td class="right">2012-02-23 13:57:43</td>
+                </tr>
+                <tr>
+                    <td class="right">587</td>
+                    <td class="racer">
+                        <span class="login">Artesik</span>
+                        <a href="https://klavogonki.ru/u/#/212797/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 39 мин. 7 сек.</td>
+                    <td class="right">336</td> 
+                    <td class="right">393</td>
+
+
+                    <td class="right">232,49</td> 
+                    <td class="right">3,27</td> 
+                    <td class="right">0</td>
+                    <td class="right">2023-02-17 11:03:18</td>
+                </tr>
+                <tr>
+                    <td class="right">588</td>
+                    <td class="superman">
+                        <span class="login">Carcharias</span>
+                        <a href="https://klavogonki.ru/u/#/290885/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 37 мин. 39 сек.</td>
+                    <td class="right">514</td> 
+                    <td class="right">392</td>
+
+
+                    <td class="right">464,23</td> 
+                    <td class="right">1,53</td> 
+                    <td class="right">0</td>
+                    <td class="right">2023-11-22 16:28:22</td>
+                </tr>
+                <tr>
+                    <td class="right">589</td>
+                    <td class="pro">
+                        <span class="login">ksr</span>
+                        <a href="https://klavogonki.ru/u/#/120053/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 33 мин. 40 сек.</td>
+                    <td class="right">339</td> 
+                    <td class="right">392</td>
+
+
+                    <td class="right">286,31</td> 
+                    <td class="right">3,04</td> 
+                    <td class="right">0</td>
+                    <td class="right">2010-08-13 21:32:09</td>
+                </tr>
+                <tr>
+                    <td class="right">590</td>
+                    <td class="pro">
+                        <span class="login">Loldet</span>
+                        <a href="https://klavogonki.ru/u/#/671436/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 32 мин. 44 сек.</td>
+                    <td class="right">314</td> 
+                    <td class="right">391</td>
+
+
+                    <td class="right">269,57</td> 
+                    <td class="right">4,74</td> 
+                    <td class="right">0</td>
+                    <td class="right">2023-08-06 03:13:32</td>
+                </tr>
+                <tr>
+                    <td class="right">591</td>
+                    <td class="racer">
+                        <span class="login">karalina</span>
+                        <a href="https://klavogonki.ru/u/#/365954/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 22 мин. 58 сек.</td>
+                    <td class="right">375</td> 
+                    <td class="right">389</td>
+
+
+                    <td class="right">337,37</td> 
+                    <td class="right">1,68</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-06-05 22:29:15</td>
+                </tr>
+                <tr>
+                    <td class="right">592</td>
+                    <td class="racer">
+                        <span class="login">quithicy</span>
+                        <a href="https://klavogonki.ru/u/#/449664/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 12 мин. 42 сек.</td>
+                    <td class="right">411</td> 
+                    <td class="right">387</td>
+
+
+                    <td class="right">348,74</td> 
+                    <td class="right">3,67</td> 
+                    <td class="right">0</td>
+                    <td class="right">2017-05-26 13:34:56</td>
+                </tr>
+                <tr>
+                    <td class="right">593</td>
+                    <td class="maniac">
+                        <span class="login">belkaoboroten</span>
+                        <a href="https://klavogonki.ru/u/#/169459/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 8 мин. 32 сек.</td>
+                    <td class="right">445</td> 
+                    <td class="right">390</td>
+
+
+                    <td class="right">369,51</td> 
+                    <td class="right">1,42</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-10-26 15:46:46</td>
+                </tr>
+                <tr>
+                    <td class="right">594</td>
+                    <td class="pro">
+                        <span class="login">Alkhor</span>
+                        <a href="https://klavogonki.ru/u/#/314554/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 5 мин. 45 сек.</td>
+                    <td class="right">290</td> 
+                    <td class="right">386</td>
+
+
+                    <td class="right">233,58</td> 
+                    <td class="right">1,44</td> 
+                    <td class="right">0</td>
+                    <td class="right">2016-01-21 15:40:35</td>
+                </tr>
+                <tr>
+                    <td class="right">595</td>
+                    <td class="racer">
+                        <span class="login">СераБелка</span>
+                        <a href="https://klavogonki.ru/u/#/355056/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 5 мин. 23 сек.</td>
+                    <td class="right">386</td> 
+                    <td class="right">385</td>
+
+
+                    <td class="right">326,64</td> 
+                    <td class="right">3,08</td> 
+                    <td class="right">0</td>
+                    <td class="right">2015-05-27 16:18:18</td>
+                </tr>
+                <tr>
+                    <td class="right">596</td>
+                    <td class="pro">
+                        <span class="login">Шмакодявка</span>
+                        <a href="https://klavogonki.ru/u/#/390293/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">32 ч. 3 мин. 50 сек.</td>
+                    <td class="right">296</td> 
+                    <td class="right">385</td>
+
+
+                    <td class="right">246,94</td> 
+                    <td class="right">3,40</td> 
+                    <td class="right">0</td>
+                    <td class="right">2024-09-08 00:04:30</td>
+                </tr>
+                <tr>
+                    <td class="right">597</td>
+                    <td class="maniac">
+                        <span class="login">kernal_debuger</span>
+                        <a href="https://klavogonki.ru/u/#/87446/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">31 ч. 57 мин. 45 сек.</td>
+                    <td class="right">466</td> 
+                    <td class="right">384</td>
+
+
+                    <td class="right">380,84</td> 
+                    <td class="right">4,46</td> 
+                    <td class="right">0</td>
+                    <td class="right">2011-09-03 17:22:18</td>
+                </tr>
+                <tr>
+                    <td class="right">598</td>
+                    <td class="cabman">
+                        <span class="login">lai</span>
+                        <a href="https://klavogonki.ru/u/#/393143/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">31 ч. 56 мин. 24 сек.</td>
+                    <td class="right">246</td> 
+                    <td class="right">384</td>
+
+
+                    <td class="right">213,67</td> 
+                    <td class="right">1,51</td> 
+                    <td class="right">0</td>
+                    <td class="right">2017-05-10 10:06:25</td>
+                </tr>
+                <tr>
+                    <td class="right">599</td>
+                    <td class="racer">
+                        <span class="login">Profitnik</span>
+                        <a href="https://klavogonki.ru/u/#/305817/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">31 ч. 52 мин. 17 сек.</td>
+                    <td class="right">373</td> 
+                    <td class="right">383</td>
+
+
+                    <td class="right">313,22</td> 
+                    <td class="right">3,93</td> 
+                    <td class="right">0</td>
+                    <td class="right">2014-11-26 22:23:26</td>
+                </tr>
+                <tr>
+                    <td class="right">600</td>
+                    <td class="racer">
+                        <span class="login">karabaska</span>
+                        <a href="https://klavogonki.ru/u/#/165953/stats/marathon/" target="_blank" rel="noopener noreferrer">
+                            <img src="./img/info.png" alt="Профиль" title="Профиль" width="10" height="10"/>
+                        </a>
+                    </td>
+                    <td class="right">31 ч. 51 мин. 13 сек.</td>
+                    <td class="right">336</td> 
+                    <td class="right">383</td>
+
+
+                    <td class="right">281,47</td> 
+                    <td class="right">2,24</td> 
+                    <td class="right">0</td>
+                    <td class="right">2013-02-06 20:27:03</td>
+                </tr>
+        </table>
+
+    </div>
+
+    <div class="paging" id="paging-bottom"></div>
+</main>
+
+<script src="./js/stats-top-table.js"></script>
+<script src="./js/voc-marathon-top-by-haul-login-to-page.js"></script>
+
+<script>
+    window.addEventListener('load', function() {
+        const login = TopTable.getLoginFromQueryParameter();
+
+        appendPaging();
+        bindSearch(login);
+
+        TopTable.highlightTableRow(login);
+    });
+
+    function getPageUrl(pageNumber) {
+        return `./voc-marathon-top-by-haul-page-${pageNumber}.html`;
+    }
+
+    function appendPaging() {
+        const paging = new Paging({
+            totalPages: 22,
+            currentPage: 6,
+            bindLinks: true,
+
+            getPagingLink: function(linkId, pageNumber) {
+                const pageUrl = getPageUrl(pageNumber);
+
+                return `<a href="${pageUrl}" id="${linkId}">${pageNumber}</a>${Paging.SPACE_SEPARATOR}`;
+            }
+        });
+
+        paging.append('paging-top');
+        paging.append('paging-bottom');
+    }
+
+    function bindSearch(login) {
+        const search = new PageSearch({
+            searchInputId: 'player-search-input',
+            searchButtonId: 'search-button',
+            searchMap: STATS_DATA.topByHaulLoginToPage,
+
+            handleSearch: function(login, pageNumber) {
+                const pageUrl = getPageUrl(pageNumber);
+
+                const redirectUrl = `${pageUrl}?${TopTable.LOGIN_PARAMETER}=${login}`;
+                // console.log(`redirectUrl: ${redirectUrl}`);
+                window.location.href = redirectUrl;
+            }
+        });
+
+        search.bind();
+
+        // fill input field with given login parameter
+        search.fillInput(login)
+    }
+</script>
+</body>
+</html>

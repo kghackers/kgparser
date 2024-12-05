@@ -1,6 +1,7 @@
 package ru.klavogonki.statistics.freemarker;
 
 import lombok.extern.log4j.Log4j2;
+import ru.klavogonki.statistics.export.ExportContext;
 
 @Log4j2
 public class PlayersByRankDataTemplate extends FreemarkerTemplate {
@@ -22,9 +23,9 @@ public class PlayersByRankDataTemplate extends FreemarkerTemplate {
     }
 
     @Override
-    public void export(final String filePath) {
+    public void export(ExportContext context, String filePath) {
         // todo: validate keys presence?
-        super.export(filePath);
+        super.export(context, filePath);
 
         logger.debug(
             "Saved rankLevel -> totalRacesCount mapping to file {}.",

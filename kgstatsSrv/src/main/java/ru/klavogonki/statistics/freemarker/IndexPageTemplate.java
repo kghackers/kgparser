@@ -2,6 +2,7 @@ package ru.klavogonki.statistics.freemarker;
 
 import lombok.extern.log4j.Log4j2;
 import ru.klavogonki.statistics.entity.PlayerEntity;
+import ru.klavogonki.statistics.export.ExportContext;
 
 import java.util.List;
 import java.util.Map;
@@ -381,8 +382,8 @@ public class IndexPageTemplate extends FreemarkerTemplate {
     }
 
     @Override
-    public void export(final String filePath) {
-        super.export(filePath);
+    public void export(ExportContext context, String filePath) {
+        super.export(context, filePath);
 
         logger.debug("Exported index page to file {}", filePath);
     }

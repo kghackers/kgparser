@@ -49,7 +49,7 @@ public interface StandardVocabularyTopExporter extends VocabularyTopExporter {
     }
     @Override
     default String topByRacesCountExcelSheetName() {
-        return VocabularyTopUtils.topByRacesCountIn(vocabulary()); // 30 chars :)
+        return VocabularyTopUtils.topByRacesCountExcelSheetName(vocabulary());
     }
 
     @Override
@@ -66,6 +66,6 @@ public interface StandardVocabularyTopExporter extends VocabularyTopExporter {
     }
     @Override
     default String topByHaulExcelSheetName() {
-        return VocabularyTopUtils.topByHaulIn(vocabulary());
+        return VocabularyTopUtils.topByHaulExcelSheetName(vocabulary());
     }
 }

@@ -1,9 +1,14 @@
 package ru.klavogonki.statistics.export.vocabulary.non_standard;
 
-import ru.klavogonki.common.NonStandardDictionary;
+import ru.klavogonki.statistics.dictionaries.NonStandardDictionariesCache;
+import ru.klavogonki.statistics.dictionaries.NonStandardDictionaryData;
+import ru.klavogonki.statistics.dictionaries.NonStandardDictionaryTopData;
 import ru.klavogonki.statistics.export.vocabulary.VocabularyTopExporter;
 import ru.klavogonki.statistics.export.vocabulary.VocabularyTopUtils;
 
+import java.util.Objects;
+
+// todo: this object is basically the same as impelemented by NonStandardVocabularyTopExporterGenerator
 public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter {
 
     @Override
@@ -11,11 +16,53 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
         return false;
     }
 
-    NonStandardDictionary vocabulary();
+    int dictionaryId();
+
+    default NonStandardDictionaryData vocabulary() {
+        int code = dictionaryId();
+
+        NonStandardDictionaryData dictionaryData = NonStandardDictionariesCache.INSTANCE.getDictionary(code);
+
+        assertDictionaryHasTopSet(dictionaryData);
+
+        return dictionaryData;
+    }
+
+    default NonStandardDictionaryTopData vocabularyTopData() {
+        return assertDictionaryHasTopSet(vocabulary());
+    }
 
     @Override
-    default String vocabularyCode() {
-        return vocabulary().code;
+    default int minRacesCount() {
+        return vocabularyTopData().minRacesCount;
+    }
+
+    @Override
+    default String loggerName() {
+        return vocabularyTopData().loggerName;
+    }
+
+    private static NonStandardDictionaryTopData assertDictionaryHasTopSet(NonStandardDictionaryData dictionaryData) {
+        Objects.requireNonNull(
+            dictionaryData.top,
+            String.format(
+                "Non-standard dictionary with code = %d, name = \"%s\" has no top configured.",
+                dictionaryData.code,
+                dictionaryData.displayName
+            )
+        );
+
+        return dictionaryData.top;
+    }
+
+    @Override
+    default String vocabularyCode() { // full code. in "voc-123" format
+        return vocabulary().getFullCode();
+    }
+
+    @Override
+    default String headerName() {
+        return vocabularyTopData().headerName;
     }
 
     @Override
@@ -32,7 +79,11 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
     }
     @Override
     default String topByBestSpeedExcelSheetName() {
-        return VocabularyTopUtils.topByBestSpeedExcelSheetName(vocabulary());
+        // same logic as in NonStandardVocabularyTopExporterGenerator
+        return Objects.requireNonNullElseGet(
+            vocabularyTopData().topByBestSpeedExcelSheetName,
+            () -> VocabularyTopUtils.topByBestSpeedExcelSheetName(vocabulary())
+        );
     }
 
     @Override
@@ -49,7 +100,11 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
     }
     @Override
     default String topByRacesCountExcelSheetName() {
-        return VocabularyTopUtils.topByRacesCountIn(vocabulary()); // 30 chars :)
+        // same logic as in NonStandardVocabularyTopExporterGenerator
+        return Objects.requireNonNullElseGet(
+            vocabularyTopData().topByRacesCountExcelSheetName,
+            () -> VocabularyTopUtils.topByRacesCountExcelSheetName(vocabulary())
+        );
     }
 
     @Override
@@ -66,7 +121,11 @@ public interface NonStandardVocabularyTopExporter extends VocabularyTopExporter 
     }
     @Override
     default String topByHaulExcelSheetName() {
-        return VocabularyTopUtils.topByHaulIn(vocabulary());
+        // same logic as in NonStandardVocabularyTopExporterGenerator
+        return Objects.requireNonNullElseGet(
+            vocabularyTopData().topByHaulExcelSheetName,
+            () -> VocabularyTopUtils.topByHaulExcelSheetName(vocabulary())
+        );
     }
 
     // override compared to default to not compare "voc-" 2 times, since vocabularyCode() already contains "voc-"

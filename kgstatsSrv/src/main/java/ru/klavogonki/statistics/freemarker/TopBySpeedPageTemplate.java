@@ -2,6 +2,7 @@ package ru.klavogonki.statistics.freemarker;
 
 import lombok.extern.log4j.Log4j2;
 import ru.klavogonki.statistics.dto.PlayerDto;
+import ru.klavogonki.statistics.export.ExportContext;
 
 import java.util.List;
 
@@ -56,9 +57,9 @@ public class TopBySpeedPageTemplate extends FreemarkerTemplate {
     }
 
     @Override
-    public void export(final String filePath) {
+    public void export(ExportContext context, String filePath) {
         // todo: validate keys presence?
-        super.export(filePath);
+        super.export(context, filePath);
 
         logger.debug(
             "Top speed {} players (page {}) exported to file {}",
@@ -68,13 +69,20 @@ public class TopBySpeedPageTemplate extends FreemarkerTemplate {
         );
     }
 
-    public void exportTopPageToHtml(int totalPages, int pageNumber, List<PlayerDto> players, int totalRacesCountMin, String filePath) {
+    public void exportTopPageToHtml(
+        ExportContext context,
+        int totalPages,
+        int pageNumber,
+        List<PlayerDto> players,
+        int totalRacesCountMin,
+        String filePath
+    ) {
         totalPages(totalPages);
         pageNumber(pageNumber);
         players(players);
         totalRacesCountMin(totalRacesCountMin);
 
-        export(filePath);
+        export(context, filePath);
         logger.debug("Top speed {} players (page {}) exported to file {}", players.size(), pageNumber, filePath);
     }
 }
