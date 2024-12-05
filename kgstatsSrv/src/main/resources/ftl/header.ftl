@@ -99,6 +99,15 @@
                 <#-- Быстрая правая рука -->
                 | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=853/>
 
+                <#-- 5000 самых частых слов -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=203/>
+
+                <#-- Генератор кибер-текстов -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=133548/>
+
+                <#-- Частотный чередующийся -->
+                | <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=165701/>
+
                 <div class="header-vertical-space"></div>
 
                 <a href="./2020-12-09/stats.html">Статистика&nbsp;от&nbsp;09.12.2020</a>
