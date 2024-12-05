@@ -16,7 +16,7 @@ object NonStandardDictionariesCache : Logging {
         .mapValues { it.value.first() } // we're sure the code is unique
 
     private fun parse(): List<NonStandardDictionaryData> {
-        val fileName = this.javaClass.getResource(NON_STANDARD_DICTIONARIES_JSON_RESOURCE).file
+        val fileName = this.javaClass.getResourceAsStream(NON_STANDARD_DICTIONARIES_JSON_RESOURCE)
 
         val nonStandardDictionaries = JacksonUtils.parseNonStandardDictionaryData(fileName)
 

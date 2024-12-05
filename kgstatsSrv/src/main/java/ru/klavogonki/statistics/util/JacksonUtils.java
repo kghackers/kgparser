@@ -16,6 +16,7 @@ import ru.klavogonki.statistics.export.StatisticsGeneratorConfig;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -52,18 +53,16 @@ public final class JacksonUtils {
         return config;
     }
 
-    public static List<NonStandardDictionaryData> parseNonStandardDictionaryData(String filePath) {
+    public static List<NonStandardDictionaryData> parseNonStandardDictionaryData(InputStream inputStream) {
         TypeReference<List<NonStandardDictionaryData>> typeReference = new TypeReference<>() {
         };
-
-        File file = new File(filePath);
 
         try {
             ObjectMapper mapper = createObjectMapper();
 
-            return mapper.readValue(file, typeReference);
+            return mapper.readValue(inputStream, typeReference);
         } catch (IOException e) {
-            String errorMessage = String.format("Error on parsing file \"%s\" to class %s", filePath, typeReference.getClass().getName());
+            String errorMessage = String.format("Error on parsing inputStream \"%s\" to class %s", inputStream, typeReference.getClass().getName());
 
             throw handleError(e, errorMessage);
         }
