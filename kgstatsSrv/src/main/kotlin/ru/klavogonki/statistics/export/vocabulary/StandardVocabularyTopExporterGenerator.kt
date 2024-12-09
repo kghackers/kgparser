@@ -44,8 +44,7 @@ object StandardVocabularyTopExporterGenerator : Logging {
         }
     }
 
-/*
-    fun generateContext(dictionaryCodes: List<String>) : NonStandardVocabularyGeneratorContext {
+    fun generateContext(dictionaryCodes: List<String>) : StandardVocabularyGeneratorContext {
         val distinctDictionaryCodes = dictionaryCodes.distinct()
 
         val dictionaryCodeToExporter = mutableMapOf<String, StandardVocabularyTopExporter>()
@@ -56,9 +55,8 @@ object StandardVocabularyTopExporterGenerator : Logging {
             dictionaryCodeToExporter[it] = exporter
         }
 
-        return NonStandardVocabularyGeneratorContext(dictionaryCodeToExporter)
+        return StandardVocabularyGeneratorContext(dictionaryCodeToExporter)
     }
-*/
 
     @JvmStatic
     fun main(args: Array<String>) {
