@@ -6,29 +6,31 @@ import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.annotation.Nulls
 import ru.klavogonki.common.DictionaryTag
 import ru.klavogonki.common.DictionaryUtils
+import ru.klavogonki.common.StandardDictionary
 import ru.klavogonki.common.UrlConstructor
 
 /**
- * Нестандартный словарь.
+ * Стандартный словарь Клавогонок.
  *
  * Конфигурируется на основе JSON-файла, а НЕ захардкоженного энума.
  *
- * @see [StandardDictionaryData]
+ * @see [NonStandardDictionaryData]
  */
 @JsonPropertyOrder(
-    "code",
+    "klavogonkiName",
     "displayName",
     "displayNamePrepositional",
     "tags",
     "top"
 )
-data class NonStandardDictionaryData(
+data class StandardDictionaryData(
 
     /**
-     * Числовой код словаря. Без префикса `voc-`.
+     * Строковый код словаря. Как используется на клавогонках.
+     * @see [ru.klavogonki.common.StandardDictionary.klavogonkiName]
      */
-    @JsonProperty("code")
-    @JvmField val code: Int,
+    @JsonProperty("klavogonkiName")
+    @JvmField val klavogonkiName: String,
 
     /**
      * Русское название словаря для отображения.
@@ -57,7 +59,8 @@ data class NonStandardDictionaryData(
     @JsonProperty("top")
     @JvmField val top: NonStandardDictionaryTopData?
 ) {
-    fun getFullCode() = DictionaryUtils.getDictionaryCode(code)
+    fun getStandardDictionary() = StandardDictionary.getByKlavogonkiName(klavogonkiName)
 
-    fun getLink() = UrlConstructor.dictionaryPage(code)
+    // todo: think whether this should be also configured by the json file
+    fun getLink() = getStandardDictionary().wikiPageUrl
 }
