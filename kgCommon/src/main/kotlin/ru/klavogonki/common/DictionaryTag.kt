@@ -8,13 +8,21 @@ enum class DictionaryTag(
      */
     @JvmField val displayName: String,
 ) {
+    STANDARD("Стандартный"),
+    NORMAL("Обычный"),
+    ABRA("Абракадабра"),
+    REFERATS("Рефераты"),
+    NO_ERROR("Безошибочный"),
+    MARATHON("Марафон"),
+    LETTERS("Буквы"),
+    DIGITS("Цифры"),
+    SPRINT("Спринт"),
+
     ENGLISH("English"),
     GERMAN("Deutsch"),
     DVORAK("Dvorak"),
     EXERCISE("Упражнение"),
     HRUST("Хруст"),
-    DIGITS("Цифры"),
-    LETTERS("Буквы"),
     MINI_MARATHON("Мини-марафон"),
     HUNDRED("Соточка"),
     SHORT_TEXTS("Короткие тексты"),
