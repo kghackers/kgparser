@@ -2,6 +2,7 @@ package ru.klavogonki.statistics.export
 
 import ru.klavogonki.statistics.Config
 import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyGeneratorContext
+import ru.klavogonki.statistics.export.vocabulary.StandardVocabularyGeneratorContext
 import ru.klavogonki.statistics.freemarker.Links
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository
 import ru.klavogonki.statistics.util.DateUtils
@@ -16,12 +17,14 @@ data class ExportContext(
     @JvmField val dataDownloadStartDate: LocalDateTime,
     @JvmField val dataDownloadEndDate: LocalDateTime,
     @JvmField val repository: PlayerVocabularyStatsRepository,
+    @JvmField val standardDictionariesGeneratorContext: StandardVocabularyGeneratorContext,
     @JvmField val nonStandardDictionariesGeneratorContext: NonStandardVocabularyGeneratorContext,
     @JvmField val links: Links
 ) {
     constructor(
         config: Config,
         repository: PlayerVocabularyStatsRepository,
+        standardDictionariesGeneratorContext: StandardVocabularyGeneratorContext,
         nonStandardDictionariesGeneratorContext: NonStandardVocabularyGeneratorContext,
         links: Links
     ) : this(  // we can use property-access from a Java class when there is an explicit geter
@@ -41,6 +44,7 @@ data class ExportContext(
 
         repository = repository,
 
+        standardDictionariesGeneratorContext = standardDictionariesGeneratorContext,
         nonStandardDictionariesGeneratorContext = nonStandardDictionariesGeneratorContext,
         links = links
     )

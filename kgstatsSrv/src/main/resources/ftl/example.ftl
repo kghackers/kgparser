@@ -66,6 +66,34 @@ Player from map by id: ${idToPlayerMap?api.get(playerId).login}
 </p>
 
 <p>
+    <#assign standardDictionaries = links.standardDictionaries>
+
+    <#import "./dictionary-standard-top-speed-link.ftl" as dstsl>
+
+    Standard dictionaries context (from links): ${links.standardDictionaries}
+    <br/>
+    <br/>
+    Standard dictionaries context (from variables): ${standardDictionaries}
+    <br/>
+    <br/>
+    Page name: ${standardDictionaries.getTopBySpeedFirstPageFilePath("normal")}
+    <br/>
+    <br/>
+    Page header: ${standardDictionaries.getHeaderName("normal")}
+    <br/>
+    <br/>
+    Page header CSS class: ${standardDictionaries.getHeaderCssClass("normal")}
+    <br/>
+    <br/>
+    Standard dictionary links test:
+    <#-- Обычный-->
+    <@dstsl.dictionaryStandardTopSpeedLink dictionaries=standardDictionaries dictionaryCode="normal"/>
+
+    <#-- Цифры -->
+    | <@dstsl.dictionaryStandardTopSpeedLink dictionaries=standardDictionaries dictionaryCode="digits"/>
+</p>
+
+<p>
     <#assign nonStandardDictionaries = links.nonStandardDictionaries>
 
     <#import "./dictionary-top-speed-link.ftl" as dtsl>
@@ -82,7 +110,8 @@ Player from map by id: ${idToPlayerMap?api.get(playerId).login}
     Page header: ${nonStandardDictionaries.getHeaderName(5539)}
     <br/>
     <br/>
-    Link test:
+    Non-standard dictionary links test:
+    <#-- Обычный in English -->
     <@dtsl.dictionaryTopSpeedLink dictionaries=nonStandardDictionaries dictionaryId=5539/>
 
     <#-- Мини-марафон, 800 знаков -->

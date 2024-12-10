@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.klavogonki.statistics.Config;
 import ru.klavogonki.statistics.dictionaries.NonStandardDictionaryData;
+import ru.klavogonki.statistics.dictionaries.StandardDictionaryData;
 import ru.klavogonki.statistics.export.StatisticsGeneratorConfig;
 
 import java.io.File;
@@ -55,6 +56,21 @@ public final class JacksonUtils {
 
     public static List<NonStandardDictionaryData> parseNonStandardDictionaryData(InputStream inputStream) {
         TypeReference<List<NonStandardDictionaryData>> typeReference = new TypeReference<>() {
+        };
+
+        try {
+            ObjectMapper mapper = createObjectMapper();
+
+            return mapper.readValue(inputStream, typeReference);
+        } catch (IOException e) {
+            String errorMessage = String.format("Error on parsing inputStream \"%s\" to class %s", inputStream, typeReference.getClass().getName());
+
+            throw handleError(e, errorMessage);
+        }
+    }
+
+    public static List<StandardDictionaryData> parseStandardDictionaryData(InputStream inputStream) {
+        TypeReference<List<StandardDictionaryData>> typeReference = new TypeReference<>() {
         };
 
         try {

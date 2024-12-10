@@ -12,6 +12,8 @@ import ru.klavogonki.common.UrlConstructor
  * Нестандартный словарь.
  *
  * Конфигурируется на основе JSON-файла, а НЕ захардкоженного энума.
+ *
+ * @see [StandardDictionaryData]
  */
 @JsonPropertyOrder(
     "code",

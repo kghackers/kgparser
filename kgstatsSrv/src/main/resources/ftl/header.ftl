@@ -9,6 +9,7 @@
 
                 <div class="header-vertical-space"></div>
 
+                <#-- todo: typical header should be exracted to an ftl template -->
                 <a href="./${links.topByTotalRaces}">Топ&nbsp;по&nbsp;общему&nbsp;пробегу</a>
                 | <a href="./${links.topByBestSpeedPage1}">Топ по рекорду в &laquo;Обычном&raquo;</a>
                 | <a href="./${links.topByBestSpeed}">Топ-500&nbsp;в&nbsp;&laquo;Обычном&raquo;</a> <#-- todo: think whether we need it -->
@@ -24,15 +25,32 @@
 
                 <div class="header-vertical-space"></div>
 
-                <#-- todo: typical header should be exracted to an ftl template -->
-                <a href="./${links.normalTopBySpeedPage1}" class="normal">${links.normalTopHeader}</a>
-                | <a href="./${links.abraTopBySpeedPage1}" class="abra">${links.abraTopHeader}</a>
-                | <a href="./${links.referatsTopBySpeedPage1}" class="referats">${links.referatsTopHeader}</a>
-                | <a href="./${links.noErrorTopBySpeedPage1}" class="noerror">${links.noErrorTopHeader}</a>
-                | <a href="./${links.marathonTopBySpeedPage1}" class="marathon">${links.marathonTopHeader}</a>
-                | <a href="./${links.charsTopBySpeedPage1}" class="chars">${links.charsTopHeader}</a>
-                | <a href="./${links.digitsTopBySpeedPage1}" class="digits">${links.digitsTopHeader}</a>
-                | <a href="./${links.sprintTopBySpeedPage1}" class="sprint">${links.sprintTopHeader}</a>
+                <#import "./dictionary-standard-top-speed-link.ftl" as dstsl>
+                <#assign standardDictionaries = links.standardDictionaries>
+
+                <#-- Обычный -->
+                <@dstsl.dictionaryStandardTopSpeedLink dictionaries=standardDictionaries dictionaryCode="normal"/>
+
+                <#-- Абракадабра -->
+                | <@dstsl.dictionaryStandardTopSpeedLink dictionaries=standardDictionaries dictionaryCode="abra"/>
+
+                <#-- Яндекс.Рефераты -->
+                | <@dstsl.dictionaryStandardTopSpeedLink dictionaries=standardDictionaries dictionaryCode="referats"/>
+
+                <#-- Безошибочный -->
+                | <@dstsl.dictionaryStandardTopSpeedLink dictionaries=standardDictionaries dictionaryCode="noerror"/>
+
+                <#-- Марафон -->
+                | <@dstsl.dictionaryStandardTopSpeedLink dictionaries=standardDictionaries dictionaryCode="marathon"/>
+
+                <#-- Буквы -->
+                | <@dstsl.dictionaryStandardTopSpeedLink dictionaries=standardDictionaries dictionaryCode="chars"/>
+
+                <#-- Цифры -->
+                | <@dstsl.dictionaryStandardTopSpeedLink dictionaries=standardDictionaries dictionaryCode="digits"/>
+
+                <#-- Спринт -->
+                | <@dstsl.dictionaryStandardTopSpeedLink dictionaries=standardDictionaries dictionaryCode="sprint"/>
 
                 <div class="header-vertical-space"></div>
 
