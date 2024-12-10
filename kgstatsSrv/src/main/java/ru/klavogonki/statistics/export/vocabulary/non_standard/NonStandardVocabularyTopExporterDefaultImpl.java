@@ -1,4 +1,4 @@
-package ru.klavogonki.statistics.export.vocabulary.standard;
+package ru.klavogonki.statistics.export.vocabulary.non_standard;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import ru.klavogonki.statistics.entity.PlayerEntity;
 import ru.klavogonki.statistics.entity.PlayerVocabularyStatsEntity;
 import ru.klavogonki.statistics.export.ExportContext;
 import ru.klavogonki.statistics.export.LoggerWrapper;
-import ru.klavogonki.statistics.export.vocabulary.non_standard.NonStandardVocabularyTopExporter;
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository;
 import ru.klavogonki.statistics.springboot.Profiles;
 

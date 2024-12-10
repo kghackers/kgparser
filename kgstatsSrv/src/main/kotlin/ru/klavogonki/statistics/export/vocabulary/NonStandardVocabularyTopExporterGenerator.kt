@@ -5,7 +5,7 @@ import ru.klavogonki.common.DictionaryUtils
 import ru.klavogonki.common.NonStandardDictionary
 import ru.klavogonki.statistics.dictionaries.NonStandardDictionariesCache
 import ru.klavogonki.statistics.export.vocabulary.non_standard.NonStandardVocabularyTopExporter
-import ru.klavogonki.statistics.export.vocabulary.standard.NonStandardVocabularyTopExporterDefaultImpl
+import ru.klavogonki.statistics.export.vocabulary.non_standard.NonStandardVocabularyTopExporterDefaultImpl
 
 object NonStandardVocabularyTopExporterGenerator : Logging {
 
