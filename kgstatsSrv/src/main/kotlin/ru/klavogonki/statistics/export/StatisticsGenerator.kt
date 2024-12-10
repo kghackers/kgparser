@@ -8,17 +8,10 @@ import org.springframework.stereotype.Component
 import ru.klavogonki.common.NonStandardDictionary
 import ru.klavogonki.statistics.Config
 import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyTopExporterGenerator
+import ru.klavogonki.statistics.export.vocabulary.StandardVocabularyTopExporterGenerator
 import ru.klavogonki.statistics.export.vocabulary.VocabularyTopExporter
 import ru.klavogonki.statistics.export.vocabulary.VocabularyTopUtils
 import ru.klavogonki.statistics.export.vocabulary.non_standard.NonStandardVocabularyTopExporter
-import ru.klavogonki.statistics.export.vocabulary.standard.AbraTopExporter
-import ru.klavogonki.statistics.export.vocabulary.standard.CharsTopExporter
-import ru.klavogonki.statistics.export.vocabulary.standard.DigitsTopExporter
-import ru.klavogonki.statistics.export.vocabulary.standard.MarathonTopExporter
-import ru.klavogonki.statistics.export.vocabulary.standard.NoErrorTopExporter
-import ru.klavogonki.statistics.export.vocabulary.standard.NormalTopExporter
-import ru.klavogonki.statistics.export.vocabulary.standard.ReferatsTopExporter
-import ru.klavogonki.statistics.export.vocabulary.standard.SprintTopExporter
 import ru.klavogonki.statistics.freemarker.Links
 import ru.klavogonki.statistics.repository.PlayerVocabularyStatsRepository
 import ru.klavogonki.statistics.springboot.Profiles
@@ -40,31 +33,6 @@ class StatisticsGenerator : Logging {
     @Autowired
     private val playersByRankExporter: PlayersByRankExporter? = null
 
-    // standard vocabularies
-    @Autowired
-    private val normalTopExporter: NormalTopExporter? = null
-
-    @Autowired
-    private val abraTopExporter: AbraTopExporter? = null
-
-    @Autowired
-    private val referatsTopExporter: ReferatsTopExporter? = null
-
-    @Autowired
-    private val noErrorTopExporter: NoErrorTopExporter? = null
-
-    @Autowired
-    private val marathonTopExporter: MarathonTopExporter? = null
-
-    @Autowired
-    private val charsTopExporter: CharsTopExporter? = null
-
-    @Autowired
-    private val digitsTopExporter: DigitsTopExporter? = null
-
-    @Autowired
-    private val sprintTopExporter: SprintTopExporter? = null
-
     @Autowired
     private val repository: PlayerVocabularyStatsRepository? = null
 
@@ -73,26 +41,22 @@ class StatisticsGenerator : Logging {
             "PlayerVocabularyStatsRepository is null. Check your Spring profiles."
         }
 
+        // standard vocabularies exporters
+        val standardDictionariesGeneratorContext =
+            StandardVocabularyTopExporterGenerator.generateContext(generatorConfig.standardDictionariesCodes)
+
         // non-standard vocabularies exporters
         val nonStandardDictionariesGeneratorContext =
             NonStandardVocabularyTopExporterGenerator.generateContext(generatorConfig.nonStandardDictionariesCodes)
 
-        val links = Links.create(nonStandardDictionariesGeneratorContext)
-
-        val standardDictionariesTopExporters = listOf<VocabularyTopExporter>(
-            normalTopExporter!!,
-            abraTopExporter!!,
-            referatsTopExporter!!,
-            noErrorTopExporter!!,
-            marathonTopExporter!!,
-            charsTopExporter!!,
-            digitsTopExporter!!,
-            sprintTopExporter!!
+        val links = Links.create(
+            standardDictionariesGeneratorContext,
+            nonStandardDictionariesGeneratorContext
         )
 
         // does not include the "special" exporters for non-vocabularies
         val allTopExporters: MutableList<VocabularyTopExporter> = mutableListOf()
-        allTopExporters.addAll(standardDictionariesTopExporters)
+        allTopExporters.addAll(standardDictionariesGeneratorContext.getAllExporters())
         allTopExporters.addAll(nonStandardDictionariesGeneratorContext.getAllExporters())
 
         // validate Excel sheet names
@@ -102,6 +66,7 @@ class StatisticsGenerator : Logging {
         val context = ExportContext(
             config,
             repository,
+            standardDictionariesGeneratorContext,
             nonStandardDictionariesGeneratorContext,
             links
         )
@@ -134,14 +99,12 @@ class StatisticsGenerator : Logging {
         export(context, generatorConfig.exportPlayersByRank, playersByRankExporter)
 
         // standard vocabularies exporters
-        export(context, generatorConfig.exportNormalTop, normalTopExporter)
-        export(context, generatorConfig.exportAbraTop, abraTopExporter)
-        export(context, generatorConfig.exportReferatsTop, referatsTopExporter)
-        export(context, generatorConfig.exportNoErrorTop, noErrorTopExporter)
-        export(context, generatorConfig.exportMarathonTop, marathonTopExporter)
-        export(context, generatorConfig.exportCharsTop, charsTopExporter)
-        export(context, generatorConfig.exportDigitsTop, digitsTopExporter)
-        export(context, generatorConfig.exportSprintTop, sprintTopExporter)
+        generatorConfig.standardDictionariesCodes.forEach {
+            val exporter = standardDictionariesGeneratorContext.getExporter(it)
+
+            // export flag is true since we're only iterating the dictionaries set in the config
+            export(context, true, exporter)
+        }
 
         // non-standard vocabularies exporters
         generatorConfig.nonStandardDictionariesCodes.forEach {

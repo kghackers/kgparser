@@ -38,7 +38,9 @@ public abstract class StandardVocabularyTopExporterDefaultImpl implements Standa
 
     @Override
     public List<PlayerVocabularyStatsEntity> getPlayersByBestSpeed(ExportContext context) {
-        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByBestSpeedDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
+        PlayerVocabularyStatsRepository repo = getRepositorySafe(context);
+
+        List<PlayerVocabularyStatsEntity> players = repo.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByBestSpeedDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
         logger().debug("Total players by best speed, min total races = {}: {}", minRacesCount(), players.size());
 
         return players;
@@ -46,7 +48,9 @@ public abstract class StandardVocabularyTopExporterDefaultImpl implements Standa
 
     @Override
     public List<PlayerVocabularyStatsEntity> getPlayersByRacesCount(ExportContext context) {
-        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByRacesCountDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
+        PlayerVocabularyStatsRepository repo = getRepositorySafe(context);
+
+        List<PlayerVocabularyStatsEntity> players = repo.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByRacesCountDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
         logger().debug("Total players by races count, min total races = {}: {}", minRacesCount(), players.size());
 
         return players;
@@ -54,9 +58,17 @@ public abstract class StandardVocabularyTopExporterDefaultImpl implements Standa
 
     @Override
     public List<PlayerVocabularyStatsEntity> getPlayersByHaul(ExportContext context) {
-        List<PlayerVocabularyStatsEntity> players = repository.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByHaulDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
+        PlayerVocabularyStatsRepository repo = getRepositorySafe(context);
+
+        List<PlayerVocabularyStatsEntity> players = repo.findByVocabularyCodeEqualsAndRacesCountGreaterThanEqualAndPlayerBlockedEqualsOrderByHaulDesc(vocabularyCode(), minRacesCount(), PlayerEntity.NOT_BLOCKED);
         logger().debug("Total players by haul, min total races = {}: {}", minRacesCount(), players.size());
 
         return players;
+    }
+
+    private PlayerVocabularyStatsRepository getRepositorySafe(ExportContext context) {
+        return (this.repository != null)
+            ? this.repository // this.repository is not inherited by the dynamicaally created subclasses
+            : context.repository;
     }
 }

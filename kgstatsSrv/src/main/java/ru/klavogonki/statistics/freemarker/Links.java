@@ -3,14 +3,7 @@ package ru.klavogonki.statistics.freemarker;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import ru.klavogonki.statistics.export.vocabulary.NonStandardVocabularyGeneratorContext;
-import ru.klavogonki.statistics.export.vocabulary.standard.AbraTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.standard.CharsTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.standard.DigitsTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.standard.MarathonTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.standard.NoErrorTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.standard.NormalTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.standard.ReferatsTopExporter;
-import ru.klavogonki.statistics.export.vocabulary.standard.SprintTopExporter;
+import ru.klavogonki.statistics.export.vocabulary.StandardVocabularyGeneratorContext;
 
 /**
  * Object with page and files urls to pass to FreeMarker templates.
@@ -57,25 +50,8 @@ public class Links {
 
     private String playersByRank = PageUrls.PLAYER_BY_RANK;
 
-    // vocabularies landing pages
     // standard vocabularies
-    private String normalTopBySpeedPage1 = new NormalTopExporter().topByBestSpeedFirstPageFilePath();
-    private String abraTopBySpeedPage1 = new AbraTopExporter().topByBestSpeedFirstPageFilePath();
-    private String referatsTopBySpeedPage1 = new ReferatsTopExporter().topByBestSpeedFirstPageFilePath();
-    private String noErrorTopBySpeedPage1 = new NoErrorTopExporter().topByBestSpeedFirstPageFilePath();
-    private String marathonTopBySpeedPage1 = new MarathonTopExporter().topByBestSpeedFirstPageFilePath();
-    private String charsTopBySpeedPage1 = new CharsTopExporter().topByBestSpeedFirstPageFilePath();
-    private String digitsTopBySpeedPage1 = new DigitsTopExporter().topByBestSpeedFirstPageFilePath();
-    private String sprintTopBySpeedPage1 = new SprintTopExporter().topByBestSpeedFirstPageFilePath();
-
-    private String normalTopHeader = new NormalTopExporter().headerName();
-    private String abraTopHeader = new AbraTopExporter().headerName();
-    private String referatsTopHeader = new ReferatsTopExporter().headerName();
-    private String noErrorTopHeader = new NoErrorTopExporter().headerName();
-    private String marathonTopHeader = new MarathonTopExporter().headerName();
-    private String charsTopHeader = new CharsTopExporter().headerName();
-    private String digitsTopHeader = new DigitsTopExporter().headerName();
-    private String sprintTopHeader = new SprintTopExporter().headerName();
+    private StandardVocabularyGeneratorContext standardDictionaries;
 
     // non-standard vocabularies
     private NonStandardVocabularyGeneratorContext nonStandardDictionaries;
@@ -98,10 +74,14 @@ public class Links {
     private Links() {
     }
 
-    public static Links create(NonStandardVocabularyGeneratorContext context) {
+    public static Links create(
+        StandardVocabularyGeneratorContext standardVocabularyGeneratorContext,
+        NonStandardVocabularyGeneratorContext nonStandardVocabularyGeneratorContext
+    ) {
         Links links = new Links();
 
-        links.nonStandardDictionaries = context;
+        links.standardDictionaries = standardVocabularyGeneratorContext;
+        links.nonStandardDictionaries = nonStandardVocabularyGeneratorContext;
 
         return links;
     }

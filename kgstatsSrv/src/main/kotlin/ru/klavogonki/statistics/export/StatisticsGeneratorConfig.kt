@@ -15,14 +15,7 @@ data class StatisticsGeneratorConfig(
     val exportPlayersByRank: Boolean = false,
 
     // standard vocabularies
-    val exportNormalTop: Boolean = false,
-    val exportAbraTop: Boolean = false,
-    val exportReferatsTop: Boolean = false,
-    val exportNoErrorTop: Boolean = false,
-    val exportMarathonTop: Boolean = false,
-    val exportCharsTop: Boolean = false,
-    val exportDigitsTop: Boolean = false,
-    val exportSprintTop: Boolean = false,
+    val standardDictionariesCodes: List<String> = emptyList(),
 
     // non-standard vocabularies
     val nonStandardDictionariesCodes: List<Int> = emptyList()

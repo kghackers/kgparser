@@ -59,4 +59,19 @@ data class StandardVocabularyGeneratorContext(
 
         return exporter.headerName()
     }
+
+    fun getHeaderCssClass(dictionaryCode: String): String {
+        val exporter = getExporterOrNull(dictionaryCode)
+
+        if (exporter == null) {
+            logger.warn(
+                "Standard dictionary with code = \"$dictionaryCode\" is not configured. Retuning empty css class.",
+            )
+
+            return "" // todo: think about returning some default class
+        }
+
+        // we're using the CSS name equal to the standard dictionary code
+        return exporter.vocabulary().klavogonkiName
+    }
 }
