@@ -108,7 +108,7 @@ enum class Car(
     DU_49(1021, "ДУ-49", 173903), // http://klavogonki.ru/u/#/173903/car/
     DUCATI_848_2010(1022, "Ducati 848 2010", 61254), // http://klavogonki.ru/u/#/61254/car/
     TUMBLER(1023, "Tumbler", 195256), // http://klavogonki.ru/u/#/195256/car/
-    FERRARI_F2(1024, "Ferrari F12", 320247), // http://klavogonki.ru/u/#/320247/car/
+    FERRARI_F12(1024, "Ferrari F12", 320247), // http://klavogonki.ru/u/#/320247/car/
     ;
 
     constructor(id: Int, displayName: String) : this(id, displayName, null, null)
